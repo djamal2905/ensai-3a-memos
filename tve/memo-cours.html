@@ -169,6 +169,16 @@ window.MathJax = {
   p.sense b{ color:var(--accent-strong); }
   p.sense::before{ content:"→"; font-weight:700; color:var(--accent); }
 
+  details.solution{ margin:14px 0; }
+  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
+  details.solution summary::-webkit-details-marker{ display:none; }
+  details.solution summary::before{ content:"▶"; font-size:.7em; transition:transform .15s ease; }
+  details.solution[open] summary::before{ transform:rotate(90deg); }
+  details.solution[open] summary{ border-radius:8px 8px 0 0; }
+  details.solution > .box{ margin-top:0; border-radius:0 0 10px 10px; border-top:none; }
+  .method-label{ display:inline-block; font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--ex-label); background:var(--ex-bg); border:1px solid var(--ex-border); border-radius:6px; padding:2px 8px; margin:10px 0 6px; }
+  .method-label:first-child{ margin-top:0; }
+
   table.cmp{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.83rem; }
   .cmp th, .cmp td{ padding:6px 10px; border:1px solid var(--border); text-align:center; color:var(--ink-soft); }
   .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
@@ -267,9 +277,13 @@ window.MathJax = {
         <p>3 : Exercices &amp; corrections</p>
         <ol>
           <li><a href="#s18"><span class="toc-num">18</span>Quantile explicite d'une loi de Pareto</a></li>
-          <li><a href="#s19"><span class="toc-num">19</span>Deux variantes de la loi de Gumbel</a></li>
+          <li><a href="#s19"><span class="toc-num">19</span>Un maximum mobile en domaine de Fréchet</a></li>
           <li><a href="#s20"><span class="toc-num">20</span>Le paramètre de second ordre (Burr)</a></li>
-          <li><a href="#s21"><span class="toc-num">21</span>Application numérique : Hill &amp; Weissman</a></li>
+          <li><a href="#s21"><span class="toc-num">21</span>Queue lourde sans formule fermée (Student)</a></li>
+          <li><a href="#s22"><span class="toc-num">22</span>Queue courte sans formule fermée (Beta)</a></li>
+          <li><a href="#s23"><span class="toc-num">23</span>Reconnaître le domaine à partir des conditions</a></li>
+          <li><a href="#s24"><span class="toc-num">24</span>Application numérique : Hill &amp; Weissman</a></li>
+          <li><a href="#s25"><span class="toc-num">25</span>Consistance de Hill sur une Pareto exacte</a></li>
         </ol>
       </div>
     </aside>
@@ -281,7 +295,7 @@ window.MathJax = {
         <p>Synthèse des deux premiers chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), puis comment estimer en pratique un quantile ou une probabilité bien au-delà des données observées.</p>
         <div class="meta">
           <span>📄 <b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
-          <span>📚 <b>21 fiches</b></span>
+          <span>📚 <b>25 fiches</b></span>
           <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -387,8 +401,20 @@ window.MathJax = {
 
             <div class="box box-thm">
               <p class="box-label">Cas $\gamma=0$ · Domaine de Gumbel (queue légère)</p>
-              <p>Le point terminal est infini. $\bar G_0(x)=1-\exp(-e^{-x})\approx e^{-x}$ quand $x\to+\infty$ : décroissance <b>exponentielle</b> : on dit que $F$ est à <b>queue légère</b>.</p>
+              <p>$\bar G_0(x)=1-\exp(-e^{-x})\approx e^{-x}$ quand $x\to+\infty$ : décroissance <b>exponentielle</b> : on dit que $F$ est à <b>queue légère</b>. Le point terminal $x_F$ peut être <b>fini ou infini</b> selon les lois (les exemples usuels : exponentielle, gaussienne, gamma, ont $x_F=+\infty$ ; le critère pratique de la fiche 6 pour ce cas ne couvre d'ailleurs que la situation $x_F=+\infty$).</p>
               <p class="sense"><b>Sens :</b> queue lourde (Fréchet) $\gg$ queue légère (Gumbel) $\gg$ queue courte (Weibull) : c'est cette hiérarchie qui gouverne le risque réel d'événements extrêmes.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Synthèse · Conditions d'application, en pratique</p>
+              <p>La première question à se poser face à une nouvelle loi $F$ : <b>$x_F$ est-il fini ou infini ?</b> Cela élimine déjà un des trois domaines.</p>
+              <table class="cmp">
+                <tr><th>Domaine</th><th>Signe de $\gamma$</th><th>Point terminal $x_F$</th><th>Décroissance de $\bar F$</th></tr>
+                <tr><td>Fréchet</td><td>$\gamma\gt0$</td><td><b>toujours</b> $+\infty$</td><td>polynomiale, $\propto x^{-1/\gamma}$</td></tr>
+                <tr><td>Weibull</td><td>$\gamma\lt0$</td><td><b>toujours</b> fini</td><td>polynomiale bornée, $\propto(x_F-x)^{-1/\gamma}$ près de $x_F$</td></tr>
+                <tr><td>Gumbel</td><td>$\gamma=0$</td><td>fini <b>ou</b> infini</td><td>exponentielle (ou plus rapide)</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> $x_F=+\infty$ élimine directement Weibull ; $x_F$ fini élimine directement Fréchet. Restent alors deux candidats (ou un seul) à distinguer via la vitesse de décroissance : critère sur la densité (fiche 6) ou calcul direct de $U(t)$ (fiche suivante et exercices).</p>
             </div>
           </article>
 
@@ -616,78 +642,165 @@ window.MathJax = {
             <p><b>Énoncé.</b> Soit $F(x)=1-x^{-1/\gamma}$, $x\gt1$, $\gamma\gt0$ (loi de Pareto standard).</p>
             <p>1. Trouver $a_n\gt0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge vers une GEV de paramètre de forme $\gamma$.<br>
             2. Même question pour $F(x)=1-(1+\gamma x/\sigma)^{-1/\gamma}$, $x\gt0$, $\sigma\gt0$ (loi de Pareto généralisée).</p>
+            <p class="sense"><b>Conditions :</b> $\gamma\gt0$ et $x_F=+\infty$ dans les deux cas $\Rightarrow$ on s'attend à un domaine de <b>Fréchet</b> (fiche 5).</p>
 
-            <div class="box box-thm">
-              <p class="box-label">Correction · 1. Loi de Pareto standard</p>
-              <p>De $y=1-x^{-1/\gamma}\iff x=(1-y)^{-\gamma}$, on tire $q(\alpha)=(1-\alpha)^{-\gamma}$, puis $U(t)=q(1-1/t)=t^\gamma$. On pose :</p>
-              <div class="formula">$$a_n=\gamma U(n)=\gamma n^\gamma, \qquad b_n=U(n)=n^\gamma$$</div>
-              <p><b>Vérification</b> :</p>
-              <div class="formula">$$\mathbb P\!\left(\frac{M_n-b_n}{a_n}\le x\right)=F^n(a_nx+b_n)=\Big[1-(\gamma n^\gamma x+n^\gamma)^{-1/\gamma}\Big]^n=\left[1-\frac{(\gamma x+1)^{-1/\gamma}}{n}\right]^n \xrightarrow[n\to\infty]{} \exp\!\big\{-(1+\gamma x)^{-1/\gamma}\big\}=G_\gamma(x)\ \checkmark$$</div>
-            </div>
-
-            <div class="box box-thm">
-              <p class="box-label">Correction · 2. Loi de Pareto généralisée</p>
-              <p>De $y=1-(1+\gamma x/\sigma)^{-1/\gamma}\iff x=\dfrac\sigma\gamma\big[(1-y)^{-\gamma}-1\big]$, on tire $q(\alpha)=\dfrac\sigma\gamma\big[(1-\alpha)^{-\gamma}-1\big]$, puis $U(t)=\dfrac\sigma\gamma(t^\gamma-1)$. On pose :</p>
-              <div class="formula">$$a_n=\gamma U(n)=\sigma(n^\gamma-1), \qquad b_n=U(n)=\frac\sigma\gamma(n^\gamma-1)$$</div>
-              <p class="sense"><b>Sens :</b> même démarche, même conclusion $G_\gamma$ : normal, la loi de Pareto généralisée <b>est</b> la loi limite des excès au-delà d'un seuil (Pickands-Balkema-de Haan, fiche 7) : il est cohérent qu'elle attire elle-même vers une GEV de même $\gamma$.</p>
-            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Question 1 · via $U(t)$</p>
+                <p>De $y=1-x^{-1/\gamma}\iff x=(1-y)^{-\gamma}$, on tire $q(\alpha)=(1-\alpha)^{-\gamma}$, puis $U(t)=q(1-1/t)=t^\gamma$. On pose :</p>
+                <div class="formula">$$a_n=\gamma U(n)=\gamma n^\gamma, \qquad b_n=U(n)=n^\gamma$$</div>
+                <p><b>Vérification</b> :</p>
+                <div class="formula">$$\mathbb P\!\left(\frac{M_n-b_n}{a_n}\le x\right)=F^n(a_nx+b_n)=\Big[1-(\gamma n^\gamma x+n^\gamma)^{-1/\gamma}\Big]^n=\left[1-\frac{(\gamma x+1)^{-1/\gamma}}{n}\right]^n \xrightarrow[n\to\infty]{} \exp\!\big\{-(1+\gamma x)^{-1/\gamma}\big\}=G_\gamma(x)\ \checkmark$$</div>
+                <p class="method-label">Vérification croisée · via la densité (fiche 6, critère 1)</p>
+                <p>$f(x)=\dfrac1\gamma x^{-1/\gamma-1}$. C'est exactement la forme $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=1/\gamma$, $c=1/\gamma$ $\Rightarrow$ $\gamma_{\text{critère}}=1/\alpha=\gamma$. $\checkmark$ Les deux méthodes s'accordent, comme elles le doivent toujours.</p>
+                <p class="method-label">Question 2 · Loi de Pareto généralisée</p>
+                <p>De $y=1-(1+\gamma x/\sigma)^{-1/\gamma}\iff x=\dfrac\sigma\gamma\big[(1-y)^{-\gamma}-1\big]$, on tire $q(\alpha)=\dfrac\sigma\gamma\big[(1-\alpha)^{-\gamma}-1\big]$, puis $U(t)=\dfrac\sigma\gamma(t^\gamma-1)$. On pose :</p>
+                <div class="formula">$$a_n=\gamma U(n)=\sigma(n^\gamma-1), \qquad b_n=U(n)=\frac\sigma\gamma(n^\gamma-1)$$</div>
+                <p class="sense"><b>Sens :</b> même démarche, même conclusion $G_\gamma$ : normal, la loi de Pareto généralisée <b>est</b> la loi limite des excès au-delà d'un seuil (Pickands-Balkema-de Haan, fiche 7) : il est cohérent qu'elle attire elle-même vers une GEV de même $\gamma$.</p>
+              </div>
+            </details>
           </article>
 
           <article class="topic" id="s19">
-            <div class="tophead"><span class="num">19</span><h2>Deux variantes de la loi de Gumbel</h2></div>
+            <div class="tophead"><span class="num">19</span><h2>Un maximum mobile en domaine de Fréchet</h2></div>
             <p><b>Énoncé.</b> Soit $F(x)=e^{-1/x}$, $x\gt0$.</p>
             <p>1. Trouver $a_n\ge0$, $b_n$ telles que $(M_n-b_n)/a_n$ converge vers $G_1$ ($\gamma=1$).<br>
             2. Soit $Y_i=\max(X_{i-1},X_i)/2$ pour $i=2,\dots,n$. Montrer que $Y_i\sim F$, puis que $\big(\max_{2\le i\le n}Y_i-b_n\big)/a_n$ converge encore vers une GEV : déterminer $\gamma$ et discuter les constantes.</p>
+            <p class="sense"><b>Conditions :</b> attention au piège du nom : $F(x)=e^{-1/x}$ est la loi de <b>Fréchet</b> standard ($\gamma=1\gt0$, $x_F=+\infty$), <b>pas</b> une loi de Gumbel — $\gamma=1\ne0$. On ne parle de « domaine de Gumbel » que lorsque $\gamma=0$ (fiche 5) ; ici $G_1$ désigne simplement la GEV évaluée en $\gamma=1$.</p>
 
-            <div class="box box-thm">
-              <p class="box-label">Correction · 1. Le maximum des $X_i$</p>
-              <p>De $y=e^{-1/x}\iff x=-1/\log(y)$, on tire $q(\alpha)=-1/\log(\alpha)$, puis $U(t)=-1/\log(1-1/t)$. Avec $\gamma=1$ :</p>
-              <div class="formula">$$a_n=b_n=U(n)=\frac{-1}{\log(1-1/n)}$$</div>
-              <p><b>Vérification</b> : $\mathbb P\big((M_n-b_n)/a_n\le x\big)=\exp\{-n/(a_nx+b_n)\}=\exp\Big\{\dfrac{n\log(1-1/n)}{x+1}\Big\} \to \exp\{-(x+1)^{-1}\}=G_1(x)$, car $n\log(1-1/n)\to-1$. $\checkmark$</p>
-            </div>
-
-            <div class="box box-thm">
-              <p class="box-label">Correction · 2. Un maximum mobile (dépendant)</p>
-              <p><b>$Y_i\sim F$</b> : $\mathbb P(Y_i\le y)=\mathbb P\big(\max(X_{i-1},X_i)\le 2y\big)=F(2y)^2=\big(e^{-1/(2y)}\big)^2=e^{-1/y}=F(y)$. Même loi marginale que les $X_i$ : mais $Y_i$ et $Y_{i+1}$ partagent $X_i$ : ce ne sont <b>pas</b> des variables indépendantes.</p>
-              <p>On calcule directement, en notant que les contraintes $\max(X_{i-1},X_i)\le 2z$ pour $i=2,\dots,n$ se recouvrent exactement en « tous les $X_i\le 2z$ » :</p>
-              <div class="formula">$$\mathbb P\Big(\max_{2\le i\le n}Y_i\le z\Big)=\mathbb P(X_1\le2z,\dots,X_n\le2z)=F(2z)^n=e^{-n/(2z)}$$</div>
-              <p>En reprenant $z=a_nx+b_n$ avec les <b>mêmes</b> $a_n=b_n=U(n)\sim n$ (car $n/U(n)\to1$) :</p>
-              <div class="formula">$$e^{-n/(2U(n)(x+1))} \xrightarrow[n\to\infty]{} \exp\!\left\{-\frac1{2(x+1)}\right\} = \exp\{-(2x+2)^{-1}\} = G_1(2x+1)$$</div>
-              <p class="sense"><b>Sens :</b> même $\gamma=1$ qu'à la question 1 : la dépendance d'ordre 1 entre les $Y_i$ ne change <b>pas</b> l'indice des valeurs extrêmes. Elle se traduit seulement par un facteur $2$ sur la constante d'échelle effective ($a_n/2$ au lieu de $a_n$ pour retrouver la forme standard $G_1(x)$) : les $\max Y_i$ « voient » deux fois moins d'observations indépendantes que les $\max X_i$, ce qui est exactement ce que mesure l'indice extrémal en théorie des séries dépendantes.</p>
-            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Question 1 · via $U(t)$</p>
+                <p>De $y=e^{-1/x}\iff x=-1/\log(y)$, on tire $q(\alpha)=-1/\log(\alpha)$, puis $U(t)=-1/\log(1-1/t)$. Avec $\gamma=1$ :</p>
+                <div class="formula">$$a_n=b_n=U(n)=\frac{-1}{\log(1-1/n)}$$</div>
+                <p><b>Vérification</b> : $\mathbb P\big((M_n-b_n)/a_n\le x\big)=\exp\{-n/(a_nx+b_n)\}=\exp\Big\{\dfrac{n\log(1-1/n)}{x+1}\Big\} \to \exp\{-(x+1)^{-1}\}=G_1(x)$, car $n\log(1-1/n)\to-1$. $\checkmark$</p>
+                <p class="method-label">Vérification croisée · via la densité (fiche 6, critère 1)</p>
+                <p>$f(x)=x^{-2}e^{-1/x}$. Quand $x\to\infty$, $e^{-1/x}\to1$, donc $f(x)\sim x^{-2}=x^{-1-1}$ : c'est $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=1$, $c=1$ $\Rightarrow$ $\gamma=1/\alpha=1$. $\checkmark$ Confirme le domaine de Fréchet avec $\gamma=1$, sans passer par $U(t)$.</p>
+                <p class="method-label">Question 2 · Un maximum mobile (dépendant)</p>
+                <p><b>$Y_i\sim F$</b> : $\mathbb P(Y_i\le y)=\mathbb P\big(\max(X_{i-1},X_i)\le 2y\big)=F(2y)^2=\big(e^{-1/(2y)}\big)^2=e^{-1/y}=F(y)$. Même loi marginale que les $X_i$ : mais $Y_i$ et $Y_{i+1}$ partagent $X_i$ : ce ne sont <b>pas</b> des variables indépendantes.</p>
+                <p>On calcule directement, en notant que les contraintes $\max(X_{i-1},X_i)\le 2z$ pour $i=2,\dots,n$ se recouvrent exactement en « tous les $X_i\le 2z$ » :</p>
+                <div class="formula">$$\mathbb P\Big(\max_{2\le i\le n}Y_i\le z\Big)=\mathbb P(X_1\le2z,\dots,X_n\le2z)=F(2z)^n=e^{-n/(2z)}$$</div>
+                <p>En reprenant $z=a_nx+b_n$ avec les <b>mêmes</b> $a_n=b_n=U(n)\sim n$ (car $n/U(n)\to1$) :</p>
+                <div class="formula">$$e^{-n/(2U(n)(x+1))} \xrightarrow[n\to\infty]{} \exp\!\left\{-\frac1{2(x+1)}\right\} = \exp\{-(2x+2)^{-1}\} = G_1(2x+1)$$</div>
+                <p class="sense"><b>Sens :</b> même $\gamma=1$ qu'à la question 1 : la dépendance d'ordre 1 entre les $Y_i$ ne change <b>pas</b> l'indice des valeurs extrêmes. Elle se traduit seulement par un facteur $2$ sur la constante d'échelle effective ($a_n/2$ au lieu de $a_n$ pour retrouver la forme standard $G_1(x)$) : les $\max Y_i$ « voient » deux fois moins d'observations indépendantes que les $\max X_i$, ce qui est exactement ce que mesure l'indice extrémal en théorie des séries dépendantes.</p>
+              </div>
+            </details>
           </article>
 
           <article class="topic" id="s20">
             <div class="tophead"><span class="num">20</span><h2>Le paramètre de second ordre sur un exemple explicite (loi de Burr)</h2></div>
-            <p><b>Énoncé.</b> Soit $F(x)=1-\big(1+x^{-\rho/\gamma}\big)^{1/\rho}$, $x\gt0$, avec $\gamma\gt0$ et $\rho\lt0$ (loi de Burr). Sans calculer $a_n,b_n$ explicitement, montrer directement que $U(tx)/U(t)\to x^\gamma$ quand $t\to\infty$ : c'est-à-dire que $F$ appartient bien au domaine d'attraction de Fréchet, d'indice $\gamma$.</p>
+            <p><b>Énoncé.</b> Soit $F(x)=1-\big(1+x^{-\rho/\gamma}\big)^{1/\rho}$, $x\gt0$, avec $\gamma\gt0$ et $\rho\lt0$ (loi de Burr). Montrer que $F$ appartient au domaine d'attraction de Fréchet, d'indice $\gamma$ : (a) directement via $U(t)$, sans calculer $a_n,b_n$ ; (b) via la densité.</p>
+            <p class="sense"><b>Conditions :</b> $\gamma\gt0$, $x_F=+\infty$ (car $(1+x^{-\rho/\gamma})^{1/\rho}\to0$ seulement quand $x\to\infty$, jamais pour $x$ fini) $\Rightarrow$ Fréchet.</p>
 
-            <div class="box box-thm">
-              <p class="box-label">Correction</p>
-              <p>On inverse $F$ pour obtenir $q$ : de $y=1-(1+x^{-\rho/\gamma})^{1/\rho} \iff (1-y)^\rho=1+x^{-\rho/\gamma} \iff x^{-\rho/\gamma}=(1-y)^\rho-1$, on tire :</p>
-              <div class="formula">$$q(\alpha)=\big[(1-\alpha)^\rho-1\big]^{-\gamma/\rho}, \qquad U(t)=q(1-1/t)=\big[t^{-\rho}-1\big]^{-\gamma/\rho}$$</div>
-              <p>Comme $\rho\lt0$, on a $-\rho\gt0$ donc $t^{-\rho}\to\infty$ quand $t\to\infty$, d'où $U(t)\underset{t\to\infty}\sim \big(t^{-\rho}\big)^{-\gamma/\rho}=t^{(-\rho)\times(-\gamma/\rho)}=t^\gamma$. Par conséquent :</p>
-              <div class="formula">$$\frac{U(tx)}{U(t)} \xrightarrow[t\to\infty]{} \frac{(tx)^\gamma}{t^\gamma}=x^\gamma, \qquad \forall x\gt0 \quad\checkmark$$</div>
-              <p class="sense"><b>Sens :</b> cet exercice illustre exactement le rôle du paramètre $\rho$ introduit à la fiche 13 : la loi de Burr est l'exemple canonique vérifiant la condition du second ordre $\mathcal C_2(\gamma,\rho,A)$ pour un $\rho$ arbitrairement fixé, ce qui en fait un excellent banc d'essai pour étudier (par simulation) la vitesse de convergence des estimateurs de Hill et de Weissman en fonction de $\rho$.</p>
-            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Méthode (a) · via $U(t)$</p>
+                <p>On inverse $F$ pour obtenir $q$ : de $y=1-(1+x^{-\rho/\gamma})^{1/\rho} \iff (1-y)^\rho=1+x^{-\rho/\gamma} \iff x^{-\rho/\gamma}=(1-y)^\rho-1$, on tire :</p>
+                <div class="formula">$$q(\alpha)=\big[(1-\alpha)^\rho-1\big]^{-\gamma/\rho}, \qquad U(t)=q(1-1/t)=\big[t^{-\rho}-1\big]^{-\gamma/\rho}$$</div>
+                <p>Comme $\rho\lt0$, on a $-\rho\gt0$ donc $t^{-\rho}\to\infty$ quand $t\to\infty$, d'où $U(t)\underset{t\to\infty}\sim \big(t^{-\rho}\big)^{-\gamma/\rho}=t^{(-\rho)\times(-\gamma/\rho)}=t^\gamma$. Par conséquent :</p>
+                <div class="formula">$$\frac{U(tx)}{U(t)} \xrightarrow[t\to\infty]{} \frac{(tx)^\gamma}{t^\gamma}=x^\gamma, \qquad \forall x\gt0 \quad\checkmark$$</div>
+                <p class="method-label">Méthode (b) · via la densité</p>
+                <p>$\bar F(x)=(1+x^{-\rho/\gamma})^{1/\rho}$. En dérivant, $f(x)=-\dfrac1\gamma x^{-\rho/\gamma-1}(1+x^{-\rho/\gamma})^{1/\rho-1}$. Quand $x\to\infty$, $x^{-\rho/\gamma}\to0$ (car $-\rho/\gamma\lt0$), donc $(1+x^{-\rho/\gamma})^{1/\rho-1}\to1$ et $f(x)\sim\dfrac1\gamma x^{-\rho/\gamma-1}=\dfrac1\gamma x^{-1/\gamma-1}$ : c'est $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=1/\gamma$ $\Rightarrow$ même conclusion $\gamma$. $\checkmark$</p>
+                <p class="sense"><b>Sens :</b> les deux méthodes donnent le <b>même</b> $\gamma$, mais seule la méthode (a) via $U(t)$ voit apparaître le paramètre $\rho$ (la densité, elle, ne renseigne qu'à l'ordre dominant). C'est exactement le rôle du paramètre $\rho$ introduit à la fiche 13 : la loi de Burr est l'exemple canonique vérifiant la condition du second ordre $\mathcal C_2(\gamma,\rho,A)$ pour un $\rho$ arbitrairement fixé, ce qui en fait un excellent banc d'essai pour étudier (par simulation) la vitesse de convergence des estimateurs de Hill et de Weissman en fonction de $\rho$.</p>
+              </div>
+            </details>
           </article>
 
           <article class="topic" id="s21">
-            <div class="tophead"><span class="num">21</span><h2>Application numérique : Hill &amp; Weissman sur un petit échantillon</h2></div>
+            <div class="tophead"><span class="num">21</span><h2>Queue lourde sans formule fermée : la loi de Student</h2></div>
+            <p><b>Énoncé.</b> Soit $X\sim\mathrm{Student}(d)$, $d\gt0$, de densité $f_X(x)=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}\big(1+\frac{x^2}d\big)^{-\frac{d+1}2}$. Déterminer le domaine d'attraction de $X$ et son indice $\gamma$, par toutes les méthodes possibles.</p>
+            <p class="sense"><b>Conditions :</b> $x_F=+\infty$ (support $\mathbb R$ tout entier), densité symétrique décroissant en puissance de $x$ : on s'attend à Fréchet.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Méthode 1 · via la densité (praticable)</p>
+                <p>Quand $x\to\infty$, $\big(1+\frac{x^2}d\big)^{-\frac{d+1}2}\sim\big(\frac{x^2}d\big)^{-\frac{d+1}2}=d^{\frac{d+1}2}x^{-(d+1)}$, donc $f(x)\sim C_d\,x^{-d-1}$ avec $C_d=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}d^{\frac{d+1}2}$. C'est $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=d$ $\Rightarrow$ <b>queue lourde</b>, $\gamma=1/d$.</p>
+                <p class="method-label">Méthode 2 · via $U(t)$ (en principe, mais infaisable ici en formule fermée)</p>
+                <p>Il faudrait inverser $F$, la fonction de répartition de Student : $F$ ne s'exprime qu'à l'aide de la fonction Beta incomplète, et son inverse $q(\alpha)$ n'a <b>pas d'expression explicite</b> pour $d$ général (sauf cas particuliers comme $d=1$, Cauchy). On peut seulement écrire formellement $U(t)=q(1-1/t)$ et invoquer un théorème de Karamata reliant le comportement de $f$ à celui de $U$ via $U(tx)/U(t)\to x^\gamma$, mais <b>aucun calcul direct de $U(t)$</b> n'est possible à la main.</p>
+                <p class="sense"><b>Sens :</b> c'est un point méthodologique important : la méthode « densité » (fiche 6) est un <b>raccourci pratique</b> précisément pour les cas — très fréquents — où $F$ (et donc $U=q$) n'a pas de forme explicite, mais où $f$, elle, en a une. On ne recourt au calcul direct de $U(t)$ que lorsque $F$ s'inverse facilement (Pareto, Burr, exponentielle…).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s22">
+            <div class="tophead"><span class="num">22</span><h2>Queue courte sans formule fermée : la loi Beta</h2></div>
+            <p><b>Énoncé.</b> Soit $X\sim\mathrm{Beta}(a,b)$, $a,b\gt0$, de densité $f(x)=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{a-1}(1-x)^{b-1}$ sur $(0,1)$. Déterminer le domaine d'attraction et $\gamma$, par toutes les méthodes possibles.</p>
+            <p class="sense"><b>Conditions :</b> $x_F=1\lt\infty$ (support borné) $\Rightarrow$ on s'attend à Weibull ($\gamma\lt0$), <b>jamais</b> à Fréchet ici (fiche 5 : Fréchet exige $x_F=+\infty$).</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Méthode 1 · via la densité (praticable)</p>
+                <p>Quand $x\to x_F=1$, $x^{a-1}\to1$, donc $f(x)\underset{x\to1}\sim C_{a,b}(1-x)^{b-1}$ avec $C_{a,b}=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$. C'est $f(x)\sim c\,(x_F-x)^{\alpha-1}$ avec $\alpha=b$ $\Rightarrow$ <b>queue courte</b>, $\gamma=-1/b$.</p>
+                <p class="method-label">Méthode 2 · via $U(t)$ (infaisable en formule fermée)</p>
+                <p>Comme pour Student, $F$ (fonction Beta incomplète régularisée) et son inverse $q$ n'ont pas d'expression explicite pour $a,b$ généraux. On ne peut donc pas calculer $U(t)$ à la main ; seule la méthode densité est praticable ici.</p>
+                <p class="sense"><b>Sens :</b> même leçon qu'à la fiche précédente, du côté « queue courte » cette fois : dès que $x_F\lt\infty$, la méthode densité (critère 2) est en général la seule accessible sans logiciel — elle ne demande qu'un développement limité de $f$ au voisinage de $x_F$, alors que $U(t)$ demanderait d'inverser $F$ tout entière.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s23">
+            <div class="tophead"><span class="num">23</span><h2>Reconnaître le domaine à partir des seules conditions</h2></div>
+            <p><b>Énoncé.</b> Pour chacune des situations suivantes, dire (sans calcul, seulement à partir des conditions de la fiche 5) quel domaine d'attraction est possible, lequel est exclu, et pourquoi :</p>
+            <p>1. $x_F=+\infty$ et $\bar F(x)\sim c\,x^{-3}$ quand $x\to\infty$.<br>
+            2. $x_F=12$ (fini) et $f(x)\sim c\,(12-x)^{4}$ quand $x\to12$.<br>
+            3. $x_F=+\infty$ et $\bar F(x)\sim c\,e^{-x^2}$ quand $x\to\infty$.<br>
+            4. $x_F=+\infty$ et $\bar F(x)\sim c\,x^{-1/2}\log(x)$ quand $x\to\infty$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>1.</b> $x_F=+\infty$ <span class="cond-yes">élimine Weibull</span> (Weibull exige $x_F$ fini). Décroissance polynomiale $\Rightarrow$ <b>Fréchet</b>, avec $\bar F(x)\sim c\,x^{-1/\gamma}\Rightarrow 1/\gamma=3\Rightarrow\gamma=1/3$.</p>
+                <p><b>2.</b> $x_F$ fini <span class="cond-yes">élimine Fréchet</span> (Fréchet exige $x_F=+\infty$) <b>et élimine Gumbel dans ce cas précis</b> (la décroissance polynomiale, pas exponentielle, écarte Gumbel) $\Rightarrow$ <b>Weibull</b>, $\alpha-1=4\Rightarrow\alpha=5\Rightarrow\gamma=-1/5$.</p>
+                <p><b>3.</b> $x_F=+\infty$ <span class="cond-yes">élimine Weibull</span>. Décroissance <b>plus rapide</b> qu'exponentielle ($e^{-x^2}$, pas $e^{-x}$) $\Rightarrow$ toujours <b>Gumbel</b>, $\gamma=0$ (le critère 3 de la fiche 6 autorise justement $f(x)\sim c\,x^\varphi\exp\{-P(x)\}$ pour <i>tout</i> polynôme $P$ de degré $\ge1$, pas seulement $P(x)=x$).</p>
+                <p><b>4.</b> <b>Piège</b> : $x^{-1/2}\log(x)$ n'est <span class="cond-no">ni</span> de la forme $x^{-\alpha-1}$ (décroissance trop lente, le $\log$ ne correspond à aucun $\alpha$ constant) <span class="cond-no">ni</span> de la forme $x^\varphi e^{-P(x)}$. En toute rigueur, ceci sort du cadre des trois critères <b>simples</b> de la fiche 6 : il faudrait vérifier directement la condition de variation régulière $U(tx)/U(t)\to x^\gamma$, ou remarquer que $x^{-1/2}\log(x)$ est quand même à <b>variation régulière</b> d'indice $-1/2$ (le $\log$ est à variation lente, il ne compte pas dans l'exposant) $\Rightarrow$ <b>Fréchet</b>, $\gamma=2$.</p>
+                <p class="sense"><b>Sens :</b> le cas 4 montre les limites des critères « recette » de la fiche 6 : ils suffisent pour l'immense majorité des lois usuelles, mais la définition rigoureuse repose sur la <b>variation régulière</b> de $\bar F$ (ou de $U$), un concept plus général que ces trois cas particuliers.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s24">
+            <div class="tophead"><span class="num">24</span><h2>Application numérique : Hill &amp; Weissman sur un petit échantillon</h2></div>
             <p><b>Énoncé.</b> On observe un échantillon trié de $n=10$ valeurs (unité arbitraire) : $x_{(1)},\dots,x_{(10)} = 1,\,2,\,3,\,4,\,5,\,7,\,10,\,15,\,25,\,50$. On suppose la loi sous-jacente à queue lourde et on choisit $K=4$ (les 4 plus grandes valeurs).</p>
             <p>1. Calculer l'estimateur de Hill $\hat\gamma^H$.<br>
             2. En déduire une estimation du quantile extrême $q(0{,}99)$ par la méthode de Weissman.</p>
 
-            <div class="box box-thm">
-              <p class="box-label">Correction · 1. Estimateur de Hill</p>
-              <p>Les 4 plus grandes valeurs sont $X_{7,10}=10$, $X_{8,10}=15$, $X_{9,10}=25$, $X_{10,10}=50$ ; le seuil est $X_{n-K,n}=X_{6,10}=7$.</p>
-              <div class="formula">$$\hat\gamma^H=\frac14\left[\log\frac{50}{7}+\log\frac{25}{7}+\log\frac{15}{7}+\log\frac{10}{7}\right]=\frac14\log\frac{50\times25\times15\times10}{7^4}=\frac14\log\frac{187500}{2401}\approx\frac{4{,}358}{4}\approx1{,}09$$</div>
-            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Question 1 · Estimateur de Hill</p>
+                <p>Les 4 plus grandes valeurs sont $X_{7,10}=10$, $X_{8,10}=15$, $X_{9,10}=25$, $X_{10,10}=50$ ; le seuil est $X_{n-K,n}=X_{6,10}=7$.</p>
+                <div class="formula">$$\hat\gamma^H=\frac14\left[\log\frac{50}{7}+\log\frac{25}{7}+\log\frac{15}{7}+\log\frac{10}{7}\right]=\frac14\log\frac{50\times25\times15\times10}{7^4}=\frac14\log\frac{187500}{2401}\approx\frac{4{,}358}{4}\approx1{,}09$$</div>
+                <p class="method-label">Question 2 · Estimateur de Weissman</p>
+                <div class="formula">$$\hat q(0{,}99)=\left(\frac{n(1-\beta)}{K}\right)^{-\hat\gamma^H} X_{n-K,n} = \left(\frac{10\times0{,}01}{4}\right)^{-1{,}09}\times7 = (0{,}025)^{-1{,}09}\times7 \approx 55{,}6\times7 \approx 389$$</div>
+                <p class="method-label">Remarque · Une méthode alternative (conceptuelle)</p>
+                <p>On aurait pu, au lieu de Hill + Weissman, ajuster directement une loi de Pareto généralisée (GPD) par maximum de vraisemblance sur les excès au-delà du seuil $X_{6,10}=7$ (approche POT, fiche 7-8) : $\{10,15,25,50\}-7=\{3,8,18,43\}$. Sur un échantillon aussi petit ($K=4$), l'estimation par MV de la GPD n'a pas de forme close et demanderait une optimisation numérique — mais elle est asymptotiquement équivalente à Hill + Weissman.</p>
+                <p class="sense"><b>Sens :</b> sur seulement 10 observations, dont la plus grande vaut 50, on extrapole un quantile estimé à <b>389</b> : plus de 7 fois la plus grande valeur observée. C'est toute la puissance (et le risque) de l'extrapolation en queue lourde : le résultat dépend fortement de l'hypothèse de queue lourde et de la précision de $\hat\gamma^H$, à interpréter avec la prudence qu'impose un $K=4$ aussi petit.</p>
+              </div>
+            </details>
+          </article>
 
-            <div class="box box-thm">
-              <p class="box-label">Correction · 2. Estimateur de Weissman</p>
-              <div class="formula">$$\hat q(0{,}99)=\left(\frac{n(1-\beta)}{K}\right)^{-\hat\gamma^H} X_{n-K,n} = \left(\frac{10\times0{,}01}{4}\right)^{-1{,}09}\times7 = (0{,}025)^{-1{,}09}\times7 \approx 55{,}6\times7 \approx 389$$</div>
-              <p class="sense"><b>Sens :</b> sur seulement 10 observations, dont la plus grande vaut 50, on extrapole un quantile estimé à <b>389</b> : plus de 7 fois la plus grande valeur observée. C'est toute la puissance (et le risque) de l'extrapolation en queue lourde : le résultat dépend fortement de l'hypothèse de queue lourde et de la précision de $\hat\gamma^H$, à interpréter avec la prudence qu'impose un $K=4$ aussi petit.</p>
-            </div>
+          <article class="topic" id="s25">
+            <div class="tophead"><span class="num">25</span><h2>Consistance de l'estimateur de Hill sur une Pareto exacte</h2></div>
+            <p><b>Énoncé.</b> On suppose que $X_1,\dots,X_n\overset{\text{i.i.d.}}\sim\mathrm{Pareto}(\gamma)$ <b>exactement</b> (et non seulement dans le domaine d'attraction de Fréchet). Montrer que, quel que soit $K\le n-1$ fixé, $\mathbb E[\hat\gamma^H]=\gamma$ : l'estimateur de Hill est <b>exactement</b> sans biais dans ce cas particulier.</p>
+            <p class="sense"><b>Conditions :</b> ceci n'est vrai que pour une Pareto <b>exacte</b> ; dans le cadre général du domaine d'attraction (fiche 14), $\hat\gamma^H$ n'est que consistant et asymptotiquement normal, pas exactement sans biais à $n$ fini.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Propriété clé de la loi de Pareto (« absence de mémoire » multiplicative) : si $X\sim\mathrm{Pareto}(\gamma)$ sur $(x_0,\infty)$, alors pour tout $t\ge x_0$, $(X/t \mid X\gt t)\sim\mathrm{Pareto}(\gamma)$ <i>sur $(1,\infty)$</i>, indépendamment de $t$ — conséquence immédiate de $\bar F(tx)/\bar F(t)=x^{-1/\gamma}$ pour la Pareto <b>exacte</b> (égalité, pas seulement une limite quand $t\to\infty$ comme pour un $F$ général du domaine d'attraction).</p>
+                <p>Conditionnellement à $X_{n-K,n}=t$, les excès normalisés $X_{n-i+1,n}/t$ pour $i=1,\dots,K$ ont donc la loi des statistiques d'ordre de $K$ Pareto$(\gamma)$ i.i.d. sur $(1,\infty)$, et :</p>
+                <div class="formula">$$\hat\gamma^H=\frac1K\sum_{i=1}^K\log\!\left(\frac{X_{n-i+1,n}}{X_{n-K,n}}\right)$$</div>
+                <p>est la moyenne de $K$ variables $\log(X_{n-i+1,n}/t)$, chacune de loi $\mathrm{Exp}(1/\gamma)$ (car si $Z\sim\mathrm{Pareto}(\gamma)$ sur $(1,\infty)$, $\log Z\sim\mathrm{Exp}(1/\gamma)$, d'espérance $\gamma$ : c'est exactement le calcul de la fiche 14, méthode 1). Par linéarité de l'espérance, conditionnellement à $X_{n-K,n}$ :</p>
+                <div class="formula">$$\mathbb E\big[\hat\gamma^H \mid X_{n-K,n}\big]=\frac1K\sum_{i=1}^K\gamma=\gamma$$</div>
+                <p>indépendamment de la valeur de $X_{n-K,n}$, donc $\mathbb E[\hat\gamma^H]=\mathbb E\big[\mathbb E[\hat\gamma^H\mid X_{n-K,n}]\big]=\gamma$. $\checkmark$</p>
+                <p class="sense"><b>Sens :</b> ce résultat exact (sans biais à $n$ fini, pour <b>tout</b> $K$) est spécifique à la Pareto exacte, grâce à sa propriété d'absence de mémoire multiplicative. Dans le cas général (fiche 13-14), seule la normalité <b>asymptotique</b> est garantie, avec un biais d'ordre $O(A(n/K))$ qui s'annule seulement à la limite : c'est précisément ce qu'encode le terme $\lambda/(1-\rho)$ du théorème 2.1.2.</p>
+              </div>
+            </details>
           </article>
 
         </div>
