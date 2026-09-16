@@ -465,12 +465,16 @@ window.MathJax = {
             <details class="solution">
               <summary>Voir le calcul détaillé</summary>
               <div class="box box-thm">
-                <p>Point terminal : le support est $\mathbb R$ tout entier, donc $x_F=+\infty$. On étudie $f_X(x)$ quand $x\to+\infty$. Notons $C_d:=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}$ (la constante ne dépend pas de $x$). Quand $x\to\infty$, le terme $\frac{x^2}d$ domine le « $1+$ » :</p>
+                <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
+                <p>Le support de Student$(d)$ est $\mathbb R$ tout entier, donc $x_F=+\infty$. D'après la table de synthèse de la <b>fiche 5</b>, $x_F=+\infty$ élimine directement <b>Weibull</b> (qui exige $x_F$ fini) : il reste à distinguer <b>Fréchet</b> ($\gamma\gt0$, décroissance polynomiale) de <b>Gumbel</b> ($\gamma=0$, décroissance exponentielle) via le comportement de $f$.</p>
+                <p class="method-label">Calcul (critère 1 de cette fiche)</p>
+                <p>Notons $C_d:=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}$ (constante indépendante de $x$). Quand $x\to\infty$, le terme $\frac{x^2}d$ domine le « $1+$ » :</p>
                 <div class="formula">$$1+\frac{x^2}d \underset{x\to\infty}\sim \frac{x^2}{d}$$</div>
                 <p>d'où, en élevant à la puissance $-\frac{d+1}2$ (une fonction continue et strictement décroissante, donc l'équivalent se conserve) :</p>
                 <div class="formula">$$\Big(1+\frac{x^2}d\Big)^{-\frac{d+1}2} \underset{x\to\infty}\sim \left(\frac{x^2}d\right)^{-\frac{d+1}2} = d^{\frac{d+1}2}\,x^{-(d+1)}$$</div>
-                <p>Donc $f_X(x)\underset{x\to\infty}\sim \underbrace{C_d\,d^{\frac{d+1}2}}_{=:c}\,x^{-(d+1)} = c\,x^{-d-1}$. On identifie au <b>critère 1</b> avec $\alpha=d$ :</p>
+                <p>Donc $f_X(x)\underset{x\to\infty}\sim \underbrace{C_d\,d^{\frac{d+1}2}}_{=:c}\,x^{-(d+1)} = c\,x^{-d-1}$ : c'est bien une décroissance <b>polynomiale</b> (confirme Fréchet, pas Gumbel). On identifie au <b>critère 1</b> avec $\alpha=d$ :</p>
                 <div class="formula">$$\boxed{\gamma=\frac1\alpha=\frac1d} \qquad \text{(queue lourde, domaine de Fréchet)}$$</div>
+                <p class="sense"><b>Sens :</b> plus $d$ est petit, plus $\gamma$ est grand : une Student à peu de degrés de liberté (queue très lourde) est « proche » d'une Cauchy ($d=1$, $\gamma=1$) ; quand $d\to\infty$, $\gamma\to0$ et la Student converge vers la loi Gaussienne (Gumbel, exemple 1.3.3) : cohérence attendue avec le théorème 1.2.1 (fiche 4), qui garantit que <b>chaque</b> loi non pathologique tombe dans exactement un domaine.</p>
               </div>
             </details>
 
@@ -482,10 +486,14 @@ window.MathJax = {
             <details class="solution">
               <summary>Voir le calcul détaillé</summary>
               <div class="box box-thm">
-                <p>Point terminal : le support est $(0,1)$, donc $x_F=1\lt\infty$ : on étudie $f(x)$ quand $x\to1^-$. Notons $C_{a,b}:=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$. Quand $x\to1$, le facteur $x^{a-1}\to1^{a-1}=1$, donc :</p>
+                <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
+                <p>Le support de Beta$(a,b)$ est $(0,1)$, donc $x_F=1\lt\infty$. D'après la <b>fiche 5</b>, $x_F$ fini élimine directement <b>Fréchet</b> : il reste <b>Weibull</b> ($\gamma\lt0$) ou, en principe, <b>Gumbel avec $x_F$ fini</b> (fiche 5 le permet en théorie) : le calcul tranchera.</p>
+                <p class="method-label">Calcul (critère 2 de cette fiche)</p>
+                <p>Notons $C_{a,b}:=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$. Quand $x\to1$, le facteur $x^{a-1}\to1^{a-1}=1$, donc :</p>
                 <div class="formula">$$f(x)=C_{a,b}\underbrace{x^{a-1}}_{\to\,1}(1-x)^{b-1} \underset{x\to1}\sim C_{a,b}\,(1-x)^{b-1}$$</div>
-                <p>On identifie au <b>critère 2</b> avec $x_F=1$, $\beta=b$, $c=C_{a,b}$ :</p>
+                <p>Décroissance <b>polynomiale bornée</b> en $(1-x)^{b-1}$ : confirme Weibull, pas Gumbel. On identifie au <b>critère 2</b> avec $x_F=1$, $\beta=b$, $c=C_{a,b}$ :</p>
                 <div class="formula">$$\boxed{\gamma=-\frac1\beta=-\frac1b} \qquad \text{(queue courte, domaine de Weibull)}$$</div>
+                <p class="sense"><b>Sens :</b> $a$ n'intervient <b>pas</b> dans $\gamma$ (seulement dans la constante $C_{a,b}$, sans effet sur la forme, cf. le piège de la fiche 3) : seul $b$, qui gouverne le comportement <b>au bord droit</b> $x_F=1$, compte. Le paramètre $a$ gouverne le bord <b>gauche</b> ($x=0$), hors-sujet pour le maximum.</p>
               </div>
             </details>
 
@@ -497,11 +505,84 @@ window.MathJax = {
             <details class="solution">
               <summary>Voir le calcul détaillé</summary>
               <div class="box box-thm">
-                <p>Point terminal : le support est $\mathbb R$, donc $x_F=+\infty$. On écrit directement, sans même passer par un équivalent (l'égalité est <b>exacte</b>, pas seulement asymptotique) :</p>
+                <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
+                <p>Le support est $\mathbb R$, donc $x_F=+\infty$ : comme pour Student, la <b>fiche 5</b> élimine Weibull, et il reste Fréchet vs Gumbel à trancher par le calcul.</p>
+                <p class="method-label">Calcul (critère 3 de cette fiche)</p>
+                <p>On écrit directement, sans même passer par un équivalent (l'égalité est <b>exacte</b>, pas seulement asymptotique) :</p>
                 <div class="formula">$$f(x) = \underbrace{\frac1{\sqrt{2\pi\sigma^2}}}_{=c}\ \times\ \underbrace{x^0}_{x^\varphi,\ \varphi=0}\ \times\ \exp\{-\underbrace{\textstyle\frac{(x-\mu)^2}{2\sigma^2}}_{=:P(x)}\}$$</div>
-                <p>$P(x)=\frac{(x-\mu)^2}{2\sigma^2}=\frac1{2\sigma^2}x^2-\frac\mu{\sigma^2}x+\frac{\mu^2}{2\sigma^2}$ est bien un polynôme de degré $2\ge1$, de coefficient dominant $\frac1{2\sigma^2}\gt0$. On identifie au <b>critère 3</b>, avec $\varphi=0$ (autorisé, cf. remarque de la fiche précédente) :</p>
+                <p>$P(x)=\frac{(x-\mu)^2}{2\sigma^2}=\frac1{2\sigma^2}x^2-\frac\mu{\sigma^2}x+\frac{\mu^2}{2\sigma^2}$ est bien un polynôme de degré $2\ge1$, de coefficient dominant $\frac1{2\sigma^2}\gt0$ : décroissance <b>plus rapide</b> qu'exponentielle simple (confirme Gumbel, pas Fréchet). On identifie au <b>critère 3</b>, avec $\varphi=0$ (autorisé, cf. remarque ci-dessus) :</p>
                 <div class="formula">$$\boxed{\gamma=0} \qquad \text{(queue légère, domaine de Gumbel)}$$</div>
-                <p class="sense"><b>Sens :</b> ces trois exemples couvrent exactement les trois régimes : c'est le premier réflexe à avoir face à une nouvelle loi : regarder le comportement de $f$ au voisinage du point terminal, puis identifier l'exposant pertinent (jamais la constante). (Justification rigoureuse pour la loi Gaussienne : exemple 1.1.7 de de Haan &amp; Ferreira (2006).)</p>
+                <p class="sense"><b>Sens :</b> ces trois exemples couvrent exactement les trois régimes : c'est le premier réflexe à avoir face à une nouvelle loi : (1) $x_F$ fini ou infini ? (fiche 5, élimine un domaine) ; (2) comportement de $f$ au voisinage du point terminal (cette fiche, tranche entre les deux restants) ; (3) identifier l'exposant pertinent, jamais la constante. (Justification rigoureuse pour la loi Gaussienne : exemple 1.1.7 de de Haan &amp; Ferreira (2006).)</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.4 · Loi exponentielle</p>
+              <p>$X\sim\mathcal E(\lambda)$, $\lambda\gt0$, densité $f(x)=\lambda e^{-\lambda x}$, $x\gt0$. Déterminer le domaine d'attraction et $\gamma$.</p>
+            </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
+                <p>Support $(0,\infty)$, donc $x_F=+\infty$ : Weibull exclu par la <b>fiche 5</b>. Reste Fréchet vs Gumbel.</p>
+                <p class="method-label">Calcul (critère 3, cas le plus simple possible)</p>
+                <p>Ici <b>aucun équivalent n'est nécessaire</b> : $f(x)=\underbrace{\lambda}_{=c}\times\underbrace{x^0}_{\varphi=0}\times\exp\{-\underbrace{\lambda x}_{=P(x)}\}$, avec $P(x)=\lambda x$ un polynôme de degré $1$, coefficient dominant $\lambda\gt0$. Critère 3 directement, avec $\varphi=0$ :</p>
+                <div class="formula">$$\boxed{\gamma=0} \qquad \text{(queue légère, domaine de Gumbel)}$$</div>
+                <p class="sense"><b>Sens :</b> l'exponentielle est <b>l'exemple le plus simple possible</b> de domaine de Gumbel : $P(x)=\lambda x$ est même un polynôme de degré $1$ (le plus simple des cas). On peut aussi le vérifier directement <i>sans approximation</i> via $U(t)=q(1-1/t)=-\ln(1/t)/\lambda=\ln(t)/\lambda$ : $U(t)$ croît comme $\ln(t)$, à variation lente, cohérent avec $\gamma=0$ dans la définition générale ($U(tx)/U(t)\to1=x^0$ pour tout $x\gt0$, car $\ln(tx)/\ln(t)\to1$).</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.5 · Loi uniforme</p>
+              <p>$X\sim\mathcal U(0,1)$, densité $f(x)=1$ sur $(0,1)$. Déterminer le domaine d'attraction et $\gamma$.</p>
+            </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
+                <p>Support $(0,1)$, donc $x_F=1\lt\infty$ : Fréchet exclu par la <b>fiche 5</b>. Reste Weibull (le cas Gumbel à $x_F$ fini demanderait une décroissance <i>exponentielle</i> de $f$ vers $x_F$, absente ici : $f$ est <i>constante</i>).</p>
+                <p class="method-label">Calcul (critère 2, cas dégénéré)</p>
+                <p>$f(x)=1=1\times(1-x)^0$ pour tout $x\in(0,1)$ : c'est le critère 2 avec $\beta-1=0$, i.e. $\beta=1$, $c=1$ (une <b>constante</b> est un cas particulier de $(x_F-x)^{\beta-1}$ avec exposant nul) :</p>
+                <div class="formula">$$\boxed{\gamma=-\frac1\beta=-1}$$</div>
+                <p class="sense"><b>Sens :</b> c'est exactement le cas $\alpha=1$ de l'exemple 1.2.3 (fiche 3) : $F(x)=x^\alpha$ avec $\alpha=1$ est précisément $\mathcal U(0,1)$, et on y avait trouvé $\gamma=-1$ pour <b>tout</b> $\alpha$ (le piège « seul l'exposant compte, jamais la constante ») : ce calcul par densité, indépendant, confirme et illustre ce résultat sur le cas particulier le plus simple.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.6 · Loi de Weibull (distribution) : un piège de vocabulaire</p>
+              <p>$X$ suit la loi de Weibull de paramètre de forme $k=2$ (loi de Rayleigh), $F(x)=1-e^{-x^2}$, $f(x)=2x\,e^{-x^2}$, $x\gt0$. Déterminer le domaine d'attraction (au sens TVE) et $\gamma$.</p>
+            </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p class="method-label">⚠ Piège de vocabulaire avant même de commencer</p>
+                <p>La <b>loi de Weibull</b> (une loi de probabilité usuelle, ici $F(x)=1-e^{-x^k}$) et le <b>domaine de Weibull</b> (un des trois domaines d'attraction de la fiche 5, $\gamma\lt0$) sont deux notions <b>totalement différentes</b>, qui partagent seulement un nom. Il ne faut <b>surtout pas</b> conclure « loi de Weibull $\Rightarrow$ domaine de Weibull » sans calcul : c'est exactement le même piège que $F(x)=e^{-1/x}$ (exercice 19), qui elle est une loi de <b>Fréchet</b>.</p>
+                <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
+                <p>Support $(0,\infty)$, donc $x_F=+\infty$ : par la <b>fiche 5</b>, ceci élimine le <b>domaine</b> de Weibull ! Il ne peut donc s'agir que de Fréchet ou Gumbel.</p>
+                <p class="method-label">Calcul (critère 3)</p>
+                <p>$f(x)=\underbrace{2}_{=c}\times\underbrace{x^1}_{\varphi=1}\times\exp\{-\underbrace{x^2}_{=P(x)}\}$, avec $P(x)=x^2$ un polynôme de degré $2$, coefficient dominant $1\gt0$. Critère 3 directement, avec $\varphi=1$ (non nul, mais toujours autorisé) :</p>
+                <div class="formula">$$\boxed{\gamma=0} \qquad \text{(queue légère, domaine de \textbf{Gumbel})}$$</div>
+                <p class="sense"><b>Sens :</b> la loi de Weibull (distribution), quel que soit son paramètre de forme $k\gt0$, est <b>toujours</b> dans le domaine d'attraction de <b>Gumbel</b> (résultat général, valable même pour $k$ non entier via la théorie générale de la variation régulière : ici $k=2$ entier permet d'utiliser directement le critère 3 « recette » avec $P(x)=x^k$ polynomial). Une confusion de noms entre la loi et son domaine d'attraction serait une erreur classique à l'examen.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.7 · Loi log-normale : un cas subtil</p>
+              <p>$X=e^Y$ avec $Y\sim\mathcal N(\mu,\sigma^2)$, densité $f(x)=\dfrac1{x\sigma\sqrt{2\pi}}\exp\Big\{-\dfrac{(\ln x-\mu)^2}{2\sigma^2}\Big\}$, $x\gt0$. Déterminer le domaine d'attraction et $\gamma$.</p>
+            </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p class="method-label">Pourquoi c'est subtil</p>
+                <p>Support $(0,\infty)$, donc $x_F=+\infty$ : Weibull exclu par la <b>fiche 5</b>. Mais le critère 3 de <b>cette</b> fiche exige $f(x)\sim c\,x^\varphi\exp\{-P(x)\}$ avec $P$ <b>polynôme en $x$</b> : ici l'exposant fait intervenir $(\ln x)^2$, pas $x^2$ : ce n'est <b>pas</b> de cette forme. Le critère « recette » ne s'applique donc <b>pas directement</b> : c'est exactement la situation annoncée à l'exercice 23 (question 4), où seule la définition générale (variation régulière de $U$, ou condition de von Mises) permet de conclure.</p>
+                <p class="method-label">Ce qu'on peut néanmoins établir</p>
+                <p>En posant $x=e^y$, $\ln \bar F(x) \underset{x\to\infty}\sim -\dfrac{(\ln x)^2}{2\sigma^2}$ (comportement hérité de la queue Gaussienne de $Y$). Pour <b>tout</b> $\alpha\gt0$, $(\ln x)^2/\ln(x^\alpha)=(\ln x)^2/(\alpha\ln x)=\ln(x)/\alpha\to\infty$ : la décroissance de $\bar F$ est donc <b>plus rapide que n'importe quelle puissance</b> $x^{-\alpha}$, ce qui élimine Fréchet (critère 1 ne peut s'appliquer pour aucun $\alpha$). Il ne reste que Gumbel :</p>
+                <div class="formula">$$\boxed{\gamma=0} \qquad \text{(résultat classique, démontré via la théorie générale : Embrechts, Klüppelberg \& Mikosch, 1997)}$$</div>
+                <p class="sense"><b>Sens :</b> la log-normale est l'exemple canonique d'une loi à <b>convergence extrêmement lente</b> vers sa limite GEV (à cause du terme $(\ln x)^2$, beaucoup plus proche d'un comportement polynomial que d'un comportement exponentiel « franc »). En pratique (assurance, finance), elle est parfois <b>confondue avec une Pareto</b> (Fréchet) sur un échantillon fini : un exemple réel où « ça ressemble à une queue lourde » ne suffit pas, il faut le calcul.</p>
               </div>
             </details>
           </article>
