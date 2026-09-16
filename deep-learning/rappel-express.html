@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Deep Learning — Rappel express</title>
+<title>Deep Learning : Rappel express</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ===== Tokens — identical to memo-cours.html, no new colors introduced ===== */
+  /* ===== Tokens : identical to memo-cours.html, no new colors introduced ===== */
   :root{
     --ink:#1c2230; --ink-soft:#454c5a; --muted:#5c6b72;
     --paper:#f1f3ef; --surface:#ffffff; --surface-2:#e8ebe5; --border:#d7dcd3;
@@ -195,26 +195,26 @@
     <section class="dash" id="carte-mentale">
       <div class="dash-head">
         <span class="ico">🗺️</span>
-        <div><h2>La carte du cours en une image mentale</h2><div class="sub">Vue d'ensemble — une seule histoire en cinq actes</div></div>
+        <div><h2>La carte du cours en une image mentale</h2><div class="sub">Vue d'ensemble : une seule histoire en cinq actes</div></div>
       </div>
 
       <div class="arc-chain">
         <span>MLP</span><span class="sep">→</span><span>CNN</span><span class="sep">→</span><span>RNN</span><span class="sep">→</span><span>VAE · GAN · Diffusion</span><span class="sep">→</span><span>Transformers</span>
       </div>
 
-      <p>Le cours raconte une seule histoire en cinq actes, et si vous ne retenez qu'un fil, retenez celui-ci : <b>à chaque partie, on part d'un problème que le modèle précédent ne sait pas résoudre, et on ajoute exactement la contrainte (le « biais inductif ») qui manque — jamais plus.</b></p>
+      <p>Le cours raconte une seule histoire en cinq actes, et si vous ne retenez qu'un fil, retenez celui-ci : <b>à chaque partie, on part d'un problème que le modèle précédent ne sait pas résoudre, et on ajoute exactement la contrainte (le « biais inductif ») qui manque : jamais plus.</b></p>
 
-      <p>Tout commence par la régression linéaire, trop rigide, puis par l'idée naïve de composer des couches affines — qui échoue platement, car une composition d'affines reste une affine. Il faut casser cette linéarité : c'est le Multi-Layer Perceptron, entraîné par descente de gradient et rétropropagation. La Partie I pose ainsi le <b>socle générique</b> : composer des couches, apprendre par gradient, régulariser, valider. Un MLP peut en théorie tout approximer (théorème d'approximation universelle) — mais « en théorie » ne veut pas dire « en pratique », et c'est déjà la première tension du cours : <i>ce qui est expressif n'est pas forcément entraînable ni utilisable tel quel.</i></p>
+      <p>Tout commence par la régression linéaire, trop rigide, puis par l'idée naïve de composer des couches affines : qui échoue platement, car une composition d'affines reste une affine. Il faut casser cette linéarité : c'est le Multi-Layer Perceptron, entraîné par descente de gradient et rétropropagation. La Partie I pose ainsi le <b>socle générique</b> : composer des couches, apprendre par gradient, régulariser, valider. Un MLP peut en théorie tout approximer (théorème d'approximation universelle) : mais « en théorie » ne veut pas dire « en pratique », et c'est déjà la première tension du cours : <i>ce qui est expressif n'est pas forcément entraînable ni utilisable tel quel.</i></p>
 
-      <p>La Partie II spécialise ce socle pour les images : un MLP sur des pixels bruts exploserait en nombre de paramètres, alors on injecte une hypothèse sur le monde — la localité et l'invariance par translation — sous forme de poids partagés (convolution). Le reste (pooling, ResNet, détection, segmentation) découle de cette seule idée poussée à ses limites.</p>
+      <p>La Partie II spécialise ce socle pour les images : un MLP sur des pixels bruts exploserait en nombre de paramètres, alors on injecte une hypothèse sur le monde (la localité et l'invariance par translation) sous forme de poids partagés (convolution). Le reste (pooling, ResNet, détection, segmentation) découle de cette seule idée poussée à ses limites.</p>
 
-      <p>La Partie III fait le même geste pour les séquences : on partage les poids non plus dans l'espace mais dans le temps (RNN). Mais cette fois la contrainte a un prix caché — le gradient doit traverser une chaîne de multiplications aussi longue que la séquence, d'où vanishing/exploding gradients, et un choix d'algorithme (BPTT contre RTRL) qui n'est pas neutre en coût de calcul.</p>
+      <p>La Partie III fait le même geste pour les séquences : on partage les poids non plus dans l'espace mais dans le temps (RNN). Mais cette fois la contrainte a un prix caché : le gradient doit traverser une chaîne de multiplications aussi longue que la séquence, d'où vanishing/exploding gradients, et un choix d'algorithme (BPTT contre RTRL) qui n'est pas neutre en coût de calcul.</p>
 
-      <p>Une fois qu'on sait construire <i>et</i> entraîner des réseaux qui prédisent y à partir de x, la Partie IV pose une question strictement plus dure : <b>générer x lui-même</b>, c'est-à-dire modéliser toute une distribution de probabilité. Le problème exact (la vraisemblance) est intraitable — et VAE, GAN, diffusion sont trois façons différentes de contourner cette intractabilité plutôt que trois modèles indépendants.</p>
+      <p>Une fois qu'on sait construire <i>et</i> entraîner des réseaux qui prédisent y à partir de x, la Partie IV pose une question strictement plus dure : <b>générer x lui-même</b>, c'est-à-dire modéliser toute une distribution de probabilité. Le problème exact (la vraisemblance) est intraitable : et VAE, GAN, diffusion sont trois façons différentes de contourner cette intractabilité plutôt que trois modèles indépendants.</p>
 
       <p>Enfin, la Partie V revient sur les séquences avec un regard neuf : et si le vrai problème du RNN n'était pas le vanishing gradient mais le fait qu'il <b>oblige à calculer séquentiellement</b> ? Le Transformer traite une séquence comme un ensemble (+ position), remplace la mémoire séquentielle par de l'attention, et se parallélise entièrement à l'entraînement. Cette architecture referme la boucle : elle redevient le moteur des meilleurs générateurs d'images (diffusion latente, ViT) et des meilleurs systèmes de compréhension de texte (BERT) comme de génération (GPT).</p>
 
-      <p class="sense" style="margin-top:14px;">Le fil rouge sous-jacent : <b>l'apprentissage de représentation</b> (laisser le modèle construire ses propres features plutôt que les fabriquer à la main) et une tension permanente entre <b>expressivité</b> et <b>ce qu'on peut réellement calculer et entraîner</b> — linéaire vs non-linéaire, gradient exact vs stochastique, réseau plain vs résiduel, vraisemblance exacte vs ELBO, diffusion en pixels vs en espace latent, RNN séquentiel vs Transformer parallèle. Une fois que vous voyez cette tension revenir partout, le cours cesse d'être 41 sujets et devient une seule question posée cinq fois.</p>
+      <p class="sense" style="margin-top:14px;">Le fil rouge sous-jacent : <b>l'apprentissage de représentation</b> (laisser le modèle construire ses propres features plutôt que les fabriquer à la main) et une tension permanente entre <b>expressivité</b> et <b>ce qu'on peut réellement calculer et entraîner</b> : linéaire vs non-linéaire, gradient exact vs stochastique, réseau plain vs résiduel, vraisemblance exacte vs ELBO, diffusion en pixels vs en espace latent, RNN séquentiel vs Transformer parallèle. Une fois que vous voyez cette tension revenir partout, le cours cesse d'être 41 sujets et devient une seule question posée cinq fois.</p>
     </section>
 
     <!-- ================= 2. 10 IDÉES CLÉS ================= -->
@@ -227,7 +227,7 @@
         <div class="idea-card">
           <span class="idx">1</span>
           <h3>L'activation empêche l'effondrement en une couche linéaire</h3>
-          <p>Composer des transformations affines reste une transformation affine — sans non-linéarité, dix couches valent une. La fonction d'activation <i>est</i> le modèle, pas un détail cosmétique ajouté après coup.</p>
+          <p>Composer des transformations affines reste une transformation affine : sans non-linéarité, dix couches valent une. La fonction d'activation <i>est</i> le modèle, pas un détail cosmétique ajouté après coup.</p>
         </div>
         <div class="idea-card">
           <span class="idx">2</span>
@@ -237,12 +237,12 @@
         <div class="idea-card">
           <span class="idx">3</span>
           <h3>Le gradient stochastique n'est pas un gradient dégradé</h3>
-          <p>Non biaisé en espérance, sa variance non nulle aide empiriquement à s'échapper des mauvais minima locaux. Le mini-batch est le point optimal entre variance utile et usage efficace du GPU — pas un compromis paresseux.</p>
+          <p>Non biaisé en espérance, sa variance non nulle aide empiriquement à s'échapper des mauvais minima locaux. Le mini-batch est le point optimal entre variance utile et usage efficace du GPU : pas un compromis paresseux.</p>
         </div>
         <div class="idea-card">
           <span class="idx">4</span>
           <h3>L'approximation universelle est un permis, pas un GPS</h3>
-          <p>Le théorème garantit qu'un réseau <i>peut</i> approximer toute fonction continue — c'est un théorème d'existence, non constructif. Il ne dit ni combien de neurones, ni comment les trouver par descente de gradient.</p>
+          <p>Le théorème garantit qu'un réseau <i>peut</i> approximer toute fonction continue : c'est un théorème d'existence, non constructif. Il ne dit ni combien de neurones, ni comment les trouver par descente de gradient.</p>
         </div>
         <div class="idea-card">
           <span class="idx">5</span>
@@ -252,12 +252,12 @@
         <div class="idea-card">
           <span class="idx">6</span>
           <h3>L'attention est un dictionnaire flou</h3>
-          <p>Au lieu d'aller chercher une clé exacte, on interroge toutes les clés à la fois et on pondère les valeurs par leur pertinence à la requête — la logique d'un moteur de recherche, mais entièrement différentiable.</p>
+          <p>Au lieu d'aller chercher une clé exacte, on interroge toutes les clés à la fois et on pondère les valeurs par leur pertinence à la requête : la logique d'un moteur de recherche, mais entièrement différentiable.</p>
         </div>
         <div class="idea-card">
           <span class="idx">7</span>
           <h3>Le masquage causal rend le parallélisme correct</h3>
-          <p>Ce n'est pas qu'une règle de fair-play. Comme chaque position ne dépend que du passé, toutes les positions se calculent simultanément à l'entraînement — alors qu'un RNN doit attendre h<sub>t-1</sub> pour calculer h<sub>t</sub>.</p>
+          <p>Ce n'est pas qu'une règle de fair-play. Comme chaque position ne dépend que du passé, toutes les positions se calculent simultanément à l'entraînement : alors qu'un RNN doit attendre h<sub>t-1</sub> pour calculer h<sub>t</sub>.</p>
         </div>
         <div class="idea-card">
           <span class="idx">8</span>
@@ -285,15 +285,15 @@
       </div>
       <div class="trap-list">
         <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> loss et cost function sont interchangeables… <b>en fait</b>, dans ce cours précisément, la loss est calculée par exemple (ℓ), et la cost function J(θ) est sa moyenne sur le batch/dataset, plus une éventuelle régularisation. Une confusion de vocabulaire ici peut coûter cher à l'examen.</p></div>
-        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> la descente de gradient stochastique est « une méthode de descente » au sens strict… <b>en fait</b>, à chaque itération, elle peut très bien faire <i>augmenter</i> le coût exact J(θ), puisqu'elle ne suit que le gradient d'un seul exemple (ou mini-batch) — la garantie de non-biais est en espérance, pas itération par itération.</p></div>
+        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> la descente de gradient stochastique est « une méthode de descente » au sens strict… <b>en fait</b>, à chaque itération, elle peut très bien faire <i>augmenter</i> le coût exact J(θ), puisqu'elle ne suit que le gradient d'un seul exemple (ou mini-batch) : la garantie de non-biais est en espérance, pas itération par itération.</p></div>
         <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> le dropout s'applique aussi à l'inférence… <b>en fait</b> il n'est actif que pendant l'entraînement ; au moment de prédire, le réseau utilise tous ses neurones.</p></div>
         <div class="trap-item"><span class="ico">✗</span><p><b>On croit qu'</b>une couche de « convolution » effectue une vraie convolution mathématique… <b>en fait</b> c'est, au sens strict, une corrélation croisée : le noyau n'est pas retourné. Le nom est resté par convention historique.</p></div>
         <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> maximiser l'ELBO revient à maximiser la vraisemblance… <b>en fait</b> l'ELBO n'est qu'une borne inférieure : l'écart est une divergence KL entre l'approximation q<sub>φ</sub>(z|x) et la vraie postérieure p<sub>θ</sub>(z|x), jamais garantie nulle.</p></div>
-        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> ResNet fonctionne parce qu'il « résout » le vanishing gradient… <b>en fait</b> l'argument du cours est celui de la facilité de représentation de l'identité : un réseau plain plus profond peut être strictement pire, y compris en erreur d'entraînement — ce qui exclut une explication uniquement par le gradient.</p></div>
+        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> ResNet fonctionne parce qu'il « résout » le vanishing gradient… <b>en fait</b> l'argument du cours est celui de la facilité de représentation de l'identité : un réseau plain plus profond peut être strictement pire, y compris en erreur d'entraînement : ce qui exclut une explication uniquement par le gradient.</p></div>
         <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> BERT peut générer du texte comme GPT… <b>en fait</b> BERT n'utilise que l'encodeur (bidirectionnel, sans masquage causal) : conçu pour comprendre/représenter une séquence entière, pas pour la générer token par token.</p></div>
-        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> plus de couches, c'est toujours mieux… <b>en fait</b>, sans mécanisme résiduel, au-delà d'une certaine profondeur, l'erreur peut se dégrader — y compris sur le jeu d'entraînement lui-même (« bigger ain't always better »).</p></div>
+        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> plus de couches, c'est toujours mieux… <b>en fait</b>, sans mécanisme résiduel, au-delà d'une certaine profondeur, l'erreur peut se dégrader : y compris sur le jeu d'entraînement lui-même (« bigger ain't always better »).</p></div>
         <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> l'average pooling est « plus complet » donc préférable… <b>en fait</b> le max-pooling est le plus utilisé en pratique : il fait ressortir les traits saillants, alors que la moyenne a tendance à les diluer.</p></div>
-        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> la précision flottante (16/32/64 bits) est un détail d'implémentation sans intérêt théorique… <b>en fait</b>, pour un RNN profond dans le temps (produit de nombreuses dérivées partielles), les erreurs d'arrondi peuvent s'accumuler de façon significative — un vrai sujet de stabilité numérique du gradient.</p></div>
+        <div class="trap-item"><span class="ico">✗</span><p><b>On croit que</b> la précision flottante (16/32/64 bits) est un détail d'implémentation sans intérêt théorique… <b>en fait</b>, pour un RNN profond dans le temps (produit de nombreuses dérivées partielles), les erreurs d'arrondi peuvent s'accumuler de façon significative : un vrai sujet de stabilité numérique du gradient.</p></div>
       </div>
     </section>
 
@@ -304,40 +304,40 @@
         <div><h2>Questions à poser ou à savoir répondre en amphi</h2><div class="sub">Organisées par partie du cours, avec l'idée-clé de la réponse</div></div>
       </div>
 
-      <p class="cmp-caption">Partie I — Introduction</p>
+      <p class="cmp-caption">Partie I : Introduction</p>
       <div class="qlist">
         <div class="qitem"><span class="ico">?</span><p>Le théorème d'approximation universelle est souvent cité comme justification du deep learning : en quoi est-il en réalité insuffisant pour expliquer pourquoi ça marche en pratique ?<span class="a">Théorème d'existence non constructif : rien sur le nombre de neurones ni sur l'apprenabilité par gradient.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>Gradient exact, stochastique et mini-batch ont tous une complexité proportionnelle à n par epoch — pourquoi le mini-batch s'impose-t-il en pratique plutôt que les deux extrêmes ?<span class="a">Compromis variance utile / usage efficace de la mémoire GPU.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Gradient exact, stochastique et mini-batch ont tous une complexité proportionnelle à n par epoch : pourquoi le mini-batch s'impose-t-il en pratique plutôt que les deux extrêmes ?<span class="a">Compromis variance utile / usage efficace de la mémoire GPU.</span></p></div>
         <div class="qitem"><span class="ico">?</span><p>En quoi la batch normalization réduit-elle le besoin d'autres régularisations comme le dropout ?<span class="a">Elle stabilise déjà la distribution des activations d'une couche à l'autre.</span></p></div>
       </div>
 
-      <p class="cmp-caption">Partie II — CNN</p>
+      <p class="cmp-caption">Partie II : CNN</p>
       <div class="qlist">
-        <div class="qitem"><span class="ico">?</span><p>Noyau élargi, bas-rang, Kronecker, convolution dilatée règlent tous le même problème — lequel offre la meilleure croissance pour le moindre coût en paramètres ?<span class="a">La dilatation : croissance exponentielle du champ réceptif pour un coût quasi linéaire.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Noyau élargi, bas-rang, Kronecker, convolution dilatée règlent tous le même problème : lequel offre la meilleure croissance pour le moindre coût en paramètres ?<span class="a">La dilatation : croissance exponentielle du champ réceptif pour un coût quasi linéaire.</span></p></div>
         <div class="qitem"><span class="ico">?</span><p>Pourquoi apprendre le résidu f(h) plutôt que f(h) directement est-il structurellement plus facile, même quand la cible est proche de l'identité ?<span class="a">Il suffit de pousser les poids vers 0 pour retrouver l'identité, alors que la reproduire exactement avec des couches classiques est difficile.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>YOLO détecte en un seul passage quand R-CNN en fait des milliers — quel est le vrai compromis derrière ce gain de vitesse ?<span class="a">Grille fixe et passe unique, au prix d'une précision de localisation potentiellement moindre sur les petits objets.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>YOLO détecte en un seul passage quand R-CNN en fait des milliers : quel est le vrai compromis derrière ce gain de vitesse ?<span class="a">Grille fixe et passe unique, au prix d'une précision de localisation potentiellement moindre sur les petits objets.</span></p></div>
       </div>
 
-      <p class="cmp-caption">Partie III — RNN</p>
+      <p class="cmp-caption">Partie III : RNN</p>
       <div class="qlist">
-        <div class="qitem"><span class="ico">?</span><p>RTRL et BPTT calculent exactement le même gradient — pourquoi n'utilise-t-on presque jamais RTRL en pratique ?<span class="a">Coût O(d_w·d_h²) contre O(d_w·d_h) pour BPTT : RTRL devient vite intraitable.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>Le vanishing gradient est-il spécifiquement un problème du RNN, ou plus général ?<span class="a">tanh' est bornée dans (-1,1) donc un produit de nombreuses dérivées &lt;1 tend vers 0 — mais tout réseau très profond subit ce même risque.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>GRU « simplifie » LSTM en fusionnant les portes — qu'est-ce qu'on perd concrètement ?<span class="a">Plus d'état de cellule séparé, forget/input fusionnés en une seule porte update — moins de paramètres, contrôle un peu moins fin.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>RTRL et BPTT calculent exactement le même gradient : pourquoi n'utilise-t-on presque jamais RTRL en pratique ?<span class="a">Coût O(d_w·d_h²) contre O(d_w·d_h) pour BPTT : RTRL devient vite intraitable.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Le vanishing gradient est-il spécifiquement un problème du RNN, ou plus général ?<span class="a">tanh' est bornée dans (-1,1) donc un produit de nombreuses dérivées &lt;1 tend vers 0 : mais tout réseau très profond subit ce même risque.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>GRU « simplifie » LSTM en fusionnant les portes : qu'est-ce qu'on perd concrètement ?<span class="a">Plus d'état de cellule séparé, forget/input fusionnés en une seule porte update : moins de paramètres, contrôle un peu moins fin.</span></p></div>
       </div>
 
-      <p class="cmp-caption">Partie IV — Modèles génératifs</p>
+      <p class="cmp-caption">Partie IV : Modèles génératifs</p>
       <div class="qlist">
         <div class="qitem"><span class="ico">?</span><p>Pourquoi ne peut-on pas simplement générer une image plausible en faisant la moyenne des images d'entraînement ?<span class="a">Une combinaison convexe de « chats » ne reste généralement pas sur la variété des images réalistes de chats.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>Dans le reparameterization trick, pourquoi l'espérance et le gradient ne commutent-ils pas tant que z est échantillonné directement depuis q<sub>φ</sub>(z|x) ?<span class="a">On dérive par rapport aux paramètres d'une distribution dont on échantillonne — isoler le bruit dans ε résout le problème.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>Un modèle de diffusion est une VAE hiérarchique markovienne — en quoi son « encodeur » est-il plus simple que celui d'une VAE classique ?<span class="a">Il est entièrement fixe (bruitage gaussien connu) — seul le décodeur/débruiteur est entraîné.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>Que se passe-t-il concrètement quand le facteur de classifier-free guidance γ dépasse 1 ?<span class="a">Le score conditionnel est amplifié au point d'aller à l'encontre du score inconditionnel — plus fidèle au prompt, parfois moins diverse.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Dans le reparameterization trick, pourquoi l'espérance et le gradient ne commutent-ils pas tant que z est échantillonné directement depuis q<sub>φ</sub>(z|x) ?<span class="a">On dérive par rapport aux paramètres d'une distribution dont on échantillonne : isoler le bruit dans ε résout le problème.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Un modèle de diffusion est une VAE hiérarchique markovienne : en quoi son « encodeur » est-il plus simple que celui d'une VAE classique ?<span class="a">Il est entièrement fixe (bruitage gaussien connu) : seul le décodeur/débruiteur est entraîné.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Que se passe-t-il concrètement quand le facteur de classifier-free guidance γ dépasse 1 ?<span class="a">Le score conditionnel est amplifié au point d'aller à l'encontre du score inconditionnel : plus fidèle au prompt, parfois moins diverse.</span></p></div>
       </div>
 
-      <p class="cmp-caption">Partie V — Transformers</p>
+      <p class="cmp-caption">Partie V : Transformers</p>
       <div class="qlist">
-        <div class="qitem"><span class="ico">?</span><p>RNN et Transformer prédisent tous deux le prochain token séquentiellement à l'inférence — pourquoi seul le Transformer s'entraîne-t-il en parallèle ?<span class="a">Masquage causal + teacher forcing : toute la séquence cible est connue d'avance à l'entraînement, donc chaque position se calcule indépendamment.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>RNN et Transformer prédisent tous deux le prochain token séquentiellement à l'inférence : pourquoi seul le Transformer s'entraîne-t-il en parallèle ?<span class="a">Masquage causal + teacher forcing : toute la séquence cible est connue d'avance à l'entraînement, donc chaque position se calcule indépendamment.</span></p></div>
         <div class="qitem"><span class="ico">?</span><p>Quelle est la différence structurelle entre self-attention et cross-attention dans un encodeur-décodeur ?<span class="a">Self-attention : Q=K=V viennent de la même séquence ; cross-attention : la requête vient du décodeur, clés/valeurs du contexte encodé.</span></p></div>
-        <div class="qitem"><span class="ico">?</span><p>Le Vision Transformer traite une image comme une séquence de patches — abandonne-t-il le biais de localité construit à la main pour les CNN ?<span class="a">Oui, en grande partie — l'attention est globale dès la première couche ; ViT compense par plus de données plutôt que par une contrainte architecturale.</span></p></div>
+        <div class="qitem"><span class="ico">?</span><p>Le Vision Transformer traite une image comme une séquence de patches : abandonne-t-il le biais de localité construit à la main pour les CNN ?<span class="a">Oui, en grande partie : l'attention est globale dès la première couche ; ViT compense par plus de données plutôt que par une contrainte architecturale.</span></p></div>
       </div>
     </section>
 
@@ -386,15 +386,15 @@
       </div>
 
       <div class="teacher-grid">
-        <div class="teacher-card"><span class="avatar">IY</span><div class="info"><b>Ikko Yamane</b><span>Cours magistral — 3 séances</span></div></div>
+        <div class="teacher-card"><span class="avatar">IY</span><div class="info"><b>Ikko Yamane</b><span>Cours magistral : 3 séances</span></div></div>
         <div class="teacher-card"><span class="avatar">RG</span><div class="info"><b>Romaric Gaudel</b><span>Ateliers pratiques</span></div></div>
       </div>
 
-      <p style="margin-top:16px;">Le support s'ouvre par un cadrage volontairement réflexif : IA symbolique vs connexionnisme, un schéma de neurone biologique, un « Attention Graph » qui plaisante sur la baisse d'attention en milieu de séance, et une pyramide d'apprentissage citant Confucius sur l'apprentissage actif vs passif — un signal assez clair que l'engagement réel en séance est valorisé, pas juste l'écoute passive. Ne vous privez donc pas de lever la main.</p>
+      <p style="margin-top:16px;">Le support s'ouvre par un cadrage volontairement réflexif : IA symbolique vs connexionnisme, un schéma de neurone biologique, un « Attention Graph » qui plaisante sur la baisse d'attention en milieu de séance, et une pyramide d'apprentissage citant Confucius sur l'apprentissage actif vs passif : un signal assez clair que l'engagement réel en séance est valorisé, pas juste l'écoute passive. Ne vous privez donc pas de lever la main.</p>
 
-      <p>Sur le plan du niveau technique attendu, la <b>Partie I est nettement la plus formelle</b> : théorème d'approximation universelle énoncé avec rigueur, dérivation complète du biais d'Adam, preuve de l'équivalence RTRL/BPTT — c'est là que des questions précises et mathématiques (« pourquoi cette borne », « d'où vient ce facteur de correction ») seront probablement les mieux accueillies. À partir de la <b>Partie II, le ton devient beaucoup plus appliqué et visuel</b> : architectures illustrées sur de vraies images, nombreuses citations d'articles arXiv, comparaisons de résultats — et le cours se termine explicitement par une slide « Details We Did Not Cover » renvoyant vers des tutoriels et le papier original, signe que l'approfondissement mathématique fin est volontairement laissé en autonomie au-delà d'un certain point.</p>
+      <p>Sur le plan du niveau technique attendu, la <b>Partie I est nettement la plus formelle</b> : théorème d'approximation universelle énoncé avec rigueur, dérivation complète du biais d'Adam, preuve de l'équivalence RTRL/BPTT : c'est là que des questions précises et mathématiques (« pourquoi cette borne », « d'où vient ce facteur de correction ») seront probablement les mieux accueillies. À partir de la <b>Partie II, le ton devient beaucoup plus appliqué et visuel</b> : architectures illustrées sur de vraies images, nombreuses citations d'articles arXiv, comparaisons de résultats : et le cours se termine explicitement par une slide « Details We Did Not Cover » renvoyant vers des tutoriels et le papier original, signe que l'approfondissement mathématique fin est volontairement laissé en autonomie au-delà d'un certain point.</p>
 
-      <p class="sense">Une question bien calibrée en fin de cours ressemblera donc plus à <i>« quel est le compromis derrière ce choix de design »</i> qu'à <i>« pouvez-vous refaire la démonstration »</i> — sans que cela n'interdise, en atelier avec Romaric Gaudel, de pousser davantage sur l'implémentation et la pratique.</p>
+      <p class="sense">Une question bien calibrée en fin de cours ressemblera donc plus à <i>« quel est le compromis derrière ce choix de design »</i> qu'à <i>« pouvez-vous refaire la démonstration »</i> : sans que cela n'interdise, en atelier avec Romaric Gaudel, de pousser davantage sur l'implémentation et la pratique.</p>
     </section>
 
   </main>

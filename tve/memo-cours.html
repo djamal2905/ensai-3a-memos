@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Théorie des Valeurs Extrêmes : Mémo de cours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script>
+(function(){
+  function loadScript(src, onerror, onload){
+    var s = document.createElement('script');
+    s.src = src; s.async = true; s.id = 'mathjax-script';
+    if(onerror) s.onerror = onerror;
+    if(onload) s.onload = onload;
+    document.head.appendChild(s);
+  }
+  function showMathWarning(){
+    var b = document.createElement('div');
+    b.textContent = '⚠ Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
+    b.style.cssText = 'position:sticky;top:0;z-index:90;background:#c1483c;color:#fff;font:600 .78rem "Source Sans 3",sans-serif;padding:9px 14px;text-align:center;';
+    document.body.insertBefore(b, document.body.firstChild);
+  }
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js', function(){
+    loadScript('https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js', showMathWarning);
+  });
+})();
+</script>
+<style>
+  :root{
+    --ink:#1c2230; --ink-soft:#454c5a; --muted:#5c6b72;
+    --paper:#f1f3ef; --surface:#ffffff; --surface-2:#e8ebe5; --border:#d7dcd3;
+    --accent:#8a4f3f; --accent-strong:#6b3528; --accent-soft:#f3e8e6; --accent-ink:#552b21;
+    --def-bg:#edf6ee; --def-border:#4c8a5c; --def-label:#2c6b3d;
+    --thm-bg:#fbeee6; --thm-border:#b5643f; --thm-label:#9a4d2c;
+    --ex-bg:#eaf1fb; --ex-border:#3f6ea3; --ex-label:#2c5480;
+    --warn-bg:#fdeceb; --warn-border:#c1483c; --warn-color:#9a2f24;
+    --code-ink:#e7e9ee; --code-bg:#1a2028; --code-border:#2b3340;
+    --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
+    --radius: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+      --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+      --accent:#dc9a8a; --accent-strong:#eec2b6; --accent-soft:#2b1f1c; --accent-ink:#f0d0c6;
+      --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+      --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+      --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+      --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+      --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+    --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+    --accent:#dc9a8a; --accent-strong:#eec2b6; --accent-soft:#2b1f1c; --accent-ink:#f0d0c6;
+    --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+    --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+    --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+    --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+    --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; text-wrap:balance; color:var(--ink); margin:0; }
+  code, .mono{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  a{ color:var(--accent-strong); }
+  p{ margin:.5em 0; color:var(--ink-soft); max-width:68ch; }
+
+  #progress{ position:fixed; top:0; left:0; height:3px; width:0%; background:var(--accent); z-index:80; transition:width .1s linear; }
+
+  header.topbar{
+    position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{ max-width:1280px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:14px; }
+  .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
+  .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
+    cursor:pointer; font-size:1rem;
+  }
+  .icon-btn:hover{ background:var(--surface-2); }
+  .icon-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .search-wrap{ position:relative; flex:0 1 260px; }
+  .search-wrap input{
+    width:100%; padding:8px 12px 8px 32px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); font:500 .88rem "Source Sans 3", sans-serif;
+  }
+  .search-wrap svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none; }
+  #searchCount{ font:500 .72rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  #navToggle{ display:none; }
+
+  .layout{ max-width:1280px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:250px minmax(0,1fr); gap:36px; align-items:start; }
+  aside.toc{ position:sticky; top:64px; max-height:calc(100vh - 84px); overflow-y:auto; padding:18px 4px 40px 0; font-size:.85rem; }
+  aside.toc h2{ font:600 .7rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:10px; }
+  .toc-lecture{ margin-bottom:18px; }
+  .toc-lecture > p{ font:700 .78rem "Source Sans 3",sans-serif; color:var(--ink); margin:0 0 6px; }
+  .toc-lecture ol{ list-style:none; margin:0; padding:0; border-left:2px solid var(--border); }
+  .toc-lecture li a{ display:block; padding:5px 0 5px 12px; color:var(--muted); text-decoration:none; border-left:2px solid transparent; margin-left:-2px; font-weight:500; }
+  .toc-lecture li a:hover{ color:var(--ink); }
+  .toc-lecture li a.active{ color:var(--accent-strong); border-left-color:var(--accent); background:var(--accent-soft); border-radius:0 6px 6px 0; }
+  .toc-num{ display:inline-block; width:1.4em; color:var(--muted); font:600 .78em "JetBrains Mono",monospace; }
+
+  main{ min-width:0; padding-bottom:70px; }
+
+  .hero{ padding:34px 0 22px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+  .hero .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .hero h1{ font-size:clamp(1.7rem, 1.2rem + 2vw, 2.5rem); margin:.3em 0 .2em; }
+  .hero p{ max-width:62ch; color:var(--muted); font-size:.98rem; }
+  .hero .meta{ display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; font:500 .78rem "JetBrains Mono",monospace; color:var(--muted); }
+  .hero .meta span{ display:flex; align-items:center; gap:6px; }
+  .hero .meta b{ color:var(--ink-soft); font-weight:600; }
+
+  section.lecture{ margin-bottom:10px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
+  section.lecture + section.lecture{ margin-top:24px; }
+  .lecture-head{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; border:0; background:var(--surface-2); padding:16px 22px; cursor:pointer; font-family:"Fraunces", serif; }
+  .lecture-head .num{ font:700 1rem "JetBrains Mono",monospace; color:var(--accent); }
+  .lecture-head .title{ flex:1; font-size:1.15rem; font-weight:600; color:var(--ink); }
+  .lecture-head .chev{ transition:transform .2s ease; color:var(--muted); }
+  .lecture.collapsed .lecture-head .chev{ transform:rotate(-90deg); }
+  .lecture-body{ padding:8px 22px 6px; }
+  .lecture.collapsed .lecture-body{ display:none; }
+
+  article.topic{ padding:26px 0; border-top:1px dashed var(--border); scroll-margin-top:76px; }
+  article.topic:first-child{ border-top:0; }
+  article.topic .tophead{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  article.topic .tophead .num{ font:700 .95rem "JetBrains Mono",monospace; color:var(--accent); }
+  article.topic h2{ font-size:1.32rem; }
+  article.topic > p:first-of-type{ margin-top:10px; }
+
+  .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:14px 0; }
+  .box-label{ display:flex; align-items:center; gap:8px; font:700 .76rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px; }
+  .box p{ margin:.35em 0; font-size:.94rem; }
+  .box-def{ background:var(--def-bg); border-color:var(--def-border); } .box-def .box-label{ color:var(--def-label); }
+  .box-thm{ background:var(--thm-bg); border-color:var(--thm-border); } .box-thm .box-label{ color:var(--thm-label); }
+  .box-ex{ background:var(--ex-bg); border-color:var(--ex-border); } .box-ex .box-label{ color:var(--ex-label); }
+  .box-warn{ background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-color); }
+  .box-warn .box-label{ color:var(--warn-color); }
+  .box-warn p{ color:var(--warn-color); font-weight:600; }
+
+  .formula{ position:relative; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin:10px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .formula mjx-container{ margin:0 !important; }
+  .formula.is-scrollable::after{ content:""; position:absolute; top:1px; right:1px; bottom:1px; width:26px; border-radius:0 7px 7px 0; background:linear-gradient(to right, transparent, var(--surface-2) 75%); pointer-events:none; }
+  .formula.is-scrollable::before{ content:"⟷"; position:absolute; top:3px; right:6px; font-size:.7rem; color:var(--muted); pointer-events:none; }
+  p.sense{ display:flex; gap:8px; align-items:flex-start; font-size:.86rem; color:var(--accent-ink); background:var(--accent-soft); border-radius:8px; padding:7px 10px; margin:8px 0 0; }
+  p.sense b{ color:var(--accent-strong); }
+  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); }
+
+  table.cmp{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.83rem; }
+  .cmp th, .cmp td{ padding:6px 10px; border:1px solid var(--border); text-align:center; color:var(--ink-soft); }
+  .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
+  .cmp td:first-child, .cmp th:first-child{ text-align:left; }
+
+  .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
+  .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
+  .chain{ font:600 .95rem "JetBrains Mono",monospace; padding:8px 0; border-top:1px solid var(--code-border); color:#dfe3ea; }
+  .chain:first-of-type{ border-top:0; }
+  .chain b{ color:var(--accent-strong); }
+  .source-note{ max-width:none; margin-top:16px; padding-top:14px; border-top:1px solid var(--code-border); font-size:.8rem; color:#98a2b3; }
+
+  #toTop{ position:fixed; right:20px; bottom:20px; z-index:70; width:42px; height:42px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; }
+  #toTop.show{ opacity:1; pointer-events:auto; }
+  #toTop:hover{ transform:translateY(-2px); }
+
+  .dim{ opacity:.28; filter:grayscale(.4); }
+  mark{ background:var(--accent); color:#fff; border-radius:2px; padding:0 1px; }
+
+  #mobileOverlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:55; }
+
+  @media (max-width: 880px){
+    .layout{ grid-template-columns:1fr; padding:0 16px; }
+    aside.toc{ position:fixed; top:0; left:0; height:100vh; width:280px; max-height:none; background:var(--surface); border-right:1px solid var(--border); z-index:65; padding:70px 16px 20px; transform:translateX(-100%); transition:transform .25s ease; }
+    aside.toc.open{ transform:translateX(0); }
+    #navToggle{ display:inline-flex; }
+    .search-wrap{ flex:1 1 auto; }
+    .hero{ padding:24px 0 18px; }
+    .lecture-body{ padding:8px 14px 4px; }
+    .lecture-head{ padding:14px 16px; }
+    .box{ padding:12px 12px; }
+    .formula{ padding:9px 10px; font-size:.9em; }
+  }
+
+  @media (max-width: 420px){
+    .formula{ font-size:.8em; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="progress"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button id="navToggle" class="icon-btn" aria-label="Ouvrir le sommaire">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="brand">
+        <span class="eyebrow">ENSAI · 3A · GR/GS</span>
+        <span class="name">Théorie des Valeurs Extrêmes</span>
+      </div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Filtrer : Hill, GEV, Pareto…" aria-label="Filtrer le mémo" />
+      </div>
+      <span id="searchCount"></span>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème">🌓</button>
+    </div>
+  </header>
+
+  <div id="mobileOverlay" hidden></div>
+
+  <div class="layout">
+
+    <aside class="toc" id="toc">
+      <h2>Sommaire</h2>
+      <div class="toc-lecture">
+        <p>1 : Modèles de valeurs extrêmes</p>
+        <ol>
+          <li><a href="#s1"><span class="toc-num">1</span>Qu'est-ce qu'un événement extrême ?</a></li>
+          <li><a href="#s2"><span class="toc-num">2</span>Comportement du maximum</a></li>
+          <li><a href="#s3"><span class="toc-num">3</span>Deux exemples de convergence</a></li>
+          <li><a href="#s4"><span class="toc-num">4</span>Théorème de Fisher-Tippett-Gnedenko</a></li>
+          <li><a href="#s5"><span class="toc-num">5</span>Domaines d'attraction</a></li>
+          <li><a href="#s6"><span class="toc-num">6</span>Déterminer γ en pratique</a></li>
+          <li><a href="#s7"><span class="toc-num">7</span>Théorème de Pickands-Balkema-de Haan</a></li>
+          <li><a href="#s8"><span class="toc-num">8</span>Blocs maxima vs dépassement de seuil</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>2 : Estimation des modèles à queues lourdes</p>
+        <ol>
+          <li><a href="#s9"><span class="toc-num">9</span>Le problème de l'extrapolation</a></li>
+          <li><a href="#s10"><span class="toc-num">10</span>L'idée d'interpolation</a></li>
+          <li><a href="#s11"><span class="toc-num">11</span>Quantile intermédiaire</a></li>
+          <li><a href="#s12"><span class="toc-num">12</span>Représentation de Rényi</a></li>
+          <li><a href="#s13"><span class="toc-num">13</span>Normalité asymptotique</a></li>
+          <li><a href="#s14"><span class="toc-num">14</span>Estimateur de Hill</a></li>
+          <li><a href="#s15"><span class="toc-num">15</span>Comment choisir k</a></li>
+          <li><a href="#s16"><span class="toc-num">16</span>Estimateur de Weissman</a></li>
+          <li><a href="#s17"><span class="toc-num">17</span>Probabilité d'une grande valeur</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>3 : Exercices &amp; corrections</p>
+        <ol>
+          <li><a href="#s18"><span class="toc-num">18</span>Quantile explicite d'une loi de Pareto</a></li>
+          <li><a href="#s19"><span class="toc-num">19</span>Deux variantes de la loi de Gumbel</a></li>
+          <li><a href="#s20"><span class="toc-num">20</span>Le paramètre de second ordre (Burr)</a></li>
+          <li><a href="#s21"><span class="toc-num">21</span>Application numérique : Hill &amp; Weissman</a></li>
+        </ol>
+      </div>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <span class="eyebrow">Mémo de cours</span>
+        <h1>Des maxima aux quantiles extrêmes</h1>
+        <p>Synthèse des deux premiers chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), puis comment estimer en pratique un quantile ou une probabilité bien au-delà des données observées.</p>
+        <div class="meta">
+          <span>📄 <b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
+          <span>📚 <b>21 fiches</b></span>
+          <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
+        </div>
+      </div>
+
+      <!-- ================= LECTURE 1 ================= -->
+      <section class="lecture" id="lecture-1">
+        <button class="lecture-head">
+          <span class="num">1</span>
+          <span class="title">Modèles de valeurs extrêmes</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s1">
+            <div class="tophead"><span class="num">1</span><h2>Qu'est-ce qu'un événement extrême ?</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Événement extrême</p>
+              <p>Un événement est dit extrême lorsque les deux conditions suivantes sont vérifiées :</p>
+              <p>1. c'est un <b>événement rare</b> (sa probabilité d'occurrence est très faible) ;<br>
+              2. le phénomène sous-jacent prend des <b>valeurs très élevées</b> (ou très faibles).</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label">⚠ Pourquoi la statistique classique échoue</p>
+              <p>Les méthodes statistiques classiques sont inappropriées pour l'étude des événements extrêmes. Supposons $X\sim H$ et qu'on dispose de $n$ réalisations i.i.d. Pour un seuil élevé $x$, comment évaluer $\mathbb P(X>x)=\bar H(x)$ alors qu'on n'a, par construction, presque aucune observation au-delà de $x$ ? Un ajustement paramétrique standard (ex. gaussien) peut radicalement <b>sous-estimer</b> la probabilité de queue : la densité gaussienne décroît beaucoup plus vite que celle de nombreux phénomènes réels.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Précipitations à Maiquetía (catastrophe de Vargas)</p>
+              <p>Données de précipitations avec un pic isolé extrême (catastrophe de Vargas, 1999, Venezuela). Salmon (2009) souligne que l'utilisation de modèles gaussiens, en sous-estimant les événements extrêmes, a <b>contribué à aggraver la crise financière de 2008</b> : même logique de sous-estimation du risque de queue.</p>
+              <p class="sense"><b>Sens :</b> deux domaines d'application, une seule cause : ignorer que la queue de la vraie distribution est plus lourde que celle du modèle gaussien de confort.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s2">
+            <div class="tophead"><span class="num">2</span><h2>Comportement du maximum</h2></div>
+            <p>On considère un espace de probabilité $(\Omega,\mathcal A,\mathbb P)$ et $X_1,\dots,X_n\overset{\text{i.i.d.}}{\sim}F$. On note $q(\alpha)=\inf\{x:F(x)>\alpha\}$ la fonction quantile, et $x_F=q(1)$ le point terminal (droit) de $F$ (peut être infini).</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Statistique du maximum</p>
+              <div class="formula">$$M_n := \max_{i=1,\dots,n} X_i$$</div>
+              <p>Si $n\to\infty$, $M_n\to x_F$ presque sûrement (exercice : loi de Borel-Cantelli).</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label">⚠ La distribution de $M_n$ seule est dégénérée</p>
+              <div class="formula">$$\mathbb P(M_n\le x) = \prod_{i=1}^n \mathbb P(X_i\le x) = F^n(x) \ \xrightarrow[n\to\infty]{}\ \begin{cases} 0 & \text{si } x\lt x_F \\ 1 & \text{si } x\ge x_F \end{cases}$$</div>
+              <p class="sense"><b>Sens :</b> $M_n$ "toute seule" se concentre en $x_F$ : aucune information utile. Question naturelle : existe-t-il $a_n>0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge vers une loi <b>non dégénérée</b> ?</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s3">
+            <div class="tophead"><span class="num">3</span><h2>Deux exemples de convergence</h2></div>
+            <p>Avant le théorème général, deux calculs directs suggèrent la forme des lois limites possibles.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.2.2 (exercice 1.2)</p>
+              <p>Soit $F(x)=1-(1-x)^\alpha$, $x\in[0,1]$, $\alpha>0$. Alors :</p>
+              <div class="formula">$$n^{1/\alpha}(1-M_n)\ \xrightarrow{\ \mathcal L\ }\ \xi, \qquad \xi\sim F_\xi(x)=1-e^{-x^\alpha}$$</div>
+              <p><i>Calcul :</i> $\mathbb P(n^{1/\alpha}(1-M_n)\le x)=1-F^n(1-n^{-1/\alpha}x)=1-\big[1-x^\alpha/n\big]^n \to 1-e^{-x^\alpha}$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.2.3 (exercice 1.3)</p>
+              <p>Soit $F(x)=x^\alpha$, $x\in[0,1]$, $\alpha>0$. Montrer que :</p>
+              <div class="formula">$$n(1-M_n)\ \xrightarrow{\ \mathcal L\ }\ \mathrm{Exp}(\alpha)$$</div>
+              <p class="sense"><b>Sens :</b> avec la <b>bonne</b> normalisation $(a_n,b_n)$, $(M_n-b_n)/a_n$ semble toujours converger vers l'une de quelques familles de lois : exactement le contenu du théorème fondamental qui suit.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s4">
+            <div class="tophead"><span class="num">4</span><h2>Théorème de Fisher-Tippett-Gnedenko</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème 1.2.1 · Théorème fondamental de la TVE (Fisher-Tippett-Gnedenko)</p>
+              <p>Supposons qu'il existe $a_n>0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge en loi vers une distribution <b>non dégénérée</b>. Alors il existe $\gamma\in\mathbb R$ tel que cette limite est $G_\gamma$ :</p>
+              <div class="formula">$$G_\gamma(x) = \begin{cases} \exp\!\big\{-(1+\gamma x)^{-1/\gamma}\big\} & \text{si } 1+\gamma x>0,\ \gamma\neq0 \\ \exp\{-e^{-x}\} & \text{si } x\in\mathbb R,\ \gamma=0 \end{cases}$$</div>
+              <p class="sense"><b>Sens :</b> la famille $(G_\gamma)_{\gamma\in\mathbb R}$ est la famille <b>GEV</b> (Generalized Extreme Value). $\gamma$ est le <b>paramètre de forme</b>, ou <b>indice des valeurs extrêmes</b> : il caractérise à lui seul la queue de $F$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s5">
+            <div class="tophead"><span class="num">5</span><h2>Domaines d'attraction : Fréchet, Gumbel, Weibull</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Domaine d'attraction</p>
+              <p>On dit que $X$ (ou $F$) appartient au <b>maximum domaine d'attraction</b> de $G_\gamma$ si $\mathbb P\big((M_n-b_n)/a_n\le x\big)\to G_\gamma(x)$ pour certaines suites $a_n>0$, $b_n\in\mathbb R$.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Cas $\gamma>0$ · Domaine de Fréchet (queue lourde)</p>
+              <div class="formula">$$\bar G_\gamma(x) \approx (\gamma x)^{-1/\gamma} \quad \text{quand } x\to+\infty$$</div>
+              <p>Décroissance <b>polynomiale</b> (beaucoup plus lente qu'exponentielle) : on dit que $F$ est à <b>queue lourde</b>. Le point terminal est infini : $x_F=+\infty$.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Cas $\gamma\lt0$ · Domaine de Weibull (queue courte)</p>
+              <p>Le point terminal est fini : $x_{G_\gamma}=-1/\gamma$. Au voisinage de $x_{G_\gamma}$ :</p>
+              <div class="formula">$$\bar G_\gamma(x) \underset{x\to x_{G_\gamma}}{\approx} \gamma^{-1/\gamma}\big(x_{G_\gamma}-x\big)^{-1/\gamma}$$</div>
+              <p>Décroissance polynomiale vers $0$ à mesure que $x\to x_{G_\gamma}$ : on dit que $F$ est à <b>queue courte</b>.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Cas $\gamma=0$ · Domaine de Gumbel (queue légère)</p>
+              <p>Le point terminal est infini. $\bar G_0(x)=1-\exp(-e^{-x})\approx e^{-x}$ quand $x\to+\infty$ : décroissance <b>exponentielle</b> : on dit que $F$ est à <b>queue légère</b>.</p>
+              <p class="sense"><b>Sens :</b> queue lourde (Fréchet) $\gg$ queue légère (Gumbel) $\gg$ queue courte (Weibull) : c'est cette hiérarchie qui gouverne le risque réel d'événements extrêmes.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s6">
+            <div class="tophead"><span class="num">6</span><h2>Déterminer γ en pratique : trois critères</h2></div>
+            <p>Soit $f$ la densité de $X$. Trois critères, portant sur le comportement asymptotique de $f$, permettent souvent d'identifier $\gamma$ sans passer par la fonction de répartition.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Critères sur la densité</p>
+              <p>1. Si $f(x)\underset{x\to\infty}\sim c\,x^{-\alpha-1}$ ($c,\alpha>0$) : queue lourde, $\gamma=1/\alpha$ ($x_F=\infty$).<br>
+              2. Si $x_F\lt\infty$ et $f(x)\underset{x\to x_F}\sim c\,(x_F-x)^{\alpha-1}$ ($c,\alpha>0$) : queue courte, $\gamma=-1/\alpha$.<br>
+              3. Si $x_F=\infty$ et $f(x)\underset{x\to\infty}\sim c\,x^\varphi\exp\{-P(x)\}$ ($P$ polynôme, $c,\varphi,\deg P>0$) : queue légère, $\gamma=0$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.1 · Loi de Student</p>
+              <p>$X\sim\mathrm{Student}(d)$, $f_X(x)=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}\Big(1+\dfrac{x^2}d\Big)^{-\frac{d+1}2}$. Point terminal infini. On montre $f(x)\sim C_d\,x^{-d-1}$ quand $x\to\infty$ $\Rightarrow$ <b>queue lourde</b>, $\gamma=1/d$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.2 · Loi Beta</p>
+              <p>$X\sim\mathrm{Beta}(a,b)$, $a,b>0$, densité sur $(0,1)$. Point terminal fini $=1$. On montre $f(x)\underset{x\to1}\approx C_{a,b}(1-x)^{b-1}$ $\Rightarrow$ <b>queue courte</b>, $\gamma=-1/b$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple 1.3.3 · Loi Gaussienne</p>
+              <p>$X\sim\mathcal N(\mu,\sigma^2)$, $f(x)=C_\sigma\exp\{-P(x)\}$ avec $P$ polynôme de degré $2$ $\Rightarrow$ <b>queue légère</b>, $\gamma=0$. (Vérification rigoureuse via l'exemple 1.1.7 de Haan &amp; Ferreira (2006).)</p>
+              <p class="sense"><b>Sens :</b> ces trois exemples couvrent exactement les trois régimes : c'est le premier réflexe à avoir face à une nouvelle loi : regarder le comportement de $f$ au voisinage du point terminal.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s7">
+            <div class="tophead"><span class="num">7</span><h2>Théorème de Pickands-Balkema-de Haan</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Corollaire 1.2.4 · Théorème de Pickands-Balkema-de Haan</p>
+              <p>Les deux propositions suivantes sont équivalentes :</p>
+              <p>(i) $\exists\,a_n>0,\,b_n\in\mathbb R$ tels que $(M_n-b_n)/a_n\to \mathrm{GEV}(\gamma)$ ;<br>
+              (ii) $\exists$ une fonction $t\mapsto\sigma(t)>0$ telle que</p>
+              <div class="formula">$$\lim_{t\to x_F} \mathbb P\!\left(\frac{X-t}{\sigma(t)}\gt x \;\middle|\; X\gt t\right) = (1+\gamma x)^{-1/\gamma}, \qquad \forall x: 1+\gamma x\gt0$$</div>
+              <p>La loi $x\mapsto(1+\gamma x)^{-1/\gamma}$ est une loi de <b>Pareto généralisée</b> (Generalized Pareto, GP) de paramètre de forme $\gamma$.</p>
+              <p class="sense"><b>Sens :</b> la queue de la loi conditionnelle des <b>excès au-dessus d'un seuil</b> $t$ converge, elle aussi, vers une famille à un seul paramètre : le <b>même</b> $\gamma$ que celui de la GEV. En pratique on ajuste $H(x)=(1+\gamma x/\sigma)^{-1/\gamma}$, $x>0$, $\sigma/\gamma>0$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s8">
+            <div class="tophead"><span class="num">8</span><h2>Deux approches pratiques</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Maximum par blocs vs dépassement de seuil</p>
+              <p><b>1. Maximum par blocs</b> (block maxima) : on découpe les données en $m$ sous-blocs $X_1,\dots,X_r\,|\,X_{r+1},\dots,X_{2r}\,|\,\dots$, on retient le maximum $M_{r,i}$ de chaque bloc, et on ajuste une <b>GEV</b> sur ces $m$ maxima (valables si $r=r_n=o(n)$, $n\to\infty$).</p>
+              <p><b>2. Dépassement de seuil</b> (peaks-over-threshold, POT) : on fixe un seuil élevé et on ajuste une loi de <b>Pareto généralisée</b> (GPD) sur les excès au-dessus de ce seuil.</p>
+              <p class="sense"><b>Sens :</b> le block maxima "gaspille" de l'information (un seul point retenu par bloc, même si plusieurs valeurs élevées y sont observées) ; le POT utilise généralement mieux les données : c'est l'approche privilégiée pour l'estimation au chapitre 2.</p>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 2 ================= -->
+      <section class="lecture" id="lecture-2">
+        <button class="lecture-head">
+          <span class="num">2</span>
+          <span class="title">Estimation des modèles à queues lourdes</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s9">
+            <div class="tophead"><span class="num">9</span><h2>Le problème de l'extrapolation</h2></div>
+
+            <div class="box box-warn">
+              <p class="box-label">⚠ Deux questions fondamentales</p>
+              <p>1. Comment estimer $\mathbb P(X\gt x)$ quand on n'a <b>pas</b> observé de données supérieures à $x$ ?<br>
+              2. Comment calculer le quantile $q(\alpha)$ quand $\alpha\to1$ (quantile extrême, au-delà du support empirique) ?</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Le cadre : queue lourde ($\gamma>0$)</p>
+              <p>On note $U(t):=q(1-1/t)$ la fonction quantile de queue. Dans le contexte queue lourde, on sait que :</p>
+              <div class="formula">$$\frac{U(tx)}{U(t)} \xrightarrow[t\to\infty]{} x^\gamma, \quad \forall x\gt0 \qquad\Longleftrightarrow\qquad \frac{\mathbb P(X\gt tu)}{\mathbb P(X\gt t)} \xrightarrow[t\to\infty]{} u^{-1/\gamma}, \quad \forall u\gt0$$</div>
+            </div>
+          </article>
+
+          <article class="topic" id="s10">
+            <div class="tophead"><span class="num">10</span><h2>L'idée d'interpolation</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Interpoler depuis un point intermédiaire</p>
+              <p><b>Pour la question 1</b> : estimer $\mathbb P(X\gt y)$, $y$ très grand : soit $x\lt y$, $x$ "vraiment loin" mais <b>intermédiaire</b> (pas trop extrême). Alors :</p>
+              <div class="formula">$$\mathbb P(X\gt y) = \left(\frac yx\right)^{-1/\gamma}\big(1-F(x)\big) \qquad \text{(A)}$$</div>
+              <p><b>Pour la question 2</b> : estimer $q(\beta)$, $\beta\to1$ : en posant $x=(1-\alpha)/(1-\beta)$, $t=1/(1-\alpha)$ dans la relation sur $U$ :</p>
+              <div class="formula">$$q(\beta) \approx \left(\frac{1-\alpha}{1-\beta}\right)^{\gamma} q(\alpha), \qquad \alpha,\beta\uparrow1 \qquad \text{(B)}$$</div>
+              <p class="sense"><b>Sens :</b> dans les deux cas, on n'extrapole <b>jamais</b> directement depuis les données : on interpole depuis un point intermédiaire (ni "dans" les données, ni trop extrême) vers le point visé, en utilisant la seule information structurelle disponible : $\gamma$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s11">
+            <div class="tophead"><span class="num">11</span><h2>Quantile empirique et quantile intermédiaire</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Statistiques d'ordre &amp; quantile empirique</p>
+              <p>Soit $X_{1,n}\le\dots\le X_{n,n}$ la statistique d'ordre de $X_1,\dots,X_n$. Pour $\alpha\in(0,1)$ <b>fixé</b>, $\hat q_n(\alpha):=X_{\lceil n\alpha\rceil,n}$ est un estimateur asymptotiquement normal de $q(\alpha)$.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label">⚠ Ce résultat s'effondre si $\alpha=\alpha_n\to1$</p>
+              <p>Prendre $\alpha_n=1-1/n$ revient à considérer $M_n$ lui-même. Or :</p>
+              <div class="formula">$$\frac{M_n}{q(1-1/n)}-1 \approx \gamma\,\frac{M_n-U(n)}{\gamma\,U(n)} \ \xrightarrow{\ \mathcal L\ }\ G_\gamma - 1 \ \ (\neq 0 \text{ en général})$$</div>
+              <p>$M_n$ n'est donc <b>pas</b> un estimateur consistant de $q(1-1/n)$. Plus généralement, pour $K$ fixé, $\hat q(1-K/n)$ n'est pas consistant de $q(1-K/n)$.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Quantile intermédiaire</p>
+              <p>On appelle <b>quantile intermédiaire</b> l'estimateur</p>
+              <div class="formula">$$\hat q(1-K/n) := X_{n-K,n}, \qquad K=K_n\to\infty, \quad K/n\to0$$</div>
+              <p class="sense"><b>Sens :</b> $K$ doit croître (pour la consistance) mais rester une fraction négligeable de $n$ (pour rester dans une zone où l'on dispose encore d'assez d'observations "au-delà"). C'est le compromis central de tout ce chapitre.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s12">
+            <div class="tophead"><span class="num">12</span><h2>Lemme de représentation de Rényi</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Lemme 2.1.1 · Transformation exponentielle &amp; représentation de Rényi</p>
+              <p>Soient $Y_1,\dots,Y_n\overset{\text{i.i.d.}}\sim\mathrm{Pareto}(1)$, i.e. $F_Y(y)=1-1/y$, $y\gt1$. Soient $E_1,\dots,E_n\overset{\text{i.i.d.}}\sim\mathcal E(1)$. Alors :</p>
+              <p>(i) $X_{n-k,n} \overset{d}= U(Y_{n-k,n}) \overset{d}= U\big(\exp(E_{n-k,n})\big)$ ;<br>
+              (ii) (représentation de Rényi) $(E_{1,n},\dots,E_{n,n}) \overset{d}= \Big(\frac{E_1}n,\ \frac{E_1}n+\frac{E_2}{n-1},\ \dots,\ \sum_{i=1}^n\frac{E_i}{n-i+1}\Big)$.</p>
+              <p class="sense"><b>Sens :</b> cet outil technique réécrit les statistiques d'ordre extrêmes comme des sommes de variables exponentielles indépendantes : c'est la clé de toutes les preuves de consistance et de normalité asymptotique qui suivent.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s13">
+            <div class="tophead"><span class="num">13</span><h2>Normalité asymptotique du quantile intermédiaire</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Condition du second ordre $\mathcal C_2(\gamma,\rho,A)$</p>
+              <p>Il existe $\gamma\gt0$, $\rho\le0$ et une fonction auxiliaire $A$ de signe constant, $A(t)\to0$ quand $t\to\infty$, telles que :</p>
+              <div class="formula">$$\lim_{t\to\infty}\ \frac1{A(t)}\left[\frac{U(tx)}{U(t)}-x^\gamma\right] = x^\gamma\,\frac{x^\rho-1}{\rho}, \qquad \forall x\gt0$$</div>
+              <p>(si $\rho=0$, la limite est $x^\gamma\log(x)$). $\rho$ est appelé <b>paramètre de second ordre</b>.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème 2.1.2 · Normalité asymptotique du quantile intermédiaire</p>
+              <p>Sous $\mathcal C_2(\gamma,\rho,A)$, si $K=K_n\to\infty$, $K/n\to0$, et $\sqrt K\,A(n/K)=O(1)$, alors :</p>
+              <div class="formula">$$\sqrt K\left(\frac{\hat q(1-K/n)}{q(1-K/n)}-1\right) \xrightarrow{\ \mathcal L\ } \mathcal N(0,\gamma^2)$$</div>
+              <p class="sense"><b>Sens :</b> la vitesse de convergence est en $\sqrt K$ (pas $\sqrt n$) : $K$ petit $\Rightarrow$ variance élevée ; $K$ grand $\Rightarrow$ biais élevé. C'est le compromis biais-variance central de toute l'estimation en queue lourde.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s14">
+            <div class="tophead"><span class="num">14</span><h2>Estimateur de Hill</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Cas particulier Pareto : construction du MLE</p>
+              <p>Si $X\sim\mathrm{Pareto}(\gamma)$, $F(x)=1-x^{-1/\gamma}$, $x\gt1$, densité $f(x)=\frac1\gamma x^{-1/\gamma-1}$. Log-vraisemblance sur un échantillon i.i.d. :</p>
+              <div class="formula">$$\ell(\gamma\mid x) = -n\log(\gamma) - \Big(\frac1\gamma+1\Big)\sum_{i=1}^n\log(x_i)$$</div>
+              <p>En annulant $\ell'(\gamma)$ (et vérifiant $\ell''\lt0$) : $\hat\gamma_n = \frac1n\sum_{i=1}^n\log(x_i)$ est l'unique MLE, consistant et asymptotiquement normal.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Définition &amp; Théorème · Estimateur de Hill (cas général)</p>
+              <p>Pour $X$ dans le domaine d'attraction de Fréchet ($\gamma\gt0$), à partir des $K$ plus grandes statistiques d'ordre :</p>
+              <div class="formula">$$\hat\gamma^H := \frac1K\sum_{i=1}^K\Big[\log(X_{n-i+1,n})-\log(X_{n-K,n})\Big]$$</div>
+              <p>Sous $\mathcal C_2(\gamma,\rho,A)$ avec $K=K_n\to\infty$, $K/n\to0$ et $\sqrt K\,A(n/K)\to\lambda\in\mathbb R$ :</p>
+              <div class="formula">$$\sqrt K(\hat\gamma^H-\gamma) \xrightarrow{\ \mathcal L\ } \mathcal N\!\left(\frac\lambda{1-\rho},\,\gamma^2\right)$$</div>
+              <p class="sense"><b>Sens :</b> $\hat\gamma^H$ est la moyenne des "log-excès" au-dessus du $(K{+}1)$-ème plus grand point : l'analogue empirique direct du MLE Pareto, appliqué seulement là où l'approximation "quasi-Pareto" (queue lourde) est justifiée : les $K$ plus grandes observations.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s15">
+            <div class="tophead"><span class="num">15</span><h2>Comment choisir $K$</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Critère de choix de $K$ (via la représentation de Rényi)</p>
+              <p>Si $Y_1,\dots,Y_n\sim\mathrm{Pareto}(\gamma)$ et $E_1,\dots,E_K\overset{\text{i.i.d.}}\sim\mathcal E(1)$, alors $\big(i\log(Y_{n-i+1,n}/Y_{n-i,n})\big)_{1\le i\le K} \overset{d}= (\gamma E_i)_{1\le i\le K}$. On construit $E_i^*:=i\log(X_{n-i+1,n}/X_{n-i,n})$, puis les couples $\big(\hat\gamma_K\log(\tfrac{K+1}{K+1-i}),\,E_i^{*}\big)_{1\le i\le K}$ pour vérifier (graphiquement ou statistiquement) que $K$ a été bien choisi, en les comparant à des $\mathrm{Exp}(1)$ théoriques.</p>
+              <p class="sense"><b>Sens :</b> en pratique, on trace $\hat\gamma^H_K$ en fonction de $K$ (« Hill plot ») et on cherche une zone de stabilité : ni trop de bruit ($K$ trop petit), ni trop de biais ($K$ trop grand).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s16">
+            <div class="tophead"><span class="num">16</span><h2>Estimateur de Weissman</h2></div>
+            <p>Objectif : estimer un quantile <b>extrême</b> $q(\beta_n)$, avec $n(1-\beta_n)\to c\lt\infty$ : c'est-à-dire situé <b>au-delà</b> de l'échantillon observé.</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Estimateur de Weissman du quantile extrême</p>
+              <p>On combine la relation (B) avec le quantile intermédiaire $\alpha_n=1-K/n$ (estimable directement) :</p>
+              <div class="formula">$$\hat q(\beta_n) = \left(\frac{n(1-\beta_n)}{K}\right)^{-\hat\gamma^H} X_{n-K,n}$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème 2.3.1 · Normalité asymptotique de l'estimateur de Weissman</p>
+              <p>Sous $\mathcal C_2(\gamma,\rho,A)$ avec $\rho\lt0$, $K=K_n\to\infty$, $K/n\to0$, $n(1-\beta_n)\to c\lt\infty$, et si de plus $\sqrt K/\log\!\big(K/(n(1-\beta_n))\big)\to\infty$ et $\sqrt K\,A(n/K)\to\lambda$ :</p>
+              <div class="formula">$$\frac{\sqrt K}{\log\!\big(K/(n(1-\beta_n))\big)}\left(\frac{\hat q(\beta_n)}{q(\beta_n)}-1\right) \xrightarrow{\ \mathcal L\ } \mathcal N\!\left(\frac\lambda{1-\rho},\,\gamma^2\right)$$</div>
+              <p class="sense"><b>Sens :</b> l'aboutissement pratique du chapitre : Hill (pour $\gamma$) + interpolation (B) permet d'estimer un quantile <b>bien au-delà</b> du plus grand point observé, avec une garantie de normalité asymptotique (donc un intervalle de confiance).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s17">
+            <div class="tophead"><span class="num">17</span><h2>Estimation d'une probabilité pour une grande valeur</h2></div>
+            <p>Symétrique de la fiche précédente : estimer $\mathbb P(X\gt y_n)$ pour $y_n\to\infty$, avec $n(1-F(y_n))\to c\lt\infty$.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Estimateur de la probabilité de dépassement</p>
+              <p>À partir du point intermédiaire (observé) $X_{n-K,n}$ :</p>
+              <div class="formula">$$\hat{\bar F}_n(y_n) = \left(\frac{y_n}{X_{n-K,n}}\right)^{-1/\hat\gamma^H} \big(1-\hat F_n(X_{n-K,n})\big), \qquad 1-\hat F_n(X_{n-K,n}) = \frac1n\sum_{i=1}^n \mathbf 1_{\{X_i\gt X_{n-K,n}\}} = \frac Kn$$</div>
+              <p class="sense"><b>Sens :</b> le miroir exact de l'estimateur de Weissman : on part d'une probabilité de dépassement <b>empirique connue</b> ($K/n$, calculable car $X_{n-K,n}$ est déjà observé) et on l'extrapole vers $y_n$ via l'exposant $-1/\hat\gamma^H$.</p>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 3 ================= -->
+      <section class="lecture" id="lecture-3">
+        <button class="lecture-head">
+          <span class="num">3</span>
+          <span class="title">Exercices &amp; corrections</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s18">
+            <div class="tophead"><span class="num">18</span><h2>Quantile explicite d'une loi de Pareto</h2></div>
+            <p><b>Énoncé.</b> Soit $F(x)=1-x^{-1/\gamma}$, $x\gt1$, $\gamma\gt0$ (loi de Pareto standard).</p>
+            <p>1. Trouver $a_n\gt0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge vers une GEV de paramètre de forme $\gamma$.<br>
+            2. Même question pour $F(x)=1-(1+\gamma x/\sigma)^{-1/\gamma}$, $x\gt0$, $\sigma\gt0$ (loi de Pareto généralisée).</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction · 1. Loi de Pareto standard</p>
+              <p>De $y=1-x^{-1/\gamma}\iff x=(1-y)^{-\gamma}$, on tire $q(\alpha)=(1-\alpha)^{-\gamma}$, puis $U(t)=q(1-1/t)=t^\gamma$. On pose :</p>
+              <div class="formula">$$a_n=\gamma U(n)=\gamma n^\gamma, \qquad b_n=U(n)=n^\gamma$$</div>
+              <p><b>Vérification</b> :</p>
+              <div class="formula">$$\mathbb P\!\left(\frac{M_n-b_n}{a_n}\le x\right)=F^n(a_nx+b_n)=\Big[1-(\gamma n^\gamma x+n^\gamma)^{-1/\gamma}\Big]^n=\left[1-\frac{(\gamma x+1)^{-1/\gamma}}{n}\right]^n \xrightarrow[n\to\infty]{} \exp\!\big\{-(1+\gamma x)^{-1/\gamma}\big\}=G_\gamma(x)\ \checkmark$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction · 2. Loi de Pareto généralisée</p>
+              <p>De $y=1-(1+\gamma x/\sigma)^{-1/\gamma}\iff x=\dfrac\sigma\gamma\big[(1-y)^{-\gamma}-1\big]$, on tire $q(\alpha)=\dfrac\sigma\gamma\big[(1-\alpha)^{-\gamma}-1\big]$, puis $U(t)=\dfrac\sigma\gamma(t^\gamma-1)$. On pose :</p>
+              <div class="formula">$$a_n=\gamma U(n)=\sigma(n^\gamma-1), \qquad b_n=U(n)=\frac\sigma\gamma(n^\gamma-1)$$</div>
+              <p class="sense"><b>Sens :</b> même démarche, même conclusion $G_\gamma$ : normal, la loi de Pareto généralisée <b>est</b> la loi limite des excès au-delà d'un seuil (Pickands-Balkema-de Haan, fiche 7) : il est cohérent qu'elle attire elle-même vers une GEV de même $\gamma$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s19">
+            <div class="tophead"><span class="num">19</span><h2>Deux variantes de la loi de Gumbel</h2></div>
+            <p><b>Énoncé.</b> Soit $F(x)=e^{-1/x}$, $x\gt0$.</p>
+            <p>1. Trouver $a_n\ge0$, $b_n$ telles que $(M_n-b_n)/a_n$ converge vers $G_1$ ($\gamma=1$).<br>
+            2. Soit $Y_i=\max(X_{i-1},X_i)/2$ pour $i=2,\dots,n$. Montrer que $Y_i\sim F$, puis que $\big(\max_{2\le i\le n}Y_i-b_n\big)/a_n$ converge encore vers une GEV : déterminer $\gamma$ et discuter les constantes.</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction · 1. Le maximum des $X_i$</p>
+              <p>De $y=e^{-1/x}\iff x=-1/\log(y)$, on tire $q(\alpha)=-1/\log(\alpha)$, puis $U(t)=-1/\log(1-1/t)$. Avec $\gamma=1$ :</p>
+              <div class="formula">$$a_n=b_n=U(n)=\frac{-1}{\log(1-1/n)}$$</div>
+              <p><b>Vérification</b> : $\mathbb P\big((M_n-b_n)/a_n\le x\big)=\exp\{-n/(a_nx+b_n)\}=\exp\Big\{\dfrac{n\log(1-1/n)}{x+1}\Big\} \to \exp\{-(x+1)^{-1}\}=G_1(x)$, car $n\log(1-1/n)\to-1$. $\checkmark$</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction · 2. Un maximum mobile (dépendant)</p>
+              <p><b>$Y_i\sim F$</b> : $\mathbb P(Y_i\le y)=\mathbb P\big(\max(X_{i-1},X_i)\le 2y\big)=F(2y)^2=\big(e^{-1/(2y)}\big)^2=e^{-1/y}=F(y)$. Même loi marginale que les $X_i$ : mais $Y_i$ et $Y_{i+1}$ partagent $X_i$ : ce ne sont <b>pas</b> des variables indépendantes.</p>
+              <p>On calcule directement, en notant que les contraintes $\max(X_{i-1},X_i)\le 2z$ pour $i=2,\dots,n$ se recouvrent exactement en « tous les $X_i\le 2z$ » :</p>
+              <div class="formula">$$\mathbb P\Big(\max_{2\le i\le n}Y_i\le z\Big)=\mathbb P(X_1\le2z,\dots,X_n\le2z)=F(2z)^n=e^{-n/(2z)}$$</div>
+              <p>En reprenant $z=a_nx+b_n$ avec les <b>mêmes</b> $a_n=b_n=U(n)\sim n$ (car $n/U(n)\to1$) :</p>
+              <div class="formula">$$e^{-n/(2U(n)(x+1))} \xrightarrow[n\to\infty]{} \exp\!\left\{-\frac1{2(x+1)}\right\} = \exp\{-(2x+2)^{-1}\} = G_1(2x+1)$$</div>
+              <p class="sense"><b>Sens :</b> même $\gamma=1$ qu'à la question 1 : la dépendance d'ordre 1 entre les $Y_i$ ne change <b>pas</b> l'indice des valeurs extrêmes. Elle se traduit seulement par un facteur $2$ sur la constante d'échelle effective ($a_n/2$ au lieu de $a_n$ pour retrouver la forme standard $G_1(x)$) : les $\max Y_i$ « voient » deux fois moins d'observations indépendantes que les $\max X_i$, ce qui est exactement ce que mesure l'indice extrémal en théorie des séries dépendantes.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s20">
+            <div class="tophead"><span class="num">20</span><h2>Le paramètre de second ordre sur un exemple explicite (loi de Burr)</h2></div>
+            <p><b>Énoncé.</b> Soit $F(x)=1-\big(1+x^{-\rho/\gamma}\big)^{1/\rho}$, $x\gt0$, avec $\gamma\gt0$ et $\rho\lt0$ (loi de Burr). Sans calculer $a_n,b_n$ explicitement, montrer directement que $U(tx)/U(t)\to x^\gamma$ quand $t\to\infty$ : c'est-à-dire que $F$ appartient bien au domaine d'attraction de Fréchet, d'indice $\gamma$.</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction</p>
+              <p>On inverse $F$ pour obtenir $q$ : de $y=1-(1+x^{-\rho/\gamma})^{1/\rho} \iff (1-y)^\rho=1+x^{-\rho/\gamma} \iff x^{-\rho/\gamma}=(1-y)^\rho-1$, on tire :</p>
+              <div class="formula">$$q(\alpha)=\big[(1-\alpha)^\rho-1\big]^{-\gamma/\rho}, \qquad U(t)=q(1-1/t)=\big[t^{-\rho}-1\big]^{-\gamma/\rho}$$</div>
+              <p>Comme $\rho\lt0$, on a $-\rho\gt0$ donc $t^{-\rho}\to\infty$ quand $t\to\infty$, d'où $U(t)\underset{t\to\infty}\sim \big(t^{-\rho}\big)^{-\gamma/\rho}=t^{(-\rho)\times(-\gamma/\rho)}=t^\gamma$. Par conséquent :</p>
+              <div class="formula">$$\frac{U(tx)}{U(t)} \xrightarrow[t\to\infty]{} \frac{(tx)^\gamma}{t^\gamma}=x^\gamma, \qquad \forall x\gt0 \quad\checkmark$$</div>
+              <p class="sense"><b>Sens :</b> cet exercice illustre exactement le rôle du paramètre $\rho$ introduit à la fiche 13 : la loi de Burr est l'exemple canonique vérifiant la condition du second ordre $\mathcal C_2(\gamma,\rho,A)$ pour un $\rho$ arbitrairement fixé, ce qui en fait un excellent banc d'essai pour étudier (par simulation) la vitesse de convergence des estimateurs de Hill et de Weissman en fonction de $\rho$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s21">
+            <div class="tophead"><span class="num">21</span><h2>Application numérique : Hill &amp; Weissman sur un petit échantillon</h2></div>
+            <p><b>Énoncé.</b> On observe un échantillon trié de $n=10$ valeurs (unité arbitraire) : $x_{(1)},\dots,x_{(10)} = 1,\,2,\,3,\,4,\,5,\,7,\,10,\,15,\,25,\,50$. On suppose la loi sous-jacente à queue lourde et on choisit $K=4$ (les 4 plus grandes valeurs).</p>
+            <p>1. Calculer l'estimateur de Hill $\hat\gamma^H$.<br>
+            2. En déduire une estimation du quantile extrême $q(0{,}99)$ par la méthode de Weissman.</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction · 1. Estimateur de Hill</p>
+              <p>Les 4 plus grandes valeurs sont $X_{7,10}=10$, $X_{8,10}=15$, $X_{9,10}=25$, $X_{10,10}=50$ ; le seuil est $X_{n-K,n}=X_{6,10}=7$.</p>
+              <div class="formula">$$\hat\gamma^H=\frac14\left[\log\frac{50}{7}+\log\frac{25}{7}+\log\frac{15}{7}+\log\frac{10}{7}\right]=\frac14\log\frac{50\times25\times15\times10}{7^4}=\frac14\log\frac{187500}{2401}\approx\frac{4{,}358}{4}\approx1{,}09$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Correction · 2. Estimateur de Weissman</p>
+              <div class="formula">$$\hat q(0{,}99)=\left(\frac{n(1-\beta)}{K}\right)^{-\hat\gamma^H} X_{n-K,n} = \left(\frac{10\times0{,}01}{4}\right)^{-1{,}09}\times7 = (0{,}025)^{-1{,}09}\times7 \approx 55{,}6\times7 \approx 389$$</div>
+              <p class="sense"><b>Sens :</b> sur seulement 10 observations, dont la plus grande vaut 50, on extrapole un quantile estimé à <b>389</b> : plus de 7 fois la plus grande valeur observée. C'est toute la puissance (et le risque) de l'extrapolation en queue lourde : le résultat dépend fortement de l'hypothèse de queue lourde et de la précision de $\hat\gamma^H$, à interpréter avec la prudence qu'impose un $K=4$ aussi petit.</p>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <div class="mnemonics">
+        <h2>Chaînes à retenir</h2>
+        <div class="chain"><b>$M_n$ seule → dégénérée</b> → il faut normaliser : $(M_n-b_n)/a_n$ → loi non dégénérée</div>
+        <div class="chain"><b>Fisher-Tippett</b> : la seule limite possible est $G_\gamma$ (GEV) → γ = indice des valeurs extrêmes</div>
+        <div class="chain"><b>γ&gt;0 Fréchet (lourde)</b> · <b>γ=0 Gumbel (légère)</b> · <b>γ&lt;0 Weibull (courte)</b></div>
+        <div class="chain"><b>Pickands-Balkema-de Haan</b> : excès au-dessus d'un seuil → GPD, même γ que la GEV</div>
+        <div class="chain"><b>Quantile classique</b> consistant si α fixé → <b>plus valable si α→1</b> → il faut le quantile intermédiaire $X_{n-K,n}$, K→∞, K/n→0</div>
+        <div class="chain"><b>Estimateur de Hill</b> = moyenne des log-excès au-dessus du (K+1)-ème point → estime γ</div>
+        <div class="chain"><b>Interpolation (B)</b> + Hill → <b>estimateur de Weissman</b> : extrapole un quantile au-delà de l'échantillon</div>
+        <div class="chain"><b>Toujours le même compromis</b> : K petit → variance ↑ ; K grand → biais ↑</div>
+        <p class="source-note">Mémo basé sur les notes du cours <i>Théorie des Valeurs Extrêmes</i> : J.G. Gómez-García, ENSAI 3A GR/GS, 2025-2026 (chapitres 1 et 2, séances à ce jour).</p>
+      </div>
+
+    </main>
+  </div>
+
+  <button id="toTop" aria-label="Retour en haut">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+<script>
+(function(){
+  "use strict";
+
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  function getStored(){ try{ return localStorage.getItem('tve-memo-theme'); }catch(e){ return null; } }
+  function setStored(v){ try{ localStorage.setItem('tve-memo-theme', v); }catch(e){} }
+  var stored = getStored();
+  if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next;
+    if(!current){ next = prefersDark ? 'light' : 'dark'; }
+    else if(current === 'dark'){ next = 'light'; }
+    else { next = 'dark'; }
+    root.setAttribute('data-theme', next);
+    setStored(next);
+  });
+
+  var bar = document.getElementById('progress');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    bar.style.width = height > 0 ? (scrollTop / height * 100) + '%' : '0%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  var toTop = document.getElementById('toTop');
+  document.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 500);
+  }, { passive: true });
+  toTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+  function markFormulaScroll(){
+    document.querySelectorAll('.formula').forEach(function(f){
+      f.classList.toggle('is-scrollable', f.scrollWidth > f.clientWidth + 2);
+    });
+  }
+  (function hookMathJaxReady(tries){
+    tries = tries || 0;
+    if(window.MathJax && window.MathJax.startup && window.MathJax.startup.promise){
+      window.MathJax.startup.promise.then(markFormulaScroll);
+    } else if(tries < 100){
+      setTimeout(function(){ hookMathJaxReady(tries + 1); }, 100);
+    } else {
+      markFormulaScroll();
+    }
+  })();
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(markFormulaScroll, 150);
+  });
+
+  document.querySelectorAll('.lecture-head').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.lecture').classList.toggle('collapsed');
+      setTimeout(markFormulaScroll, 50);
+    });
+  });
+
+  var toc = document.getElementById('toc');
+  var navToggle = document.getElementById('navToggle');
+  var overlay = document.getElementById('mobileOverlay');
+  function closeNav(){ toc.classList.remove('open'); overlay.hidden = true; }
+  navToggle.addEventListener('click', function(){
+    toc.classList.add('open'); overlay.hidden = false;
+  });
+  overlay.addEventListener('click', closeNav);
+  toc.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc-lecture a'));
+  var topics = Array.prototype.slice.call(document.querySelectorAll('article.topic'));
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id;
+        links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  topics.forEach(function(t){ io.observe(t); });
+
+  var search = document.getElementById('search');
+  var count = document.getElementById('searchCount');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box'));
+  function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  var boxData = boxes.map(function(b){ return { el: b, text: normalize(b.textContent) }; });
+
+  search.addEventListener('input', function(){
+    var q = normalize(search.value.trim());
+    if(!q){
+      boxData.forEach(function(b){ b.el.classList.remove('dim'); });
+      count.textContent = '';
+      document.querySelectorAll('.lecture').forEach(function(l){ l.classList.remove('collapsed'); });
+      return;
+    }
+    var matches = 0;
+    boxData.forEach(function(b){
+      var hit = b.text.indexOf(q) !== -1;
+      b.el.classList.toggle('dim', !hit);
+      if(hit){
+        matches++;
+        var lec = b.el.closest('.lecture');
+        if(lec) lec.classList.remove('collapsed');
+      }
+    });
+    count.textContent = matches + ' résultat' + (matches === 1 ? '' : 's');
+    setTimeout(markFormulaScroll, 50);
+  });
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.documentElement.style.scrollBehavior = 'auto';
+  }
+})();
+</script>
+
+</body>
+</html>

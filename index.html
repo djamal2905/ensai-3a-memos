@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mémos ENSAI 3A</title>
+<title>Mémos ENSAI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -30,6 +30,8 @@
   h1{ font-family:"Fraunces",Georgia,serif; font-size:clamp(1.6rem,1.2rem+2vw,2.3rem); margin:0 0 8px; text-wrap:balance; }
   .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
   p.lede{ color:var(--muted); max-width:60ch; margin:10px 0 34px; }
+  h3.year{ font:700 .74rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:28px 0 12px; }
+  h3.year:first-of-type{ margin-top:0; }
   .course{ margin-bottom:14px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); padding:22px 24px; }
   .course h2{ font-family:"Fraunces",serif; font-size:1.15rem; margin:0 0 4px; }
   .course p{ color:var(--muted); font-size:.9rem; margin:0 0 14px; }
@@ -41,13 +43,15 @@
 </head>
 <body>
 <main>
-  <span class="eyebrow">ENSAI · 3A</span>
+  <span class="eyebrow">ENSAI</span>
   <h1>Mémos de cours</h1>
   <p class="lede">Synthèses de cours au format mémo consultable : définitions, théorèmes, formules et diagrammes.</p>
 
+  <h3 class="year">3A</h3>
+
   <div class="course">
     <h2>Deep Learning</h2>
-    <p>MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers — 41 fiches.</p>
+    <p>MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers, 41 fiches.</p>
     <div class="links">
       <a href="deep-learning/memo-cours.html">Mémo de cours →</a>
       <a href="deep-learning/rappel-express.html">Rappel express →</a>
@@ -60,6 +64,24 @@
     <div class="links">
       <a href="ml/memo-cours.html">Mémo de cours →</a>
       <a href="ml/cheatsheet-sklearn.html">Cheat sheet scikit-learn →</a>
+    </div>
+  </div>
+
+  <div class="course">
+    <h2>Théorie des Valeurs Extrêmes</h2>
+    <p>Modèles de valeurs extrêmes (Fisher-Tippett, GEV), estimation en queue lourde (Hill, Weissman), exercices corrigés, 21 fiches.</p>
+    <div class="links">
+      <a href="tve/memo-cours.html">Mémo de cours →</a>
+    </div>
+  </div>
+
+  <h3 class="year">2A</h3>
+
+  <div class="course">
+    <h2>Régression linéaire et généralisée</h2>
+    <p>Régression linéaire (MCO, validation, sélection de modèles), ANOVA/ANCOVA, modèles linéaires généralisés (logistique, comptage), 59 fiches.</p>
+    <div class="links">
+      <a href="regression-lineaire-generalisee/memo-cours.html">Mémo de cours →</a>
     </div>
   </div>
 

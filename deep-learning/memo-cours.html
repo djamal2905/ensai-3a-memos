@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Deep Learning — Mémo de cours</title>
+<title>Deep Learning : Mémo de cours</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -331,7 +331,7 @@ window.MathJax = {
     <aside class="toc" id="toc">
       <h2>Sommaire</h2>
       <div class="toc-lecture">
-        <p>1 — Introduction au Deep Learning</p>
+        <p>1 : Introduction au Deep Learning</p>
         <ol>
           <li><a href="#s1"><span class="toc-num">1</span>Du connexionnisme au DL</a></li>
           <li><a href="#s2"><span class="toc-num">2</span>De la régression au MLP</a></li>
@@ -346,7 +346,7 @@ window.MathJax = {
         </ol>
       </div>
       <div class="toc-lecture">
-        <p>2 — Réseaux convolutifs (CNN)</p>
+        <p>2 : Réseaux convolutifs (CNN)</p>
         <ol>
           <li><a href="#s11"><span class="toc-num">11</span>Pourquoi pas un MLP ?</a></li>
           <li><a href="#s12"><span class="toc-num">12</span>Convolution : opération &amp; couche</a></li>
@@ -360,7 +360,7 @@ window.MathJax = {
         </ol>
       </div>
       <div class="toc-lecture">
-        <p>3 — Réseaux récurrents (RNN)</p>
+        <p>3 : Réseaux récurrents (RNN)</p>
         <ol>
           <li><a href="#s20"><span class="toc-num">20</span>Données séquentielles</a></li>
           <li><a href="#s21"><span class="toc-num">21</span>RNN vanille</a></li>
@@ -373,7 +373,7 @@ window.MathJax = {
         </ol>
       </div>
       <div class="toc-lecture">
-        <p>4 — Modèles génératifs</p>
+        <p>4 : Modèles génératifs</p>
         <ol>
           <li><a href="#s28"><span class="toc-num">28</span>Autoencodeur (AE)</a></li>
           <li><a href="#s29"><span class="toc-num">29</span>Conv. transposée &amp; génération naïve</a></li>
@@ -386,7 +386,7 @@ window.MathJax = {
         </ol>
       </div>
       <div class="toc-lecture">
-        <p>5 — Transformers</p>
+        <p>5 : Transformers</p>
         <ol>
           <li><a href="#s36"><span class="toc-num">36</span>Pourquoi pas RNN ?</a></li>
           <li><a href="#s37"><span class="toc-num">37</span>Encodeur-décodeur &amp; entraînement</a></li>
@@ -404,7 +404,7 @@ window.MathJax = {
         <h1>Du perceptron aux Transformers</h1>
         <p>Synthèse complète du cours de Deep Learning : MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers.</p>
         <div class="meta">
-          <span>📄 <b>Source</b> : J. Faouzi, I. Yamane &amp; A. Bousse — ENSAI 3A, 2025</span>
+          <span>📄 <b>Source</b> : J. Faouzi, I. Yamane &amp; A. Bousse : ENSAI 3A, 2025</span>
           <span>📚 <b>41 fiches</b></span>
           <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
@@ -455,7 +455,7 @@ window.MathJax = {
             <div class="box box-thm">
               <p class="box-label">Proposition · Composer des couches affines reste affine</p>
               <div class="formula">$$\boldsymbol h^{[j+1]} = \boldsymbol W^{[j]}\left(\boldsymbol W^{[j-1]}\boldsymbol h^{[j-1]}+\boldsymbol b^{[j-1]}\right)+\boldsymbol b^{[j]} = \underbrace{\boldsymbol W^{[j]}\boldsymbol W^{[j-1]}}_{\tilde{\boldsymbol W}}\boldsymbol h^{[j-1]} + \underbrace{\boldsymbol W^{[j]}\boldsymbol b^{[j-1]}+\boldsymbol b^{[j]}}_{\tilde{\boldsymbol b}}$$</div>
-              <p class="sense"><b>Sens :</b> empiler des couches purement affines équivaut à une seule couche affine — il faut donc intercaler une <b>non-linéarité</b> entre les couches, l'idée clé qui motive les fonctions d'activation.</p>
+              <p class="sense"><b>Sens :</b> empiler des couches purement affines équivaut à une seule couche affine : il faut donc intercaler une <b>non-linéarité</b> entre les couches, l'idée clé qui motive les fonctions d'activation.</p>
             </div>
           </article>
 
@@ -475,18 +475,18 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Couche (layer)</p>
               <div class="formula">$$\boldsymbol h^{[j+1]} = g\left(\boldsymbol W^{[j+1]}\boldsymbol h^{[j]}+\boldsymbol b^{[j+1]}\right)$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol h^{[j]}$ = entrée de la couche, $\boldsymbol W^{[j+1]}$ = poids, $\boldsymbol b^{[j+1]}$ = biais, $g$ = activation. $f_j:\boldsymbol x\mapsto \boldsymbol W^{[j]}\boldsymbol x+\boldsymbol b^{[j]}$ est la couche linéaire (dense / fully connected) — un des « blocs » caractéristiques des réseaux de neurones.</p>
+              <p class="sense"><b>Sens :</b> $\boldsymbol h^{[j]}$ = entrée de la couche, $\boldsymbol W^{[j+1]}$ = poids, $\boldsymbol b^{[j+1]}$ = biais, $g$ = activation. $f_j:\boldsymbol x\mapsto \boldsymbol W^{[j]}\boldsymbol x+\boldsymbol b^{[j]}$ est la couche linéaire (dense / fully connected) : un des « blocs » caractéristiques des réseaux de neurones.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · MLP à $k$ couches cachées</p>
               <div class="formula">$$\boldsymbol h^{[1]}=g_1(\boldsymbol W^{[1]}\boldsymbol x+\boldsymbol b^{[1]}), \quad \dots, \quad \hat{\boldsymbol y}=g_{k+1}(\boldsymbol W^{[k+1]}\boldsymbol h^{[k]}+\boldsymbol b^{[k+1]})$$</div>
-              <p class="sense"><b>Sens :</b> $k$ = profondeur (depth) du réseau ; un $k$ grand donne un réseau « profond » — d'où <i>deep</i> learning.</p>
+              <p class="sense"><b>Sens :</b> $k$ = profondeur (depth) du réseau ; un $k$ grand donne un réseau « profond » : d'où <i>deep</i> learning.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Remarque · Nombre de paramètres</p>
-              <p>Chaque couche $j$ possède $n_{j+1}\times(n_j+1)$ paramètres (poids + biais). Le réseau complet en comporte la somme sur toutes les couches — potentiellement énorme si les couches sont larges.</p>
+              <p>Chaque couche $j$ possède $n_{j+1}\times(n_j+1)$ paramètres (poids + biais). Le réseau complet en comporte la somme sur toutes les couches : potentiellement énorme si les couches sont larges.</p>
             </div>
           </article>
 
@@ -497,20 +497,20 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · ReLU et variantes</p>
               <div class="formula">$$\mathrm{ReLU}(x)=\max(0,x)=x\times\mathbf 1(x>0) \qquad \text{Leaky ReLU}(x;\alpha)=\begin{cases}x & x\ge0\\ \alpha x & \text{sinon}\end{cases}$$</div>
-              <p class="sense"><b>Sens :</b> filtre les valeurs négatives, peu coûteuse à calculer — très utilisée dans les couches cachées.</p>
+              <p class="sense"><b>Sens :</b> filtre les valeurs négatives, peu coûteuse à calculer : très utilisée dans les couches cachées.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Sigmoïde, tanh, softmax</p>
               <div class="formula">$$\sigma(x)=\frac1{1+e^{-x}} \qquad \tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}} \qquad \mathrm{softmax}(x_1,\dots,x_p)_j=\frac{e^{x_j}}{\sum_k e^{x_k}}$$</div>
-              <p class="sense"><b>Sens :</b> forcent la sortie dans un intervalle borné ($[0,1]$, $[-1,1]$, ou un simplexe de probabilités) — utiles en sortie de réseau (classification).</p>
+              <p class="sense"><b>Sens :</b> forcent la sortie dans un intervalle borné ($[0,1]$, $[-1,1]$, ou un simplexe de probabilités) : utiles en sortie de réseau (classification).</p>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Théorème · Approximation universelle (version courte)</p>
               <p>Soit $f:\mathbb R^n\to\mathbb R^p$ continue, $X\subset\mathbb R^n$ compact, $g:\mathbb R\to\mathbb R$ continue non affine. Pour tout $\epsilon>0$, il existe un réseau $\hat f:\mathbb R^n\to\mathbb R^p$ d'activation $g$ tel que :</p>
               <div class="formula">$$\sup_{x\in X}\|f(x)-\hat f(x)\|<\epsilon$$</div>
-              <p class="sense"><b>Sens :</b> c'est un théorème d'<b>existence</b> — il ne dit ni combien de neurones il faut, ni comment entraîner un tel réseau.</p>
+              <p class="sense"><b>Sens :</b> c'est un théorème d'<b>existence</b> : il ne dit ni combien de neurones il faut, ni comment entraîner un tel réseau.</p>
             </div>
           </article>
 
@@ -527,7 +527,7 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Remarque · Procédure générale d'entraînement</p>
               <p><b>Tant que</b> le critère d'arrêt n'est pas satisfait : calculer le coût sur un batch d'exemples (<i>forward</i>), puis mettre à jour les paramètres entraînables (<i>backward</i>).</p>
-              <p class="sense"><b>Sens :</b> la surface $J(\theta)$ peut être très torturée en haute dimension (<i>loss landscape</i>) — d'où la difficulté de l'optimisation.</p>
+              <p class="sense"><b>Sens :</b> la surface $J(\theta)$ peut être très torturée en haute dimension (<i>loss landscape</i>) : d'où la difficulté de l'optimisation.</p>
             </div>
           </article>
 
@@ -537,19 +537,19 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Descente de gradient (GD)</p>
               <div class="formula">$$\theta_k = \theta_{k-1} - \eta \times \nabla J(\theta_{k-1})$$</div>
-              <p class="sense"><b>Sens :</b> le gradient pointe vers les valeurs croissantes de $J$ ; on avance dans la direction opposée. $\eta>0$ = taux d'apprentissage (<i>learning rate</i>). Aucun $\eta$ n'est universel — il dépend de $J$ (souvent grand au début, réduit ensuite).</p>
+              <p class="sense"><b>Sens :</b> le gradient pointe vers les valeurs croissantes de $J$ ; on avance dans la direction opposée. $\eta>0$ = taux d'apprentissage (<i>learning rate</i>). Aucun $\eta$ n'est universel : il dépend de $J$ (souvent grand au début, réduit ensuite).</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Différentiation automatique (autograd)</p>
               <p>Pour <b>prédire</b>, un calcul <i>avant</i> (forward) suffit. Pour le <b>gradient</b>, un calcul <i>arrière</i> (backward, rétropropagation) est nécessaire, fondé sur la règle de la chaîne $(g\circ f)'=(g'\circ f)\cdot f'$. <code>torch.autograd</code> l'implémente automatiquement.</p>
-              <p class="sense"><b>Sens :</b> dans un réseau profond, calculer les gradients de la sortie vers l'entrée (de droite à gauche) ne nécessite que des produits <b>matrice/vecteur</b> — jamais matrice/matrice, ce qui est bien moins coûteux.</p>
+              <p class="sense"><b>Sens :</b> dans un réseau profond, calculer les gradients de la sortie vers l'entrée (de droite à gauche) ne nécessite que des produits <b>matrice/vecteur</b> : jamais matrice/matrice, ce qui est bien moins coûteux.</p>
             </div>
           </article>
 
           <article class="topic" id="s7">
             <div class="tophead"><span class="num">7</span><h2>Gradient exact, stochastique, mini-batch</h2></div>
-            <p>Calculer le gradient exact $\nabla J(\theta)=\frac1n\sum_i \nabla L_i(\theta)$ à chaque itération devient trop coûteux quand $n$ est grand — peut-on l'approximer ?</p>
+            <p>Calculer le gradient exact $\nabla J(\theta)=\frac1n\sum_i \nabla L_i(\theta)$ à chaque itération devient trop coûteux quand $n$ est grand : peut-on l'approximer ?</p>
 
             <div class="box box-def">
               <p class="box-label">Définition · Trois estimateurs du gradient</p>
@@ -579,7 +579,7 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Momentum</p>
               <div class="formula">$$\boldsymbol m_k=\beta\times\boldsymbol m_{k-1}+(1-\beta)\times\boldsymbol g_k \qquad \Delta\theta_k=-\eta\times\boldsymbol m_k$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol m_k$ = moyenne mobile exponentielle des gradients — lisse le bruit du gradient mini-batch en tenant compte de l'historique. Analogie : l'inertie d'un objet en mouvement.</p>
+              <p class="sense"><b>Sens :</b> $\boldsymbol m_k$ = moyenne mobile exponentielle des gradients : lisse le bruit du gradient mini-batch en tenant compte de l'historique. Analogie : l'inertie d'un objet en mouvement.</p>
             </div>
 
             <div class="box box-def">
@@ -614,7 +614,7 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Remarque · Dropout</p>
               <p>Régularisation qui annule aléatoirement une fraction des unités <b>seulement pendant l'entraînement</b> (jamais à l'inférence).</p>
-              <p class="sense"><b>Sens :</b> empêche la co-adaptation excessive des neurones — une forme implicite d'ensembling de sous-réseaux.</p>
+              <p class="sense"><b>Sens :</b> empêche la co-adaptation excessive des neurones : une forme implicite d'ensembling de sous-réseaux.</p>
             </div>
           </article>
 
@@ -624,12 +624,12 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Remarque · Dates clés</p>
               <p>1958 perceptron · fin 1980s rétropropagation &amp; auto-encodeur · 1989 CNN · 1997 LSTM · <b>2012 AlexNet</b> · 2017 Transformer.</p>
-              <p class="sense"><b>Sens :</b> le succès récent tient à (beaucoup) plus de puissance de calcul, (beaucoup) plus de données disponibles, et (beaucoup) plus de travaux de recherche — pas à une rupture théorique soudaine.</p>
+              <p class="sense"><b>Sens :</b> le succès récent tient à (beaucoup) plus de puissance de calcul, (beaucoup) plus de données disponibles, et (beaucoup) plus de travaux de recherche : pas à une rupture théorique soudaine.</p>
             </div>
 
             <div class="box box-warn">
               <p class="box-label">⚠ Le Deep Learning n'est pas une solution à tout</p>
-              <p>Biais de publication (peu d'échecs rapportés) · accessibilité limitée (données, calcul) · explicabilité faible et peu fiable · risques de biais/équité · peu de garanties théoriques · justifications parfois empiriques (essais-erreurs) — un chercheur a qualifié le domaine d'« alchimie ».</p>
+              <p>Biais de publication (peu d'échecs rapportés) · accessibilité limitée (données, calcul) · explicabilité faible et peu fiable · risques de biais/équité · peu de garanties théoriques · justifications parfois empiriques (essais-erreurs) : un chercheur a qualifié le domaine d'« alchimie ».</p>
             </div>
           </article>
 
@@ -651,14 +651,14 @@ window.MathJax = {
 
             <div class="box box-warn">
               <p class="box-label">⚠ Explosion du nombre de paramètres</p>
-              <p>Une image de $1280\times 960$ contient $1\,228\,800$ pixels. Même un perceptron à une seule couche produisant <b>un seul</b> scalaire exige déjà une matrice $\boldsymbol W$ de taille $1\,228\,800\times 1$ — et le coût est multiplié par le nombre de neurones de la couche suivante.</p>
+              <p>Une image de $1280\times 960$ contient $1\,228\,800$ pixels. Même un perceptron à une seule couche produisant <b>un seul</b> scalaire exige déjà une matrice $\boldsymbol W$ de taille $1\,228\,800\times 1$ : et le coût est multiplié par le nombre de neurones de la couche suivante.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Remarque · Deux <i>a priori</i> à exploiter</p>
               <p><b>1. Localité</b> : l'information utile d'une image est locale. Des pixels éloignés sont peu corrélés ; un changement brutal entre pixels voisins signale un bord d'objet, une couleur constante sur une région signale une surface lisse. La composition globale importe moins pour la reconnaissance.</p>
               <p><b>2. Invariance par translation</b> : déplacer un chat dans l'image ne change pas l'objet. On veut donc réutiliser <b>le même détecteur</b> sur toutes les régions.</p>
-              <p class="sense"><b>Sens :</b> ce sont des <i>connaissances a priori</i> (prior knowledge) que l'on injecte dans l'architecture — pas quelque chose que le réseau doit redécouvrir à partir des données.</p>
+              <p class="sense"><b>Sens :</b> ce sont des <i>connaissances a priori</i> (prior knowledge) que l'on injecte dans l'architecture : pas quelque chose que le réseau doit redécouvrir à partir des données.</p>
             </div>
 
             <div class="box box-def">
@@ -691,7 +691,7 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Remarque · Linéarité, parcimonie, GPU</p>
               <p>La convolution est linéaire : elle s'exprime comme un produit par une matrice <b>creuse</b>. Ses multiplications et sommations se parallélisent très bien, et les GPU l'exécutent très vite.</p>
-              <p class="sense"><b>Sens :</b> c'est précisément ce qui rend possibles des réseaux <b>très profonds</b> — un MLP dense de même profondeur serait hors de portée.</p>
+              <p class="sense"><b>Sens :</b> c'est précisément ce qui rend possibles des réseaux <b>très profonds</b> : un MLP dense de même profondeur serait hors de portée.</p>
             </div>
           </article>
 
@@ -717,15 +717,15 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Couche de pooling</p>
-              <p>Agrégation <b>locale</b> : chaque région de la carte $\boldsymbol h^{[j-1]}$ est résumée par une seule statistique — <b>max</b> (le plus courant), <b>moyenne</b>, somme, sous-échantillonnage aléatoire, norme $L_2$…</p>
+              <p>Agrégation <b>locale</b> : chaque région de la carte $\boldsymbol h^{[j-1]}$ est résumée par une seule statistique : <b>max</b> (le plus courant), <b>moyenne</b>, somme, sous-échantillonnage aléatoire, norme $L_2$…</p>
               <div class="formula">$$h^{[j]}_{a,b} = \max_{(k,l)\in \mathcal R_{a,b}} h^{[j-1]}_{k,l} \qquad\text{ou}\qquad h^{[j]}_{a,b} = \frac{1}{|\mathcal R_{a,b}|}\sum_{(k,l)\in\mathcal R_{a,b}} h^{[j-1]}_{k,l}$$</div>
-              <p class="sense"><b>Sens :</b> deux effets — <b>réduire</b> la taille de la représentation, et <b>augmenter l'invariance</b> aux petites translations. Aucun paramètre à apprendre.</p>
+              <p class="sense"><b>Sens :</b> deux effets : <b>réduire</b> la taille de la représentation, et <b>augmenter l'invariance</b> aux petites translations. Aucun paramètre à apprendre.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Remarque · Max ou moyenne ?</p>
               <p>Le <b>max</b> laisse <b>ressortir</b> les caractéristiques locales fortes ; la <b>moyenne</b> tend à les <b>noyer</b> en cherchant à résumer toute l'information.</p>
-              <p class="sense"><b>Sens :</b> analogie du <i>pixel art</i> — même à très basse résolution, les formes caractéristiques restent reconnaissables si l'on garde les traits saillants.</p>
+              <p class="sense"><b>Sens :</b> analogie du <i>pixel art</i> : même à très basse résolution, les formes caractéristiques restent reconnaissables si l'on garde les traits saillants.</p>
             </div>
           </article>
 
@@ -736,7 +736,7 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Padding</p>
               <p>Comment traiter les bords ? <b>Ne rien faire</b> ⟹ réduction de la largeur/hauteur. <b>Ajouter des zéros sur les bords</b> (padding) ⟹ largeur/hauteur <b>conservées</b>.</p>
-              <p class="sense"><b>Sens :</b> sans padding, empiler $k$ convolutions $3\times3$ rogne l'image de $2k$ pixels — un vrai problème pour les réseaux profonds.</p>
+              <p class="sense"><b>Sens :</b> sans padding, empiler $k$ convolutions $3\times3$ rogne l'image de $2k$ pixels : un vrai problème pour les réseaux profonds.</p>
             </div>
 
             <div class="box box-def">
@@ -749,7 +749,7 @@ window.MathJax = {
               <p class="box-label">Définition · Canaux (channels)</p>
               <p>Axe supplémentaire du tenseur, destiné à garder plusieurs <b>types</b> de features :</p>
               <div class="formula">$$\boldsymbol X \in \mathbb R^{\text{examples}\,\times\,\text{channels}\,\times\,\text{height}\,\times\,\text{width}}$$</div>
-              <p class="sense"><b>Sens :</b> en entrée, 3 canaux (Rouge-Vert-Bleu). Dans une couche cachée, <b>autant de canaux que de noyaux appris</b> dans cette couche — chaque noyau produit sa propre carte d'activation.</p>
+              <p class="sense"><b>Sens :</b> en entrée, 3 canaux (Rouge-Vert-Bleu). Dans une couche cachée, <b>autant de canaux que de noyaux appris</b> dans cette couche : chaque noyau produit sa propre carte d'activation.</p>
             </div>
           </article>
 
@@ -782,8 +782,8 @@ window.MathJax = {
 
             <div class="box box-thm">
               <p class="box-label">Théorème (empirique) · ResNet (2015) et les résidus</p>
-              <p><b>Constat</b> : à structure identique, un réseau à 56 couches fait <b>pire qu'un réseau à 20 couches — en erreur d'entraînement comme en erreur de test</b> (ce n'est donc pas du surapprentissage, mais un problème d'optimisation).</p>
-              <p><b>Hypothèse</b> : chaque bloc convolutif est relativement proche de l'identité. <b>Solution</b> : n'apprendre que la différence — le <b>résidu</b> — via une <b>connexion de raccourci</b> (shortcut) :</p>
+              <p><b>Constat</b> : à structure identique, un réseau à 56 couches fait <b>pire qu'un réseau à 20 couches : en erreur d'entraînement comme en erreur de test</b> (ce n'est donc pas du surapprentissage, mais un problème d'optimisation).</p>
+              <p><b>Hypothèse</b> : chaque bloc convolutif est relativement proche de l'identité. <b>Solution</b> : n'apprendre que la différence (le <b>résidu</b>) via une <b>connexion de raccourci</b> (shortcut) :</p>
               <div class="formula">$$\boldsymbol h^{[j]}-\boldsymbol h^{[j-1]} = f\big(\boldsymbol h^{[j-1]};\boldsymbol W^{[j]}\big) \qquad\Longleftrightarrow\qquad \boldsymbol h^{[j]} = \Big(f\big(\,\cdot\,;\boldsymbol W^{[j]}\big)+\mathrm{id}\Big)\boldsymbol h^{[j-1]}$$</div>
               <div class="resnetblock-scroll">
                 <div class="resnetblock">
@@ -813,7 +813,7 @@ window.MathJax = {
                   </div>
                 </div>
               </div>
-              <p class="sense"><b>Sens :</b> un bloc résiduel peut représenter l'identité en mettant simplement $f\equiv 0$ — ajouter des couches ne peut donc plus dégrader le minimum atteignable. Empiriquement : sans résidus, ResNet-34 est pire que ResNet-18 ; <b>avec</b> résidus, ResNet-34 est meilleur que ResNet-18.</p>
+              <p class="sense"><b>Sens :</b> un bloc résiduel peut représenter l'identité en mettant simplement $f\equiv 0$ : ajouter des couches ne peut donc plus dégrader le minimum atteignable. Empiriquement : sans résidus, ResNet-34 est pire que ResNet-18 ; <b>avec</b> résidus, ResNet-34 est meilleur que ResNet-18.</p>
             </div>
           </article>
 
@@ -837,7 +837,7 @@ window.MathJax = {
               <p class="box-label">Définition · FCN &amp; U-Net (segmentation sémantique)</p>
               <p><b>FCN</b> (Fully Convolutional Network) : on remplace les couches denses par des couches convolutives ⟹ la sortie est une <b>carte spatiale</b> et non un label unique ; chaque pixel reçoit une classe. Des couches d'<b>upsampling</b> (déconvolutions) restaurent la résolution d'origine.</p>
               <p><b>U-Net</b> : architecture encodeur-décodeur symétrique. <i>Chemin contractant</i> : capture le contexte (convolutions + pooling). <i>Chemin expansif</i> : restaure la résolution (up-convolutions). <b>Skip connections</b> : les features haute résolution de l'encodeur sont <b>concaténées</b> à celles du décodeur.</p>
-              <p class="sense"><b>Sens :</b> attention — contrairement à ResNet, les raccourcis de U-Net sont <b>concaténés</b>, pas additionnés. Très efficace en imagerie biomédicale (peu de données annotées).</p>
+              <p class="sense"><b>Sens :</b> attention : contrairement à ResNet, les raccourcis de U-Net sont <b>concaténés</b>, pas additionnés. Très efficace en imagerie biomédicale (peu de données annotées).</p>
             </div>
           </article>
 
@@ -847,7 +847,7 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Data augmentation</p>
               <p>Dupliquer et <b>transformer</b> les exemples d'entraînement : redimensionnement, translation (avec padding), rotation (avec padding), réflexion horizontale, ajout de bruit, changement d'intensité colorimétrique…</p>
-              <p class="sense"><b>Sens :</b> le but est de faire <b>apprendre l'invariance</b> à ces transformations — c'est une forme de régularisation qui injecte une connaissance a priori sur les symétries du problème.</p>
+              <p class="sense"><b>Sens :</b> le but est de faire <b>apprendre l'invariance</b> à ces transformations : c'est une forme de régularisation qui injecte une connaissance a priori sur les symétries du problème.</p>
             </div>
 
             <div class="box box-warn">
@@ -867,10 +867,10 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Exemples · Quatre solutions</p>
               <p><b>0. Agrandir le noyau</b> : efficace mais exige beaucoup plus de paramètres ($w\times h$).</p>
-              <p><b>0.1 Noyau de rang faible</b> : $\boldsymbol K := \boldsymbol{UV}$ avec $\boldsymbol K\in\mathbb R^{w\times h}$, $\boldsymbol U\in\mathbb R^{w\times k}$, $\boldsymbol V\in\mathbb R^{k\times h}$, $k\lt\min(w,h)$ — peu de paramètres, mais les noyaux obtenus paraissent peu naturels.</p>
-              <p><b>1. Noyau de Kronecker</b> : $\boldsymbol K := \boldsymbol U\otimes\boldsymbol V\otimes\boldsymbol W\cdots$, où $\boldsymbol A\otimes\begin{bmatrix}a&b\\c&d\end{bmatrix} := \begin{bmatrix}a\boldsymbol A & b\boldsymbol A\\ c\boldsymbol A & d\boldsymbol A\end{bmatrix}$ — structure multi-échelle, résultat nettement meilleur.</p>
+              <p><b>0.1 Noyau de rang faible</b> : $\boldsymbol K := \boldsymbol{UV}$ avec $\boldsymbol K\in\mathbb R^{w\times h}$, $\boldsymbol U\in\mathbb R^{w\times k}$, $\boldsymbol V\in\mathbb R^{k\times h}$, $k\lt\min(w,h)$ : peu de paramètres, mais les noyaux obtenus paraissent peu naturels.</p>
+              <p><b>1. Noyau de Kronecker</b> : $\boldsymbol K := \boldsymbol U\otimes\boldsymbol V\otimes\boldsymbol W\cdots$, où $\boldsymbol A\otimes\begin{bmatrix}a&b\\c&d\end{bmatrix} := \begin{bmatrix}a\boldsymbol A & b\boldsymbol A\\ c\boldsymbol A & d\boldsymbol A\end{bmatrix}$ : structure multi-échelle, résultat nettement meilleur.</p>
               <p><b>2. Convolution dilatée</b> (dilated / à trous) : on <b>écarte</b> les éléments du noyau d'un facteur de dilatation. En enchaînant des dilatations $1$, puis $2$, puis $4$… :</p>
-              <p class="sense"><b>Sens :</b> croissance <b>exponentielle</b> du champ récepteur avec un nombre <b>linéaire</b> de paramètres — le meilleur rapport qualité/prix.</p>
+              <p class="sense"><b>Sens :</b> croissance <b>exponentielle</b> du champ récepteur avec un nombre <b>linéaire</b> de paramètres : le meilleur rapport qualité/prix.</p>
             </div>
 
             <div class="box box-def">
@@ -899,7 +899,7 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Exemples · Qu'est-ce qu'une donnée séquentielle ?</p>
               <p><b>Vidéo</b> = séquence d'images · <b>série temporelle</b> (cours de bourse, météo) · <b>données longitudinales / de panel</b> (on suit les mêmes individus à différentes dates) · <b>texte</b> = séquence de mots ou de <i>tokens</i>.</p>
-              <p class="sense"><b>Sens :</b> point commun — l'<b>ordre</b> porte de l'information, et la longueur $T$ n'est pas fixée à l'avance. Un MLP à entrée de taille fixe est mal adapté.</p>
+              <p class="sense"><b>Sens :</b> point commun : l'<b>ordre</b> porte de l'information, et la longueur $T$ n'est pas fixée à l'avance. Un MLP à entrée de taille fixe est mal adapté.</p>
             </div>
 
             <div class="box box-def">
@@ -911,16 +911,16 @@ window.MathJax = {
                 <tr><td>many-to-many</td><td>$T$ → $T'$ (décalé)</td><td>traduction</td></tr>
                 <tr><td>many-to-many</td><td>$T$ → $T$ (synchrone)</td><td>prévision (<i>forecasting</i>)</td></tr>
               </table>
-              <p class="sense"><b>Sens · modélisation du langage :</b> « prédire le mot suivant » est du <b>many-to-one</b> (<i>I study</i> → <i>statistics</i>) ; « générer la suite du texte » est du <b>many-to-many</b> (<i>I study</i> → <i>statistics at ENSAI</i>). La 2<sup>e</sup> tâche s'obtient en <b>répétant</b> la 1<sup>re</sup> — c'est exactement le principe autorégressif des LLM.</p>
+              <p class="sense"><b>Sens · modélisation du langage :</b> « prédire le mot suivant » est du <b>many-to-one</b> (<i>I study</i> → <i>statistics</i>) ; « générer la suite du texte » est du <b>many-to-many</b> (<i>I study</i> → <i>statistics at ENSAI</i>). La 2<sup>e</sup> tâche s'obtient en <b>répétant</b> la 1<sup>re</sup> : c'est exactement le principe autorégressif des LLM.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Formalisation &amp; partage des fonctions</p>
               <p>Séquence d'entrée $\boldsymbol x_1,\dots,\boldsymbol x_T$, <b>état caché</b> $\boldsymbol h_t$ (avec $\boldsymbol h_0=\boldsymbol 0$), prédiction $\hat{\boldsymbol z}_t$ :</p>
               <div class="formula">$$\boldsymbol h_t \leftarrow f_t(\boldsymbol h_{t-1},\boldsymbol x_t), \qquad \hat{\boldsymbol z}_t \leftarrow g_t(\boldsymbol h_t), \qquad t=1,\dots,T$$</div>
-              <p>Apprendre séparément $f_1,\dots,f_T,g_1,\dots,g_T$ ? Beaucoup trop de fonctions — donc beaucoup trop de paramètres, et un $T$ variable serait ingérable. <b>Idée : partager les fonctions dans le temps</b>, $f_t=f$ et $g_t=g$ pour tout $t$ :</p>
+              <p>Apprendre séparément $f_1,\dots,f_T,g_1,\dots,g_T$ ? Beaucoup trop de fonctions : donc beaucoup trop de paramètres, et un $T$ variable serait ingérable. <b>Idée : partager les fonctions dans le temps</b>, $f_t=f$ et $g_t=g$ pour tout $t$ :</p>
               <div class="formula">$$\boldsymbol h_t \leftarrow \underbrace{\sigma\big(\boldsymbol W_{hh}\boldsymbol h_{t-1}+\boldsymbol b_{hh}+\boldsymbol W_{xh}\boldsymbol x_t+\boldsymbol b_{xh}\big)}_{f(\boldsymbol h_{t-1},\boldsymbol x_t)}, \qquad \hat{\boldsymbol z}_t \leftarrow \underbrace{\sigma\big(\boldsymbol W_{hy}\boldsymbol h_t+\boldsymbol b_{hy}\big)}_{g(\boldsymbol h_t)}$$</div>
-              <p class="sense"><b>Sens :</b> exactement l'analogue temporel du <b>partage de poids</b> des CNN dans l'espace — un seul jeu de paramètres, réutilisable pour toute longueur de séquence.</p>
+              <p class="sense"><b>Sens :</b> exactement l'analogue temporel du <b>partage de poids</b> des CNN dans l'espace : un seul jeu de paramètres, réutilisable pour toute longueur de séquence.</p>
             </div>
           </article>
 
@@ -983,7 +983,7 @@ window.MathJax = {
               <p class="box-label">Proposition · Pourquoi $\tanh$ n'y échappe pas</p>
               <p>Pour $f:x\mapsto \tanh(ax+b)$, avec $\tanh x := \dfrac{e^x-e^{-x}}{e^x+e^{-x}}$ :</p>
               <div class="formula">$$f':x\mapsto a\times\underbrace{\big(1-\tanh^2(ax+b)\big)}_{\in\,(0,\,1]}\ \in\ (-\infty,+\infty)$$</div>
-              <p class="sense"><b>Sens :</b> le facteur $1-\tanh^2$ est <b>toujours $\le 1$</b> — il ne peut que <b>contracter</b> : d'où la tendance structurelle au <i>vanishing</i>. Mais il est multiplié par le poids $a$ : si $|a|$ est grand, $f'$ n'est <b>pas</b> borné et l'explosion reste possible. (Pascanu, Mikolov &amp; Bengio, 2013.)</p>
+              <p class="sense"><b>Sens :</b> le facteur $1-\tanh^2$ est <b>toujours $\le 1$</b> : il ne peut que <b>contracter</b> : d'où la tendance structurelle au <i>vanishing</i>. Mais il est multiplié par le poids $a$ : si $|a|$ est grand, $f'$ n'est <b>pas</b> borné et l'explosion reste possible. (Pascanu, Mikolov &amp; Bengio, 2013.)</p>
             </div>
           </article>
 
@@ -1009,14 +1009,14 @@ window.MathJax = {
 \text{candidat} &: \tilde{\boldsymbol c}_t = \tanh\big(\boldsymbol W_{ig}\boldsymbol x_t+\boldsymbol W_{hg}\boldsymbol h_{t-1}+\boldsymbol b_g\big)\in[-1,1]\\
 \text{sortie (output)} &: \boldsymbol o_t = \sigma\big(\boldsymbol W_{io}\boldsymbol x_t+\boldsymbol W_{ho}\boldsymbol h_{t-1}+\boldsymbol b_o\big)\in[0,1]
 \end{aligned}$$</div>
-              <p class="sense"><b>Sens :</b> les portes sont des <b>sigmoïdes</b> à valeurs dans $[0,1]$ — ce sont des « robinets » appris. Le candidat, lui, est un $\tanh$ à valeurs dans $[-1,1]$ : c'est du <b>contenu</b>, pas un robinet.</p>
+              <p class="sense"><b>Sens :</b> les portes sont des <b>sigmoïdes</b> à valeurs dans $[0,1]$ : ce sont des « robinets » appris. Le candidat, lui, est un $\tanh$ à valeurs dans $[-1,1]$ : c'est du <b>contenu</b>, pas un robinet.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Mise à jour de la mémoire et de l'état</p>
               <div class="formula">$$\boldsymbol c_t = \boldsymbol f_t\odot\boldsymbol c_{t-1} + \boldsymbol i_t\odot\tilde{\boldsymbol c}_t \qquad\qquad \boldsymbol h_t = \boldsymbol o_t\odot\tanh(\boldsymbol c_t)$$</div>
               <p>« Oublier $\boldsymbol c_{t-1}$ si nécessaire, ajouter $\tilde{\boldsymbol c}_t$ si pertinent. » L'état caché $\boldsymbol h$ est une version <b>filtrée</b> de la mémoire $\boldsymbol c$ par la porte de sortie.</p>
-              <p class="sense"><b>Sens :</b> la mémoire se propage de façon quasi-<b>additive</b>, avec un produit terme à terme ($\odot$) et non un produit <b>matriciel</b> répété : si $\boldsymbol f_t\approx\boldsymbol 1$, le gradient traverse le temps presque sans atténuation — c'est là que le <i>vanishing gradient</i> est atténué.</p>
+              <p class="sense"><b>Sens :</b> la mémoire se propage de façon quasi-<b>additive</b>, avec un produit terme à terme ($\odot$) et non un produit <b>matriciel</b> répété : si $\boldsymbol f_t\approx\boldsymbol 1$, le gradient traverse le temps presque sans atténuation : c'est là que le <i>vanishing gradient</i> est atténué.</p>
             </div>
           </article>
 
@@ -1041,7 +1041,7 @@ window.MathJax = {
 \text{update} &: \boldsymbol z_t = \sigma\big(\boldsymbol W_{iz}\boldsymbol x_t+\boldsymbol W_{hz}\boldsymbol h_{t-1}+\boldsymbol b_z\big)\\
 \text{sortie} &: \boldsymbol h_t = (\boldsymbol 1-\boldsymbol z_t)\odot\boldsymbol h_{t-1} + \boldsymbol z_t\odot\tilde{\boldsymbol h}_t
 \end{aligned}$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol r_t$ décide <b>quelle part du passé oublier</b> pour construire le candidat ; $\boldsymbol z_t$ arbitre entre <b>garder</b> l'ancien état et <b>adopter</b> le candidat. $\boldsymbol h_t$ est une <b>combinaison convexe</b> des deux (les coefficients somment à 1) — l'état ne peut pas exploser en amplitude.</p>
+              <p class="sense"><b>Sens :</b> $\boldsymbol r_t$ décide <b>quelle part du passé oublier</b> pour construire le candidat ; $\boldsymbol z_t$ arbitre entre <b>garder</b> l'ancien état et <b>adopter</b> le candidat. $\boldsymbol h_t$ est une <b>combinaison convexe</b> des deux (les coefficients somment à 1) : l'état ne peut pas exploser en amplitude.</p>
             </div>
 
             <div class="box box-ex">
@@ -1066,7 +1066,7 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · RNN empilés (stacked)</p>
               <p>La séquence d'états $\boldsymbol h^{[1](1)},\dots,\boldsymbol h^{[1](T)}$ produite par la 1<sup>re</sup> couche récurrente sert de <b>séquence d'entrée</b> à une 2<sup>e</sup> couche récurrente, et ainsi de suite.</p>
-              <p class="sense"><b>Sens :</b> même logique que la profondeur dans un MLP ou un CNN — chaque couche construit une représentation temporelle <b>plus abstraite</b> que la précédente.</p>
+              <p class="sense"><b>Sens :</b> même logique que la profondeur dans un MLP ou un CNN : chaque couche construit une représentation temporelle <b>plus abstraite</b> que la précédente.</p>
             </div>
           </article>
 
@@ -1076,9 +1076,9 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · RTRL (Real-Time Recurrent Learning)</p>
-              <p>Récurrence <b>avant</b> sur la jacobienne $\partial\boldsymbol h_t/\partial\boldsymbol w$ : $\boldsymbol w$ influence $\boldsymbol h_t$ par deux chemins — directement via $f(\cdot,\cdot;\boldsymbol w)$, et indirectement via $\boldsymbol h_{t-1}$.</p>
+              <p>Récurrence <b>avant</b> sur la jacobienne $\partial\boldsymbol h_t/\partial\boldsymbol w$ : $\boldsymbol w$ influence $\boldsymbol h_t$ par deux chemins : directement via $f(\cdot,\cdot;\boldsymbol w)$, et indirectement via $\boldsymbol h_{t-1}$.</p>
               <div class="formula">$$\underbrace{\frac{\partial\boldsymbol h_t}{\partial\boldsymbol w}}_{=:\,\boldsymbol C_t} = \underbrace{\nabla_{\boldsymbol w}f(\boldsymbol h_{t-1},\boldsymbol x_t;\boldsymbol w)}_{=:\,\boldsymbol A_{t-1}} + \underbrace{\frac{\partial\boldsymbol h_{t-1}}{\partial\boldsymbol w}}_{=\,\boldsymbol C_{t-1}}\underbrace{\nabla_{\boldsymbol h}f(\boldsymbol h_{t-1},\boldsymbol x_t;\boldsymbol w)}_{=:\,\boldsymbol B_{t-1}}$$</div>
-              <p class="sense"><b>Sens :</b> tout se calcule <b>dans le sens du temps</b> ⟹ mises à jour <b>en ligne</b> possibles. Mais $\boldsymbol C_{t-1}\in\mathbb R^{d_w\times d_h}$ et $\boldsymbol B_{t-1}\in\mathbb R^{d_h\times d_h}$ : le produit coûte $O(d_w d_h^2)$ par pas de temps, avec $d_w\gg d_h$ — rédhibitoire.</p>
+              <p class="sense"><b>Sens :</b> tout se calcule <b>dans le sens du temps</b> ⟹ mises à jour <b>en ligne</b> possibles. Mais $\boldsymbol C_{t-1}\in\mathbb R^{d_w\times d_h}$ et $\boldsymbol B_{t-1}\in\mathbb R^{d_h\times d_h}$ : le produit coûte $O(d_w d_h^2)$ par pas de temps, avec $d_w\gg d_h$ : rédhibitoire.</p>
             </div>
 
             <div class="box box-def">
@@ -1092,7 +1092,7 @@ window.MathJax = {
               <p class="box-label">Théorème · Équivalence RTRL ≡ BPTT</p>
               <p>En substituant $\boldsymbol A_{t-1}=\boldsymbol C_t-\boldsymbol C_{t-1}\boldsymbol B_{t-1}$ dans $\sum_t \boldsymbol A_{t-1}\boldsymbol d_t$, la somme <b>télescope</b> (car $\boldsymbol d_{T+1}=\boldsymbol 0$ et $\boldsymbol C_0=\boldsymbol 0$) :</p>
               <div class="formula">$$\sum_{t=1}^T \boldsymbol A_{t-1}\boldsymbol d_t = \sum_{t=1}^T \boldsymbol C_t\,\boldsymbol e_t = \nabla J(\boldsymbol w), \qquad \boldsymbol e_t:=\nabla g(\boldsymbol h_t)\nabla\ell(\hat{\boldsymbol z}_t)$$</div>
-              <p class="sense"><b>Sens :</b> les deux méthodes donnent <b>exactement</b> le même gradient. BPTT est celle qu'implémentent tous les frameworks (<code>autograd</code>) car elle est bien moins chère — au prix de devoir stocker toute la séquence d'états avant de rétropropager.</p>
+              <p class="sense"><b>Sens :</b> les deux méthodes donnent <b>exactement</b> le même gradient. BPTT est celle qu'implémentent tous les frameworks (<code>autograd</code>) car elle est bien moins chère : au prix de devoir stocker toute la séquence d'états avant de rétropropager.</p>
             </div>
           </article>
 
@@ -1101,17 +1101,17 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Exemples · Trois tâches, trois architectures</p>
-              <p><b>1. Prévision de série temporelle</b> — entrée $(\boldsymbol x_1,\dots,\boldsymbol x_t)$, cible $(\boldsymbol x_{t+1},\dots,\boldsymbol x_{t+k})$ : on lit la séquence, puis on génère de façon <b>autorégressive</b> en réinjectant chaque prédiction $\hat{\boldsymbol x}_{t+i}$ comme entrée suivante (many-to-many décalé).</p>
-              <p><b>2. Correction orthographique / grammaticale</b> — <b>classification binaire</b> d'une phrase (correcte / fautive). Architecture : Input → RNN → couche linéaire → Output, en utilisant le <b>dernier</b> état caché $\boldsymbol h_t$ qui a « scanné » toute la phrase. C'est du <b>many-to-one</b>.</p>
-              <p><b>3. Prédiction d'un mot manquant</b> — l'information pertinente est répartie <b>avant et après</b> le blanc ; on a donc <b>deux</b> séquences de mots et il faut un RNN <b>bidirectionnel</b> : $\boldsymbol h_k$ combine $\overrightarrow{\boldsymbol h}_{k-1}$ et $\overleftarrow{\boldsymbol h}_{k+1}$ pour prédire $\hat y_k$.</p>
-              <p class="sense"><b>Sens :</b> chaque mot est d'abord converti en <b>vecteur de réels</b> (embedding) — un RNN ne consomme pas des chaînes de caractères.</p>
+              <p><b>1. Prévision de série temporelle</b> : entrée $(\boldsymbol x_1,\dots,\boldsymbol x_t)$, cible $(\boldsymbol x_{t+1},\dots,\boldsymbol x_{t+k})$ : on lit la séquence, puis on génère de façon <b>autorégressive</b> en réinjectant chaque prédiction $\hat{\boldsymbol x}_{t+i}$ comme entrée suivante (many-to-many décalé).</p>
+              <p><b>2. Correction orthographique / grammaticale</b> : <b>classification binaire</b> d'une phrase (correcte / fautive). Architecture : Input → RNN → couche linéaire → Output, en utilisant le <b>dernier</b> état caché $\boldsymbol h_t$ qui a « scanné » toute la phrase. C'est du <b>many-to-one</b>.</p>
+              <p><b>3. Prédiction d'un mot manquant</b> : l'information pertinente est répartie <b>avant et après</b> le blanc ; on a donc <b>deux</b> séquences de mots et il faut un RNN <b>bidirectionnel</b> : $\boldsymbol h_k$ combine $\overrightarrow{\boldsymbol h}_{k-1}$ et $\overleftarrow{\boldsymbol h}_{k+1}$ pour prédire $\hat y_k$.</p>
+              <p class="sense"><b>Sens :</b> chaque mot est d'abord converti en <b>vecteur de réels</b> (embedding) : un RNN ne consomme pas des chaînes de caractères.</p>
             </div>
 
             <div class="box box-warn">
               <p class="box-label">⚠ Aparté · arithmétique en virgule flottante</p>
               <p>$\mathbb R$ est <b>non dénombrable</b>, mais une machine ne dispose que d'un <b>ensemble fini</b> d'encodages binaires : la plupart des réels ne sont qu'<b>approximés</b>, et les opérations aussi. En Python : <code>0.1 + 0.2 == 0.3</code> renvoie <code>False</code> (on obtient $0{,}30000000000000004$).</p>
               <p>En Deep Learning, le format standard est la <b>simple précision</b> (32 bits : 1 signe, 8 exposant, 23 mantisse ; ~7,2 décimales significatives) : meilleure précision du gradient que le 16 bits, et deux fois moins de mémoire que le 64 bits. Tous les paramètres doivent tenir dans $\pm[3{,}4028\cdot10^{-38},\,3{,}4028\cdot10^{38}]$.</p>
-              <p class="sense"><b>Sens :</b> ce n'est pas un problème pour les paramètres, mais c'en est un pour le <b>gradient</b>, qui est un produit de (très) nombreuses dérivées partielles — donc surtout pour les <b>RNN profonds</b>, où un sous-dépassement met le gradient à $0$ et un dépassement le met à $\pm\infty$.</p>
+              <p class="sense"><b>Sens :</b> ce n'est pas un problème pour les paramètres, mais c'en est un pour le <b>gradient</b>, qui est un produit de (très) nombreuses dérivées partielles : donc surtout pour les <b>RNN profonds</b>, où un sous-dépassement met le gradient à $0$ et un dépassement le met à $\pm\infty$.</p>
             </div>
           </article>
 
@@ -1129,7 +1129,7 @@ window.MathJax = {
 
           <article class="topic" id="s28">
             <div class="tophead"><span class="num">28</span><h2>Autoencodeur (AE)</h2></div>
-            <p>Un <b>modèle génératif</b> est un modèle entraîné à <b>générer des données</b> (image, texte, vidéo, voix, musique) — utile en soi, mais aussi pour produire des données d'entraînement synthétiques. Le point de départ historique est l'autoencodeur, entraînable de façon <b>non supervisée</b> (sans étiquettes).</p>
+            <p>Un <b>modèle génératif</b> est un modèle entraîné à <b>générer des données</b> (image, texte, vidéo, voix, musique) : utile en soi, mais aussi pour produire des données d'entraînement synthétiques. Le point de départ historique est l'autoencodeur, entraînable de façon <b>non supervisée</b> (sans étiquettes).</p>
 
             <div class="box box-def">
               <p class="box-label">Définition · Encodeur, décodeur, objectif</p>
@@ -1156,7 +1156,7 @@ window.MathJax = {
               <p class="box-label">Exemple · Autoencodeur débruiteur (denoising AE)</p>
               <p>On remplace l'entrée $\boldsymbol x$ par une version <b>corrompue</b> $\tilde{\boldsymbol x}$ (bruit ajouté), mais la perte reste mesurée <b>par rapport à l'original propre</b> :</p>
               <div class="formula">$$\ell\big(\boldsymbol x,\,g(f(\tilde{\boldsymbol x}))\big)$$</div>
-              <p class="sense"><b>Sens :</b> l'identité n'est plus une solution — le réseau est obligé d'apprendre la <b>structure</b> des données au lieu de recopier son entrée.</p>
+              <p class="sense"><b>Sens :</b> l'identité n'est plus une solution : le réseau est obligé d'apprendre la <b>structure</b> des données au lieu de recopier son entrée.</p>
             </div>
           </article>
 
@@ -1165,15 +1165,15 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Décoder une image : convolution transposée</p>
-              <p><b>Encodeur</b> : image ↦ code, donc <b>réduction</b> des dimensions (<i>downscaling</i>) — par convolution et pooling. <b>Décodeur</b> : code ↦ image, donc <b>augmentation</b> des dimensions (<i>upscaling</i>) — typiquement par <b>convolution transposée</b> (aussi appelée <i>déconvolution</i> ou convolution à pas fractionnaire).</p>
+              <p><b>Encodeur</b> : image ↦ code, donc <b>réduction</b> des dimensions (<i>downscaling</i>) : par convolution et pooling. <b>Décodeur</b> : code ↦ image, donc <b>augmentation</b> des dimensions (<i>upscaling</i>) : typiquement par <b>convolution transposée</b> (aussi appelée <i>déconvolution</i> ou convolution à pas fractionnaire).</p>
               <div class="formula">$$\text{convolution}:\ \boldsymbol x\mapsto \boldsymbol M\boldsymbol x \qquad\Longrightarrow\qquad \text{convolution transposée}:\ \boldsymbol x\mapsto \boldsymbol M^\top\boldsymbol x$$</div>
               <p class="sense"><b>Sens :</b> d'où le nom. $\boldsymbol M$ étant creuse et rectangulaire (grande entrée → petite sortie), $\boldsymbol M^\top$ va bien d'une petite entrée vers une grande sortie. Ce n'est <b>pas</b> l'inverse de la convolution, seulement sa transposée.</p>
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Deux façons naïves de générer — et pourquoi elles échouent</p>
-              <p><b>Méthode 1 · combinaison convexe dans l'espace des pixels</b> : $\boldsymbol x_{\text{new}}=\sum_i w_i\boldsymbol x_i$. Fonctionne très rarement : une <b>combinaison convexe d'images de chats n'est pas une image de chat</b> — on obtient une superposition fantomatique.</p>
-              <p><b>Méthode 2 · code aléatoire</b> : tirer $\boldsymbol z$ au hasard (p. ex. gaussien) puis $\boldsymbol x_{\text{new}}:=g(\boldsymbol z)$. Un peu mieux, mais toujours médiocre : <b>l'AE n'a jamais été entraîné pour cet usage</b> — rien ne contraint la distribution des codes appris à ressembler à une gaussienne.</p>
+              <p class="box-label">⚠ Deux façons naïves de générer : et pourquoi elles échouent</p>
+              <p><b>Méthode 1 · combinaison convexe dans l'espace des pixels</b> : $\boldsymbol x_{\text{new}}=\sum_i w_i\boldsymbol x_i$. Fonctionne très rarement : une <b>combinaison convexe d'images de chats n'est pas une image de chat</b> : on obtient une superposition fantomatique.</p>
+              <p><b>Méthode 2 · code aléatoire</b> : tirer $\boldsymbol z$ au hasard (p. ex. gaussien) puis $\boldsymbol x_{\text{new}}:=g(\boldsymbol z)$. Un peu mieux, mais toujours médiocre : <b>l'AE n'a jamais été entraîné pour cet usage</b> : rien ne contraint la distribution des codes appris à ressembler à une gaussienne.</p>
               <p class="sense"><b>Sens :</b> on garde l'idée encodeur-décodeur, mais il faut l'entraîner à produire de <b>bons codes</b> autant que de bonnes images ⟹ le VAE.</p>
             </div>
           </article>
@@ -1203,22 +1203,22 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Autoencodeur variationnel (VAE)</p>
-              <p><b>Loi a priori</b> : $\boldsymbol z\sim p_\theta(\boldsymbol z)$ — souvent $\mathcal N(\boldsymbol 0,\boldsymbol I)$. <b>Décodeur probabiliste</b> : $\boldsymbol z\mapsto\boldsymbol x\sim p_\theta(\boldsymbol x\mid\boldsymbol z)$, avec $\boldsymbol z$ la <b>variable latente</b> (le code aléatoire) et $\theta$ les paramètres.</p>
+              <p><b>Loi a priori</b> : $\boldsymbol z\sim p_\theta(\boldsymbol z)$ : souvent $\mathcal N(\boldsymbol 0,\boldsymbol I)$. <b>Décodeur probabiliste</b> : $\boldsymbol z\mapsto\boldsymbol x\sim p_\theta(\boldsymbol x\mid\boldsymbol z)$, avec $\boldsymbol z$ la <b>variable latente</b> (le code aléatoire) et $\theta$ les paramètres.</p>
               <p><b>Génération</b> une fois $\theta$ entraîné : tirer $\boldsymbol z\sim p_\theta(\boldsymbol z)$, puis $\boldsymbol x_{\text{new}}\sim p_\theta(\boldsymbol x\mid\boldsymbol z)$.</p>
-              <p>Le couple (prior, décodeur) définit <b>implicitement</b> un <b>encodeur probabiliste</b> $p_\theta(\boldsymbol z\mid\boldsymbol x)$, que l'on approche par un modèle auxiliaire $q_\phi(\boldsymbol z\mid\boldsymbol x)$ — <b>utilisé uniquement pour l'entraînement</b>, pas pour la génération.</p>
+              <p>Le couple (prior, décodeur) définit <b>implicitement</b> un <b>encodeur probabiliste</b> $p_\theta(\boldsymbol z\mid\boldsymbol x)$, que l'on approche par un modèle auxiliaire $q_\phi(\boldsymbol z\mid\boldsymbol x)$ : <b>utilisé uniquement pour l'entraînement</b>, pas pour la génération.</p>
               <p class="sense"><b>Sens :</b> combiner un prior simple et un décodeur non linéaire suffit à représenter une <b>marginale $p_\theta(\boldsymbol x)$ très complexe</b>, multimodale et courbe.</p>
             </div>
 
             <div class="box box-warn">
               <p class="box-label">⚠ Le maximum de vraisemblance est intraitable</p>
-              <p>Les $\boldsymbol z^{(i)}$ ne sont <b>pas observés</b> : on ne peut évaluer ni $p_\theta(\boldsymbol x\mid\boldsymbol z)$ ni $p_\theta(\boldsymbol z)$ sur les données. Seuls les $\boldsymbol x^{(i)}$ le sont, d'où un MLE sur la marginale — mais l'intégrale qui y apparaît est <b>numériquement hors de portée</b> à chaque point et à chaque pas :</p>
+              <p>Les $\boldsymbol z^{(i)}$ ne sont <b>pas observés</b> : on ne peut évaluer ni $p_\theta(\boldsymbol x\mid\boldsymbol z)$ ni $p_\theta(\boldsymbol z)$ sur les données. Seuls les $\boldsymbol x^{(i)}$ le sont, d'où un MLE sur la marginale : mais l'intégrale qui y apparaît est <b>numériquement hors de portée</b> à chaque point et à chaque pas :</p>
               <div class="formula">$$\nabla_\theta\sum_{i=1}^n\log p_\theta(\boldsymbol x_i)=\nabla_\theta\sum_{i=1}^n\log\int p_\theta(\boldsymbol x^{(i)}\mid\boldsymbol z)\,p_\theta(\boldsymbol z)\,d\boldsymbol z$$</div>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Théorème · Décomposition ELBO</p>
               <div class="formula">$$\log p_\theta(\boldsymbol x)=\underbrace{\mathbb E_{q_\phi(\boldsymbol z\mid\boldsymbol x)}\!\left[\log\frac{p_\theta(\boldsymbol x,\boldsymbol z)}{q_\phi(\boldsymbol z\mid\boldsymbol x)}\right]}_{=:\ \mathcal L_{\theta,\phi}(\boldsymbol x)\ \ \text{(ELBO)}}\ +\ \underbrace{\mathbb E_{q_\phi(\boldsymbol z\mid\boldsymbol x)}\!\left[\log\frac{q_\phi(\boldsymbol z\mid\boldsymbol x)}{p_\theta(\boldsymbol z\mid\boldsymbol x)}\right]}_{=\ \mathrm{KL}\left(q_\phi(\boldsymbol z\mid\boldsymbol x),\,p_\theta(\boldsymbol z\mid\boldsymbol x)\right)\ \ge\ 0}$$</div>
-              <p>Par conséquent $\mathcal L_{\theta,\phi}(\boldsymbol x)\le\log p_\theta(\boldsymbol x)$ — d'où le nom <i>Evidence Lower BOund</i>. Et :</p>
+              <p>Par conséquent $\mathcal L_{\theta,\phi}(\boldsymbol x)\le\log p_\theta(\boldsymbol x)$ : d'où le nom <i>Evidence Lower BOund</i>. Et :</p>
               <div class="formula">$$\max_{\theta,\phi}\ \mathbb E_{\boldsymbol x}\big[\mathcal L_{\theta,\phi}(\boldsymbol x)\big] \;=\; \max_\theta\ \underbrace{\mathbb E_{\boldsymbol x}[\log p_\theta(\boldsymbol x)]}_{\text{log-vraisemblance}}\ -\ \min_\phi\ \underbrace{\mathbb E_{\boldsymbol x}\big[\mathrm{KL}(q_\phi(\boldsymbol z\mid\boldsymbol x),p_\theta(\boldsymbol z\mid\boldsymbol x))\big]}_{=\,0\ \text{si}\ q_\phi=p_\theta(\boldsymbol z\mid\boldsymbol x)}$$</div>
               <p class="sense"><b>Sens :</b> la vraisemblance exacte est incalculable, <b>l'ELBO est calculable</b>. Maximiser l'ELBO en $(\theta,\phi)$ revient à maximiser la log-vraisemblance <b>et</b> à rendre $q_\phi$ aussi proche que possible du vrai postérieur : l'écart entre les deux est exactement la KL.</p>
             </div>
@@ -1239,7 +1239,7 @@ window.MathJax = {
               <div class="formula">$$\boldsymbol z_\epsilon := \boldsymbol h_\phi(\boldsymbol x,\boldsymbol\epsilon), \qquad \boldsymbol\epsilon\sim q(\boldsymbol\epsilon)\ \text{connue et fixe (p. ex. } \mathcal N(\boldsymbol 0,\boldsymbol I)),$$</div>
               <p>où $\boldsymbol h_\phi$ est un réseau de paramètres $\phi$. L'espérance porte alors sur $\boldsymbol\epsilon$, qui ne dépend plus de $\phi$, d'où l'échange licite :</p>
               <div class="formula">$$\nabla_{\theta,\phi}\,\mathbb E_{\boldsymbol\epsilon}\big[\mathcal L_{\theta,\phi}(\boldsymbol x,\boldsymbol z_\epsilon)\big]=\mathbb E_{\boldsymbol\epsilon}\big[\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\boldsymbol x,\boldsymbol z_\epsilon)\big]$$</div>
-              <p class="sense"><b>Sens :</b> l'estimateur mini-batch redevient <b>non biaisé</b> — c'est ce qui rend le VAE entraînable par SGD.</p>
+              <p class="sense"><b>Sens :</b> l'estimateur mini-batch redevient <b>non biaisé</b> : c'est ce qui rend le VAE entraînable par SGD.</p>
             </div>
 
             <div class="box box-ex">
@@ -1277,7 +1277,7 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Le duel générateur / discriminateur</p>
-              <p><b>Idée</b> : apprendre à générer <b>directement</b> des données, sans modéliser explicitement la distribution — en trompant un second réseau.</p>
+              <p><b>Idée</b> : apprendre à générer <b>directement</b> des données, sans modéliser explicitement la distribution : en trompant un second réseau.</p>
               <p>• <b>Générateur</b> $G$ : transforme un bruit $\boldsymbol z$ en fausse donnée $G(\boldsymbol z)$, visant à la rendre indiscernable du réel.<br>
               • <b>Discriminateur</b> $D$ : classifieur <b>binaire</b> réel/faux ; $D(\boldsymbol x)$ = probabilité que $\boldsymbol x$ soit une vraie donnée.</p>
               <p class="sense"><b>Sens :</b> à la fin de l'entraînement on obtient un bon générateur (et, accessoirement, un bon discriminateur).</p>
@@ -1287,7 +1287,7 @@ window.MathJax = {
               <p class="box-label">Théorème · Perte adversariale (problème minimax)</p>
               <p>$D$ <b>maximise</b> la probabilité d'attribuer $+1$ au vrai et $-1$ au faux ; $G$ <b>minimise</b> cette même quantité :</p>
               <div class="formula">$$\min_G\ \max_D\ \ \mathbb E_{p(\boldsymbol x)}\big[\log D(\boldsymbol x)\big] + \mathbb E_{p(\boldsymbol z)}\big[\log\big(1-D(G(\boldsymbol z))\big)\big]$$</div>
-              <p class="sense"><b>Sens :</b> seul le second terme dépend de $G$. L'entraînement est <b>alterné</b> par SGD : $D\to G\to D\to\cdots$, chacun cherchant à battre l'autre. C'est un jeu à deux joueurs — d'où sa réputation d'instabilité (effondrement de modes, non-convergence).</p>
+              <p class="sense"><b>Sens :</b> seul le second terme dépend de $G$. L'entraînement est <b>alterné</b> par SGD : $D\to G\to D\to\cdots$, chacun cherchant à battre l'autre. C'est un jeu à deux joueurs : d'où sa réputation d'instabilité (effondrement de modes, non-convergence).</p>
             </div>
           </article>
 
@@ -1296,13 +1296,13 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · cGAN (GAN conditionnel)</p>
-              <p>Un GAN ordinaire n'offre <b>aucun contrôle</b> sur le contenu généré. Solution : fournir <b>en plus</b> une condition $\boldsymbol y$ (classe, texte, image source) <b>aux deux</b> réseaux — $G(\boldsymbol z,\boldsymbol y)$ et $D(\boldsymbol x,\boldsymbol y)$.</p>
+              <p>Un GAN ordinaire n'offre <b>aucun contrôle</b> sur le contenu généré. Solution : fournir <b>en plus</b> une condition $\boldsymbol y$ (classe, texte, image source) <b>aux deux</b> réseaux : $G(\boldsymbol z,\boldsymbol y)$ et $D(\boldsymbol x,\boldsymbol y)$.</p>
               <p class="sense"><b>Sens :</b> génération contextuelle. Applications : traduction image↦image (croquis→photo, jour→nuit), texte↦image, super-résolution, transfert de style, augmentation de données.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · CycleGAN &amp; cohérence cyclique</p>
-              <p><b>Problème</b> : traduction $\mathcal X\to\mathcal Y$ avec des données <b>non appariées</b> (on a des photos et des Monet, mais pas les photos correspondant aux Monet) — de loin le scénario le plus fréquent.</p>
+              <p><b>Problème</b> : traduction $\mathcal X\to\mathcal Y$ avec des données <b>non appariées</b> (on a des photos et des Monet, mais pas les photos correspondant aux Monet) : de loin le scénario le plus fréquent.</p>
               <p><b>Difficulté</b> : le discriminateur force $G$ à produire un « bon » faux Monet… mais rien ne garantit qu'il corresponde encore à la <b>photo d'entrée</b>. Traduction $=$ génération <b>conditionnelle</b>, pas inconditionnelle.</p>
               <p><b>Solution</b> : deux GAN, $G:\mathcal X\to\mathcal Y$ (discriminateur $D_{\mathcal Y}$) et $F:\mathcal Y\to\mathcal X$ (discriminateur $D_{\mathcal X}$), plus une <b>perte de cohérence cyclique</b> ajoutée aux pertes adversariales :</p>
               <div class="formula">$$\mathrm{Loss}_{\text{Cycle}}(G,F)=\frac1{n_x}\sum_{i=1}^{n_x}\underbrace{\big\|F(G(\boldsymbol x_i))-\boldsymbol x_i\big\|_1}_{\text{cycle avant}}+\frac1{n_y}\sum_{i=1}^{n_y}\underbrace{\big\|G(F(\boldsymbol y_i))-\boldsymbol y_i\big\|_1}_{\text{cycle arrière}}$$</div>
@@ -1312,7 +1312,7 @@ window.MathJax = {
 
           <article class="topic" id="s34">
             <div class="tophead"><span class="num">34</span><h2>Modèles de diffusion (DDPM)</h2></div>
-            <p>État de l'art de la génération d'images : entraînement <b>stable</b> et très haute qualité — mais coûteux en calcul.</p>
+            <p>État de l'art de la génération d'images : entraînement <b>stable</b> et très haute qualité : mais coûteux en calcul.</p>
 
             <div class="diffflow">
               <div class="diffflow-row diffflow-fwd">
@@ -1340,16 +1340,16 @@ window.MathJax = {
               <p>« <i>Détruire systématiquement et lentement la structure d'une distribution de données par un processus de diffusion avant itératif, puis apprendre un processus de diffusion inverse qui restaure la structure.</i> » (Sohl-Dickstein et al., 2015)</p>
               <p>C'est exactement un <b>VAE hiérarchique markovien</b> (HMVAE) : $p(\boldsymbol x_{t}\mid\boldsymbol x_{t+1},\dots,\boldsymbol x_T)=p(\boldsymbol x_t\mid\boldsymbol x_{t+1})$, avec trois particularités :</p>
               <p>① la dimension des latentes $\boldsymbol x_1,\dots,\boldsymbol x_T$ <b>égale</b> celle des données $\boldsymbol x_0$ (contrairement à l'AE/VAE) ;<br>
-              ② l'<b>encodeur n'est pas appris</b> — il est fixé : $q(\boldsymbol x_t\mid\boldsymbol x_{t-1})=\mathcal N\big(\boldsymbol x_t;\sqrt{\alpha_t}\,\boldsymbol x_{t-1},\,(1-\alpha_t)\boldsymbol I\big)$ ;<br>
+              ② l'<b>encodeur n'est pas appris</b> : il est fixé : $q(\boldsymbol x_t\mid\boldsymbol x_{t-1})=\mathcal N\big(\boldsymbol x_t;\sqrt{\alpha_t}\,\boldsymbol x_{t-1},\,(1-\alpha_t)\boldsymbol I\big)$ ;<br>
               ③ la dernière latente suit la loi normale standard : $p(\boldsymbol x_T)=\mathcal N(\boldsymbol x_T;\boldsymbol 0,\boldsymbol I)$.</p>
-              <p class="sense"><b>Sens :</b> seul le <b>décodeur</b> (processus inverse) est entraîné, par maximisation de l'ELBO — exactement comme un VAE, mais avec $T$ étages.</p>
+              <p class="sense"><b>Sens :</b> seul le <b>décodeur</b> (processus inverse) est entraîné, par maximisation de l'ELBO : exactement comme un VAE, mais avec $T$ étages.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Entraînement DDPM (Ho et al., 2020)</p>
               <p>On entraîne un réseau $\epsilon_\theta$ à <b>débruiter</b> $\boldsymbol x_t$ à un instant $t$ tiré au hasard. <b>Répéter jusqu'à convergence</b> : tirer $\boldsymbol x_0\sim q(\boldsymbol x_0)$, $t\sim\mathcal U(\{1,\dots,T\})$, $\boldsymbol\epsilon\sim\mathcal N(\boldsymbol 0,\boldsymbol I)$, puis un pas de descente sur</p>
               <div class="formula">$$\nabla_\theta\Big\|\boldsymbol\epsilon-\epsilon_\theta\big(\underbrace{\sqrt{\bar\alpha_t}\,\boldsymbol x_0+\sqrt{1-\bar\alpha_t}\,\boldsymbol\epsilon}_{=\,\boldsymbol x_t},\ t\big)\Big\|^2, \qquad \bar\alpha_t:=\prod_{s=1}^t\alpha_s$$</div>
-              <p class="sense"><b>Sens :</b> l'astuce clé est que $\boldsymbol x_t$ s'obtient <b>en une seule étape</b> depuis $\boldsymbol x_0$ (composition de gaussiennes) — pas besoin de simuler les $t$ pas. Le réseau ne prédit pas l'image propre mais <b>le bruit ajouté</b> ; c'est équivalent à du <i>denoising score matching</i> sur toutes les échelles de bruit.</p>
+              <p class="sense"><b>Sens :</b> l'astuce clé est que $\boldsymbol x_t$ s'obtient <b>en une seule étape</b> depuis $\boldsymbol x_0$ (composition de gaussiennes) : pas besoin de simuler les $t$ pas. Le réseau ne prédit pas l'image propre mais <b>le bruit ajouté</b> ; c'est équivalent à du <i>denoising score matching</i> sur toutes les échelles de bruit.</p>
             </div>
 
             <div class="box box-def">
@@ -1369,7 +1369,7 @@ window.MathJax = {
               <p class="box-label">Définition · Classifier guidance</p>
               <p>Il existe une formulation équivalente de l'entraînement par le <b>score</b> $\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t)$. Par Bayes, $\nabla_{\boldsymbol x_t}\log p(\boldsymbol y)=0$ donc :</p>
               <div class="formula">$$\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t\mid\boldsymbol y)\ \leftarrow\ \underbrace{\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t)}_{\text{score inconditionnel}}\ +\ \gamma\times\underbrace{\nabla_{\boldsymbol x_t}\log p(\boldsymbol y\mid\boldsymbol x_t)}_{\text{score conditionnel}}$$</div>
-              <p class="sense"><b>Sens :</b> <b>problème</b> — le score conditionnel peut devenir négligeable devant l'inconditionnel, et la condition être ignorée. Le facteur $\gamma$ <b>amplifie</b> son influence : $\gamma=1$ donne des corgis parfois absents, $\gamma=10$ des corgis nets et systématiques. Coût : il faut un classifieur $p(\boldsymbol y\mid\boldsymbol x_t)$ entraîné sur des images bruitées.</p>
+              <p class="sense"><b>Sens :</b> <b>problème</b> : le score conditionnel peut devenir négligeable devant l'inconditionnel, et la condition être ignorée. Le facteur $\gamma$ <b>amplifie</b> son influence : $\gamma=1$ donne des corgis parfois absents, $\gamma=10$ des corgis nets et systématiques. Coût : il faut un classifieur $p(\boldsymbol y\mid\boldsymbol x_t)$ entraîné sur des images bruitées.</p>
             </div>
 
             <div class="box box-def">
@@ -1382,7 +1382,7 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Exemple · Diffusion latente (Stable Diffusion)</p>
-              <p><b>Limite des modèles de diffusion classiques</b> : plus l'espace des données est grand, plus le modèle doit être profond — et <b>toute</b> la diffusion inverse se calcule dans l'espace des pixels, ce qui rend l'entraînement <b>et</b> l'inférence lents et coûteux.</p>
+              <p><b>Limite des modèles de diffusion classiques</b> : plus l'espace des données est grand, plus le modèle doit être profond : et <b>toute</b> la diffusion inverse se calcule dans l'espace des pixels, ce qui rend l'entraînement <b>et</b> l'inférence lents et coûteux.</p>
               <p><b>Nouveauté</b> : effectuer la diffusion dans un <b>espace latent réduit</b>. Images $(3,512,512)$, latent $(4,64,64)$ :</p>
               <div class="formula">$$\text{ratio}=\frac{3\times512\times512}{4\times64\times64}=48, \qquad \text{ratio}^2=48^2=2304$$</div>
               <p class="sense"><b>Sens :</b> un encodeur $\mathcal E$ / décodeur $\mathcal D$ (type VAE) encadre un U-Net débruiteur $\epsilon_\theta$, la condition (texte, carte sémantique, image) entrant par <b>cross-attention</b>. Coût très réduit, qualité conservée.</p>
@@ -1408,7 +1408,7 @@ window.MathJax = {
             <div class="box box-warn">
               <p class="box-label">⚠ Les deux limites du RNN</p>
               <p>Un RNN sait aussi générer des séquences, mais :</p>
-              <p>• il impose un <b>calcul séquentiel à l'entraînement</b> — $\boldsymbol h_t$ requiert $\boldsymbol h_{t-1}$, donc aucune parallélisation dans le temps ;<br>
+              <p>• il impose un <b>calcul séquentiel à l'entraînement</b> : $\boldsymbol h_t$ requiert $\boldsymbol h_{t-1}$, donc aucune parallélisation dans le temps ;<br>
               • il induit une <b>dépendance plus faible entre tokens éloignés</b>, car toute l'information doit transiter par l'état caché, goulot d'étranglement de taille fixe.</p>
             </div>
 
@@ -1416,7 +1416,7 @@ window.MathJax = {
               <p class="box-label">Définition · Modélisation de séquence → modélisation d'ensemble</p>
               <p>On convertit la séquence d'entrée en un <b>ensemble de paires</b> (token, position) :</p>
               <div class="formula">$$[\,\text{'I'},\ \text{'study'},\ \text{'at'},\ \text{'ENSAI'}\,] \ \longrightarrow\ \big\{(\text{'I'},0),\ (\text{'study'},1),\ (\text{'at'},2),\ (\text{'ENSAI'},3)\big\}$$</div>
-              <p>L'<b>ordre des éléments de l'ensemble n'a plus d'importance</b> — l'information de position est portée par l'étiquette, pas par la place dans la liste ⟹ on peut tous les traiter <b>en parallèle</b>. En pratique on utilise des <i>embeddings</i> de positions : l'<b>encodage positionnel</b>, appliqué dès l'entrée.</p>
+              <p>L'<b>ordre des éléments de l'ensemble n'a plus d'importance</b> : l'information de position est portée par l'étiquette, pas par la place dans la liste ⟹ on peut tous les traiter <b>en parallèle</b>. En pratique on utilise des <i>embeddings</i> de positions : l'<b>encodage positionnel</b>, appliqué dès l'entrée.</p>
               <p class="sense"><b>Sens :</b> les deux limites du RNN tombent : l'<b>encodage positionnel</b> rend l'entraînement parallèle, l'<b>attention</b> permet de prédire à partir de tokens situés à n'importe quelle position.</p>
             </div>
 
@@ -1427,7 +1427,7 @@ window.MathJax = {
                 <tr><td>RNN</td><td>les positions proches</td><td>séquentiel</td></tr>
                 <tr><td>Transformer</td><td>n'importe quelle position*</td><td>parallèle</td></tr>
               </table>
-              <p class="sense"><b>Sens :</b> * à <b>longueur de séquence fixée</b> — c'est le prix à payer : un Transformer travaille sur une fenêtre de contexte bornée, là où un RNN accepte en principe toute longueur.</p>
+              <p class="sense"><b>Sens :</b> * à <b>longueur de séquence fixée</b> : c'est le prix à payer : un Transformer travaille sur une fenêtre de contexte bornée, là où un RNN accepte en principe toute longueur.</p>
             </div>
           </article>
 
@@ -1473,7 +1473,7 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Masquage causal (causal masking)</p>
               <p>On <b>masque</b> (cache) les tokens futurs pendant l'entraînement : chaque token de sortie n'a le droit de dépendre que des tokens <b>passés</b>. Concrètement, un <b>masque triangulaire</b> met à $-\infty$ les scores d'attention des positions $\gt i$ avant le softmax, qui leur attribue alors un poids nul.</p>
-              <p class="sense"><b>Sens :</b> on l'appelle « causal » car seul le passé doit pouvoir causer le futur. Résultat : l'entraînement est à la fois <b>correct</b> et <b>parallélisable</b> — une seule passe traite toutes les positions, chacune ne voyant que son propre préfixe.</p>
+              <p class="sense"><b>Sens :</b> on l'appelle « causal » car seul le passé doit pouvoir causer le futur. Résultat : l'entraînement est à la fois <b>correct</b> et <b>parallélisable</b> : une seule passe traite toutes les positions, chacune ne voyant que son propre préfixe.</p>
             </div>
           </article>
 
@@ -1501,20 +1501,20 @@ window.MathJax = {
                 <div class="attnbox-out">Sortie<br>$\mathrm{softmax}\!\left(\dfrac{QK^\top}{\sqrt{d_k}}\right)V$</div>
               </div>
 
-              <p class="sense"><b>Sens · analogie recherche d'information</b> : <b>query</b> = les mots tapés dans le moteur, <b>key</b> = les mots-clés/titre/catégorie décrivant chaque page, <b>value</b> = le contenu de la page. On récupère les pages dont les clés sont pertinentes pour la requête — l'attention fait la même chose de façon <b>floue et souple</b> (moyenne pondérée, pas sélection binaire). La division par $\sqrt{d_k}$ évite que les produits scalaires saturent le softmax en grande dimension.</p>
+              <p class="sense"><b>Sens · analogie recherche d'information</b> : <b>query</b> = les mots tapés dans le moteur, <b>key</b> = les mots-clés/titre/catégorie décrivant chaque page, <b>value</b> = le contenu de la page. On récupère les pages dont les clés sont pertinentes pour la requête : l'attention fait la même chose de façon <b>floue et souple</b> (moyenne pondérée, pas sélection binaire). La division par $\sqrt{d_k}$ évite que les produits scalaires saturent le softmax en grande dimension.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Cross-attention vs self-attention</p>
               <p>• <b>Cross-attention</b> : <b>query</b> = sortie précédente du décodeur (la séquence déjà générée) ; <b>keys = values</b> = sortie de l'encodeur (le contexte). C'est le pont entre la phrase source et la phrase en cours de génération.<br>
               • <b>Self-attention</b> : <b>query = keys = values</b> = la <b>même</b> séquence. Chaque position peut alors attendre directement n'importe quelle autre position de sa propre séquence.</p>
-              <p class="sense"><b>Sens :</b> contrairement au RNN, un token de sortie peut attendre des <b>tokens lointains</b> sans passer par un état caché — le champ récepteur est <b>large</b> dès la première couche.</p>
+              <p class="sense"><b>Sens :</b> contrairement au RNN, un token de sortie peut attendre des <b>tokens lointains</b> sans passer par un état caché : le champ récepteur est <b>large</b> dès la première couche.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Remarque · Interprétabilité</p>
               <p>Les <b>poids d'attention</b> indiquent explicitement quels tokens ont pesé sur une prédiction (ex. dans « <i>The animal didn't cross the street because <b>it</b> was too wide</i> », <i>it</i> attend fortement <i>street</i>).</p>
-              <p class="sense"><b>Sens :</b> avantage net sur l'état caché d'un RNN, opaque par nature — même si ces poids restent une explication partielle, pas une preuve de causalité.</p>
+              <p class="sense"><b>Sens :</b> avantage net sur l'état caché d'un RNN, opaque par nature : même si ces poids restent une explication partielle, pas une preuve de causalité.</p>
             </div>
           </article>
 
@@ -1530,8 +1530,8 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Exemple · Vision Transformer (ViT, Dosovitskiy et al., 2020)</p>
-              <p>« <i>An image is worth 16×16 words</i> » : l'image est découpée en <b>patches</b> de taille fixe, chaque patch est <b>aplati puis projeté linéairement</b> — il devient un « token » —, on lui ajoute un <b>encodage de position</b>, plus un token <b>[class]</b> supplémentaire appris. Le tout passe dans un <b>encodeur Transformer standard</b> (norm → multi-head attention → norm → MLP, avec connexions résiduelles, $L$ fois), et une <b>tête MLP</b> lit la sortie du token [class] pour prédire la classe.</p>
-              <p class="sense"><b>Sens :</b> <b>aucune convolution</b> — la self-attention sur les patches suffit à capturer les dépendances spatiales, y compris entre parties éloignées de l'image. En contrepartie, les a priori de localité et d'invariance par translation du CNN ne sont plus inscrits dans l'architecture : le ViT doit les apprendre, ce qui exige beaucoup de données.</p>
+              <p>« <i>An image is worth 16×16 words</i> » : l'image est découpée en <b>patches</b> de taille fixe, chaque patch est <b>aplati puis projeté linéairement</b> (il devient un « token »), puis on lui ajoute un <b>encodage de position</b>, plus un token <b>[class]</b> supplémentaire appris. Le tout passe dans un <b>encodeur Transformer standard</b> (norm → multi-head attention → norm → MLP, avec connexions résiduelles, $L$ fois), et une <b>tête MLP</b> lit la sortie du token [class] pour prédire la classe.</p>
+              <p class="sense"><b>Sens :</b> <b>aucune convolution</b> : la self-attention sur les patches suffit à capturer les dépendances spatiales, y compris entre parties éloignées de l'image. En contrepartie, les a priori de localité et d'invariance par translation du CNN ne sont plus inscrits dans l'architecture : le ViT doit les apprendre, ce qui exige beaucoup de données.</p>
             </div>
           </article>
 
@@ -1552,7 +1552,7 @@ window.MathJax = {
               <p>• Utilise uniquement l'<b>ENCODEUR</b> du Transformer (<b>pas</b> de masquage causal : chaque token voit toute la séquence).<br>
               • <b>Pré-entraînement</b> sur données non étiquetées par deux tâches : <b>masked language model</b> (on masque des tokens au hasard et on les prédit) et <b>next sentence prediction</b>.<br>
               • <b>Fine-tuning</b> ensuite sur données étiquetées.</p>
-              <p class="sense"><b>Sens :</b> exploite le contexte <b>avant ET après</b> chaque token ⟹ adapté à la <b>compréhension</b> (classification, extraction, question-réponse) — c'est l'analogue Transformer du RNN bidirectionnel de la fiche 25, et la raison pour laquelle BERT ne sait pas générer de texte librement.</p>
+              <p class="sense"><b>Sens :</b> exploite le contexte <b>avant ET après</b> chaque token ⟹ adapté à la <b>compréhension</b> (classification, extraction, question-réponse) : c'est l'analogue Transformer du RNN bidirectionnel de la fiche 25, et la raison pour laquelle BERT ne sait pas générer de texte librement.</p>
             </div>
           </article>
 
@@ -1567,11 +1567,11 @@ window.MathJax = {
         <div class="chain"><b>ResNet</b> : $h^{[j]}=f(h^{[j-1]};W)+h^{[j-1]}$ → un bloc peut représenter l'identité ($f\equiv0$) → plus profond ne peut plus faire pire</div>
         <div class="chain"><b>RNN vanille</b> : gradient = produit de dérivées → <b>vanishing/exploding</b> → <b>LSTM/GRU</b> : portes + mémoire quasi-additive ($\odot$, pas de produit matriciel répété)</div>
         <div class="chain"><b>AE</b> : reconstruire $x$ → <b>VAE</b> : ELBO = vraisemblance calculable, reparamétrisation $z=\mu+\sigma\epsilon$ rend le gradient non biaisé</div>
-        <div class="chain"><b>GAN</b> : $\min_G\max_D$ — Générateur vs Discriminateur, à l'équilibre $G$ trompe $D$</div>
+        <div class="chain"><b>GAN</b> : $\min_G\max_D$ : Générateur vs Discriminateur, à l'équilibre $G$ trompe $D$</div>
         <div class="chain"><b>Diffusion = HMVAE</b> : forward ajoute du bruit (fixe) → reverse le retire (appris, $\epsilon_\theta$) → Stable Diffusion : idem dans un espace latent ~2300× plus petit</div>
         <div class="chain"><b>Transformer</b> : séquence→ensemble + encodage positionnel + attention (Q,K,V) + masquage causal ⟹ parallèle et longue portée</div>
-        <div class="chain"><b>GPT</b> = décodeur causal (génération) · <b>BERT</b> = encodeur bidirectionnel (compréhension) — l'analogue du RNN uni/bidirectionnel</div>
-        <p class="source-note">Mémo basé sur <i>Deep Learning</i> — J. Faouzi, I. Yamane &amp; A. Bousse, ENSAI 3A, 2025 (324 diapositives : introduction, CNN, RNN, modèles génératifs, Transformers).</p>
+        <div class="chain"><b>GPT</b> = décodeur causal (génération) · <b>BERT</b> = encodeur bidirectionnel (compréhension) : l'analogue du RNN uni/bidirectionnel</div>
+        <p class="source-note">Mémo basé sur <i>Deep Learning</i> : J. Faouzi, I. Yamane &amp; A. Bousse, ENSAI 3A, 2025 (324 diapositives : introduction, CNN, RNN, modèles génératifs, Transformers).</p>
       </div>
 
     </main>
