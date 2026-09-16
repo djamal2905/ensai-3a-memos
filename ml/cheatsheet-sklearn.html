@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pipeline scikit-learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2230; --ink-soft:#454c5a; --muted:#5c6b72;
+    --paper:#f1f3ef; --surface:#ffffff; --surface-2:#e8ebe5; --border:#d7dcd3;
+    --accent:#2f6d68; --accent-strong:#204c49; --accent-soft:#e4efec; --accent-ink:#173836;
+    --def-bg:#edf6ee; --def-border:#4c8a5c; --def-label:#2c6b3d;
+    --thm-bg:#fbeee6; --thm-border:#b5643f; --thm-label:#9a4d2c;
+    --ex-bg:#eaf1fb; --ex-border:#3f6ea3; --ex-label:#2c5480;
+    --warn-bg:#fdeceb; --warn-border:#c1483c; --warn-color:#9a2f24;
+    --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
+    color-scheme: light;
+    /* code panel: fixed "editor" chrome, same in both themes */
+    --code-bg:#1a2028; --code-bg-2:#12161d; --code-border:#2b3340; --code-ink:#e7e9ee;
+    --tok-kw:#7bc4bd; --tok-str:#9ecb8e; --tok-num:#e2a26b; --tok-fn:#8ab4e8; --tok-com:#7c8494;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+      --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+      --accent:#7bc4bd; --accent-strong:#a8ded7; --accent-soft:#1b2c2a; --accent-ink:#bfe9e3;
+      --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+      --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+      --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+      --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+      --code-bg:#0d1015; --code-bg-2:#090b0f; --code-border:#232a35; --code-ink:#e7e9ee;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+    --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+    --accent:#7bc4bd; --accent-strong:#a8ded7; --accent-soft:#1b2c2a; --accent-ink:#bfe9e3;
+    --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+    --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+    --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+    --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+    --code-bg:#0d1015; --code-bg-2:#090b0f; --code-border:#232a35; --code-ink:#e7e9ee;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:"Fraunces", Georgia, serif; text-wrap:balance; color:var(--ink); margin:0; }
+  code, .mono{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  a{ color:var(--accent-strong); }
+  p{ margin:.5em 0; color:var(--ink-soft); max-width:70ch; }
+
+  #progress{ position:fixed; top:0; left:0; height:3px; width:0%; background:var(--accent); z-index:80; transition:width .1s linear; }
+
+  header.topbar{
+    position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{ max-width:1280px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:14px; }
+  .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
+  .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; font-size:1rem;
+  }
+  .icon-btn:hover{ background:var(--surface-2); }
+  .icon-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .search-wrap{ position:relative; flex:0 1 260px; }
+  .search-wrap input{ width:100%; padding:8px 12px 8px 32px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink); font:500 .88rem "Source Sans 3", sans-serif; }
+  .search-wrap svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none; }
+  #searchCount{ font:500 .72rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .xlink{ font:600 .8rem "Source Sans 3",sans-serif; color:var(--accent-strong); text-decoration:none; border:1px solid var(--border); padding:7px 12px; border-radius:8px; white-space:nowrap; }
+  .xlink:hover{ background:var(--accent-soft); }
+  #navToggle{ display:none; }
+
+  .layout{ max-width:1280px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:230px minmax(0,1fr); gap:36px; align-items:start; }
+  aside.toc{ position:sticky; top:64px; max-height:calc(100vh - 84px); overflow-y:auto; padding:18px 4px 40px 0; font-size:.85rem; }
+  aside.toc h2{ font:600 .7rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:10px; }
+  aside.toc ol{ list-style:none; margin:0; padding:0; border-left:2px solid var(--border); }
+  aside.toc li a{ display:block; padding:5px 0 5px 12px; color:var(--muted); text-decoration:none; border-left:2px solid transparent; margin-left:-2px; font-weight:500; }
+  aside.toc li a:hover{ color:var(--ink); }
+  aside.toc li a.active{ color:var(--accent-strong); border-left-color:var(--accent); background:var(--accent-soft); border-radius:0 6px 6px 0; }
+  .toc-num{ display:inline-block; width:1.4em; color:var(--muted); font:600 .78em "JetBrains Mono",monospace; }
+
+  main{ min-width:0; padding-bottom:70px; }
+
+  .hero{ padding:34px 0 22px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+  .hero .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .hero h1{ font-size:clamp(1.7rem, 1.2rem + 2vw, 2.5rem); margin:.3em 0 .2em; }
+  .hero p{ max-width:64ch; color:var(--muted); font-size:.98rem; }
+  .hero .meta{ display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; font:500 .78rem "JetBrains Mono",monospace; color:var(--muted); }
+  .hero .meta b{ color:var(--ink-soft); font-weight:600; }
+
+  /* pipeline flow diagram */
+  .flow{ display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:20px 0 6px; }
+  .flow-step{
+    flex:1 1 150px; background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; box-shadow:var(--shadow);
+  }
+  .flow-step .flow-num{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--accent); color:#fff; font:700 .7rem "JetBrains Mono",monospace; margin-bottom:6px; }
+  .flow-step b{ display:block; font-size:.92rem; color:var(--ink); }
+  .flow-step small{ color:var(--muted); font-size:.76rem; }
+  .flow-arrow{ display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:1.1rem; flex:0 0 auto; }
+
+  article.topic{ padding:30px 0; border-top:1px dashed var(--border); scroll-margin-top:76px; }
+  article.topic:first-child{ border-top:0; }
+  article.topic .tophead{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  article.topic .tophead .num{ font:700 .95rem "JetBrains Mono",monospace; color:var(--accent); }
+  article.topic h2{ font-size:1.32rem; }
+
+  /* boxes (tips / pitfalls) */
+  .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:14px 0; }
+  .box-label{ display:flex; align-items:center; gap:8px; font:700 .76rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px; }
+  .box p{ margin:.35em 0; font-size:.94rem; }
+  .box-def{ background:var(--def-bg); border-color:var(--def-border); } .box-def .box-label{ color:var(--def-label); }
+  .box-ex{ background:var(--ex-bg); border-color:var(--ex-border); } .box-ex .box-label{ color:var(--ex-label); }
+  .box-warn{ background:var(--warn-bg); border-color:var(--warn-border); } .box-warn .box-label{ color:var(--warn-color); }
+  .box-warn p{ color:var(--warn-color); font-weight:600; }
+
+  /* code blocks */
+  .codeblock{ background:var(--code-bg); border:1px solid var(--code-border); border-radius:12px; overflow:hidden; margin:14px 0; box-shadow:var(--shadow); }
+  .codeblock-head{ display:flex; align-items:center; gap:10px; padding:9px 12px; background:var(--code-bg-2); border-bottom:1px solid var(--code-border); }
+  .dot-row{ display:flex; gap:5px; }
+  .dot-row span{ width:9px; height:9px; border-radius:50%; background:#4b5563; }
+  .dot-row span:nth-child(1){ background:#e2776d; } .dot-row span:nth-child(2){ background:#e2a26b; } .dot-row span:nth-child(3){ background:#7bc4bd; }
+  .filename{ font:500 .76rem "JetBrains Mono",monospace; color:#9aa4b2; margin-right:auto; }
+  .copy-btn{
+    font:600 .72rem "JetBrains Mono",monospace; color:#c7cdd8; background:transparent; border:1px solid #333c4a;
+    border-radius:6px; padding:4px 9px; cursor:pointer;
+  }
+  .copy-btn:hover{ background:#232b38; }
+  .codeblock pre{ margin:0; padding:14px 16px; overflow-x:auto; }
+  .codeblock code{ font:500 .84rem/1.6 "JetBrains Mono", monospace; color:var(--code-ink); white-space:pre; }
+  .tok-kw{ color:var(--tok-kw); } .tok-str{ color:var(--tok-str); } .tok-num{ color:var(--tok-num); }
+  .tok-fn{ color:var(--tok-fn); } .tok-com{ color:var(--tok-com); font-style:italic; }
+
+  .signature{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:10px 0; }
+  .pill{ font:600 .75rem "JetBrains Mono",monospace; background:var(--surface-2); border:1px solid var(--border); color:var(--ink-soft); padding:4px 9px; border-radius:999px; }
+
+  .footer-note{ margin-top:38px; background:var(--code-bg); color:#c7cdd8; border-radius:14px; padding:22px 26px; font-size:.82rem; }
+  .footer-note a{ color:#a8ded7; }
+
+  #toTop{
+    position:fixed; right:20px; bottom:20px; z-index:70; width:42px; height:42px; border-radius:50%;
+    border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); box-shadow:var(--shadow);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  #toTop.show{ opacity:1; pointer-events:auto; }
+  #toTop:hover{ transform:translateY(-2px); }
+
+  .dim{ opacity:.28; filter:grayscale(.4); }
+  #mobileOverlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:55; }
+
+  @media (max-width: 880px){
+    .layout{ grid-template-columns:1fr; padding:0 16px; }
+    aside.toc{
+      position:fixed; top:0; left:0; height:100vh; width:280px; max-height:none; background:var(--surface);
+      border-right:1px solid var(--border); z-index:65; padding:70px 16px 20px; transform:translateX(-100%);
+      transition:transform .25s ease;
+    }
+    aside.toc.open{ transform:translateX(0); }
+    #navToggle{ display:inline-flex; }
+    .search-wrap{ flex:1 1 auto; }
+    .xlink{ display:none; }
+    .hero{ padding:24px 0 18px; }
+    .flow-arrow{ transform:rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+  <div id="progress"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button id="navToggle" class="icon-btn" aria-label="Ouvrir le sommaire">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="brand">
+        <span class="eyebrow">scikit-learn · régression régularisée</span>
+        <span class="name">Pipeline scikit-learn</span>
+      </div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Filtrer : RidgeCV, kfold, plot…" aria-label="Filtrer le cheat sheet" />
+      </div>
+      <span id="searchCount"></span>
+      <a class="xlink" href="memo-cours.html">← Mémo du cours</a>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème">🌓</button>
+    </div>
+  </header>
+
+  <div id="mobileOverlay" hidden></div>
+
+  <div class="layout">
+
+    <aside class="toc" id="toc">
+      <h2>Sections</h2>
+      <ol>
+        <li><a href="#c1"><span class="toc-num">1</span>Vue d'ensemble</a></li>
+        <li><a href="#c2"><span class="toc-num">2</span>Split train / val / test</a></li>
+        <li><a href="#c3"><span class="toc-num">3</span>Validation croisée (k-fold)</a></li>
+        <li><a href="#c4"><span class="toc-num">4</span>Ridge</a></li>
+        <li><a href="#c5"><span class="toc-num">5</span>Lasso</a></li>
+        <li><a href="#c6"><span class="toc-num">6</span>Elastic-Net</a></li>
+        <li><a href="#c7"><span class="toc-num">7</span>Pipeline &amp; scaling</a></li>
+        <li><a href="#c8"><span class="toc-num">8</span>Utilitaires de plot</a></li>
+      </ol>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <span class="eyebrow">Cheat sheet · code</span>
+        <h1>Régression régularisée avec scikit-learn</h1>
+        <p>Le pipeline complet : découper les données, valider par k-fold, comparer Ridge / Lasso / Elastic-Net, puis visualiser. Chaque bloc est autonome et copiable. Voir aussi le <a href="memo-cours.html">mémo de cours</a> pour la théorie derrière chaque étape.</p>
+        <div class="meta">
+          <span>🐍 <b>scikit-learn</b> ≥ 1.3</span>
+          <span>📋 <b>Copier</b> sur chaque bloc</span>
+          <span>🔎 <b>Filtrer</b> par mot-clé</span>
+        </div>
+      </div>
+
+      <article class="topic" id="c1">
+        <div class="tophead"><span class="num">1</span><h2>Vue d'ensemble du pipeline</h2></div>
+        <p>Le même enchaînement revient partout en régression linéaire régularisée : séparer les données, sélectionner l'hyperparamètre par validation croisée, entraîner, puis diagnostiquer visuellement.</p>
+
+        <div class="flow">
+          <div class="flow-step"><span class="flow-num">1</span><b>Split</b><small>train / val / test</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><span class="flow-num">2</span><b>K-fold CV</b><small>choisir l'hyperparamètre</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><span class="flow-num">3</span><b>Régularisation</b><small>Ridge / Lasso / ElasticNet</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><span class="flow-num">4</span><b>Évaluation</b><small>RMSE, R², plots</small></div>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">imports.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import (
+    train_test_split, KFold, cross_val_score, GridSearchCV, learning_curve
+)
+from sklearn.linear_model import (
+    Ridge, RidgeCV, Lasso, LassoCV, ElasticNet, ElasticNetCV
+)
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error, r2_score
+
+RANDOM_STATE = 42</code></pre>
+        </div>
+        <div class="box box-def">
+          <p class="box-label">Convention utilisée sur cette page</p>
+          <p><code>X, y</code> = matrice de features et cible déjà chargées. <code>random_state=RANDOM_STATE</code> partout pour des résultats reproductibles. Les blocs suivants s'enchaînent : chaque section réutilise les variables créées dans les précédentes.</p>
+        </div>
+      </article>
+
+      <article class="topic" id="c2">
+        <div class="tophead"><span class="num">2</span><h2>Split train / val / test</h2></div>
+        <p><code>train_test_split</code> ne fait qu'une coupe à la fois : pour obtenir trois blocs, on l'appelle deux fois.</p>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">split.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.model_selection import train_test_split
+
+# Split simple : 80 % train / 20 % test
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=RANDOM_STATE
+)
+
+# Split en 3 blocs : 60 % train / 20 % val / 20 % test
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y, test_size=0.4, random_state=RANDOM_STATE
+)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_temp, y_temp, test_size=0.5, random_state=RANDOM_STATE
+)
+
+print(f"train={len(X_train)}  val={len(X_val)}  test={len(X_test)}")</code></pre>
+        </div>
+
+        <div class="box box-warn">
+          <p class="box-label">⚠ Piège</p>
+          <p>Ne jamais toucher <code>X_test</code> / <code>y_test</code> avant l'évaluation finale : ni pour choisir un hyperparamètre, ni pour ajuster un <code>StandardScaler</code>. C'est <code>X_train</code> seul qui pilote toute décision de modélisation.</p>
+        </div>
+      </article>
+
+      <article class="topic" id="c3">
+        <div class="tophead"><span class="num">3</span><h2>Validation croisée (k-fold)</h2></div>
+        <p>À utiliser sur <code>X_train</code> uniquement, pour comparer des modèles ou régler un hyperparamètre sans toucher au test.</p>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">kfold.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.model_selection import KFold, cross_val_score
+
+kf = KFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+
+scores = cross_val_score(
+    Ridge(alpha=1.0), X_train, y_train,
+    cv=kf, scoring="neg_mean_squared_error"
+)
+rmse_scores = np.sqrt(-scores)
+print(f"RMSE moyen : {rmse_scores.mean():.3f} (+/- {rmse_scores.std():.3f})")</code></pre>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">grid_search.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.model_selection import GridSearchCV
+
+param_grid = {"alpha": np.logspace(-3, 3, 50)}
+
+grid = GridSearchCV(
+    Ridge(), param_grid, cv=kf, scoring="neg_mean_squared_error"
+)
+grid.fit(X_train, y_train)
+
+print("meilleur alpha :", grid.best_params_["alpha"])
+print("RMSE CV :", np.sqrt(-grid.best_score_))</code></pre>
+        </div>
+
+        <div class="box box-ex">
+          <p class="box-label">💡 Autres découpages</p>
+          <p><code>LeaveOneOut()</code> : cas extrême <code>K = n</code>, coûteux mais sans variance due au découpage. <code>StratifiedKFold</code> : équivalent pour la classification, préserve les proportions de classes dans chaque pli.</p>
+        </div>
+      </article>
+
+      <article class="topic" id="c4">
+        <div class="tophead"><span class="num">4</span><h2>Ridge (pénalité L2)</h2></div>
+        <p>Stabilise l'estimation quand les features sont corrélées ou que <code>n</code> est petit devant <code>d</code>. Ne met jamais un coefficient exactement à zéro.</p>
+        <div class="signature"><span class="pill">Ridge(alpha)</span><span class="pill">RidgeCV(alphas, cv)</span></div>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">ridge.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.linear_model import Ridge, RidgeCV
+
+# alpha fixe
+ridge = Ridge(alpha=1.0).fit(X_train, y_train)
+
+# alpha choisi automatiquement par CV interne (efficace, sans boucle)
+alphas = np.logspace(-3, 3, 100)
+ridge_cv = RidgeCV(alphas=alphas, cv=5).fit(X_train, y_train)
+
+print("alpha optimal :", ridge_cv.alpha_)
+print("RMSE test :", np.sqrt(mean_squared_error(y_test, ridge_cv.predict(X_test))))</code></pre>
+        </div>
+      </article>
+
+      <article class="topic" id="c5">
+        <div class="tophead"><span class="num">5</span><h2>Lasso (pénalité L1)</h2></div>
+        <p>Effectue de la sélection de variables : certains coefficients sont mis à zéro. Sensible aux features fortement corrélées.</p>
+        <div class="signature"><span class="pill">Lasso(alpha)</span><span class="pill">LassoCV(cv)</span></div>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">lasso.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.linear_model import Lasso, LassoCV
+
+lasso = Lasso(alpha=0.1).fit(X_train, y_train)
+
+lasso_cv = LassoCV(n_alphas=100, cv=5, random_state=RANDOM_STATE)
+lasso_cv.fit(X_train, y_train)
+
+n_nonzero = np.sum(lasso_cv.coef_ != 0)
+print(f"alpha optimal : {lasso_cv.alpha_:.4g}")
+print(f"coefficients non nuls : {n_nonzero} / {X_train.shape[1]}")</code></pre>
+        </div>
+
+        <div class="box box-ex">
+          <p class="box-label">💡 LS-Lasso (débiaiser)</p>
+          <p>Le Lasso est biaisé par construction. Pour corriger : refaire un <code>LinearRegression</code> classique uniquement sur les colonnes sélectionnées.</p>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">ls_lasso.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.linear_model import LinearRegression
+
+support = lasso_cv.coef_ != 0
+ls_lasso = LinearRegression().fit(X_train[:, support], y_train)</code></pre>
+        </div>
+      </article>
+
+      <article class="topic" id="c6">
+        <div class="tophead"><span class="num">6</span><h2>Elastic-Net (L1 + L2)</h2></div>
+        <p>Combine les deux pénalités via <code>l1_ratio</code> : <code>1.0</code> redonne le Lasso, <code>0.0</code> redonne le Ridge. Utile quand les features sont à la fois corrélées et nombreuses.</p>
+        <div class="signature"><span class="pill">ElasticNet(alpha, l1_ratio)</span><span class="pill">ElasticNetCV(cv)</span></div>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">elasticnet.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.linear_model import ElasticNet, ElasticNetCV
+
+enet = ElasticNet(alpha=0.1, l1_ratio=0.5).fit(X_train, y_train)
+
+enet_cv = ElasticNetCV(
+    l1_ratio=[.1, .3, .5, .7, .9, .95, .99, 1.0],
+    n_alphas=100, cv=5, random_state=RANDOM_STATE
+)
+enet_cv.fit(X_train, y_train)
+
+print("alpha :", enet_cv.alpha_, " l1_ratio :", enet_cv.l1_ratio_)</code></pre>
+        </div>
+      </article>
+
+      <article class="topic" id="c7">
+        <div class="tophead"><span class="num">7</span><h2>Pipeline &amp; scaling</h2></div>
+        <p>Ridge / Lasso / Elastic-Net pénalisent la norme des coefficients : sans mise à l'échelle, une feature avec de grandes valeurs est pénalisée différemment d'une feature avec de petites valeurs. Un <code>Pipeline</code> évite aussi la fuite d'information (le scaler ne doit être ajusté que sur train).</p>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">pipeline.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+pipe = make_pipeline(
+    StandardScaler(),
+    RidgeCV(alphas=np.logspace(-3, 3, 100), cv=5)
+)
+pipe.fit(X_train, y_train)  # le scaler est ajusté seulement sur X_train
+
+print("R2 test :", r2_score(y_test, pipe.predict(X_test)))</code></pre>
+        </div>
+
+        <div class="box box-warn">
+          <p class="box-label">⚠ Piège de fuite (leakage)</p>
+          <p>Ne jamais faire <code>scaler.fit(X)</code> sur l'ensemble complet avant le split. Toujours <code>fit</code> sur <code>X_train</code>, puis <code>transform</code> sur val/test, un <code>Pipeline</code> le garantit automatiquement, y compris à l'intérieur de <code>cross_val_score</code>.</p>
+        </div>
+      </article>
+
+      <article class="topic" id="c8">
+        <div class="tophead"><span class="num">8</span><h2>Utilitaires de plot</h2></div>
+        <p>Quatre fonctions réutilisables pour diagnostiquer un modèle régularisé : chemin de régularisation, courbe de CV, prédictions vs réalité, courbe d'apprentissage.</p>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">plots.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import enet_path
+from sklearn.model_selection import learning_curve
+
+
+def plot_reg_path(X, y, alphas=None, l1_ratio=1.0, ax=None):
+    """Chemin de régularisation : coefficients en fonction de alpha."""
+    ax = ax or plt.gca()
+    alphas_path, coefs, _ = enet_path(X, y, alphas=alphas, l1_ratio=l1_ratio)
+    for coef in coefs:
+        ax.plot(alphas_path, coef, linewidth=1)
+    ax.set_xscale("log")
+    ax.set_xlabel("alpha")
+    ax.set_ylabel("coefficient")
+    ax.set_title(f"Chemin de régularisation (l1_ratio={l1_ratio})")
+    return ax
+
+
+def plot_cv_curve(alphas, mean_rmse, std_rmse, best_alpha, ax=None):
+    """Erreur de validation croisée (+/- 1 écart-type) en fonction de alpha."""
+    ax = ax or plt.gca()
+    ax.plot(alphas, mean_rmse, marker="o", markersize=3)
+    ax.fill_between(alphas, mean_rmse - std_rmse, mean_rmse + std_rmse, alpha=0.2)
+    ax.axvline(best_alpha, color="black", linestyle="--", label=f"alpha* = {best_alpha:.3g}")
+    ax.set_xscale("log")
+    ax.set_xlabel("alpha")
+    ax.set_ylabel("RMSE (CV)")
+    ax.legend()
+    return ax
+
+
+def plot_predictions(y_true, y_pred, ax=None):
+    """Nuage prédictions vs réalité, avec la diagonale y = x."""
+    ax = ax or plt.gca()
+    ax.scatter(y_true, y_pred, alpha=0.6, edgecolor="k", linewidth=0.4)
+    lo, hi = min(y_true.min(), y_pred.min()), max(y_true.max(), y_pred.max())
+    ax.plot([lo, hi], [lo, hi], "r--", linewidth=1)
+    ax.set_xlabel("valeurs réelles")
+    ax.set_ylabel("valeurs prédites")
+    return ax
+
+
+def plot_learning_curve(estimator, X, y, cv=5, ax=None):
+    """RMSE train / validation en fonction de la taille de l'échantillon."""
+    sizes, train_scores, val_scores = learning_curve(
+        estimator, X, y, cv=cv,
+        scoring="neg_mean_squared_error",
+        train_sizes=np.linspace(0.1, 1.0, 10)
+    )
+    train_rmse = np.sqrt(-train_scores).mean(axis=1)
+    val_rmse = np.sqrt(-val_scores).mean(axis=1)
+    ax = ax or plt.gca()
+    ax.plot(sizes, train_rmse, "o-", label="train")
+    ax.plot(sizes, val_rmse, "o-", label="validation")
+    ax.set_xlabel("taille de l'échantillon d'entraînement")
+    ax.set_ylabel("RMSE")
+    ax.legend()
+    return ax</code></pre>
+        </div>
+
+        <p>Exemple d'appel groupé, avec une figure 2×2 rassemblant les quatre diagnostics pour un Lasso réglé par CV :</p>
+
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="dot-row"><span></span><span></span><span></span></span><span class="filename">usage.py</span><button class="copy-btn">Copier</button></div>
+          <pre><code class="py"># écart-type de l'erreur CV par valeur de alpha (issu de LassoCV)
+mean_rmse = np.sqrt(lasso_cv.mse_path_).mean(axis=1)
+std_rmse = np.sqrt(lasso_cv.mse_path_).std(axis=1)
+
+fig, axes = plt.subplots(2, 2, figsize=(11, 8))
+plot_reg_path(X_train, y_train, l1_ratio=1.0, ax=axes[0, 0])
+plot_cv_curve(lasso_cv.alphas_, mean_rmse, std_rmse, lasso_cv.alpha_, ax=axes[0, 1])
+plot_predictions(y_test, lasso_cv.predict(X_test), ax=axes[1, 0])
+plot_learning_curve(RidgeCV(alphas=alphas), X_train, y_train, ax=axes[1, 1])
+fig.tight_layout()
+plt.show()</code></pre>
+        </div>
+      </article>
+
+      <div class="footer-note">
+        Cheat sheet compagnon du <a href="memo-cours.html">mémo de cours (OLS &amp; Optimisation)</a>. La coordinate descent qui résout le Lasso et l'Elastic-Net dans <code>scikit-learn</code> est détaillée dans la fiche 14 du mémo.
+      </div>
+
+    </main>
+  </div>
+
+  <button id="toTop" aria-label="Retour en haut">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- theme ---------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  function getStored(){ try{ return localStorage.getItem('ml-memo-theme'); }catch(e){ return null; } }
+  function setStored(v){ try{ localStorage.setItem('ml-memo-theme', v); }catch(e){} }
+  var stored = getStored();
+  if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next;
+    if(!current){ next = prefersDark ? 'light' : 'dark'; }
+    else if(current === 'dark'){ next = 'light'; }
+    else { next = 'dark'; }
+    root.setAttribute('data-theme', next);
+    setStored(next);
+  });
+
+  /* ---------- progress bar ---------- */
+  var bar = document.getElementById('progress');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    bar.style.width = height > 0 ? (scrollTop / height * 100) + '%' : '0%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ---------- back to top ---------- */
+  var toTop = document.getElementById('toTop');
+  document.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 500);
+  }, { passive: true });
+  toTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+  /* ---------- mobile nav ---------- */
+  var toc = document.getElementById('toc');
+  var navToggle = document.getElementById('navToggle');
+  var overlay = document.getElementById('mobileOverlay');
+  function closeNav(){ toc.classList.remove('open'); overlay.hidden = true; }
+  navToggle.addEventListener('click', function(){ toc.classList.add('open'); overlay.hidden = false; });
+  overlay.addEventListener('click', closeNav);
+  toc.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+
+  /* ---------- scroll-spy ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('aside.toc a'));
+  var topics = Array.prototype.slice.call(document.querySelectorAll('article.topic'));
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id;
+        links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  topics.forEach(function(t){ io.observe(t); });
+
+  /* ---------- search filter (over topics) ---------- */
+  var search = document.getElementById('search');
+  var count = document.getElementById('searchCount');
+  var units = Array.prototype.slice.call(document.querySelectorAll('.codeblock, .box'));
+  function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  var unitData = units.map(function(u){ return { el: u, text: normalize(u.textContent) }; });
+
+  search.addEventListener('input', function(){
+    var q = normalize(search.value.trim());
+    if(!q){
+      unitData.forEach(function(u){ u.el.classList.remove('dim'); });
+      count.textContent = '';
+      return;
+    }
+    var matches = 0;
+    unitData.forEach(function(u){
+      var hit = u.text.indexOf(q) !== -1;
+      u.el.classList.toggle('dim', !hit);
+      if(hit) matches++;
+    });
+    count.textContent = matches + ' résultat' + (matches === 1 ? '' : 's');
+  });
+
+  /* ---------- python syntax highlighting (self-contained, no external lib) ---------- */
+  var KEYWORDS = ['def','return','import','from','as','if','else','elif','for','while','in','not','and','or','is',
+                   'None','True','False','class','with','try','except','finally','lambda','pass','break','continue',
+                   'yield','global','raise'];
+  var TOKEN_RE = new RegExp(
+    '(?<com>#[^\\n]*)' +
+    '|(?<str>\'\'\'[\\s\\S]*?\'\'\'|"""[\\s\\S]*?"""|\'(?:\\\\.|[^\'\\\\\\n])*\'|"(?:\\\\.|[^"\\\\\\n])*")' +
+    '|(?<num>\\b\\d+\\.?\\d*(?:[eE][+-]?\\d+)?\\b)' +
+    '|(?<fn>[A-Za-z_]\\w*)(?=\\()' +
+    '|(?<kw>\\b(?:' + KEYWORDS.join('|') + ')\\b)' +
+    '|(?<ident>[A-Za-z_]\\w*)',
+    'g'
+  );
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function pyHighlight(src){
+    return src.replace(TOKEN_RE, function(){
+      var args = arguments;
+      var groups = args[args.length - 1];
+      var match = args[0];
+      if(groups.com) return '<span class="tok-com">' + escapeHtml(groups.com) + '</span>';
+      if(groups.str) return '<span class="tok-str">' + escapeHtml(groups.str) + '</span>';
+      if(groups.num) return '<span class="tok-num">' + escapeHtml(groups.num) + '</span>';
+      if(groups.fn)  return '<span class="tok-fn">'  + escapeHtml(groups.fn)  + '</span>';
+      if(groups.kw)  return '<span class="tok-kw">'  + escapeHtml(groups.kw)  + '</span>';
+      if(groups.ident) return escapeHtml(groups.ident);
+      return escapeHtml(match);
+    });
+  }
+  document.querySelectorAll('code.py').forEach(function(el){
+    el.innerHTML = pyHighlight(el.textContent);
+  });
+
+  /* ---------- copy to clipboard ---------- */
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    var ok = false;
+    try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var codeEl = btn.closest('.codeblock').querySelector('code');
+      var text = codeEl.textContent;
+      function flash(label){
+        var original = 'Copier';
+        btn.textContent = label;
+        setTimeout(function(){ btn.textContent = original; }, 1400);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){ flash('Copié ✓'); })
+          .catch(function(){ flash(fallbackCopy(text) ? 'Copié ✓' : 'Échec'); });
+      } else {
+        flash(fallbackCopy(text) ? 'Copié ✓' : 'Échec');
+      }
+    });
+  });
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.documentElement.style.scrollBehavior = 'auto';
+  }
+})();
+</script>
+
+</body>
+</html>
