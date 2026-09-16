@@ -354,27 +354,54 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Exemple 1.2.2 (exercice 1.2)</p>
-              <p>Soit $F(x)=1-(1-x)^\alpha$, $x\in[0,1]$, $\alpha>0$. Alors :</p>
-              <div class="formula">$$n^{1/\alpha}(1-M_n)\ \xrightarrow{\ \mathcal L\ }\ \xi, \qquad \xi\sim F_\xi(x)=1-e^{-x^\alpha}$$</div>
-              <p><i>Calcul :</i> $\mathbb P(n^{1/\alpha}(1-M_n)\le x)=1-F^n(1-n^{-1/\alpha}x)=1-\big[1-x^\alpha/n\big]^n \to 1-e^{-x^\alpha}$.</p>
+              <p>Soit $F(x)=1-(1-x)^\alpha$, $x\in[0,1]$, $\alpha\gt0$. Montrer que :</p>
+              <div class="formula">$$n^{1/\alpha}(1-M_n)\ \xrightarrow{\ \mathcal L\ }\ \xi, \qquad \xi\sim F_\xi(x)=1-e^{-x^\alpha},\ x\ge0$$</div>
             </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p>Soit $x\ge0$. On part de l'événement, qu'on réexprime en termes de $M_n$ :</p>
+                <div class="formula">$$\mathbb P\big(n^{1/\alpha}(1-M_n)\le x\big) = \mathbb P\big(1-M_n\le n^{-1/\alpha}x\big) = \mathbb P\big(M_n\ge 1-n^{-1/\alpha}x\big) = 1-\mathbb P\big(M_n\lt 1-n^{-1/\alpha}x\big)$$</div>
+                <p>Comme $F$ est continue, $\mathbb P(M_n\lt t)=\mathbb P(M_n\le t)=F^n(t)$, donc $\mathbb P\big(n^{1/\alpha}(1-M_n)\le x\big)=1-F^n\big(1-n^{-1/\alpha}x\big)$.</p>
+                <p>Pour $n$ assez grand, $1-n^{-1/\alpha}x\in[0,1]$, et :</p>
+                <div class="formula">$$F\big(1-n^{-1/\alpha}x\big) = 1-\Big(1-\big(1-n^{-1/\alpha}x\big)\Big)^\alpha = 1-\big(n^{-1/\alpha}x\big)^\alpha = 1-\frac{x^\alpha}{n}$$</div>
+                <p>Par conséquent, en utilisant la limite classique $(1-u/n)^n\to e^{-u}$ :</p>
+                <div class="formula">$$F^n\!\left(1-n^{-1/\alpha}x\right) = \left(1-\frac{x^\alpha}{n}\right)^n \xrightarrow[n\to\infty]{} e^{-x^\alpha}$$</div>
+                <p>D'où $\mathbb P\big(n^{1/\alpha}(1-M_n)\le x\big)\to 1-e^{-x^\alpha}=F_\xi(x)$ pour $x\ge0$. $\checkmark$ (Pour $x\lt0$, $M_n\le1$ toujours, donc $1-M_n\ge0$ et l'événement est de probabilité $0$ : cohérent avec le support $[0,\infty)$ de $\xi$.)</p>
+              </div>
+            </details>
 
             <div class="box box-ex">
               <p class="box-label">Exemple 1.2.3 (exercice 1.3)</p>
-              <p>Soit $F(x)=x^\alpha$, $x\in[0,1]$, $\alpha>0$. Montrer que :</p>
+              <p>Soit $F(x)=x^\alpha$, $x\in[0,1]$, $\alpha\gt0$. Montrer que :</p>
               <div class="formula">$$n(1-M_n)\ \xrightarrow{\ \mathcal L\ }\ \mathrm{Exp}(\alpha)$$</div>
-              <p class="sense"><b>Sens :</b> avec la <b>bonne</b> normalisation $(a_n,b_n)$, $(M_n-b_n)/a_n$ semble toujours converger vers l'une de quelques familles de lois : exactement le contenu du théorème fondamental qui suit.</p>
             </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p>Soit $x\ge0$. Même démarche qu'à l'exemple précédent :</p>
+                <div class="formula">$$\mathbb P\big(n(1-M_n)\le x\big)=\mathbb P\big(M_n\ge1-x/n\big)=1-F^n(1-x/n)$$</div>
+                <p>Ici $F(1-x/n)=(1-x/n)^\alpha$ directement (pas besoin de développement supplémentaire), donc :</p>
+                <div class="formula">$$F^n(1-x/n)=\big[(1-x/n)^\alpha\big]^n=\Big[(1-x/n)^n\Big]^\alpha \xrightarrow[n\to\infty]{} \big(e^{-x}\big)^\alpha=e^{-\alpha x}$$</div>
+                <p>D'où $\mathbb P\big(n(1-M_n)\le x\big)\to1-e^{-\alpha x}$, qui est exactement la fonction de répartition de $\mathrm{Exp}(\alpha)$ (pour $x\ge0$). $\checkmark$</p>
+                <p class="sense"><b>Sens :</b> avec la <b>bonne</b> normalisation $(a_n,b_n)$, $(M_n-b_n)/a_n$ semble toujours converger vers l'une de quelques familles de lois : exactement le contenu du théorème fondamental qui suit. En anticipant le critère 2 de la fiche 6 : la densité de l'exemple 1.2.2, $f(x)=\alpha(1-x)^{\alpha-1}$, donne $\gamma=-1/\alpha$ ; celle de l'exemple 1.2.3, $f(x)=\alpha x^{\alpha-1}$, tend vers la <b>constante non nulle</b> $\alpha$ quand $x\to1$, quel que soit $\alpha$ : c'est le cas particulier $\beta=1$ du critère 2, qui donne $\gamma=-1$ pour <b>toute</b> valeur de $\alpha$. Piège classique : seul l'<b>exposant</b> de $(x_F-x)$ détermine $\gamma$, jamais la constante multiplicative devant.</p>
+              </div>
+            </details>
           </article>
 
           <article class="topic" id="s4">
             <div class="tophead"><span class="num">4</span><h2>Théorème de Fisher-Tippett-Gnedenko</h2></div>
 
             <div class="box box-thm">
-              <p class="box-label">Théorème 1.2.1 · Théorème fondamental de la TVE (Fisher-Tippett-Gnedenko)</p>
-              <p>Supposons qu'il existe $a_n>0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge en loi vers une distribution <b>non dégénérée</b>. Alors il existe $\gamma\in\mathbb R$ tel que cette limite est $G_\gamma$ :</p>
+              <p class="box-label">Théorème 1.2.1 (Fisher &amp; Tippett, 1928 ; Gnedenko, 1943) · Théorème fondamental de la TVE</p>
+              <p><b>Cadre :</b> $X_1,\dots,X_n$ i.i.d. de fonction de répartition $F$, $M_n=\max_{i\le n}X_i$.</p>
+              <p><b>Hypothèse :</b> il existe des suites $a_n\gt0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge en loi vers une variable aléatoire <b>non dégénérée</b> (c'est-à-dire dont la loi limite n'est pas une masse de Dirac).</p>
+              <p><b>Conclusion :</b> alors il existe nécessairement $\gamma\in\mathbb R$ tel que cette loi limite est $G_\gamma$, où :</p>
               <div class="formula">$$G_\gamma(x) = \begin{cases} \exp\!\big\{-(1+\gamma x)^{-1/\gamma}\big\} & \text{si } 1+\gamma x>0,\ \gamma\neq0 \\ \exp\{-e^{-x}\} & \text{si } x\in\mathbb R,\ \gamma=0 \end{cases}$$</div>
-              <p class="sense"><b>Sens :</b> la famille $(G_\gamma)_{\gamma\in\mathbb R}$ est la famille <b>GEV</b> (Generalized Extreme Value). $\gamma$ est le <b>paramètre de forme</b>, ou <b>indice des valeurs extrêmes</b> : il caractérise à lui seul la queue de $F$.</p>
+              <p>Réciproquement, pour <b>tout</b> $\gamma\in\mathbb R$, il existe des lois $F$ pour lesquelles cette convergence a effectivement lieu vers $G_\gamma$ (les exemples des fiches 2-3 et 6 en donnent une pour chaque valeur de $\gamma$).</p>
+              <p class="sense"><b>Sens :</b> la famille $(G_\gamma)_{\gamma\in\mathbb R}$ est la famille <b>GEV</b> (Generalized Extreme Value). $\gamma$ est le <b>paramètre de forme</b>, ou <b>indice des valeurs extrêmes</b> : il caractérise à lui seul la queue de $F$. Le théorème ne dit <b>pas</b> que tout $F$ satisfait l'hypothèse (certaines lois pathologiques n'ont aucune limite non dégénérée) ; il dit seulement que, <b>si</b> une limite non dégénérée existe, elle est forcément une GEV : il n'y a pas d'autre famille de lois limites possible.</p>
             </div>
           </article>
 
@@ -424,39 +451,73 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Critères sur la densité</p>
-              <p>1. Si $f(x)\underset{x\to\infty}\sim c\,x^{-\alpha-1}$ ($c,\alpha>0$) : queue lourde, $\gamma=1/\alpha$ ($x_F=\infty$).<br>
-              2. Si $x_F\lt\infty$ et $f(x)\underset{x\to x_F}\sim c\,(x_F-x)^{\alpha-1}$ ($c,\alpha>0$) : queue courte, $\gamma=-1/\alpha$.<br>
-              3. Si $x_F=\infty$ et $f(x)\underset{x\to\infty}\sim c\,x^\varphi\exp\{-P(x)\}$ ($P$ polynôme, $c,\varphi,\deg P>0$) : queue légère, $\gamma=0$.</p>
+              <p><b>1.</b> Si $f(x)\underset{x\to\infty}\sim c\,x^{-\alpha-1}$ ($c\gt0$, $\alpha\gt0$) : queue lourde, $\gamma=1/\alpha$. <i>(implique $x_F=+\infty$)</i><br>
+              <b>2.</b> Si $x_F\lt\infty$ et $f(x)\underset{x\to x_F}\sim c\,(x_F-x)^{\beta-1}$ ($c\gt0$, $\beta\gt0$) : queue courte, $\gamma=-1/\beta$.<br>
+              <b>3.</b> Si $x_F=\infty$ et $f(x)\underset{x\to\infty}\sim c\,x^\varphi\exp\{-P(x)\}$ ($c\gt0$, $\varphi\in\mathbb R$ quelconque, $P$ polynôme de degré $\ge1$ à coefficient dominant $\gt0$) : queue légère, $\gamma=0$.</p>
+              <p class="sense"><b>Sens :</b> dans les trois critères, seul l'<b>exposant</b> ($\alpha$, $\beta$, ou le degré/coefficient de $P$) détermine $\gamma$ : la constante multiplicative $c$ (et, au critère 3, le facteur polynomial $x^\varphi$ devant l'exponentielle) n'a <b>aucune</b> influence sur $\gamma$, seulement sur les constantes de normalisation $a_n,b_n$. Attention au critère 3 : $\varphi$ peut être <b>nul</b> (cas de la loi Gaussienne ci-dessous) : ce n'est pas une exigence de stricte positivité, contrairement à $\alpha$ et $\beta$ aux critères 1 et 2.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Exemple 1.3.1 · Loi de Student</p>
-              <p>$X\sim\mathrm{Student}(d)$, $f_X(x)=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}\Big(1+\dfrac{x^2}d\Big)^{-\frac{d+1}2}$. Point terminal infini. On montre $f(x)\sim C_d\,x^{-d-1}$ quand $x\to\infty$ $\Rightarrow$ <b>queue lourde</b>, $\gamma=1/d$.</p>
+              <p>$X\sim\mathrm{Student}(d)$, $d\gt0$, de densité $f_X(x)=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}\Big(1+\dfrac{x^2}d\Big)^{-\frac{d+1}2}$, $x\in\mathbb R$. Déterminer le domaine d'attraction et $\gamma$.</p>
             </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p>Point terminal : le support est $\mathbb R$ tout entier, donc $x_F=+\infty$. On étudie $f_X(x)$ quand $x\to+\infty$. Notons $C_d:=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}$ (la constante ne dépend pas de $x$). Quand $x\to\infty$, le terme $\frac{x^2}d$ domine le « $1+$ » :</p>
+                <div class="formula">$$1+\frac{x^2}d \underset{x\to\infty}\sim \frac{x^2}{d}$$</div>
+                <p>d'où, en élevant à la puissance $-\frac{d+1}2$ (une fonction continue et strictement décroissante, donc l'équivalent se conserve) :</p>
+                <div class="formula">$$\Big(1+\frac{x^2}d\Big)^{-\frac{d+1}2} \underset{x\to\infty}\sim \left(\frac{x^2}d\right)^{-\frac{d+1}2} = d^{\frac{d+1}2}\,x^{-(d+1)}$$</div>
+                <p>Donc $f_X(x)\underset{x\to\infty}\sim \underbrace{C_d\,d^{\frac{d+1}2}}_{=:c}\,x^{-(d+1)} = c\,x^{-d-1}$. On identifie au <b>critère 1</b> avec $\alpha=d$ :</p>
+                <div class="formula">$$\boxed{\gamma=\frac1\alpha=\frac1d} \qquad \text{(queue lourde, domaine de Fréchet)}$$</div>
+              </div>
+            </details>
 
             <div class="box box-ex">
               <p class="box-label">Exemple 1.3.2 · Loi Beta</p>
-              <p>$X\sim\mathrm{Beta}(a,b)$, $a,b>0$, densité sur $(0,1)$. Point terminal fini $=1$. On montre $f(x)\underset{x\to1}\approx C_{a,b}(1-x)^{b-1}$ $\Rightarrow$ <b>queue courte</b>, $\gamma=-1/b$.</p>
+              <p>$X\sim\mathrm{Beta}(a,b)$, $a,b\gt0$, de densité $f(x)=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{a-1}(1-x)^{b-1}$ sur $(0,1)$. Déterminer le domaine d'attraction et $\gamma$.</p>
             </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p>Point terminal : le support est $(0,1)$, donc $x_F=1\lt\infty$ : on étudie $f(x)$ quand $x\to1^-$. Notons $C_{a,b}:=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$. Quand $x\to1$, le facteur $x^{a-1}\to1^{a-1}=1$, donc :</p>
+                <div class="formula">$$f(x)=C_{a,b}\underbrace{x^{a-1}}_{\to\,1}(1-x)^{b-1} \underset{x\to1}\sim C_{a,b}\,(1-x)^{b-1}$$</div>
+                <p>On identifie au <b>critère 2</b> avec $x_F=1$, $\beta=b$, $c=C_{a,b}$ :</p>
+                <div class="formula">$$\boxed{\gamma=-\frac1\beta=-\frac1b} \qquad \text{(queue courte, domaine de Weibull)}$$</div>
+              </div>
+            </details>
 
             <div class="box box-ex">
               <p class="box-label">Exemple 1.3.3 · Loi Gaussienne</p>
-              <p>$X\sim\mathcal N(\mu,\sigma^2)$, $f(x)=C_\sigma\exp\{-P(x)\}$ avec $P$ polynôme de degré $2$ $\Rightarrow$ <b>queue légère</b>, $\gamma=0$. (Vérification rigoureuse via l'exemple 1.1.7 de Haan &amp; Ferreira (2006).)</p>
-              <p class="sense"><b>Sens :</b> ces trois exemples couvrent exactement les trois régimes : c'est le premier réflexe à avoir face à une nouvelle loi : regarder le comportement de $f$ au voisinage du point terminal.</p>
+              <p>$X\sim\mathcal N(\mu,\sigma^2)$, de densité $f(x)=\dfrac1{\sqrt{2\pi\sigma^2}}\exp\Big\{-\dfrac{(x-\mu)^2}{2\sigma^2}\Big\}$. Déterminer le domaine d'attraction et $\gamma$.</p>
             </div>
+
+            <details class="solution">
+              <summary>Voir le calcul détaillé</summary>
+              <div class="box box-thm">
+                <p>Point terminal : le support est $\mathbb R$, donc $x_F=+\infty$. On écrit directement, sans même passer par un équivalent (l'égalité est <b>exacte</b>, pas seulement asymptotique) :</p>
+                <div class="formula">$$f(x) = \underbrace{\frac1{\sqrt{2\pi\sigma^2}}}_{=c}\ \times\ \underbrace{x^0}_{x^\varphi,\ \varphi=0}\ \times\ \exp\{-\underbrace{\textstyle\frac{(x-\mu)^2}{2\sigma^2}}_{=:P(x)}\}$$</div>
+                <p>$P(x)=\frac{(x-\mu)^2}{2\sigma^2}=\frac1{2\sigma^2}x^2-\frac\mu{\sigma^2}x+\frac{\mu^2}{2\sigma^2}$ est bien un polynôme de degré $2\ge1$, de coefficient dominant $\frac1{2\sigma^2}\gt0$. On identifie au <b>critère 3</b>, avec $\varphi=0$ (autorisé, cf. remarque de la fiche précédente) :</p>
+                <div class="formula">$$\boxed{\gamma=0} \qquad \text{(queue légère, domaine de Gumbel)}$$</div>
+                <p class="sense"><b>Sens :</b> ces trois exemples couvrent exactement les trois régimes : c'est le premier réflexe à avoir face à une nouvelle loi : regarder le comportement de $f$ au voisinage du point terminal, puis identifier l'exposant pertinent (jamais la constante). (Justification rigoureuse pour la loi Gaussienne : exemple 1.1.7 de de Haan &amp; Ferreira (2006).)</p>
+              </div>
+            </details>
           </article>
 
           <article class="topic" id="s7">
             <div class="tophead"><span class="num">7</span><h2>Théorème de Pickands-Balkema-de Haan</h2></div>
 
             <div class="box box-thm">
-              <p class="box-label">Corollaire 1.2.4 · Théorème de Pickands-Balkema-de Haan</p>
-              <p>Les deux propositions suivantes sont équivalentes :</p>
-              <p>(i) $\exists\,a_n>0,\,b_n\in\mathbb R$ tels que $(M_n-b_n)/a_n\to \mathrm{GEV}(\gamma)$ ;<br>
-              (ii) $\exists$ une fonction $t\mapsto\sigma(t)>0$ telle que</p>
-              <div class="formula">$$\lim_{t\to x_F} \mathbb P\!\left(\frac{X-t}{\sigma(t)}\gt x \;\middle|\; X\gt t\right) = (1+\gamma x)^{-1/\gamma}, \qquad \forall x: 1+\gamma x\gt0$$</div>
-              <p>La loi $x\mapsto(1+\gamma x)^{-1/\gamma}$ est une loi de <b>Pareto généralisée</b> (Generalized Pareto, GP) de paramètre de forme $\gamma$.</p>
-              <p class="sense"><b>Sens :</b> la queue de la loi conditionnelle des <b>excès au-dessus d'un seuil</b> $t$ converge, elle aussi, vers une famille à un seul paramètre : le <b>même</b> $\gamma$ que celui de la GEV. En pratique on ajuste $H(x)=(1+\gamma x/\sigma)^{-1/\gamma}$, $x>0$, $\sigma/\gamma>0$.</p>
+              <p class="box-label">Corollaire 1.2.4 (Pickands, 1975 ; Balkema &amp; de Haan, 1974) · Théorème de Pickands-Balkema-de Haan</p>
+              <p><b>Cadre :</b> $X_1,\dots,X_n$ i.i.d. de fonction de répartition $F$, de point terminal $x_F$.</p>
+              <p><b>Énoncé (équivalence) :</b> les deux propositions suivantes sont équivalentes, <b>pour le même</b> $\gamma\in\mathbb R$ :</p>
+              <p>(i) [convergence du maximum] $\exists\,a_n\gt0,\,b_n\in\mathbb R$ tels que $(M_n-b_n)/a_n\to G_\gamma$ (i.e. $F$ est dans le domaine d'attraction de $G_\gamma$) ;<br>
+              (ii) [convergence des excès] $\exists$ une fonction $t\mapsto\sigma(t)\gt0$ telle que :</p>
+              <div class="formula">$$\lim_{t\to x_F} \mathbb P\!\left(\frac{X-t}{\sigma(t)}\gt x \;\middle|\; X\gt t\right) = (1+\gamma x)^{-1/\gamma}, \qquad \forall x \text{ tel que } 1+\gamma x\gt0$$</div>
+              <p>La loi limite $x\mapsto(1+\gamma x)^{-1/\gamma}$ est une loi de <b>Pareto généralisée</b> (Generalized Pareto, GP) de paramètre de forme $\gamma$ ; en pratique, avec un paramètre d'échelle $\sigma$, on ajuste $\bar H_{\gamma,\sigma}(x)=(1+\gamma x/\sigma)^{-1/\gamma}$, $x\gt0$, sous la condition $\sigma\gt0$ (et $x\lt-\sigma/\gamma$ si $\gamma\lt0$).</p>
+              <p class="sense"><b>Sens :</b> la queue de la loi conditionnelle des <b>excès au-dessus d'un seuil</b> $t$ converge, elle aussi, vers une famille à un seul paramètre : le <b>même</b> $\gamma$ que celui de la GEV. C'est ce théorème, et non Fisher-Tippett directement, qui justifie l'approche par dépassement de seuil (POT) du chapitre 2 : on n'a pas besoin de connaître $\gamma$ à l'avance pour savoir que la GPD est la <b>bonne</b> famille à ajuster sur les excès.</p>
             </div>
           </article>
 
@@ -559,9 +620,13 @@ window.MathJax = {
 
             <div class="box box-thm">
               <p class="box-label">Théorème 2.1.2 · Normalité asymptotique du quantile intermédiaire</p>
-              <p>Sous $\mathcal C_2(\gamma,\rho,A)$, si $K=K_n\to\infty$, $K/n\to0$, et $\sqrt K\,A(n/K)=O(1)$, alors :</p>
+              <p><b>Hypothèses :</b></p>
+              <p>1. $F$ vérifie la condition du second ordre $\mathcal C_2(\gamma,\rho,A)$ (avec $\gamma\gt0$, $\rho\le0$ : fiche précédente) ;<br>
+              2. $K=K_n\to\infty$ et $K/n\to0$ quand $n\to\infty$ (quantile intermédiaire, fiche 11) ;<br>
+              3. $\sqrt K\,A(n/K)=O(1)$ (le biais reste contrôlé).</p>
+              <p><b>Conclusion :</b></p>
               <div class="formula">$$\sqrt K\left(\frac{\hat q(1-K/n)}{q(1-K/n)}-1\right) \xrightarrow{\ \mathcal L\ } \mathcal N(0,\gamma^2)$$</div>
-              <p class="sense"><b>Sens :</b> la vitesse de convergence est en $\sqrt K$ (pas $\sqrt n$) : $K$ petit $\Rightarrow$ variance élevée ; $K$ grand $\Rightarrow$ biais élevé. C'est le compromis biais-variance central de toute l'estimation en queue lourde.</p>
+              <p class="sense"><b>Sens :</b> la vitesse de convergence est en $\sqrt K$ (pas $\sqrt n$) : $K$ petit $\Rightarrow$ variance élevée ; $K$ grand $\Rightarrow$ hypothèse 3 menacée, biais élevé. C'est le compromis biais-variance central de toute l'estimation en queue lourde ; les hypothèses 2 et 3 <b>ensemble</b> définissent la plage de $K$ « raisonnables » en pratique.</p>
             </div>
           </article>
 
@@ -576,12 +641,17 @@ window.MathJax = {
             </div>
 
             <div class="box box-thm">
-              <p class="box-label">Définition &amp; Théorème · Estimateur de Hill (cas général)</p>
+              <p class="box-label">Définition · Estimateur de Hill (cas général)</p>
               <p>Pour $X$ dans le domaine d'attraction de Fréchet ($\gamma\gt0$), à partir des $K$ plus grandes statistiques d'ordre :</p>
               <div class="formula">$$\hat\gamma^H := \frac1K\sum_{i=1}^K\Big[\log(X_{n-i+1,n})-\log(X_{n-K,n})\Big]$$</div>
-              <p>Sous $\mathcal C_2(\gamma,\rho,A)$ avec $K=K_n\to\infty$, $K/n\to0$ et $\sqrt K\,A(n/K)\to\lambda\in\mathbb R$ :</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · Normalité asymptotique de l'estimateur de Hill</p>
+              <p><b>Hypothèses :</b> $F$ vérifie $\mathcal C_2(\gamma,\rho,A)$ avec $\gamma\gt0$ ; $K=K_n\to\infty$, $K/n\to0$ ; $\sqrt K\,A(n/K)\to\lambda\in\mathbb R$ (même trio d'hypothèses qu'au théorème 2.1.2, avec en plus une limite <b>précise</b> $\lambda$ du terme de biais, pas seulement $O(1)$).</p>
+              <p><b>Conclusion :</b></p>
               <div class="formula">$$\sqrt K(\hat\gamma^H-\gamma) \xrightarrow{\ \mathcal L\ } \mathcal N\!\left(\frac\lambda{1-\rho},\,\gamma^2\right)$$</div>
-              <p class="sense"><b>Sens :</b> $\hat\gamma^H$ est la moyenne des "log-excès" au-dessus du $(K{+}1)$-ème plus grand point : l'analogue empirique direct du MLE Pareto, appliqué seulement là où l'approximation "quasi-Pareto" (queue lourde) est justifiée : les $K$ plus grandes observations.</p>
+              <p class="sense"><b>Sens :</b> $\hat\gamma^H$ est la moyenne des « log-excès » au-dessus du $(K{+}1)$-ème plus grand point : l'analogue empirique direct du MLE Pareto (encadré ci-dessus), appliqué seulement là où l'approximation « quasi-Pareto » (queue lourde) est justifiée, c'est-à-dire les $K$ plus grandes observations. Le biais asymptotique $\lambda/(1-\rho)$ s'annule exactement quand $\lambda=0$, par exemple si $K$ croît « assez lentement » pour que $\sqrt K\,A(n/K)\to0$ : c'est le cas idéal, mais pas toujours atteignable en pratique sur un échantillon de taille fixée.</p>
             </div>
           </article>
 
@@ -607,9 +677,15 @@ window.MathJax = {
 
             <div class="box box-thm">
               <p class="box-label">Théorème 2.3.1 · Normalité asymptotique de l'estimateur de Weissman</p>
-              <p>Sous $\mathcal C_2(\gamma,\rho,A)$ avec $\rho\lt0$, $K=K_n\to\infty$, $K/n\to0$, $n(1-\beta_n)\to c\lt\infty$, et si de plus $\sqrt K/\log\!\big(K/(n(1-\beta_n))\big)\to\infty$ et $\sqrt K\,A(n/K)\to\lambda$ :</p>
+              <p><b>Hypothèses :</b></p>
+              <p>1. $F$ vérifie $\mathcal C_2(\gamma,\rho,A)$ avec $\gamma\gt0$ et <b>cette fois $\rho\lt0$ strictement</b> (le cas limite $\rho=0$ est exclu ici) ;<br>
+              2. $K=K_n\to\infty$, $K/n\to0$ ;<br>
+              3. $n(1-\beta_n)\to c\lt\infty$ : $\beta_n$ définit bien un quantile <b>extrême</b>, au-delà de l'échantillon (fiche 16, contraste avec le quantile intermédiaire $1-K/n$) ;<br>
+              4. $\sqrt K/\log\!\big(K/(n(1-\beta_n))\big)\to\infty$ (l'écart entre le niveau intermédiaire $K/n$ et le niveau extrême $1-\beta_n$ ne doit pas grandir trop vite par rapport à $K$) ;<br>
+              5. $\sqrt K\,A(n/K)\to\lambda\in\mathbb R$.</p>
+              <p><b>Conclusion :</b></p>
               <div class="formula">$$\frac{\sqrt K}{\log\!\big(K/(n(1-\beta_n))\big)}\left(\frac{\hat q(\beta_n)}{q(\beta_n)}-1\right) \xrightarrow{\ \mathcal L\ } \mathcal N\!\left(\frac\lambda{1-\rho},\,\gamma^2\right)$$</div>
-              <p class="sense"><b>Sens :</b> l'aboutissement pratique du chapitre : Hill (pour $\gamma$) + interpolation (B) permet d'estimer un quantile <b>bien au-delà</b> du plus grand point observé, avec une garantie de normalité asymptotique (donc un intervalle de confiance).</p>
+              <p class="sense"><b>Sens :</b> l'aboutissement pratique du chapitre : Hill (pour $\gamma$) + interpolation (B) permet d'estimer un quantile <b>bien au-delà</b> du plus grand point observé, avec une garantie de normalité asymptotique (donc un intervalle de confiance) : au prix d'une vitesse de convergence <b>plus lente</b> que pour le quantile intermédiaire (division supplémentaire par le facteur logarithmique de l'hypothèse 4) : extrapoler plus loin coûte en précision, de façon quantifiée.</p>
             </div>
           </article>
 
@@ -667,7 +743,7 @@ window.MathJax = {
             <p><b>Énoncé.</b> Soit $F(x)=e^{-1/x}$, $x\gt0$.</p>
             <p>1. Trouver $a_n\ge0$, $b_n$ telles que $(M_n-b_n)/a_n$ converge vers $G_1$ ($\gamma=1$).<br>
             2. Soit $Y_i=\max(X_{i-1},X_i)/2$ pour $i=2,\dots,n$. Montrer que $Y_i\sim F$, puis que $\big(\max_{2\le i\le n}Y_i-b_n\big)/a_n$ converge encore vers une GEV : déterminer $\gamma$ et discuter les constantes.</p>
-            <p class="sense"><b>Conditions :</b> attention au piège du nom : $F(x)=e^{-1/x}$ est la loi de <b>Fréchet</b> standard ($\gamma=1\gt0$, $x_F=+\infty$), <b>pas</b> une loi de Gumbel — $\gamma=1\ne0$. On ne parle de « domaine de Gumbel » que lorsque $\gamma=0$ (fiche 5) ; ici $G_1$ désigne simplement la GEV évaluée en $\gamma=1$.</p>
+            <p class="sense"><b>Conditions :</b> attention au piège du nom : $F(x)=e^{-1/x}$ est la loi de <b>Fréchet</b> standard ($\gamma=1\gt0$, $x_F=+\infty$), <b>pas</b> une loi de Gumbel : $\gamma=1\ne0$. On ne parle de « domaine de Gumbel » que lorsque $\gamma=0$ (fiche 5) ; ici $G_1$ désigne simplement la GEV évaluée en $\gamma=1$.</p>
 
             <details class="solution">
               <summary>Voir la correction</summary>
@@ -711,34 +787,30 @@ window.MathJax = {
 
           <article class="topic" id="s21">
             <div class="tophead"><span class="num">21</span><h2>Queue lourde sans formule fermée : la loi de Student</h2></div>
-            <p><b>Énoncé.</b> Soit $X\sim\mathrm{Student}(d)$, $d\gt0$, de densité $f_X(x)=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}\big(1+\frac{x^2}d\big)^{-\frac{d+1}2}$. Déterminer le domaine d'attraction de $X$ et son indice $\gamma$, par toutes les méthodes possibles.</p>
-            <p class="sense"><b>Conditions :</b> $x_F=+\infty$ (support $\mathbb R$ tout entier), densité symétrique décroissant en puissance de $x$ : on s'attend à Fréchet.</p>
+            <p><b>Énoncé.</b> Soit $X\sim\mathrm{Student}(d)$, $d\gt0$ (fiche 6, exemple 1.3.1 : $\gamma=1/d$ par la méthode densité). Peut-on retrouver ou vérifier ce résultat en calculant directement $U(t)=q(1-1/t)$ ?</p>
+            <p class="sense"><b>Conditions :</b> $x_F=+\infty$, domaine de Fréchet attendu (fiche 5).</p>
 
             <details class="solution">
               <summary>Voir la correction</summary>
               <div class="box box-thm">
-                <p class="method-label">Méthode 1 · via la densité (praticable)</p>
-                <p>Quand $x\to\infty$, $\big(1+\frac{x^2}d\big)^{-\frac{d+1}2}\sim\big(\frac{x^2}d\big)^{-\frac{d+1}2}=d^{\frac{d+1}2}x^{-(d+1)}$, donc $f(x)\sim C_d\,x^{-d-1}$ avec $C_d=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}d^{\frac{d+1}2}$. C'est $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=d$ $\Rightarrow$ <b>queue lourde</b>, $\gamma=1/d$.</p>
-                <p class="method-label">Méthode 2 · via $U(t)$ (en principe, mais infaisable ici en formule fermée)</p>
-                <p>Il faudrait inverser $F$, la fonction de répartition de Student : $F$ ne s'exprime qu'à l'aide de la fonction Beta incomplète, et son inverse $q(\alpha)$ n'a <b>pas d'expression explicite</b> pour $d$ général (sauf cas particuliers comme $d=1$, Cauchy). On peut seulement écrire formellement $U(t)=q(1-1/t)$ et invoquer un théorème de Karamata reliant le comportement de $f$ à celui de $U$ via $U(tx)/U(t)\to x^\gamma$, mais <b>aucun calcul direct de $U(t)$</b> n'est possible à la main.</p>
-                <p class="sense"><b>Sens :</b> c'est un point méthodologique important : la méthode « densité » (fiche 6) est un <b>raccourci pratique</b> précisément pour les cas — très fréquents — où $F$ (et donc $U=q$) n'a pas de forme explicite, mais où $f$, elle, en a une. On ne recourt au calcul direct de $U(t)$ que lorsque $F$ s'inverse facilement (Pareto, Burr, exponentielle…).</p>
+                <p class="method-label">Pourquoi la méthode $U(t)$ échoue ici</p>
+                <p>Il faudrait inverser $F$, la fonction de répartition de Student : $F$ ne s'exprime qu'à l'aide de la fonction Beta incomplète, et son inverse $q(\alpha)$ n'a <b>pas d'expression explicite</b> pour $d$ général (sauf cas particuliers comme $d=1$, Cauchy). On peut seulement écrire formellement $U(t)=q(1-1/t)$ et invoquer un théorème de Karamata reliant le comportement de $f$ à celui de $U$ via $U(tx)/U(t)\to x^\gamma$, mais <b>aucun calcul direct de $U(t)$</b> n'est possible à la main : impossible de « vérifier par une seconde méthode » comme aux exercices 18 et 20.</p>
+                <p class="sense"><b>Sens :</b> point méthodologique important : la méthode « densité » (fiche 6) est un <b>raccourci pratique</b>, précisément pour les cas, très fréquents, où $F$ (et donc $U=q$) n'a pas de forme explicite, mais où $f$, elle, en a une. On ne recourt au calcul direct de $U(t)$ que lorsque $F$ s'inverse facilement (Pareto, Burr, exponentielle…).</p>
               </div>
             </details>
           </article>
 
           <article class="topic" id="s22">
             <div class="tophead"><span class="num">22</span><h2>Queue courte sans formule fermée : la loi Beta</h2></div>
-            <p><b>Énoncé.</b> Soit $X\sim\mathrm{Beta}(a,b)$, $a,b\gt0$, de densité $f(x)=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{a-1}(1-x)^{b-1}$ sur $(0,1)$. Déterminer le domaine d'attraction et $\gamma$, par toutes les méthodes possibles.</p>
-            <p class="sense"><b>Conditions :</b> $x_F=1\lt\infty$ (support borné) $\Rightarrow$ on s'attend à Weibull ($\gamma\lt0$), <b>jamais</b> à Fréchet ici (fiche 5 : Fréchet exige $x_F=+\infty$).</p>
+            <p><b>Énoncé.</b> Soit $X\sim\mathrm{Beta}(a,b)$, $a,b\gt0$ (fiche 6, exemple 1.3.2 : $\gamma=-1/b$ par la méthode densité). Même question : peut-on vérifier ce résultat via $U(t)$ ?</p>
+            <p class="sense"><b>Conditions :</b> $x_F=1\lt\infty$, domaine de Weibull attendu (fiche 5), <b>jamais</b> Fréchet ici.</p>
 
             <details class="solution">
               <summary>Voir la correction</summary>
               <div class="box box-thm">
-                <p class="method-label">Méthode 1 · via la densité (praticable)</p>
-                <p>Quand $x\to x_F=1$, $x^{a-1}\to1$, donc $f(x)\underset{x\to1}\sim C_{a,b}(1-x)^{b-1}$ avec $C_{a,b}=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$. C'est $f(x)\sim c\,(x_F-x)^{\alpha-1}$ avec $\alpha=b$ $\Rightarrow$ <b>queue courte</b>, $\gamma=-1/b$.</p>
-                <p class="method-label">Méthode 2 · via $U(t)$ (infaisable en formule fermée)</p>
-                <p>Comme pour Student, $F$ (fonction Beta incomplète régularisée) et son inverse $q$ n'ont pas d'expression explicite pour $a,b$ généraux. On ne peut donc pas calculer $U(t)$ à la main ; seule la méthode densité est praticable ici.</p>
-                <p class="sense"><b>Sens :</b> même leçon qu'à la fiche précédente, du côté « queue courte » cette fois : dès que $x_F\lt\infty$, la méthode densité (critère 2) est en général la seule accessible sans logiciel — elle ne demande qu'un développement limité de $f$ au voisinage de $x_F$, alors que $U(t)$ demanderait d'inverser $F$ tout entière.</p>
+                <p class="method-label">Pourquoi la méthode $U(t)$ échoue ici aussi</p>
+                <p>Comme pour Student, $F$ (fonction Beta incomplète régularisée) et son inverse $q$ n'ont pas d'expression explicite pour $a,b$ généraux : impossible de calculer $U(t)$ à la main.</p>
+                <p class="sense"><b>Sens :</b> même leçon que pour Student, du côté « queue courte » cette fois : dès que $x_F\lt\infty$, la méthode densité (critère 2) est en général la seule accessible sans logiciel, elle ne demande qu'un développement limité de $f$ au voisinage de $x_F$, alors que $U(t)$ demanderait d'inverser $F$ tout entière. En résumé sur les fiches 18 à 22 : $U(t)$ et la densité s'accordent toujours quand les deux sont calculables (18, 20) ; quand $F$ ne s'inverse pas, seule la densité reste praticable (21, 22).</p>
               </div>
             </details>
           </article>
@@ -778,7 +850,7 @@ window.MathJax = {
                 <p class="method-label">Question 2 · Estimateur de Weissman</p>
                 <div class="formula">$$\hat q(0{,}99)=\left(\frac{n(1-\beta)}{K}\right)^{-\hat\gamma^H} X_{n-K,n} = \left(\frac{10\times0{,}01}{4}\right)^{-1{,}09}\times7 = (0{,}025)^{-1{,}09}\times7 \approx 55{,}6\times7 \approx 389$$</div>
                 <p class="method-label">Remarque · Une méthode alternative (conceptuelle)</p>
-                <p>On aurait pu, au lieu de Hill + Weissman, ajuster directement une loi de Pareto généralisée (GPD) par maximum de vraisemblance sur les excès au-delà du seuil $X_{6,10}=7$ (approche POT, fiche 7-8) : $\{10,15,25,50\}-7=\{3,8,18,43\}$. Sur un échantillon aussi petit ($K=4$), l'estimation par MV de la GPD n'a pas de forme close et demanderait une optimisation numérique — mais elle est asymptotiquement équivalente à Hill + Weissman.</p>
+                <p>On aurait pu, au lieu de Hill + Weissman, ajuster directement une loi de Pareto généralisée (GPD) par maximum de vraisemblance sur les excès au-delà du seuil $X_{6,10}=7$ (approche POT, fiche 7-8) : $\{10,15,25,50\}-7=\{3,8,18,43\}$. Sur un échantillon aussi petit ($K=4$), l'estimation par MV de la GPD n'a pas de forme close et demanderait une optimisation numérique : mais elle est asymptotiquement équivalente à Hill + Weissman.</p>
                 <p class="sense"><b>Sens :</b> sur seulement 10 observations, dont la plus grande vaut 50, on extrapole un quantile estimé à <b>389</b> : plus de 7 fois la plus grande valeur observée. C'est toute la puissance (et le risque) de l'extrapolation en queue lourde : le résultat dépend fortement de l'hypothèse de queue lourde et de la précision de $\hat\gamma^H$, à interpréter avec la prudence qu'impose un $K=4$ aussi petit.</p>
               </div>
             </details>
@@ -792,7 +864,7 @@ window.MathJax = {
             <details class="solution">
               <summary>Voir la correction</summary>
               <div class="box box-thm">
-                <p>Propriété clé de la loi de Pareto (« absence de mémoire » multiplicative) : si $X\sim\mathrm{Pareto}(\gamma)$ sur $(x_0,\infty)$, alors pour tout $t\ge x_0$, $(X/t \mid X\gt t)\sim\mathrm{Pareto}(\gamma)$ <i>sur $(1,\infty)$</i>, indépendamment de $t$ — conséquence immédiate de $\bar F(tx)/\bar F(t)=x^{-1/\gamma}$ pour la Pareto <b>exacte</b> (égalité, pas seulement une limite quand $t\to\infty$ comme pour un $F$ général du domaine d'attraction).</p>
+                <p>Propriété clé de la loi de Pareto (« absence de mémoire » multiplicative) : si $X\sim\mathrm{Pareto}(\gamma)$ sur $(x_0,\infty)$, alors pour tout $t\ge x_0$, $(X/t \mid X\gt t)\sim\mathrm{Pareto}(\gamma)$ <i>sur $(1,\infty)$</i>, indépendamment de $t$ : conséquence immédiate de $\bar F(tx)/\bar F(t)=x^{-1/\gamma}$ pour la Pareto <b>exacte</b> (égalité, pas seulement une limite quand $t\to\infty$ comme pour un $F$ général du domaine d'attraction).</p>
                 <p>Conditionnellement à $X_{n-K,n}=t$, les excès normalisés $X_{n-i+1,n}/t$ pour $i=1,\dots,K$ ont donc la loi des statistiques d'ordre de $K$ Pareto$(\gamma)$ i.i.d. sur $(1,\infty)$, et :</p>
                 <div class="formula">$$\hat\gamma^H=\frac1K\sum_{i=1}^K\log\!\left(\frac{X_{n-i+1,n}}{X_{n-K,n}}\right)$$</div>
                 <p>est la moyenne de $K$ variables $\log(X_{n-i+1,n}/t)$, chacune de loi $\mathrm{Exp}(1/\gamma)$ (car si $Z\sim\mathrm{Pareto}(\gamma)$ sur $(1,\infty)$, $\log Z\sim\mathrm{Exp}(1/\gamma)$, d'espérance $\gamma$ : c'est exactement le calcul de la fiche 14, méthode 1). Par linéarité de l'espérance, conditionnellement à $X_{n-K,n}$ :</p>
