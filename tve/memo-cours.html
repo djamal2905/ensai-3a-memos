@@ -443,6 +443,18 @@ window.MathJax = {
               </table>
               <p class="sense"><b>Sens :</b> $x_F=+\infty$ élimine directement Weibull ; $x_F$ fini élimine directement Fréchet. Restent alors deux candidats (ou un seul) à distinguer via la vitesse de décroissance : critère sur la densité (fiche 6) ou calcul direct de $U(t)$ (fiche suivante et exercices).</p>
             </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème 1.2.3 (extrait) · Formule générale des constantes de normalisation</p>
+              <p><b>Cadre :</b> $F$ appartient au domaine d'attraction de $G_\gamma$ (fiche 4). On sait alors, plus précisément, qu'on peut <b>toujours</b> choisir $b_n=U(n)$ ; il reste à préciser $a_n$, et la formule dépend du <b>signe</b> de $\gamma$ :</p>
+              <table class="cmp">
+                <tr><th>Cas</th><th>Formule de $a_n$ (avec $b_n=U(n)$)</th></tr>
+                <tr><td>$\gamma\gt0$ (Fréchet)</td><td>$a_n=\gamma\,U(n)$</td></tr>
+                <tr><td>$\gamma\lt0$ (Weibull)</td><td>$a_n=-\gamma\,\big(x_F-U(n)\big)$</td></tr>
+                <tr><td>$\gamma=0$ (Gumbel)</td><td>pas de formule fermée universelle en $U(n)$ seul : il faut une fonction auxiliaire $a(\cdot)$ propre à $F$ (cas par cas, souvent via le taux de hasard $f/\bar F$)</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> c'est <b>ce</b> théorème, et non Fisher-Tippett-Gnedenko (fiche 4) directement, qui donne la <b>recette de construction</b> explicite de $a_n,b_n$ une fois $\gamma$ connu. Fisher-Tippett garantit l'<b>existence</b> de $a_n,b_n$ ; ce théorème 1.2.3 les <b>construit</b> (au moins pour $\gamma\ne0$). C'est la formule utilisée dans <b>tous</b> les exercices 18 à 20 : à chaque fois, on calcule d'abord $U(t)=q(1-1/t)$, puis on applique directement la ligne du tableau correspondant au signe de $\gamma$ trouvé.</p>
+            </div>
           </article>
 
           <article class="topic" id="s6">
@@ -489,8 +501,13 @@ window.MathJax = {
                 <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
                 <p>Le support de Beta$(a,b)$ est $(0,1)$, donc $x_F=1\lt\infty$. D'après la <b>fiche 5</b>, $x_F$ fini élimine directement <b>Fréchet</b> : il reste <b>Weibull</b> ($\gamma\lt0$) ou, en principe, <b>Gumbel avec $x_F$ fini</b> (fiche 5 le permet en théorie) : le calcul tranchera.</p>
                 <p class="method-label">Calcul (critère 2 de cette fiche)</p>
-                <p>Notons $C_{a,b}:=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$. Quand $x\to1$, le facteur $x^{a-1}\to1^{a-1}=1$, donc :</p>
-                <div class="formula">$$f(x)=C_{a,b}\underbrace{x^{a-1}}_{\to\,1}(1-x)^{b-1} \underset{x\to1}\sim C_{a,b}\,(1-x)^{b-1}$$</div>
+                <p><b>Pourquoi étudier $x\to1$ et pas $x\to0$ ?</b> Le critère 2 (fiche 6) porte sur le comportement de $f$ <b>au voisinage du point terminal $x_F$</b>, car c'est exclusivement ce voisinage qui gouverne la loi du maximum $M_n=\max(X_1,\dots,X_n)$ : pour que $M_n$ dépasse un seuil proche de $x_F$, il faut qu'au moins une observation tombe dans cette zone, donc seule la « masse de probabilité proche de $x_F$ » compte asymptotiquement. Ici $x_F=1$ (borne <b>droite</b> du support), donc on développe $f$ quand $x\to1$ ; le comportement en $x\to0$ (l'autre borne) est sans effet sur $M_n$.</p>
+                <p>Notons $C_{a,b}:=\dfrac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$, une constante ne dépendant pas de $x$. On regarde séparément les deux facteurs qui dépendent de $x$ :</p>
+                <p><b>Pourquoi remplacer $x^{a-1}$ par sa limite $1$, mais garder $(1-x)^{b-1}$ tel quel ?</b> Quand $x\to1$ :</p>
+                <p>&bull; $x^{a-1}$ est une fonction <b>continue et régulière</b> au point $x=1$ : elle tend vers une limite <b>finie et non nulle</b>, $1^{a-1}=1$. Un tel facteur ne « voit » pas la proximité de $x_F$ : il peut être remplacé par sa valeur limite sans changer l'équivalent, exactement comme on remplace $\cos(x)$ par $1$ dans un équivalent en $x\to0$.</p>
+                <p>&bull; $(1-x)^{b-1}$, au contraire, est le facteur <b>singulier</b> : il tend vers $0$ (si $b\gt1$), vers $+\infty$ (si $b\lt1$), ou vaut $1$ (si $b=1$) : dans tous les cas c'est <b>lui</b>, via l'exposant $b-1$, qui fixe la <b>vitesse exacte</b> à laquelle $f(x)\to0$ ou reste bornée quand $x\to x_F$. On ne peut donc pas le simplifier : c'est précisément ce terme que le critère 2 compare à $(x_F-x)^{\beta-1}$.</p>
+                <p>En résumé, seul le facteur qui s'annule ou diverge au point terminal détermine l'ordre de grandeur ; un facteur qui y est régulier (limite finie non nulle) est un simple multiplicateur constant, absorbable dans la constante $c$ :</p>
+                <div class="formula">$$f(x)=C_{a,b}\underbrace{x^{a-1}}_{\to\,1\ (\text{régulier})}(1-x)^{b-1} \underset{x\to1}\sim C_{a,b}\,(1-x)^{b-1}$$</div>
                 <p>Décroissance <b>polynomiale bornée</b> en $(1-x)^{b-1}$ : confirme Weibull, pas Gumbel. On identifie au <b>critère 2</b> avec $x_F=1$, $\beta=b$, $c=C_{a,b}$ :</p>
                 <div class="formula">$$\boxed{\gamma=-\frac1\beta=-\frac1b} \qquad \text{(queue courte, domaine de Weibull)}$$</div>
                 <p class="sense"><b>Sens :</b> $a$ n'intervient <b>pas</b> dans $\gamma$ (seulement dans la constante $C_{a,b}$, sans effet sur la forme, cf. le piège de la fiche 3) : seul $b$, qui gouverne le comportement <b>au bord droit</b> $x_F=1$, compte. Le paramètre $a$ gouverne le bord <b>gauche</b> ($x=0$), hors-sujet pour le maximum.</p>
@@ -805,14 +822,16 @@ window.MathJax = {
               <summary>Voir la correction</summary>
               <div class="box box-thm">
                 <p class="method-label">Question 1 · via $U(t)$</p>
-                <p>De $y=1-x^{-1/\gamma}\iff x=(1-y)^{-\gamma}$, on tire $q(\alpha)=(1-\alpha)^{-\gamma}$, puis $U(t)=q(1-1/t)=t^\gamma$. On pose :</p>
+                <p><b>Étape 1 (calcul de $U$)</b> : on inverse $F$. De $y=1-x^{-1/\gamma}\iff x^{-1/\gamma}=1-y\iff x=(1-y)^{-\gamma}$, on tire $q(\alpha)=(1-\alpha)^{-\gamma}$, puis $U(t)=q(1-1/t)=\big(1-(1-1/t)\big)^{-\gamma}=(1/t)^{-\gamma}=t^\gamma$.</p>
+                <p><b>Étape 2 (formule des constantes)</b> : ici $\gamma\gt0$ (donné dans l'énoncé), donc on est dans le cas <b>Fréchet</b> du <b>théorème 1.2.3</b> (fiche 5) : $a_n=\gamma\,U(n)$, $b_n=U(n)$. Avec $U(n)=n^\gamma$ calculé ci-dessus :</p>
                 <div class="formula">$$a_n=\gamma U(n)=\gamma n^\gamma, \qquad b_n=U(n)=n^\gamma$$</div>
-                <p><b>Vérification</b> :</p>
+                <p><b>Étape 3 (vérification directe)</b> : on peut toujours re-vérifier « à la main » sans invoquer le théorème 1.2.3, en revenant à la définition (utile si on doute de la formule, ou à l'examen si le théorème 1.2.3 n'est pas au programme retenu) :</p>
                 <div class="formula">$$\mathbb P\!\left(\frac{M_n-b_n}{a_n}\le x\right)=F^n(a_nx+b_n)=\Big[1-(\gamma n^\gamma x+n^\gamma)^{-1/\gamma}\Big]^n=\left[1-\frac{(\gamma x+1)^{-1/\gamma}}{n}\right]^n \xrightarrow[n\to\infty]{} \exp\!\big\{-(1+\gamma x)^{-1/\gamma}\big\}=G_\gamma(x)\ \checkmark$$</div>
                 <p class="method-label">Vérification croisée · via la densité (fiche 6, critère 1)</p>
                 <p>$f(x)=\dfrac1\gamma x^{-1/\gamma-1}$. C'est exactement la forme $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=1/\gamma$, $c=1/\gamma$ $\Rightarrow$ $\gamma_{\text{critère}}=1/\alpha=\gamma$. $\checkmark$ Les deux méthodes s'accordent, comme elles le doivent toujours.</p>
                 <p class="method-label">Question 2 · Loi de Pareto généralisée</p>
-                <p>De $y=1-(1+\gamma x/\sigma)^{-1/\gamma}\iff x=\dfrac\sigma\gamma\big[(1-y)^{-\gamma}-1\big]$, on tire $q(\alpha)=\dfrac\sigma\gamma\big[(1-\alpha)^{-\gamma}-1\big]$, puis $U(t)=\dfrac\sigma\gamma(t^\gamma-1)$. On pose :</p>
+                <p><b>Étape 1</b> : on inverse $F$. De $y=1-(1+\gamma x/\sigma)^{-1/\gamma}\iff (1+\gamma x/\sigma)^{-1/\gamma}=1-y\iff 1+\gamma x/\sigma=(1-y)^{-\gamma}\iff x=\dfrac\sigma\gamma\big[(1-y)^{-\gamma}-1\big]$, on tire $q(\alpha)=\dfrac\sigma\gamma\big[(1-\alpha)^{-\gamma}-1\big]$, puis $U(t)=q(1-1/t)=\dfrac\sigma\gamma\big[t^\gamma-1\big]$.</p>
+                <p><b>Étape 2</b> : de nouveau $\gamma\gt0$, même formule du <b>théorème 1.2.3</b> qu'à la question 1, $a_n=\gamma U(n)$, $b_n=U(n)$ :</p>
                 <div class="formula">$$a_n=\gamma U(n)=\sigma(n^\gamma-1), \qquad b_n=U(n)=\frac\sigma\gamma(n^\gamma-1)$$</div>
                 <p class="sense"><b>Sens :</b> même démarche, même conclusion $G_\gamma$ : normal, la loi de Pareto généralisée <b>est</b> la loi limite des excès au-delà d'un seuil (Pickands-Balkema-de Haan, fiche 7) : il est cohérent qu'elle attire elle-même vers une GEV de même $\gamma$.</p>
               </div>
@@ -830,8 +849,10 @@ window.MathJax = {
               <summary>Voir la correction</summary>
               <div class="box box-thm">
                 <p class="method-label">Question 1 · via $U(t)$</p>
-                <p>De $y=e^{-1/x}\iff x=-1/\log(y)$, on tire $q(\alpha)=-1/\log(\alpha)$, puis $U(t)=-1/\log(1-1/t)$. Avec $\gamma=1$ :</p>
+                <p><b>Étape 1 (calcul de $U$)</b> : de $y=e^{-1/x}\iff x=-1/\log(y)$, on tire $q(\alpha)=-1/\log(\alpha)$, puis $U(t)=q(1-1/t)=-1/\log(1-1/t)$.</p>
+                <p><b>Étape 2 (formule des constantes)</b> : $\gamma=1\gt0$ $\Rightarrow$ cas <b>Fréchet</b> du <b>théorème 1.2.3</b> (fiche 5) : $a_n=\gamma U(n)=U(n)$ (car $\gamma=1$), $b_n=U(n)$, soit $a_n=b_n$ :</p>
                 <div class="formula">$$a_n=b_n=U(n)=\frac{-1}{\log(1-1/n)}$$</div>
+                <p><b>Étape 3 (vérification directe)</b> :</p>
                 <p><b>Vérification</b> : $\mathbb P\big((M_n-b_n)/a_n\le x\big)=\exp\{-n/(a_nx+b_n)\}=\exp\Big\{\dfrac{n\log(1-1/n)}{x+1}\Big\} \to \exp\{-(x+1)^{-1}\}=G_1(x)$, car $n\log(1-1/n)\to-1$. $\checkmark$</p>
                 <p class="method-label">Vérification croisée · via la densité (fiche 6, critère 1)</p>
                 <p>$f(x)=x^{-2}e^{-1/x}$. Quand $x\to\infty$, $e^{-1/x}\to1$, donc $f(x)\sim x^{-2}=x^{-1-1}$ : c'est $f(x)\sim c\,x^{-\alpha-1}$ avec $\alpha=1$, $c=1$ $\Rightarrow$ $\gamma=1/\alpha=1$. $\checkmark$ Confirme le domaine de Fréchet avec $\gamma=1$, sans passer par $U(t)$.</p>
