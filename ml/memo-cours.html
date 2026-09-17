@@ -173,11 +173,12 @@ window.MathJax = {
     content:"⟷"; position:absolute; top:3px; right:6px; font-size:.7rem; color:var(--muted); pointer-events:none;
   }
   p.sense{
-    display:flex; gap:8px; align-items:flex-start; font-size:.86rem; color:var(--accent-ink);
-    background:var(--accent-soft); border-radius:8px; padding:7px 10px; margin:8px 0 0;
+    font-size:.86rem; color:var(--accent-ink); max-width:none;
+    background:var(--accent-soft); border-radius:8px; padding:7px 10px 7px 26px; margin:8px 0 0;
+    position:relative;
   }
   p.sense b{ color:var(--accent-strong); }
-  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); }
+  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); position:absolute; left:9px; top:7px; }
 
   /* ---------- diagrams ---------- */
   .splitbar{ display:flex; border-radius:8px; overflow:hidden; height:42px; margin:14px 0 6px; font:600 .78rem "JetBrains Mono",monospace; }

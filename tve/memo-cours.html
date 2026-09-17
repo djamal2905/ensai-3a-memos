@@ -165,9 +165,9 @@ window.MathJax = {
   .formula mjx-container{ margin:0 !important; }
   .formula.is-scrollable::after{ content:""; position:absolute; top:1px; right:1px; bottom:1px; width:26px; border-radius:0 7px 7px 0; background:linear-gradient(to right, transparent, var(--surface-2) 75%); pointer-events:none; }
   .formula.is-scrollable::before{ content:"⟷"; position:absolute; top:3px; right:6px; font-size:.7rem; color:var(--muted); pointer-events:none; }
-  p.sense{ display:flex; gap:8px; align-items:flex-start; font-size:.86rem; color:var(--accent-ink); background:var(--accent-soft); border-radius:8px; padding:7px 10px; margin:8px 0 0; }
+  p.sense{ font-size:.86rem; color:var(--accent-ink); max-width:none; background:var(--accent-soft); border-radius:8px; padding:7px 10px 7px 26px; margin:8px 0 0; position:relative; }
   p.sense b{ color:var(--accent-strong); }
-  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); }
+  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); position:absolute; left:9px; top:7px; }
 
   details.solution{ margin:14px 0; }
   details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
@@ -1088,6 +1088,8 @@ window.MathJax = {
         matches++;
         var lec = b.el.closest('.lecture');
         if(lec) lec.classList.remove('collapsed');
+        var det = b.el.closest('details.solution');
+        if(det) det.open = true;
       }
     });
     count.textContent = matches + ' résultat' + (matches === 1 ? '' : 's');
