@@ -179,6 +179,38 @@ window.MathJax = {
   .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
   .cmp td:first-child, .cmp th:first-child{ text-align:left; }
 
+  .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
+  .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .qcm-head h3{ font-size:1.05rem; margin:0; }
+  .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; }
+  .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; }
+  .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
+  .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
+  .qcm-opt:hover{ background:var(--surface-2); }
+  .qcm-opt input{ margin-top:3px; flex-shrink:0; accent-color:var(--accent); }
+  .qcm-opt .otext{ font-size:.89rem; color:var(--ink-soft); }
+  .qcm-explain{ display:none; font-size:.82rem; color:var(--muted); margin:2px 0 0 34px; padding:4px 0 4px 10px; border-left:2px solid var(--border); }
+  .qcm-q.graded .qcm-explain{ display:block; }
+  .qcm-q.graded .qcm-opt{ cursor:default; }
+  .qcm-q.graded .qcm-opt.opt-right{ background:var(--def-bg); border-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-right .qcm-explain{ border-left-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked{ background:var(--warn-bg); border-color:var(--warn-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked .qcm-explain{ border-left-color:var(--warn-border); }
+  .qcm-q .q-badge{ display:none; font:700 .72rem "JetBrains Mono",monospace; padding:2px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+  .qcm-q.graded .q-badge{ display:inline-block; }
+  .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
+  .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
+  .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
+  .qcm-btn.ghost:hover{ background:var(--accent-soft); }
+  .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
+  .qcm-result:empty{ display:none; }
+
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
   .chain{ font:600 .95rem "JetBrains Mono",monospace; padding:8px 0; border-top:1px solid var(--code-border); color:#dfe3ea; }
@@ -549,6 +581,80 @@ window.MathJax = {
               <p>Puisque $\sum_{k=1}^K \tilde Y_k = 1$, la dernière modalité se déduit des autres : en réalité seules $K-1$ variables binaires sont nécessaires. Conserver les $K$ indicatrices <i>et</i> une constante crée une colinéarité parfaite qui rend le modèle non identifiable (cf. fiche sur $rg(X)=p$).</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-1">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 1</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la ou les bonnes réponses pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>On calcule $\hat\rho \approx 0$ entre deux variables $X$ et $Y$ sur un échantillon. Que peut-on en conclure ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-1"><span class="otext">Il n'existe aucun lien entre $X$ et $Y$.</span></label>
+              <div class="qcm-explain">Faux : $\hat\rho$ ne mesure que l'intensité du lien <b>linéaire</b>. Un lien non linéaire fort (en U, en courbe…) peut coexister avec $\hat\rho \approx 0$ : c'est exactement le piège illustré par les nuages structurés du cours (fiche 3).</div>
+              <label class="qcm-opt"><input type="radio" name="q1-1"><span class="otext">Il n'existe pas de lien linéaire fort entre $X$ et $Y$, mais un lien non linéaire reste possible.</span></label>
+              <div class="qcm-explain">Correct : c'est précisément ce que dit la définition de $\hat\rho$ (fiche 3) : un coefficient de corrélation nul ou faible ne renseigne que sur l'absence de lien <i>linéaire</i>.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-1"><span class="otext">$X$ et $Y$ sont indépendantes.</span></label>
+              <div class="qcm-explain">Faux : l'indépendance implique $\rho=0$, mais la réciproque est fausse en général (sauf cas particulier du couple Gaussien) : $\hat\rho\approx 0$ n'entraîne pas l'indépendance.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-1"><span class="otext">$X$ n'a aucun effet causal sur $Y$.</span></label>
+              <div class="qcm-explain">Faux : la corrélation (même nulle) ne dit rien sur la causalité : c'est une confusion classique entre corrélation et causalité, indépendante du fait que $\hat\rho$ ne capte que le lien linéaire.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Dans une ANOVA à 1 facteur, on trouve $\hat\eta^2 = 0{,}05$. Comment interpréter ce résultat ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-2"><span class="otext">5 % de la variance totale de $Y$ est expliquée par l'appartenance aux groupes définis par le facteur.</span></label>
+              <div class="qcm-explain">Correct : c'est la définition même de $\hat\eta^2 = S^2_{inter}/S^2_T$ (fiche 5) : la part de variabilité de $Y$ expliquée par le facteur.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-2"><span class="otext">Le facteur explique 95 % de la variabilité de $Y$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : $\hat\eta^2$ proche de 0 signifie que le facteur n'explique presque rien, pas 95 %.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-2"><span class="otext">La corrélation entre $X$ et $Y$ vaut 0,05.</span></label>
+              <div class="qcm-explain">Faux : $\hat\eta^2$ n'est pas un coefficient de corrélation de Pearson (il s'applique à une variable qualitative $X$) ; c'est un rapport de variances, toujours dans $[0,1]$, pas une mesure signée comme $\hat\rho$.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-2"><span class="otext">Le test de Fisher associé sera nécessairement non significatif.</span></label>
+              <div class="qcm-explain">Faux : $F=\frac{\hat\eta^2/(I-1)}{(1-\hat\eta^2)/(n-I)}$ dépend aussi de $n$ : avec un $n$ très grand, un $\hat\eta^2$ même faible peut donner un $F$ significatif.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q3</span>On teste l'indépendance entre $X$ (4 modalités) et $Y$ (3 modalités) par la distance du $\chi^2$. Sous quelle loi $d^2$ est-elle calibrée sous $H_0$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-3"><span class="otext">$\chi^2(12)$</span></label>
+              <div class="qcm-explain">Faux : $12=I\times J$ : c'est le nombre de cases du tableau, pas le nombre de degrés de liberté.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-3"><span class="otext">$\chi^2(6)$</span></label>
+              <div class="qcm-explain">Correct : le théorème (fiche 4) donne $(I-1)(J-1)=3\times2=6$ degrés de liberté.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-3"><span class="otext">$\chi^2(5)$</span></label>
+              <div class="qcm-explain">Faux : $5=(I-1)+(J-1)$ : piège classique consistant à additionner au lieu de multiplier les degrés de liberté de chaque facteur.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-3"><span class="otext">$\chi^2(7)$</span></label>
+              <div class="qcm-explain">Faux : ne correspond à aucune formule usuelle ici ($I+J=7$, mais ce n'est pas la bonne quantité).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Une variable qualitative $Y$ à $K$ modalités est codée en indicatrices (one-hot) pour un modèle <b>avec constante</b>. Combien d'indicatrices faut-il conserver au maximum pour que le modèle reste identifiable ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-4"><span class="otext">$K$</span></label>
+              <div class="qcm-explain">Faux : comme $\sum_{k=1}^K \tilde Y_k = 1$ pour tout individu, garder les $K$ indicatrices en plus de la constante crée une colinéarité parfaite (fiche 7) : le modèle n'est alors plus identifiable.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-4"><span class="otext">$K-1$</span></label>
+              <div class="qcm-explain">Correct : la dernière modalité se déduit des autres, donc $K-1$ indicatrices suffisent (et sont nécessaires) pour éviter la colinéarité avec la constante.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-4"><span class="otext">$K/2$</span></label>
+              <div class="qcm-explain">Faux : ne correspond à aucun argument du cours ; ce n'est pas un critère d'identifiabilité valide.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-4"><span class="otext">$K+1$</span></label>
+              <div class="qcm-explain">Faux : ce serait encore pire que de garder les $K$ indicatrices : davantage de colinéarité, pas moins.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>On détecte un fort problème de colinéarité entre deux régresseurs (VIF élevé). Quel objectif du modèle est principalement affecté ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-5"><span class="otext">Uniquement l'objectif prédictif : la prévision $\hat Y$ devient fausse.</span></label>
+              <div class="qcm-explain">Faux : la projection $\hat Y = P_{[X]}Y$ reste bien définie et stable même en cas de colinéarité : c'est la prévision qui est la moins affectée (fiche 19).</div>
+              <label class="qcm-opt"><input type="radio" name="q1-5"><span class="otext">Uniquement l'objectif descriptif : l'estimation de chaque $\beta_j$ devient instable et peu fiable.</span></label>
+              <div class="qcm-explain">Correct : $\mathbb V(\hat\beta)=\sigma^2(X'X)^{-1}$ explose quand deux régresseurs sont presque colinéaires : c'est la lecture individuelle des coefficients (objectif descriptif) qui devient peu fiable.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-5"><span class="otext">Les deux objectifs de façon identique.</span></label>
+              <div class="qcm-explain">Faux : la fiche 19 distingue explicitement les deux : la colinéarité ruine le descriptif bien plus que le prédictif.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-5"><span class="otext">Aucun des deux : la colinéarité n'a pas d'impact pratique.</span></label>
+              <div class="qcm-explain">Faux : elle a un impact réel et documenté sur la fiabilité de l'estimation de $\beta$, même si la prévision reste correcte.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -1062,6 +1168,80 @@ window.MathJax = {
             </div>
           </article>
 
+          <div class="qcm" id="qcm-2">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 2</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la ou les bonnes réponses pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q1</span>Dans le modèle $Y=X\beta+\varepsilon$ avec $rg(X)=p$, quelle est la formule de l'estimateur des moindres carrés ordinaires $\hat\beta$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-1"><span class="otext">$\hat\beta=(X'X)^{-1}X'Y$</span></label>
+              <div class="qcm-explain">Correct : c'est le théorème de la fiche 10, obtenu par projection orthogonale de $Y$ sur $[X]$, valable dès que $rg(X)=p$ (donc $X'X$ inversible).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-1"><span class="otext">$\hat\beta=X^{-1}Y$</span></label>
+              <div class="qcm-explain">Faux : $X$ est de taille $(n,p)$ avec en général $n\neq p$ : elle n'est pas inversible, cette écriture n'a pas de sens dès que $n>p$.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-1"><span class="otext">$\hat\beta=(X'X)X'Y$</span></label>
+              <div class="qcm-explain">Faux : il manque l'inversion de $X'X$ : sans elle, les dimensions et la formule de projection ne correspondent plus.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-1"><span class="otext">$\hat\beta=X'(XX')^{-1}Y$</span></label>
+              <div class="qcm-explain">Faux : $XX'$ est de taille $(n,n)$, en général non inversible dès que $n>p$ ; c'est une confusion de formule fréquente à éviter.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>On ajoute une variable explicative à un modèle avec constante déjà ajusté. Que peut-on affirmer <b>avec certitude</b> ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-2"><span class="otext">Le $R^2$ augmente nécessairement, et le $R^2$ ajusté aussi.</span></label>
+              <div class="qcm-explain">Faux à moitié : le $R^2$ augmente (ou reste égal) toujours, mais le $R^2$ ajusté, lui, peut diminuer si le gain de $SCR$ est trop faible (fiche 16).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-2"><span class="otext">Le $R^2$ augmente nécessairement (ou reste égal) ; le $R^2$ ajusté, lui, peut diminuer.</span></label>
+              <div class="qcm-explain">Correct : ajouter une variable agrandit l'espace de projection $[X]$, donc $SCR$ ne peut que diminuer (ou stagner), d'où $R^2\uparrow$. Mais $R_a^2$ pénalise par $p$ : il ne monte que si le gain est suffisant.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-2"><span class="otext">Le $R^2$ et le $R^2$ ajusté diminuent tous les deux nécessairement.</span></label>
+              <div class="qcm-explain">Faux : le $R^2$ ne peut structurellement pas diminuer en ajoutant une colonne à $X$ (fiche 16, piège n°2).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-2"><span class="otext">Le $R^2$ peut diminuer si la nouvelle variable n'est pas significative.</span></label>
+              <div class="qcm-explain">Faux : même une variable totalement non significative fait strictement croître (ou au pire stagner) le $R^2$ : c'est un fait géométrique, indépendant de la significativité.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q3</span>Que garantit exactement le théorème de Gauss-Markov pour $\hat\beta$, sous (H1)-(H3) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-3"><span class="otext">$\hat\beta$ est l'estimateur sans biais de variance minimale parmi <b>tous</b> les estimateurs sans biais (linéaires ou non).</span></label>
+              <div class="qcm-explain">Faux : ce résultat plus fort (« efficacité ») demande en plus l'hypothèse de normalité de $\varepsilon$ (fiche 13) : Gauss-Markov seul ne le garantit pas.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-3"><span class="otext">$\hat\beta$ est le meilleur estimateur <b>linéaire</b> sans biais (BLUE), sans hypothèse de normalité sur $\varepsilon$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'énoncé de la fiche 11 : Gauss-Markov ne suppose que (H1)-(H3), aucune hypothèse sur la loi de $\varepsilon$.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-3"><span class="otext">$\hat\beta$ suit exactement une loi normale.</span></label>
+              <div class="qcm-explain">Faux : la loi exacte de $\hat\beta$ (Gaussienne) n'est obtenue qu'en supposant en plus $\varepsilon\sim\mathcal N(0,\sigma^2 I_n)$ (fiche 13) : Gauss-Markov ne dit rien sur la loi.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-3"><span class="otext">$\hat\beta$ est convergent uniquement si $\varepsilon$ est Gaussien.</span></label>
+              <div class="qcm-explain">Faux : la convergence de $\hat\beta$ (fiche 11) ne dépend que de $(X'X)^{-1}\to 0$ quand $n\to\infty$, sans aucune hypothèse de normalité.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Le VIF d'une variable $X^{(j)}$ vaut 8 (au-dessus du seuil usuel de 5). Que faut-il en conclure ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-4"><span class="otext">Le modèle est mal spécifié et la prévision $\hat Y$ sera peu fiable.</span></label>
+              <div class="qcm-explain">Faux : la prévision $\hat Y$ reste bien définie et stable (c'est une projection), même en cas de colinéarité forte : voir fiche 19.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-4"><span class="otext">La variance de $\hat\beta_j$ est fortement « gonflée » par sa redondance avec les autres régresseurs ; l'estimation de $\beta_j$ est peu fiable, mais la prévision reste correcte.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la définition et le sens du VIF (fiche 19) : $VIF_j=1/(1-R_j^2)$ mesure ce facteur de « gonflement » de la variance de $\hat\beta_j$.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-4"><span class="otext">La variable $X^{(j)}$ doit nécessairement être retirée du modèle.</span></label>
+              <div class="qcm-explain">Faux : c'est une solution possible parmi d'autres (fiche 19 mentionne aussi les méthodes de régression pénalisée) : « nécessairement » est trop fort.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-4"><span class="otext">Cela signifie que $rg(X)<p$, donc $\beta$ n'est plus défini de façon unique.</span></label>
+              <div class="qcm-explain">Faux : un VIF élevé mais fini signale une colinéarité <b>approchée</b>, pas une colinéarité parfaite : $X'X$ reste inversible, $rg(X)=p$ tient toujours (fiche 19).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q5</span>Parmi ces critères de sélection de modèles, lequel est <b>consistant</b> (probabilité de sélectionner le vrai modèle $\to 1$ quand $n\to\infty$), et se situe à l'extrémité la plus parcimonieuse de l'ordre $BIC\le\dots\le R_a^2$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-5"><span class="otext">Le $R^2$ ajusté</span></label>
+              <div class="qcm-explain">Faux : $R_a^2$ n'est pas consistant : sa probabilité de sélectionner un modèle trop gros ne tend pas vers 0 (fiche 22).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-5"><span class="otext">L'AIC</span></label>
+              <div class="qcm-explain">Faux : l'AIC (comme $C_p$) n'est pas consistant, pour la même raison que $R_a^2$ (fiche 22).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-5"><span class="otext">Le $C_p$ de Mallows</span></label>
+              <div class="qcm-explain">Faux : $C_p$ est très proche de l'AIC en pratique et partage la même absence de consistance.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-5"><span class="otext">Le BIC</span></label>
+              <div class="qcm-explain">Correct : le BIC est le seul critère consistant du cours (fiche 22) : c'est aussi le plus parcimonieux dans l'ordre $BIC\le F\text{-test}\le C_p\approx AIC\le R_a^2$.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -1421,6 +1601,80 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> une activité de présentation de l'ANCOVA et de mise en œuvre sous R (via une vidéo) est disponible sur Moodle.</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-3">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 3</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la ou les bonnes réponses pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Sous R, <code>lm(Y~A)</code> avec $A$ à 3 modalités ($A_1,A_2,A_3$) utilise la contrainte par défaut $\alpha_1=0$. Le coefficient affiché pour $A_2$ s'interprète comme :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-1"><span class="otext">$\mu_2$, l'espérance de $Y$ dans la modalité $A_2$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'interprétation valable pour la contrainte $m=0$ (<code>lm(Y~A-1)</code>), pas pour la contrainte par défaut de R (fiche 26).</div>
+              <label class="qcm-opt"><input type="radio" name="q3-1"><span class="otext">$\mu_2-\mu_1$, l'écart entre l'espérance de $Y$ en $A_2$ et celle en $A_1$ (modalité de référence).</span></label>
+              <div class="qcm-explain">Correct : avec la contrainte $\alpha_1=0$ par défaut de R, $m=\mu_1$ et $\alpha_i=\mu_i-\mu_1$ (fiche 26) : tout se lit relativement à la modalité de référence $A_1$.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-1"><span class="otext">$\mu_2-\bar\mu$, l'écart à la moyenne générale.</span></label>
+              <div class="qcm-explain">Faux : c'est l'interprétation associée à la contrainte de somme nulle $\sum_i\alpha_i=0$ (<code>contr.sum</code>), qui n'est pas la contrainte par défaut de R.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-1"><span class="otext">La pente de la droite de régression pour la modalité $A_2$.</span></label>
+              <div class="qcm-explain">Faux : en ANOVA pure il n'y a aucun régresseur quantitatif, donc aucune notion de pente : cette lecture n'a de sens qu'en ANCOVA avec interaction (fiche 35).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>En ANOVA à 2 facteurs, le test de l'interaction $A{:}B$ est significatif. Quelle est la bonne pratique ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-2"><span class="otext">On interprète directement les effets marginaux de $A$ et $B$ ; l'interaction n'empêche pas leur lecture.</span></label>
+              <div class="qcm-explain">Faux : c'est exactement le piège dénoncé fiche 32 : l'effet de $A$ (ou $B$) peut sembler nul en marginal alors qu'il existe fortement via l'interaction.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-2"><span class="otext">On ignore l'interaction et on ne garde que le modèle additif, plus simple à lire.</span></label>
+              <div class="qcm-explain">Faux : on ne simplifie en modèle additif que si l'interaction est <b>non</b> significative (fiche 32) : ici elle l'est.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-2"><span class="otext">On ne teste/interprète pas les effets marginaux de $A$ et $B$ isolément : leur effet passe par l'interaction, à analyser (ex. interaction plot).</span></label>
+              <div class="qcm-explain">Correct : c'est la « proposition · ordre des tests » de la fiche 32 : si $H_0^{(AB)}$ est rejetée, tester séparément $A$ ou $B$ n'a plus de sens.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-2"><span class="otext">Le facteur ayant la plus petite p-value marginale est déclaré seul responsable de l'effet observé.</span></label>
+              <div class="qcm-explain">Faux : aucune notion de « responsabilité unique » n'existe ici : l'exemple du rendement de plante (fiche 30) montre que l'effet de $A$ peut même sembler absent en marginal à cause de l'interaction.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q3</span>Pourquoi utilise-t-on le test de Tukey (HSD) plutôt que $I(I-1)/2$ tests de Student indépendants pour comparer toutes les paires de modalités ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-3"><span class="otext">Le test de Tukey est plus puissant individuellement pour chaque paire.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'argument du cours : Tukey est en général plus conservateur par comparaison, pas plus puissant.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-3"><span class="otext">Les tests de Student répétés sont plus longs à calculer.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas une question de temps de calcul, mais de contrôle du risque d'erreur (fiche 28).</div>
+              <label class="qcm-opt"><input type="radio" name="q3-3"><span class="otext">Cumuler des tests de Student au niveau $\alpha$ chacun fait exploser le risque global de faux positif (proche de 1) ; Tukey garantit un niveau simultané exactement $\alpha$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le « problème des tests multiples » de la fiche 28 : Tukey calibre le seuil sur le <b>maximum</b> des écarts pour garantir $\mathbb P(\bigcup H_1^{i,j})=\alpha$.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-3"><span class="otext">Le test de Student n'est valable que pour $I=2$ modalités.</span></label>
+              <div class="qcm-explain">Faux : un test de Student entre deux moyennes précises reste valide quel que soit $I$ : le problème n'est pas sa validité individuelle mais leur accumulation.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>En ANOVA à 1 facteur, quel que soit le choix de contrainte d'identifiabilité, que peut-on affirmer sur l'estimation ajustée $\hat\mu_i$ dans chaque modalité ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-4"><span class="otext">$\hat\mu_i$ change de valeur selon la contrainte choisie : il faut fixer la contrainte avant d'estimer.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : la fiche 26 montre que $\hat\mu_i=\bar Y_i$ ne dépend <b>pas</b> de la contrainte ; seule la paramétrisation $(m,\alpha_i)$ en dépend.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-4"><span class="otext">$\hat\mu_i=\bar Y_i$ (la moyenne empirique de la modalité), quelle que soit la contrainte : seule la paramétrisation change, pas le modèle ajusté.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la proposition de la fiche 26 : les estimations, elles, ne dépendent pas de la contrainte.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-4"><span class="otext">Seule la contrainte $\alpha_1=0$ donne une estimation sans biais de $\mu_i$.</span></label>
+              <div class="qcm-explain">Faux : toutes les contraintes usuelles conduisent au même modèle ajusté, donc à la même estimation $\hat\mu_i=\bar Y_i$, sans biais dans tous les cas.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-4"><span class="otext">Le choix de la contrainte modifie $\hat\sigma^2$ mais pas $\hat\mu_i$.</span></label>
+              <div class="qcm-explain">Faux : $\hat\sigma^2$ est également invariant à la contrainte (fiche 26) : c'est tout le modèle ajusté (espérances <i>et</i> variance résiduelle) qui ne dépend que de la reparamétrisation, pas de son contenu.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>En ANCOVA, <code>lm(Y ~ X * A)</code> avec $X$ quantitative et $A$ à 2 modalités ($A_1$ référence, $A_2$). Le coefficient de l'interaction $X{:}A_2$ s'interprète comme :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-5"><span class="otext">La différence entre les ordonnées à l'origine des deux droites ($A_1$ et $A_2$).</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle du coefficient de $A_2$ seul ($\alpha_2$), pas de l'interaction $X{:}A_2$ (fiche 35).</div>
+              <label class="qcm-opt"><input type="radio" name="q3-5"><span class="otext">La différence entre les pentes de la droite pour $A_2$ et celle pour $A_1$ : la pente en $A_2$ vaut $\beta+\beta_{X:A_2}$.</span></label>
+              <div class="qcm-explain">Correct : c'est la lecture géométrique de la fiche 35 : sans interaction, une seule pente commune $\beta$ ; avec interaction, chaque modalité a sa propre pente $\beta+\beta_i$.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-5"><span class="otext">L'effet moyen de $X$, indépendamment du facteur $A$.</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle du coefficient principal $\beta$ (celui de $X$ seul), pas celui de l'interaction.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-5"><span class="otext">La corrélation entre $X$ et $A$.</span></label>
+              <div class="qcm-explain">Faux : $A$ est qualitative, la notion de corrélation de Pearson ne s'applique pas ici ; ce n'est pas ce que mesure un coefficient de régression.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -2260,6 +2514,80 @@ window.MathJax = {
             </div>
           </article>
 
+          <div class="qcm" id="qcm-4">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 4</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la ou les bonnes réponses pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q1</span>Modèle logistique $\mathrm{logit}(p(x))=x'\beta$, avec $\hat\beta_j=-0{,}657$ pour un régresseur binaire $X^{(j)}$ (1 = présence, 0 = absence). Que peut-on affirmer ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-1"><span class="otext">$p(x)$ diminue quand $X^{(j)}$ passe de 0 à 1 ; la cote (odds) est multipliée par $\exp(-0{,}657)\approx 0{,}52$.</span></label>
+              <div class="qcm-explain">Correct : $\beta_j<0$ signifie que $p(x)$ décroît (fiche 38), et $odds(x)=\exp(x'\beta)$ (fiche 39) : c'est bien la <b>cote</b>, pas la probabilité, qui est multipliée par $\exp(\beta_j)$.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-1"><span class="otext">$p(x)$ est directement multipliée par $\exp(-0{,}657)\approx 0{,}52$ quand $X^{(j)}$ passe de 0 à 1.</span></label>
+              <div class="qcm-explain">Faux : c'est le piège classique de la fiche 39 : $\exp(\beta_j)$ est un odds-ratio (rapport de <b>cotes</b>), jamais un rapport de probabilités.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-1"><span class="otext">$\hat\beta_j$ n'a pas de sens interprétable si le régresseur est binaire.</span></label>
+              <div class="qcm-explain">Faux : c'est au contraire le cas le plus simple à interpréter : $\exp(\beta_j)$ est directement l'odds-ratio entre présence et absence (fiche 39).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-1"><span class="otext">Une valeur négative de $\hat\beta_j$ signifie que le modèle logistique est mal spécifié.</span></label>
+              <div class="qcm-explain">Faux : un coefficient négatif est parfaitement normal, il signale simplement un effet qui diminue $p(x)$ (fiche 38).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>On calcule un odds-ratio $OR(x_1,x_2)=3$ entre deux individus. Que peut-on affirmer avec certitude ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-2"><span class="otext">$p(x_1)=3\,p(x_2)$ : la probabilité est trois fois plus grande pour l'individu 1.</span></label>
+              <div class="qcm-explain">Faux : $OR\neq$ rapport de probabilités en général (fiche 39, piège central) : seule une approximation vaut quand les deux probabilités sont très petites.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-2"><span class="otext">La cote (odds) de l'individu 1 est trois fois plus grande que celle de l'individu 2.</span></label>
+              <div class="qcm-explain">Correct : c'est la définition même de l'odds-ratio, $OR(x_1,x_2)=odds(x_1)/odds(x_2)$ (fiche 39).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-2"><span class="otext">$p(x_1)=0{,}75$ nécessairement.</span></label>
+              <div class="qcm-explain">Faux : un $OR$ seul ne détermine pas $p(x_1)$ sans connaître $p(x_2)$ (ou une des deux probabilités) : rien dans l'énoncé ne le fixe à 0,75.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-2"><span class="otext">$p(x_1)/p(x_2)$ est nécessairement supérieur à 3.</span></label>
+              <div class="qcm-explain">Faux : la fiche 39 montre l'inverse : dès que $OR>1$, on a $OR>p(x_1)/p(x_2)$ (l'OR <b>accentue</b> l'écart), donc le rapport de probabilités est en réalité <b>inférieur</b> à 3, pas supérieur.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Pour comparer deux modèles GLM logistiques emboîtés, quel test utilise-t-on de préférence, et à quelle loi compare-t-on la statistique ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-3"><span class="otext">Le test de déviance $D_{H_0}-D_{H_1}$, comparé à une loi $\chi^2_q$ ($q$ = nombre de contraintes).</span></label>
+              <div class="qcm-explain">Correct : c'est le test du rapport de vraisemblance (fiche 42), le plus utilisé en GLM pour des modèles emboîtés.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-3"><span class="otext">Le test de Student, comparé à une loi $St(n-p)$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'outil de la régression linéaire (fiche 14) : en GLM, tous les tests (Wald, déviance, score) sont <b>asymptotiques</b>, jamais des lois de Student exactes (fiche 40).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-3"><span class="otext">Le $R^2$ ajusté des deux modèles.</span></label>
+              <div class="qcm-explain">Faux : le $R^2$ n'est pas l'outil des GLM : son substitut naturel est la déviance (fiche 42).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-3"><span class="otext">Le test de Durbin-Watson.</span></label>
+              <div class="qcm-explain">Faux : ce test sert à détecter l'auto-corrélation des résidus en régression linéaire (fiche 20), sans rapport avec la comparaison de deux GLM emboîtés.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Un modèle de Poisson log-linéaire est ajusté, et on détecte une sur-dispersion ($\hat\phi\gg1$). Si on ignore ce problème, quelle est la conséquence directe sur l'inférence ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-4"><span class="otext">Les estimations $\hat\beta$ deviennent biaisées.</span></label>
+              <div class="qcm-explain">Faux : $\hat\beta$ reste consistant même sous sur-dispersion (fiche 52-53) : c'est justement l'idée du quasi-Poisson, qui garde les mêmes $\hat\beta$ et ne corrige que l'incertitude.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-4"><span class="otext">Les écarts-types de $\hat\beta$ sont sous-estimés, ce qui rend les tests trop optimistes : des variables peuvent être déclarées significatives à tort.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'avertissement de la fiche 52 : la variance estimée des estimateurs est sous-estimée, faussant les p-values à la baisse.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-4"><span class="otext">Le modèle devient inutilisable pour prévoir $\lambda(x)$.</span></label>
+              <div class="qcm-explain">Faux : les prévisions ponctuelles $\hat\lambda(x)$ restent identiques à celles du quasi-Poisson (fiche 53) : seule l'incertitude associée est affectée, pas la prévision elle-même.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-4"><span class="otext">La log-vraisemblance n'est plus concave.</span></label>
+              <div class="qcm-explain">Faux : sans rapport avec le problème : la sur-dispersion est un problème de variance mal spécifiée, pas de concavité de la vraisemblance.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Un histogramme de comptages présente un pic massif de zéros, nettement détaché du reste. Pourquoi Poisson/NB échouent-ils typiquement, et que propose le modèle ZIP ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-5"><span class="otext">Poisson/NB ne peuvent produire aucun zéro ; ZIP ajoute artificiellement des zéros aux données.</span></label>
+              <div class="qcm-explain">Faux : une loi de Poisson $\mathcal P(\lambda)$ produit très bien des zéros, avec probabilité $e^{-\lambda}$ : ce n'est pas l'incapacité à produire des zéros qui pose problème.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-5"><span class="otext">Aucune loi à espérance $\lambda(x)$ unique ne peut produire à la fois une masse énorme en 0 et une queue étalée en valeurs positives ; ZIP mélange une composante « zéro structurel » (logistique) et une composante de comptage (Poisson).</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le diagnostic des fiches 56-57 : deux « populations » (zéros systématiques vs comptage usuel) que ZIP modélise par deux GLM combinés.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-5"><span class="otext">Le problème vient uniquement d'une mauvaise fonction de lien : il suffit de remplacer $\ln$ par $\mathrm{logit}$.</span></label>
+              <div class="qcm-explain">Faux : changer la fonction de lien ne résout pas un problème structurel de mélange de deux populations (fiche 56) : ce n'est pas un problème de lien mais de loi.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-5"><span class="otext">ZIP remplace tous les zéros observés par la moyenne prédite $\lambda(x)$.</span></label>
+              <div class="qcm-explain">Faux : ZIP ne remplace aucune donnée : il modélise probabilistement l'origine de chaque zéro (structurel ou d'échantillonnage), fiche 57.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -2403,6 +2731,56 @@ window.MathJax = {
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.style.scrollBehavior = 'auto';
   }
+
+  document.querySelectorAll('.qcm').forEach(function(qcm){
+    var submitBtn = qcm.querySelector('.qcm-submit');
+    var resetBtn = qcm.querySelector('.qcm-reset');
+    var resultEl = qcm.querySelector('.qcm-result');
+    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+
+    submitBtn.addEventListener('click', function(){
+      var score = 0;
+      questions.forEach(function(q){
+        var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
+        var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
+        var checked = [];
+        opts.forEach(function(opt, idx){
+          if(opt.querySelector('input').checked) checked.push(idx);
+        });
+        checked.sort();
+        var isCorrect = checked.length === correct.length && checked.every(function(v, i){ return v === correct[i]; });
+        if(isCorrect) score++;
+        q.classList.add('graded');
+        q.classList.toggle('q-correct', isCorrect);
+        q.classList.toggle('q-incorrect', !isCorrect);
+        opts.forEach(function(opt, idx){
+          var input = opt.querySelector('input');
+          var isRight = correct.indexOf(idx) !== -1;
+          var wasChecked = input.checked;
+          opt.classList.toggle('opt-right', isRight);
+          opt.classList.toggle('opt-wrong-checked', wasChecked && !isRight);
+          input.disabled = true;
+        });
+      });
+      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      submitBtn.disabled = true;
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      questions.forEach(function(q){
+        q.classList.remove('graded', 'q-correct', 'q-incorrect');
+        q.querySelectorAll('.qcm-opt').forEach(function(opt){
+          opt.classList.remove('opt-right', 'opt-wrong-checked');
+          var input = opt.querySelector('input');
+          input.checked = false;
+          input.disabled = false;
+        });
+      });
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    });
+  });
 })();
 </script>
 
