@@ -469,6 +469,29 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> dans les trois critères, seul l'<b>exposant</b> ($\alpha$, $\beta$, ou le degré/coefficient de $P$) détermine $\gamma$ : la constante multiplicative $c$ (et, au critère 3, le facteur polynomial $x^\varphi$ devant l'exponentielle) n'a <b>aucune</b> influence sur $\gamma$, seulement sur les constantes de normalisation $a_n,b_n$. Attention au critère 3 : $\varphi$ peut être <b>nul</b> (cas de la loi Gaussienne ci-dessous) : ce n'est pas une exigence de stricte positivité, contrairement à $\alpha$ et $\beta$ aux critères 1 et 2.</p>
             </div>
 
+            <div class="box box-def">
+              <p class="box-label">Définition · Variation régulière (la condition qui unifie tout)</p>
+              <p>Une fonction mesurable $g:(0,\infty)\to(0,\infty)$ est dite à <b>variation régulière</b> en $+\infty$, d'indice $\alpha\in\mathbb R$ (noté $g\in RV_\alpha$), si :</p>
+              <div class="formula">$$\forall x\gt0,\qquad \lim_{t\to\infty}\frac{g(tx)}{g(t)}=x^\alpha$$</div>
+              <p>Le cas particulier $\alpha=0$ s'appelle <b>variation lente</b> (ex. $g(t)=\log t$, ou toute fonction tendant vers une constante non nulle).</p>
+              <p class="sense"><b>Sens :</b> c'est <b>la</b> condition rigoureuse qui caractérise le domaine d'attraction de Fréchet (fiche 5) : $F\in\mathrm{DA}(\text{Fréchet}_\gamma)$, $\gamma\gt0$, ssi $\bar F\in RV_{-1/\gamma}$ (théorème de Gnedenko-Karamata) : ce sont ces « conditions régulières » qui rendent valables le critère 1 ci-dessus et le QQ-plot de Fréchet ci-dessous. Les trois critères « recette » de cette fiche ne sont que des cas particuliers <b>suffisants</b>, faciles à vérifier, de cette condition plus générale : d'où le piège de l'exercice 23 (fiche 23), où $\bar F(x)\sim c\,x^{-1/2}\log(x)$ est bien à variation régulière d'indice $-1/2$ (le facteur $\log(x)$ est à variation <b>lente</b>, il ne compte pas dans l'indice) sans entrer dans aucun des trois critères simples de densité.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Méthode graphique · QQ-plots selon le domaine suspecté</p>
+              <p>Avec $X_{(1)}\le\dots\le X_{(n)}$ les statistiques d'ordre et les quantiles exponentiels standard $e_i:=-\log\!\Big(\dfrac{n+1-i}{n+1}\Big)$, $i=1,\dots,n$, trois tracés permettent de <b>lire graphiquement</b> le domaine d'attraction, chacun adapté à la transformation qui linéarise ce domaine particulier :</p>
+              <table class="cmp">
+                <tr><th>Domaine suspecté</th><th>Ce qu'on trace (axe $y$, contre $e_i$)</th><th>Linéaire ssi</th><th>Pente lue</th></tr>
+                <tr><td>Fréchet ($\gamma\gt0$)</td><td>$\log X_{(n-i+1)}$</td><td>$\bar F\in RV_{-1/\gamma}$</td><td>$\approx\gamma$</td></tr>
+                <tr><td>Weibull ($\gamma\lt0$)</td><td>$\log\big(x_F-X_{(n-i+1)}\big)$</td><td>idem, en miroir autour de $x_F$</td><td>$\approx-\gamma\ (\gt0)$</td></tr>
+                <tr><td>Gumbel ($\gamma=0$)</td><td>$X_{(n-i+1)}$ (brut, sans log)</td><td>$U(t)\sim a\log t+b$</td><td>pente $=a$ (échelle), <b>sans rapport avec $\gamma$</b></td></tr>
+              </table>
+              <p><b>QQ-plot de Fréchet (Pareto)</b> : on trace les couples $\big(e_i,\ \log X_{(n-i+1,n)}\big)$, en se concentrant sur les $i$ petits (donc les plus grandes valeurs de $X$). Sous $\bar F\in RV_{-1/\gamma}$, le nuage doit être <b>approximativement linéaire dans la queue droite</b>, de pente $\approx\gamma$ : c'est exactement la traduction graphique de $U(tx)/U(t)\to x^\gamma$ (fiche 5), lue en échelle logarithmique.</p>
+              <p><b>QQ-plot de Weibull</b> : $x_F$ étant fini, prendre $\log X$ directement n'a pas de sens ($X\to x_F$, pas $+\infty$). On retourne le problème « en miroir » autour du point terminal : on trace $\log\big(x_F-X_{(n-i+1,n)}\big)$ contre $e_i$. Linéaire, de pente $\approx-\gamma\gt0$, à condition que $x_F$ soit correctement estimé (ou connu) au préalable : une valeur de $x_F$ mal choisie courbe visiblement le nuage (concave si $x_F$ sous-estimé, convexe si surestimé).</p>
+              <p><b>QQ-plot de Gumbel</b> : ici $U(t)$ croît comme $\log t$ (ni polynomialement, ni borné), donc on trace directement les valeurs <b>brutes</b> $X_{(n-i+1,n)}$ (sans log, sans miroir) contre $e_i$ : linéaire ssi $\gamma=0$. C'est le seul des trois cas où la pente lue n'estime <b>pas</b> $\gamma$ (qui vaut $0$ par hypothèse), mais le paramètre d'échelle de la loi limite.</p>
+              <p class="sense"><b>Sens :</b> en pratique, on ne connaît pas le domaine a priori : on trace d'abord le QQ-plot de Fréchet (le plus simple, ne demande pas de connaître $x_F$). S'il est linéaire, domaine de Fréchet confirmé. S'il <b>courbe vers le bas</b> dans la queue (concave), la queue est plus légère que Fréchet : on regarde alors si l'histogramme suggère un support borné ($x_F$ fini $\Rightarrow$ tester Weibull) ou non ($x_F=\infty$ $\Rightarrow$ tester Gumbel).</p>
+            </div>
+
             <div class="box box-ex">
               <p class="box-label">Exemple 1.3.1 · Loi de Student</p>
               <p>$X\sim\mathrm{Student}(d)$, $d\gt0$, de densité $f_X(x)=\dfrac{\Gamma(\frac{d+1}2)}{\sqrt{d\pi}\,\Gamma(\frac d2)}\Big(1+\dfrac{x^2}d\Big)^{-\frac{d+1}2}$, $x\in\mathbb R$. Déterminer le domaine d'attraction et $\gamma$.</p>
