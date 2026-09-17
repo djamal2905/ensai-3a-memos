@@ -184,6 +184,38 @@ window.MathJax = {
   .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
   .cmp td:first-child, .cmp th:first-child{ text-align:left; }
 
+  .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
+  .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .qcm-head h3{ font-size:1.05rem; margin:0; }
+  .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; }
+  .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; }
+  .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
+  .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
+  .qcm-opt:hover{ background:var(--surface-2); }
+  .qcm-opt input{ margin-top:3px; flex-shrink:0; accent-color:var(--accent); }
+  .qcm-opt .otext{ font-size:.89rem; color:var(--ink-soft); }
+  .qcm-explain{ display:none; font-size:.82rem; color:var(--muted); margin:2px 0 0 34px; padding:4px 0 4px 10px; border-left:2px solid var(--border); }
+  .qcm-q.graded .qcm-explain{ display:block; }
+  .qcm-q.graded .qcm-opt{ cursor:default; }
+  .qcm-q.graded .qcm-opt.opt-right{ background:var(--def-bg); border-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-right .qcm-explain{ border-left-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked{ background:var(--warn-bg); border-color:var(--warn-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked .qcm-explain{ border-left-color:var(--warn-border); }
+  .qcm-q .q-badge{ display:none; font:700 .72rem "JetBrains Mono",monospace; padding:2px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+  .qcm-q.graded .q-badge{ display:inline-block; }
+  .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
+  .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
+  .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
+  .qcm-btn.ghost:hover{ background:var(--accent-soft); }
+  .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
+  .qcm-result:empty{ display:none; }
+
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
   .chain{ font:600 .95rem "JetBrains Mono",monospace; padding:8px 0; border-top:1px solid var(--code-border); color:#dfe3ea; }
@@ -653,6 +685,80 @@ window.MathJax = {
             </div>
           </article>
 
+          <div class="qcm" id="qcm-1">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 1</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Que dit exactement le théorème de Fisher-Tippett-Gnedenko ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-1"><span class="otext">Pour toute loi $F$, $(M_n-b_n)/a_n$ converge vers une GEV $G_\gamma$, quel que soit le choix de $a_n,b_n$.</span></label>
+              <div class="qcm-explain">Faux : le théorème suppose d'abord qu'il <b>existe</b> des suites $a_n>0,\,b_n$ telles que la limite soit non dégénérée (fiche 4) : ce n'est pas automatique pour tout $F$, et pas pour n'importe quel choix de $a_n,b_n$.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-1"><span class="otext">Si $(M_n-b_n)/a_n$ converge vers une loi non dégénérée, alors cette limite est nécessairement une GEV $G_\gamma$, pour un $\gamma\in\mathbb R$.</span></label>
+              <div class="qcm-explain">Correct : c'est l'énoncé de la fiche 4 : la seule famille de lois limites possibles pour le maximum normalisé est la famille GEV, paramétrée par l'unique indice $\gamma$.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-1"><span class="otext">$M_n$ seul converge toujours vers une loi normale quand $n\to\infty$.</span></label>
+              <div class="qcm-explain">Faux : $M_n$ seul (sans normalisation) converge presque sûrement vers $x_F$, une loi dégénérée (fiche 2) : c'est précisément pour éviter ça qu'on introduit $a_n,b_n$.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-1"><span class="otext">Le théorème s'applique uniquement si $X_1,\dots,X_n$ sont Gaussiennes.</span></label>
+              <div class="qcm-explain">Faux : le théorème est général, valable pour (presque) toute loi $F$ sous-jacente, pas seulement la loi Gaussienne (qui est un cas particulier, domaine de Gumbel).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>On sait que $x_F=+\infty$ pour une loi $F$. Que peut-on en déduire sur son domaine d'attraction ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-2"><span class="otext">$F$ est nécessairement dans le domaine de Fréchet ($\gamma\gt0$).</span></label>
+              <div class="qcm-explain">Faux : $x_F=+\infty$ élimine Weibull, mais Gumbel ($\gamma=0$) reste possible avec $x_F=+\infty$ (ex. loi exponentielle, loi Gaussienne) : il faut regarder la vitesse de décroissance de $\bar F$ pour trancher (fiche 5-6).</div>
+              <label class="qcm-opt"><input type="radio" name="t1-2"><span class="otext">$F$ est nécessairement dans le domaine de Gumbel ($\gamma=0$).</span></label>
+              <div class="qcm-explain">Faux : même argument en sens inverse : $x_F=+\infty$ n'exclut pas Fréchet (ex. loi de Pareto, loi de Student).</div>
+              <label class="qcm-opt"><input type="radio" name="t1-2"><span class="otext">$F$ ne peut pas être dans le domaine de Weibull, mais Fréchet et Gumbel restent tous deux possibles.</span></label>
+              <div class="qcm-explain">Correct : la table de synthèse de la fiche 5 montre que Weibull exige $x_F$ fini : donc $x_F=+\infty$ l'élimine directement, sans trancher entre Fréchet et Gumbel (qui dépendent de la vitesse de décroissance de $\bar F$).</div>
+              <label class="qcm-opt"><input type="radio" name="t1-2"><span class="otext">$F$ n'a pas de domaine d'attraction dans ce cas.</span></label>
+              <div class="qcm-explain">Faux : $x_F=+\infty$ n'empêche en rien l'existence d'un domaine d'attraction (Fréchet et Gumbel ont tous deux $x_F=+\infty$ dans de nombreux exemples usuels).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Soit $F(x)=1-(1-x)^\alpha$, $x\in[0,1]$, de densité $f(x)=\alpha(1-x)^{\alpha-1}$. Comment $\gamma$ dépend-il de $\alpha$ (critère 2, fiche 6) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-3"><span class="otext">$\gamma=-1/\alpha$ : $\gamma$ dépend de $\alpha$, car $\alpha$ est l'exposant de $(1-x)$ dans $f$.</span></label>
+              <div class="qcm-explain">Correct : on identifie directement au critère 2 avec $\beta=\alpha$ (l'exposant de $(x_F-x)$), donc $\gamma=-1/\beta=-1/\alpha$ : ici $\alpha$ EST l'exposant qui compte, donc $\gamma$ en dépend bien (fiche 3, exemple 1.2.2).</div>
+              <label class="qcm-opt"><input type="radio" name="t1-3"><span class="otext">$\gamma=-1$, quel que soit $\alpha$ : seul l'exposant compte, jamais la constante multiplicative.</span></label>
+              <div class="qcm-explain">Faux, mais attention au piège inverse : c'est la conclusion de l'<b>autre</b> exemple de la fiche 3 ($f(x)=\alpha x^{\alpha-1}$, où $\alpha$ n'est qu'une constante multiplicative qui tend vers $\alpha$ quand $x\to1$, sans être l'exposant). Ici $\alpha$ EST l'exposant de $(1-x)$, donc il détermine $\gamma$.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-3"><span class="otext">$\gamma=1/\alpha$ : domaine de Fréchet.</span></label>
+              <div class="qcm-explain">Faux : $x_F=1$ est fini ici (support $[0,1]$), ce qui élimine Fréchet d'emblée (fiche 5) : on est nécessairement dans le domaine de Weibull, $\gamma\lt0$.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-3"><span class="otext">$\gamma=0$ : domaine de Gumbel, car $x_F$ est fini.</span></label>
+              <div class="qcm-explain">Faux : $x_F$ fini n'implique pas Gumbel (Gumbel avec $x_F$ fini est un cas rare/limite) : ici la décroissance polynomiale en $(1-x)^{\alpha-1}$ signale sans ambiguïté Weibull (critère 2), pas Gumbel.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>D'après le théorème de Pickands-Balkema-de Haan, que peut-on dire de la loi des excès au-dessus d'un seuil élevé ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-4"><span class="otext">Elle converge vers une GEV $G_\gamma$, exactement comme le maximum par blocs.</span></label>
+              <div class="qcm-explain">Faux : c'est la loi du <b>maximum</b> (Fisher-Tippett, fiche 4) qui converge vers une GEV. Les excès au-dessus d'un seuil, eux, convergent vers une loi <b>différente</b> : la Pareto généralisée (GPD).</div>
+              <label class="qcm-opt"><input type="radio" name="t1-4"><span class="otext">Elle converge vers une loi Gaussienne, indépendamment du domaine d'attraction de $F$.</span></label>
+              <div class="qcm-explain">Faux : aucun résultat du cours ne donne une limite Gaussienne pour les excès : c'est une confusion avec le TCL classique, hors-sujet en théorie des valeurs extrêmes.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-4"><span class="otext">Elle converge vers une loi de Pareto généralisée (GPD), avec le <b>même</b> paramètre $\gamma$ que la GEV du maximum.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'énoncé de Pickands-Balkema-de Haan (fiche 7) : même $\gamma$ que Fisher-Tippett, ce qui permet d'estimer $\gamma$ indifféremment par block maxima ou par dépassement de seuil.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-4"><span class="otext">Elle ne converge vers aucune loi limite connue en général.</span></label>
+              <div class="qcm-explain">Faux : c'est précisément l'apport du théorème : une limite universelle (la GPD) existe, sous les mêmes conditions que Fisher-Tippett.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi l'approche par dépassement de seuil (POT / GPD) est-elle généralement préférée au maximum par blocs pour l'estimation ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-5"><span class="otext">Parce que le maximum par blocs n'est valable que pour des données Gaussiennes.</span></label>
+              <div class="qcm-explain">Faux : le maximum par blocs est valable pour (presque) toute loi $F$ possédant un domaine d'attraction, pas seulement la loi Gaussienne : ce n'est pas la raison de la préférence pour le POT.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-5"><span class="otext">Parce que le maximum par blocs ne retient qu'un seul point par bloc, même si plusieurs valeurs élevées y sont observées : il gaspille de l'information que le POT exploite mieux.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'argument de la fiche 8 : un bloc peut contenir plusieurs valeurs extrêmes dont une seule (le maximum) est retenue, alors que le POT les utilise toutes si elles dépassent le seuil.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-5"><span class="otext">Parce que le POT ne nécessite aucun choix de paramètre de réglage, contrairement au maximum par blocs.</span></label>
+              <div class="qcm-explain">Faux : le POT demande de choisir un seuil (analogue au choix de $K$ pour Hill, fiche 15), tout comme le maximum par blocs demande de choisir la taille des blocs : aucune des deux méthodes n'est réglage-free.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-5"><span class="otext">Parce que la GPD a un domaine de définition plus large que la GEV.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'argument avancé dans le cours : GEV et GPD partagent le même paramètre $\gamma$ (fiche 7) ; la préférence pour le POT vient de l'usage plus efficace des données, pas d'une différence de domaine de définition.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -821,6 +927,80 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> le miroir exact de l'estimateur de Weissman : on part d'une probabilité de dépassement <b>empirique connue</b> ($K/n$, calculable car $X_{n-K,n}$ est déjà observé) et on l'extrapole vers $y_n$ via l'exposant $-1/\hat\gamma^H$.</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-2">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 2</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Pourquoi ne peut-on pas simplement utiliser le quantile empirique $X_{\lfloor n\alpha\rfloor,n}$ pour estimer un quantile extrême $q(\beta)$ avec $\beta$ très proche de 1 ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-1"><span class="otext">Parce que le quantile empirique n'est jamais un estimateur consistant, même pour $\alpha$ fixé dans $(0,1)$.</span></label>
+              <div class="qcm-explain">Faux : le quantile empirique est parfaitement consistant pour $\alpha$ fixé strictement entre 0 et 1 : le problème apparaît spécifiquement quand $\beta\to1$ avec $n$, pas en général.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-1"><span class="otext">Parce qu'il nécessite de connaître $\gamma$ à l'avance.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : le quantile empirique ne demande aucune connaissance de $\gamma$, c'est justement pour ça qu'il est limité (il n'exploite aucune structure de queue pour extrapoler).</div>
+              <label class="qcm-opt"><input type="radio" name="t2-1"><span class="otext">Parce que si $\beta=\beta_n\to1$ trop vite (au-delà du support empirique), il n'y a tout simplement aucune observation pour estimer directement ce quantile : il faut extrapoler via la structure de la queue (fiche 9).</span></label>
+              <div class="qcm-explain">Correct : c'est le « problème de l'extrapolation » de la fiche 9 : au-delà des données observées, le quantile empirique n'est pas défini, d'où le recours à l'interpolation depuis un point intermédiaire via $\gamma$ (fiche 10).</div>
+              <label class="qcm-opt"><input type="radio" name="t2-1"><span class="otext">Parce que le quantile empirique n'existe que pour des lois à support borné.</span></label>
+              <div class="qcm-explain">Faux : le quantile empirique se calcule pour n'importe quelle loi, bornée ou non : le support borné/non borné n'est pas en cause ici.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Que représente $K$ dans l'estimateur de Hill $\hat\gamma^H=\frac1K\sum_{i=1}^K[\log X_{n-i+1,n}-\log X_{n-K,n}]$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-2"><span class="otext">Le nombre total d'observations de l'échantillon.</span></label>
+              <div class="qcm-explain">Faux : c'est $n$ qui désigne la taille totale de l'échantillon ; $K$ est un sous-ensemble, toujours $K\lt n$.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-2"><span class="otext">Le nombre des plus grandes statistiques d'ordre utilisées dans le calcul (le « quantile intermédiaire »).</span></label>
+              <div class="qcm-explain">Correct : $\hat\gamma^H$ est la moyenne des log-excès au-dessus du $(K{+}1)$-ème plus grand point (fiche 14) : $K$ fixe combien de valeurs extrêmes de l'échantillon on utilise.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-2"><span class="otext">Le nombre de paramètres du modèle GEV ajusté.</span></label>
+              <div class="qcm-explain">Faux : la GEV a 3 paramètres ($\gamma,\mu,\sigma$), sans rapport avec $K$, qui est propre à l'approche par excès (Hill/Weissman), pas à l'ajustement direct d'une GEV.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-2"><span class="otext">Le seuil au-delà duquel on considère qu'une observation est une valeur aberrante à exclure.</span></label>
+              <div class="qcm-explain">Faux : les $K$ plus grandes observations ne sont pas exclues, elles sont au contraire les seules utilisées dans le calcul de $\hat\gamma^H$ : aucune notion d'exclusion de valeurs aberrantes ici.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Dans le choix de $K$ pour l'estimateur de Hill, quel est le compromis en jeu (fiche 13, 15) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-3"><span class="otext">$K$ petit : la variance de $\hat\gamma^H$ est élevée (peu d'observations) ; $K$ grand : le biais devient incontrôlé (on s'éloigne de la queue, l'approximation quasi-Pareto se dégrade).</span></label>
+              <div class="qcm-explain">Correct : c'est le cœur de la fiche 13 (hypothèse $\sqrt K\,A(n/K)=O(1)$ ou $\to\lambda$) : variance en $1/K$ mais biais qui croît avec $K$, d'où la recherche d'un « plateau de stabilité » sur le Hill plot (fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="t2-3"><span class="otext">$K$ petit : le biais est élevé ; $K$ grand : la variance devient incontrôlée.</span></label>
+              <div class="qcm-explain">Faux : c'est exactement l'inverse : un $K$ petit donne une variance élevée (peu d'observations moyennées) ; c'est un $K$ grand qui fait grossir le biais.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-3"><span class="otext">Il n'y a aucun compromis : plus $K$ est grand, meilleur est toujours l'estimateur.</span></label>
+              <div class="qcm-explain">Faux : la fiche 13 montre au contraire qu'un $K$ trop grand menace l'hypothèse 3 du théorème (biais contrôlé) : il existe bien un arbitrage, pas de « plus grand est toujours meilleur ».</div>
+              <label class="qcm-opt"><input type="radio" name="t2-3"><span class="otext">$K$ n'a aucune influence sur les propriétés statistiques de $\hat\gamma^H$, seulement sur le temps de calcul.</span></label>
+              <div class="qcm-explain">Faux : $K$ est le paramètre central qui pilote directement le compromis biais-variance de l'estimateur (fiche 13) : il ne s'agit pas d'une simple question de performance de calcul.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>L'estimateur de Weissman permet d'extrapoler un quantile $q(1-p)$ pour $p$ arbitrairement petit. Sous quelle condition sur $\gamma$ cet estimateur (dans sa forme du cours) est-il valable ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-4"><span class="otext">Pour tout $\gamma\in\mathbb R$, sans restriction.</span></label>
+              <div class="qcm-explain">Faux : l'estimateur de Hill (dont dépend Weissman) est construit spécifiquement pour le domaine de Fréchet : il n'est pas défini/valable hors de ce cadre sans adaptation.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-4"><span class="otext">Uniquement pour $\gamma=0$ (domaine de Gumbel).</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : Hill et Weissman sont bâtis sur la relation $U(tx)/U(t)\to x^\gamma$ avec $\gamma\gt0$ (fiche 9), propre au domaine de Fréchet, pas à Gumbel.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-4"><span class="otext">Pour $\gamma\gt0$ (domaine de Fréchet) : c'est le cadre de queue lourde sur lequel tout le chapitre 2 est construit.</span></label>
+              <div class="qcm-explain">Correct : la fiche 9 pose explicitement le cadre « queue lourde ($\gamma\gt0$) » dès le départ : Hill (fiche 14) et Weissman (fiche 16) sont tous deux construits pour ce domaine spécifiquement.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-4"><span class="otext">Pour $\gamma\lt0$ (domaine de Weibull) uniquement.</span></label>
+              <div class="qcm-explain">Faux : le domaine de Weibull ($x_F$ fini) demande une approche différente (adaptée à un point terminal fini), pas celle du chapitre 2 qui suppose $\gamma\gt0$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Dans le théorème de normalité asymptotique de Hill, $\sqrt K(\hat\gamma^H-\gamma)\xrightarrow{\mathcal L}\mathcal N\big(\lambda/(1-\rho),\,\gamma^2\big)$, à quoi correspond le terme $\lambda/(1-\rho)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-5"><span class="otext">C'est la variance asymptotique de l'estimateur.</span></label>
+              <div class="qcm-explain">Faux : la variance asymptotique est $\gamma^2$ (le second paramètre de la loi normale limite) : $\lambda/(1-\rho)$ apparaît dans le <b>premier</b> paramètre, la moyenne.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-5"><span class="otext">C'est le biais asymptotique résiduel, qui s'annule si $K$ croît assez lentement pour que $\sqrt K\,A(n/K)\to\lambda=0$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le sens donné en fiche 14 : ce terme est un biais qui ne disparaît que dans le cas idéal $\lambda=0$, pas toujours atteignable en pratique sur un échantillon de taille fixée.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-5"><span class="otext">C'est une erreur de calcul : la moyenne de la loi limite devrait toujours être exactement $0$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas une erreur : le théorème 2.1.2/Hill (fiche 13-14) prévoit explicitement ce terme de biais non nul en général, contrairement à un résultat de normalité asymptotique « sans biais » plus simple.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-5"><span class="otext">C'est le paramètre de second ordre $\rho$ lui-même, renommé.</span></label>
+              <div class="qcm-explain">Faux : $\rho$ est un paramètre à part entière de la condition $\mathcal C_2(\gamma,\rho,A)$ (fiche 13) ; $\lambda/(1-\rho)$ est une expression qui combine $\rho$ et $\lambda$ (la limite de $\sqrt K\,A(n/K)$), pas $\rho$ seul.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -1143,6 +1323,56 @@ window.MathJax = {
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.style.scrollBehavior = 'auto';
   }
+
+  document.querySelectorAll('.qcm').forEach(function(qcm){
+    var submitBtn = qcm.querySelector('.qcm-submit');
+    var resetBtn = qcm.querySelector('.qcm-reset');
+    var resultEl = qcm.querySelector('.qcm-result');
+    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+
+    submitBtn.addEventListener('click', function(){
+      var score = 0;
+      questions.forEach(function(q){
+        var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
+        var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
+        var checked = [];
+        opts.forEach(function(opt, idx){
+          if(opt.querySelector('input').checked) checked.push(idx);
+        });
+        checked.sort();
+        var isCorrect = checked.length === correct.length && checked.every(function(v, i){ return v === correct[i]; });
+        if(isCorrect) score++;
+        q.classList.add('graded');
+        q.classList.toggle('q-correct', isCorrect);
+        q.classList.toggle('q-incorrect', !isCorrect);
+        opts.forEach(function(opt, idx){
+          var input = opt.querySelector('input');
+          var isRight = correct.indexOf(idx) !== -1;
+          var wasChecked = input.checked;
+          opt.classList.toggle('opt-right', isRight);
+          opt.classList.toggle('opt-wrong-checked', wasChecked && !isRight);
+          input.disabled = true;
+        });
+      });
+      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      submitBtn.disabled = true;
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      questions.forEach(function(q){
+        q.classList.remove('graded', 'q-correct', 'q-incorrect');
+        q.querySelectorAll('.qcm-opt').forEach(function(opt){
+          opt.classList.remove('opt-right', 'opt-wrong-checked');
+          var input = opt.querySelector('input');
+          input.checked = false;
+          input.disabled = false;
+        });
+      });
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    });
+  });
 })();
 </script>
 
