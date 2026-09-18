@@ -202,6 +202,20 @@ window.MathJax = {
   .cnnviz-stagelabel{ font:600 11px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; }
   marker#cnnArrow path{ fill:var(--muted); }
 
+  .nnamed-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
+  .nnamed-svg{ display:block; min-width:700px; }
+  .nnamed-line{ stroke:var(--border); stroke-width:1; opacity:.55; }
+  .nnamed-node{ stroke-width:2; }
+  .nnamed-in{ fill:var(--surface-2); stroke:var(--ink-soft); }
+  .nnamed-hidden{ fill:var(--accent-soft); stroke:var(--accent); }
+  .nnamed-out{ fill:var(--def-bg); stroke:var(--def-border); }
+  .nnamed-label{ font:600 12px "Source Sans 3",sans-serif; fill:var(--ink); }
+  .nnamed-label-left{ text-anchor:end; }
+  .nnamed-label-center{ text-anchor:middle; }
+  .nnamed-label-bold{ font-weight:700; fill:var(--accent-strong); }
+  .nnamed-label-sub{ font:500 10px "JetBrains Mono",monospace; fill:var(--muted); }
+  .nnamed-header{ font:700 11px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; text-transform:uppercase; letter-spacing:.03em; }
+
   /* --- RNN unfolded: fixed-row grid so h-circles, y-outputs (top) and
          x-inputs (bottom) stay level, plus a W_hh-labelled connector --- */
   .rnnchain{ display:flex; align-items:stretch; gap:4px; margin:16px 0 8px; overflow-x:auto; padding:2px 4px 4px; }
@@ -600,21 +614,61 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
 
             <div class="box box-def">
               <p class="box-label">Rendre l'abstrait concret · Que « représente » un neurone caché ? (exemple d'Andrew Ng, le T-shirt)</p>
-              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique d'Andrew Ng consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction : <i>ce modèle de T-shirt va-t-il être un best-seller ?</i></p>
-              <div class="flow">
-                <div class="fb">prix</div>
-                <div class="fb">coût de livraison</div>
-                <div class="fb">budget marketing</div>
-                <div class="fb">qualité du matériau</div>
+              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique d'Andrew Ng consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction concret : <i>ce modèle de T-shirt va-t-il être un best-seller ?</i> On dispose de 4 variables brutes (prix, coût de livraison, budget marketing, qualité du matériau) ; on imagine qu'une couche cachée de 3 neurones pourrait faire émerger 3 concepts intermédiaires, avant de prédire la probabilité de best-seller. Le graphe ci-dessous représente ce réseau, avec le <b>nom de chaque neurone</b> et l'<b>appellation de chaque couche</b> :</p>
+
+              <div class="nnamed-scroll">
+                <svg class="nnamed-svg" viewBox="0 0 780 405" xmlns="http://www.w3.org/2000/svg">
+                  <!-- lignes denses col1 -> col2 -->
+                  <line class="nnamed-line" x1="110" y1="55" x2="354" y2="125"/>
+                  <line class="nnamed-line" x1="110" y1="55" x2="354" y2="225"/>
+                  <line class="nnamed-line" x1="110" y1="55" x2="354" y2="325"/>
+                  <line class="nnamed-line" x1="110" y1="155" x2="354" y2="125"/>
+                  <line class="nnamed-line" x1="110" y1="155" x2="354" y2="225"/>
+                  <line class="nnamed-line" x1="110" y1="155" x2="354" y2="325"/>
+                  <line class="nnamed-line" x1="110" y1="255" x2="354" y2="125"/>
+                  <line class="nnamed-line" x1="110" y1="255" x2="354" y2="225"/>
+                  <line class="nnamed-line" x1="110" y1="255" x2="354" y2="325"/>
+                  <line class="nnamed-line" x1="110" y1="355" x2="354" y2="125"/>
+                  <line class="nnamed-line" x1="110" y1="355" x2="354" y2="225"/>
+                  <line class="nnamed-line" x1="110" y1="355" x2="354" y2="325"/>
+                  <!-- lignes denses col2 -> col3 -->
+                  <line class="nnamed-line" x1="406" y1="125" x2="614" y2="225"/>
+                  <line class="nnamed-line" x1="406" y1="225" x2="614" y2="225"/>
+                  <line class="nnamed-line" x1="406" y1="325" x2="614" y2="225"/>
+                  <!-- noeuds colonne 1 (entree) -->
+                  <circle class="nnamed-node nnamed-in" cx="90" cy="55" r="20"/>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="59">prix</text>
+                  <circle class="nnamed-node nnamed-in" cx="90" cy="155" r="20"/>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="152.5">coût de</text>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="165.5">livraison</text>
+                  <circle class="nnamed-node nnamed-in" cx="90" cy="255" r="20"/>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="252.5">budget</text>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="265.5">marketing</text>
+                  <circle class="nnamed-node nnamed-in" cx="90" cy="355" r="20"/>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="352.5">qualité du</text>
+                  <text class="nnamed-label nnamed-label-left" x="60" y="365.5">matériau</text>
+                  <!-- noeuds colonne 2 (cachee, nommee) -->
+                  <circle class="nnamed-node nnamed-hidden" cx="380" cy="125" r="26"/>
+                  <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="77">abordabilité</text>
+                  <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="91">(affordability)</text>
+                  <circle class="nnamed-node nnamed-hidden" cx="380" cy="225" r="26"/>
+                  <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="177">notoriété</text>
+                  <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="191">(awareness)</text>
+                  <circle class="nnamed-node nnamed-hidden" cx="380" cy="325" r="26"/>
+                  <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="277">qualité perçue</text>
+                  <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="291">(perceived quality)</text>
+                  <!-- noeud colonne 3 (sortie) -->
+                  <circle class="nnamed-node nnamed-out" cx="640" cy="225" r="26"/>
+                  <text class="nnamed-label nnamed-label-left nnamed-label-bold" x="676" y="229">best-seller ?</text>
+                  <!-- en-tetes de colonnes -->
+                  <text class="nnamed-header" x="90" y="20">ENTRÉE</text>
+                  <text class="nnamed-header" x="90" y="34">(4 variables brutes)</text>
+                  <text class="nnamed-header" x="380" y="20">COUCHE CACHÉE</text>
+                  <text class="nnamed-header" x="380" y="34">(3 concepts appris)</text>
+                  <text class="nnamed-header" x="640" y="20">SORTIE</text>
+                </svg>
               </div>
-              <p style="text-align:center; margin:6px 0;">↓ (couche d'entrée → couche cachée 1, <b>4 entrées</b>)</p>
-              <div class="flow">
-                <div class="fb accent">abordabilité<br><span class="mono" style="font-size:.75em;">(affordability)</span></div>
-                <div class="fb accent">notoriété<br><span class="mono" style="font-size:.75em;">(awareness)</span></div>
-                <div class="fb accent">qualité perçue<br><span class="mono" style="font-size:.75em;">(perceived quality)</span></div>
-              </div>
-              <p style="text-align:center; margin:6px 0;">↓ (couche cachée 1 → sortie, <b>3 entrées</b>)</p>
-              <div class="flow"><div class="fb accent">$\hat y$ = probabilité de best-seller</div></div>
+
               <p>Idée : « prix » + « coût de livraison » pourraient ensemble informer un concept plus abstrait comme l'<b>abordabilité</b> perçue du produit ; « budget marketing » informe seul la <b>notoriété</b> ; « prix » + « qualité du matériau » informent ensemble la <b>qualité perçue</b>. Si on ajoutait une <b>deuxième</b> couche cachée, elle pourrait à son tour recombiner ces trois concepts en une notion encore plus abstraite (ex. « attractivité globale ») : c'est le même principe, couche après couche : chaque couche construit des représentations de plus en plus abstraites à partir de celles de la couche précédente (l'exemple original d'Andrew Ng n'utilise qu'une seule couche cachée, par souci de simplicité).</p>
               <div class="box box-warn" style="margin-top:10px;">
                 <p class="box-label">⚠ Attention : ces noms sont didactiques, pas réels</p>
