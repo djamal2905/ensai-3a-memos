@@ -265,6 +265,64 @@ window.MathJax = {
   .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
   .cmp td:first-child, .cmp th:first-child{ text-align:left; }
 
+  .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
+  .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .qcm-head h3{ font-size:1.05rem; margin:0; }
+  .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; }
+  .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; }
+  .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
+  .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
+  .qcm-opt:hover{ background:var(--surface-2); }
+  .qcm-opt input{ margin-top:3px; flex-shrink:0; accent-color:var(--accent); }
+  .qcm-opt .otext{ font-size:.89rem; color:var(--ink-soft); }
+  .qcm-explain{ display:none; font-size:.82rem; color:var(--muted); margin:2px 0 0 34px; padding:4px 0 4px 10px; border-left:2px solid var(--border); }
+  .qcm-q.graded .qcm-explain{ display:block; }
+  .qcm-q.graded .qcm-opt{ cursor:default; }
+  .qcm-q.graded .qcm-opt.opt-right{ background:var(--def-bg); border-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-right .qcm-explain{ border-left-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked{ background:var(--warn-bg); border-color:var(--warn-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked .qcm-explain{ border-left-color:var(--warn-border); }
+  .qcm-q .q-badge{ display:none; font:700 .72rem "JetBrains Mono",monospace; padding:2px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+  .qcm-q.graded .q-badge{ display:inline-block; }
+  .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
+  .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
+  .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
+  .qcm-btn.ghost:hover{ background:var(--accent-soft); }
+  .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
+  .qcm-result:empty{ display:none; }
+
+  .nn-interactive{ margin:14px 0; border:1px solid var(--border); border-radius:12px; background:var(--surface); padding:16px 18px 20px; }
+  .nn-controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; flex-wrap:wrap; }
+  .nn-btn{ font:600 .82rem "Source Sans 3",sans-serif; padding:8px 16px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .nn-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .nn-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .nn-step-label{ font:600 .78rem "JetBrains Mono",monospace; color:var(--muted); }
+  .nn-svg{ width:100%; height:auto; display:block; }
+  .nn-node{ fill:var(--surface-2); stroke:var(--border); stroke-width:2; transition:fill .25s ease, stroke .25s ease; }
+  .nn-node.active{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:3.5; }
+  .nn-node.done{ fill:var(--def-bg); stroke:var(--def-border); }
+  .nn-node.output{ fill:var(--ex-bg); stroke:var(--ex-border); }
+  .nn-node.output.active{ fill:var(--accent-soft); stroke:var(--accent); }
+  .nn-node-label{ font:700 13px "JetBrains Mono",monospace; fill:var(--ink); text-anchor:middle; dominant-baseline:middle; pointer-events:none; }
+  .nn-node-value{ font:600 11px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; pointer-events:none; }
+  .nn-layer-label{ font:700 12px "Source Sans 3",sans-serif; fill:var(--muted); text-anchor:middle; text-transform:uppercase; letter-spacing:.03em; }
+  .nn-edge{ stroke:var(--border); stroke-width:1; opacity:.55; }
+  .nn-edge.active{ stroke:var(--accent); stroke-width:2.2; opacity:1; }
+  .nn-edge.done{ stroke:var(--def-border); opacity:.35; }
+  .nn-formula-panel{ margin-top:12px; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px 16px; min-height:2.4em; font-size:.92rem; color:var(--ink); }
+  .nn-formula-panel .nn-result{ color:var(--accent-strong); font-weight:700; }
+  .nn-softmax-bar{ display:flex; align-items:center; gap:10px; margin:6px 0; }
+  .nn-softmax-bar .lbl{ width:70px; font:600 .82rem "JetBrains Mono",monospace; }
+  .nn-softmax-bar .track{ flex:1; height:16px; background:var(--surface); border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  .nn-softmax-bar .fill{ height:100%; background:var(--accent); border-radius:8px 0 0 8px; transition:width .4s ease; }
+  .nn-softmax-bar .pct{ width:52px; font:600 .8rem "JetBrains Mono",monospace; text-align:right; }
+
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
   .chain{ font:600 .95rem "JetBrains Mono",monospace; padding:8px 0; border-top:1px solid var(--code-border); color:#dfe3ea; }
@@ -448,13 +506,13 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Régression linéaire</p>
-              <div class="formula">$$\hat y = \boldsymbol w^\top \boldsymbol x + b = \sum_{i=1}^p w_i x_i, \qquad \theta=\{\boldsymbol w, b\}$$</div>
+              <div class="formula">$$\hat y = \mathbf w^\top \mathbf x + b = \sum_{i=1}^p w_i x_i, \qquad \theta=\{\mathbf w, b\}$$</div>
               <p class="sense"><b>Sens :</b> $p+1$ paramètres. Avantages : simplicité, interprétabilité. Inconvénient : incapable de capturer des relations non linéaires.</p>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Proposition · Composer des couches affines reste affine</p>
-              <div class="formula">$$\boldsymbol h^{[j+1]} = \boldsymbol W^{[j]}\left(\boldsymbol W^{[j-1]}\boldsymbol h^{[j-1]}+\boldsymbol b^{[j-1]}\right)+\boldsymbol b^{[j]} = \underbrace{\boldsymbol W^{[j]}\boldsymbol W^{[j-1]}}_{\tilde{\boldsymbol W}}\boldsymbol h^{[j-1]} + \underbrace{\boldsymbol W^{[j]}\boldsymbol b^{[j-1]}+\boldsymbol b^{[j]}}_{\tilde{\boldsymbol b}}$$</div>
+              <div class="formula">$$\mathbf h^{[j+1]} = \mathbf W^{[j]}\left(\mathbf W^{[j-1]}\mathbf h^{[j-1]}+\mathbf b^{[j-1]}\right)+\mathbf b^{[j]} = \underbrace{\mathbf W^{[j]}\mathbf W^{[j-1]}}_{\tilde{\mathbf W}}\mathbf h^{[j-1]} + \underbrace{\mathbf W^{[j]}\mathbf b^{[j-1]}+\mathbf b^{[j]}}_{\tilde{\mathbf b}}$$</div>
               <p class="sense"><b>Sens :</b> empiler des couches purement affines équivaut à une seule couche affine : il faut donc intercaler une <b>non-linéarité</b> entre les couches, l'idée clé qui motive les fonctions d'activation.</p>
             </div>
           </article>
@@ -474,19 +532,91 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Couche (layer)</p>
-              <div class="formula">$$\boldsymbol h^{[j+1]} = g\left(\boldsymbol W^{[j+1]}\boldsymbol h^{[j]}+\boldsymbol b^{[j+1]}\right)$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol h^{[j]}$ = entrée de la couche, $\boldsymbol W^{[j+1]}$ = poids, $\boldsymbol b^{[j+1]}$ = biais, $g$ = activation. $f_j:\boldsymbol x\mapsto \boldsymbol W^{[j]}\boldsymbol x+\boldsymbol b^{[j]}$ est la couche linéaire (dense / fully connected) : un des « blocs » caractéristiques des réseaux de neurones.</p>
+              <div class="formula">$$\mathbf h^{[j+1]} = g\left(\mathbf W^{[j+1]}\mathbf h^{[j]}+\mathbf b^{[j+1]}\right)$$</div>
+              <p class="sense"><b>Sens :</b> $\mathbf h^{[j]}$ = entrée de la couche, $\mathbf W^{[j+1]}$ = poids, $\mathbf b^{[j+1]}$ = biais, $g$ = activation. $f_j:\mathbf x\mapsto \mathbf W^{[j]}\mathbf x+\mathbf b^{[j]}$ est la couche linéaire (dense / fully connected) : un des « blocs » caractéristiques des réseaux de neurones.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · MLP à $k$ couches cachées</p>
-              <div class="formula">$$\boldsymbol h^{[1]}=g_1(\boldsymbol W^{[1]}\boldsymbol x+\boldsymbol b^{[1]}), \quad \dots, \quad \hat{\boldsymbol y}=g_{k+1}(\boldsymbol W^{[k+1]}\boldsymbol h^{[k]}+\boldsymbol b^{[k+1]})$$</div>
+              <div class="formula">$$\mathbf h^{[1]}=g_1(\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}), \quad \dots, \quad \hat{\mathbf y}=g_{k+1}(\mathbf W^{[k+1]}\mathbf h^{[k]}+\mathbf b^{[k+1]})$$</div>
               <p class="sense"><b>Sens :</b> $k$ = profondeur (depth) du réseau ; un $k$ grand donne un réseau « profond » : d'où <i>deep</i> learning.</p>
             </div>
 
             <div class="box box-ex">
-              <p class="box-label">Remarque · Nombre de paramètres</p>
-              <p>Chaque couche $j$ possède $n_{j+1}\times(n_j+1)$ paramètres (poids + biais). Le réseau complet en comporte la somme sur toutes les couches : potentiellement énorme si les couches sont larges.</p>
+              <p class="box-label">Cheat sheet · Compter les paramètres (et le vérifier sous PyTorch)</p>
+              <p>Chaque couche dense $j$ possède $n_{j+1}\times(n_j+1)$ paramètres : $n_{j+1}\times n_j$ poids (une valeur par connexion) $+\ n_{j+1}$ biais (un par neurone de la couche). Le réseau complet en comporte la somme sur toutes les couches.</p>
+              <table class="cmp">
+                <tr><th>Couche</th><th>Entrées → Sorties</th><th>Poids</th><th>Biais</th><th>Total</th></tr>
+                <tr><td>Cachée 1</td><td>4 → 5</td><td>$4\times5=20$</td><td>$5$</td><td>$25$</td></tr>
+                <tr><td>Cachée 2</td><td>5 → 5</td><td>$5\times5=25$</td><td>$5$</td><td>$30$</td></tr>
+                <tr><td>Sortie</td><td>5 → 3</td><td>$5\times3=15$</td><td>$3$</td><td>$18$</td></tr>
+                <tr><td><b>Total</b></td><td></td><td></td><td></td><td><b>73</b></td></tr>
+              </table>
+              <div class="formula">$$\texttt{nn.Linear}(n_{in}, n_{out}) \;\longrightarrow\; \#\text{paramètres} = n_{out}\times(n_{in}+1)$$</div>
+              <pre style="background:var(--code-bg); color:var(--code-ink); border-radius:8px; padding:10px 14px; overflow-x:auto; font-size:.82rem; line-height:1.5;"><code>import torch.nn as nn
+
+model = nn.Sequential(
+    nn.Linear(4, 5), nn.ReLU(),   # couche cachée 1 : 4*5+5  = 25 params
+    nn.Linear(5, 5), nn.ReLU(),   # couche cachée 2 : 5*5+5  = 30 params
+    nn.Linear(5, 3),              # sortie          : 5*3+3  = 18 params
+)
+sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
+              <p class="sense"><b>Sens :</b> <code>model.parameters()</code> itère sur tous les tenseurs entraînables ; <code>.numel()</code> compte leurs éléments. C'est le réflexe à avoir pour estimer la taille (et donc le coût mémoire/calcul) de n'importe quelle architecture avant de l'entraîner.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple interactif · Un MLP qui classe chien / chat / oiseau, neurone par neurone</p>
+              <p>Réseau à 4 entrées, 2 couches cachées de 5 neurones (ReLU), 3 sorties. Cliquez sur « Suivant » pour voir <b>exactement</b> comment chaque neurone calcule sa valeur, jusqu'à la prédiction finale.</p>
+
+              <div class="nn-interactive" id="nnExample">
+                <div class="nn-controls">
+                  <button class="nn-btn" id="nnPrev" disabled>← Précédent</button>
+                  <span class="nn-step-label">Étape <span id="nnStepNum">0</span> / <span id="nnStepTotal">0</span></span>
+                  <button class="nn-btn" id="nnNext">Suivant →</button>
+                </div>
+                <svg class="nn-svg" id="nnSvg" viewBox="0 0 830 440" xmlns="http://www.w3.org/2000/svg"></svg>
+                <div class="nn-formula-panel" id="nnFormula">Cliquez sur « Suivant » pour lancer le calcul, neurone par neurone.</div>
+              </div>
+              <p class="sense"><b>Sens :</b> c'est <i>exactement</i> la définition formelle ci-dessus ($\mathbf h^{[j+1]}=g(\mathbf W^{[j+1]}\mathbf h^{[j]}+\mathbf b^{[j+1]})$), appliquée neurone par neurone plutôt qu'en notation matricielle compacte : chaque neurone caché n'est qu'une somme pondérée suivie d'un ReLU, rien de plus.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Rendre l'abstrait concret · Que « représente » un neurone caché ? (exemple d'Andrew Ng)</p>
+              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique (Andrew Ng, <i>Neural Networks and Deep Learning</i>) consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction du prix d'une maison :</p>
+              <div class="flow">
+                <div class="fb">taille</div>
+                <div class="fb">nb. chambres</div>
+                <div class="fb">code postal</div>
+                <div class="fb">richesse du quartier</div>
+              </div>
+              <p style="text-align:center; margin:6px 0;">↓ (couche d'entrée → couche cachée)</p>
+              <div class="flow">
+                <div class="fb accent">taille de la famille</div>
+                <div class="fb accent">marchabilité</div>
+                <div class="fb accent">qualité des écoles</div>
+              </div>
+              <p style="text-align:center; margin:6px 0;">↓</p>
+              <div class="flow"><div class="fb accent">prix prédit $\hat y$</div></div>
+              <p>Idée : « taille » + « nb. chambres » pourraient ensemble informer un concept plus abstrait comme la « taille de la famille » adaptée au bien ; « code postal » informe la « marchabilité » du quartier ; « code postal » + « richesse » informent la « qualité des écoles » perçue.</p>
+              <div class="box box-warn" style="margin-top:10px;">
+                <p class="box-label">⚠ Attention : ces noms sont didactiques, pas réels</p>
+                <p>En pratique, <b>on ne choisit jamais</b> ce qu'un neurone caché doit représenter : le réseau est entraîné de bout en bout (end-to-end), et chaque neurone reçoit une entrée pondérée de <b>toutes</b> les entrées de la couche précédente, pas seulement d'un sous-groupe « logique ». Ce qu'apprend réellement chaque neurone est déterminé automatiquement par la descente de gradient, et n'est presque jamais aussi lisible qu'un concept humain nommé (« marchabilité »). Cet exemple sert uniquement à construire l'intuition qu'une couche cachée peut, <i>en principe</i>, faire émerger des représentations intermédiaires utiles.</p>
+              </div>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">En pratique · Comment choisir le nombre de neurones, de couches, et l'activation ? (ce n'est jamais au hasard)</p>
+              <p><b>Nombre de couches et de neurones par couche</b> : quelques repères utilisés en pratique :</p>
+              <p>• <b>Partir d'une architecture connue</b> qui a fait ses preuves sur une tâche similaire, puis l'adapter (plutôt que partir de zéro).<br>
+              • <b>Plus de données et une tâche plus complexe</b> $\Rightarrow$ justifient un réseau plus grand (plus de capacité) ; peu de données $\Rightarrow$ un grand réseau <b>sur-apprend</b> (fiche 9).<br>
+              • <b>Forme « entonnoir »</b> fréquente : les couches rétrécissent progressivement vers la sortie (ex. 128 → 64 → 32 → sortie), pour compresser l'information utile.<br>
+              • <b>Choix par validation empirique</b> : on compare plusieurs architectures sur un jeu de validation (fiche 9) et on garde celle qui généralise le mieux : jamais un choix théorique pur (cf. slide « Deep Learning is not a Solution to Everything » du cours : les architectures restent en grande partie <i>heuristiques</i>).<br>
+              • <b>Contrainte de calcul/mémoire</b> : le nombre de paramètres (cheat sheet ci-dessus) doit rester compatible avec le budget GPU disponible.</p>
+              <p><b>Fonction d'activation</b> : le choix dépend du rôle de la couche, jamais arbitraire :</p>
+              <p>• <b>Couches cachées</b> : ReLU par défaut (rapide, évite en grande partie le problème de gradient qui s'évanouit des fonctions saturantes comme sigmoïde/tanh) ; Leaky ReLU si on observe des neurones « morts » (toujours à 0, cf. $h_3=0$ dans l'exemple interactif ci-dessus).<br>
+              • <b>Couche de sortie</b> : dictée par la tâche, pas par préférence : <b>identité</b> pour une régression, <b>sigmoïde</b> pour une classification binaire ($\hat y\in[0,1]$), <b>softmax</b> pour une classification multi-classe ($\hat y$ = vecteur de probabilités, comme dans l'exemple chien/chat/oiseau).<br>
+              • <b>tanh</b> reste utilisée dans certaines architectures récurrentes (fiche 21) ; <b>GELU</b> est devenue standard dans les Transformers (fiche 36+).</p>
+              <p class="sense"><b>Sens :</b> retenir la logique, pas des règles rigides : chaque choix architectural (profondeur, largeur, activation) est une hypothèse qu'on <b>valide empiriquement</b>, jamais une certitude théorique : d'où l'importance du triplet train/validation/test (fiche 9).</p>
             </div>
           </article>
 
@@ -578,14 +708,14 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Momentum</p>
-              <div class="formula">$$\boldsymbol m_k=\beta\times\boldsymbol m_{k-1}+(1-\beta)\times\boldsymbol g_k \qquad \Delta\theta_k=-\eta\times\boldsymbol m_k$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol m_k$ = moyenne mobile exponentielle des gradients : lisse le bruit du gradient mini-batch en tenant compte de l'historique. Analogie : l'inertie d'un objet en mouvement.</p>
+              <div class="formula">$$\mathbf m_k=\beta\times\mathbf m_{k-1}+(1-\beta)\times\mathbf g_k \qquad \Delta\theta_k=-\eta\times\mathbf m_k$$</div>
+              <p class="sense"><b>Sens :</b> $\mathbf m_k$ = moyenne mobile exponentielle des gradients : lisse le bruit du gradient mini-batch en tenant compte de l'historique. Analogie : l'inertie d'un objet en mouvement.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Adam (ADAptive Moment estimation)</p>
-              <div class="formula">$$\boldsymbol v_k=\beta_2\boldsymbol v_{k-1}+(1-\beta_2)\boldsymbol g_k^2, \qquad \hat{\boldsymbol m}_k=\frac{\boldsymbol m_k}{1-\beta_1^k}, \ \ \hat{\boldsymbol v}_k=\frac{\boldsymbol v_k}{1-\beta_2^k}, \qquad \Delta\theta_k=-\eta\times\frac{\hat{\boldsymbol m}_k}{\sqrt{\hat{\boldsymbol v}_k}+\epsilon}$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol v_k$ estime le 2<sup>e</sup> moment (variance) du gradient ; $\hat{\boldsymbol m}_k,\hat{\boldsymbol v}_k$ corrigent le biais dû à l'initialisation à 0. $\hat{\boldsymbol m}_k/\sqrt{\hat{\boldsymbol v}_k}$ ≈ un ratio signal/bruit, qui amortit les mises à jour extrêmes. Valeurs par défaut : $\eta=0.001$, $\beta_1=0.9$, $\beta_2=0.999$, $\epsilon=10^{-8}$.</p>
+              <div class="formula">$$\mathbf v_k=\beta_2\mathbf v_{k-1}+(1-\beta_2)\mathbf g_k^2, \qquad \hat{\mathbf m}_k=\frac{\mathbf m_k}{1-\beta_1^k}, \ \ \hat{\mathbf v}_k=\frac{\mathbf v_k}{1-\beta_2^k}, \qquad \Delta\theta_k=-\eta\times\frac{\hat{\mathbf m}_k}{\sqrt{\hat{\mathbf v}_k}+\epsilon}$$</div>
+              <p class="sense"><b>Sens :</b> $\mathbf v_k$ estime le 2<sup>e</sup> moment (variance) du gradient ; $\hat{\mathbf m}_k,\hat{\mathbf v}_k$ corrigent le biais dû à l'initialisation à 0. $\hat{\mathbf m}_k/\sqrt{\hat{\mathbf v}_k}$ ≈ un ratio signal/bruit, qui amortit les mises à jour extrêmes. Valeurs par défaut : $\eta=0.001$, $\beta_1=0.9$, $\beta_2=0.999$, $\epsilon=10^{-8}$.</p>
             </div>
           </article>
 
@@ -633,6 +763,80 @@ window.MathJax = {
             </div>
           </article>
 
+          <div class="qcm" id="qcm-1">
+            <div class="qcm-head">
+              <h3>QCM de révision · Introduction &amp; MLP</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Un MLP a une couche cachée de 4 entrées vers 5 neurones, suivie d'une couche de sortie de 5 vers 3 neurones. Combien de paramètres entraînables ce réseau possède-t-il au total ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-1"><span class="otext">$4\times5 + 5\times3 = 35$</span></label>
+              <div class="qcm-explain">Faux : ce calcul oublie les biais. La formule complète (fiche 3) est $n_{j+1}\times(n_j+1)$ par couche, pas seulement $n_{j+1}\times n_j$.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-1"><span class="otext">$5\times(4+1) + 3\times(5+1) = 25+18 = 43$</span></label>
+              <div class="qcm-explain">Correct : chaque couche $j$ a $n_{j+1}\times(n_j+1)$ paramètres, le « +1 » comptant le biais de chaque neurone (fiche 3) : $5\times5=25$ pour la première couche, $3\times6=18$ pour la seconde, soit $43$ au total.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-1"><span class="otext">$4+5+5+3 = 17$</span></label>
+              <div class="qcm-explain">Faux : cela ne compte que le nombre de neurones par couche, pas les connexions (poids) entre elles.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-1"><span class="otext">$5\times4 + 3\times5 = 35$</span></label>
+              <div class="qcm-explain">Faux : même erreur que la première option (biais oublié), simplement écrite dans l'autre sens.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Pourquoi empiler des couches purement <b>linéaires</b> (affines), sans fonction d'activation entre elles, ne donne-t-il aucune capacité de modélisation supplémentaire par rapport à une seule couche ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-2"><span class="otext">Parce que les couches linéaires ne peuvent pas être entraînées par descente de gradient.</span></label>
+              <div class="qcm-explain">Faux : des couches purement linéaires s'entraînent très bien par descente de gradient ; ce n'est pas le problème ici.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-2"><span class="otext">Parce que cela demande trop de mémoire.</span></label>
+              <div class="qcm-explain">Faux : sans rapport avec la mémoire ; c'est une propriété mathématique de la composition de fonctions affines.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-2"><span class="otext">Parce que la composition de plusieurs fonctions affines est encore une fonction affine (fiche 3) : $k$ couches linéaires empilées équivalent mathématiquement à une seule couche linéaire, quel que soit $k$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'argument du cours : sans non-linéarité entre les couches, $\mathbf h^{[j+1]}=\mathbf W^{[j+1]}\mathbf h^{[j]}+\mathbf b^{[j+1]}$ se recompose algébriquement en une seule transformation affine globale, peu importe la profondeur.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-2"><span class="otext">Parce que les fonctions affines ne peuvent pas être calculées en parallèle sur GPU.</span></label>
+              <div class="qcm-explain">Faux : les calculs matriciels des couches affines sont au contraire particulièrement bien adaptés aux GPU.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Que garantit exactement le théorème d'approximation universelle (fiche 4) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-3"><span class="otext">Qu'il <b>existe</b> un réseau capable d'approximer n'importe quelle fonction continue sur un compact avec une précision arbitraire ; il ne dit ni combien de neurones il faut, ni comment entraîner un tel réseau.</span></label>
+              <div class="qcm-explain">Correct : c'est explicitement précisé en fiche 4 : un théorème d'<b>existence</b>, pas de construction ni d'entraînement.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-3"><span class="otext">Qu'un réseau à une seule couche cachée de 10 neurones peut toujours approximer n'importe quelle fonction.</span></label>
+              <div class="qcm-explain">Faux : le théorème ne fixe aucun nombre de neurones ; le nombre requis peut être arbitrairement grand selon la fonction visée.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-3"><span class="otext">Que la descente de gradient trouvera toujours ce réseau approximant, quel que soit le point de départ.</span></label>
+              <div class="qcm-explain">Faux : le théorème ne dit rien sur l'entraînement ; trouver les bons poids par descente de gradient est une question totalement séparée (et non garantie, fiche 6).</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-3"><span class="otext">Que seule l'activation ReLU permet l'approximation universelle.</span></label>
+              <div class="qcm-explain">Faux : le théorème (fiche 4) est énoncé pour toute activation $g$ continue et <b>non affine</b>, pas seulement ReLU.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Pourquoi utilise-t-on en pratique la descente de gradient en <b>mini-batch</b> plutôt que le gradient exact (sur tout le jeu de données) ou stochastique (une seule observation) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-4"><span class="otext">Parce que le mini-batch est le seul des trois à donner un estimateur non biaisé du gradient.</span></label>
+              <div class="qcm-explain">Faux : les trois estimateurs (exact, stochastique, mini-batch) sont non biaisés ; ce qui les distingue est leur <b>variance</b>, pas leur biais.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-4"><span class="otext">C'est un compromis : variance plus faible que le stochastique (1 seule observation), tout en gardant une variance non nulle (utile pour éviter certains minima locaux médiocres), et une utilisation efficace de la mémoire GPU (assez d'exemples pour l'occuper, pas trop pour la saturer).</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'arbitrage présenté dans le cours : le mini-batch réduit la variance du stochastique pur sans retomber sur le coût prohibitif du gradient exact, et exploite bien le parallélisme GPU.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-4"><span class="otext">Parce que le gradient exact ne peut pas être calculé par rétropropagation.</span></label>
+              <div class="qcm-explain">Faux : le gradient exact se calcule très bien par rétropropagation ; le problème est seulement son <b>coût</b> ($\propto n$ à chaque itération), pas une impossibilité de calcul.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-4"><span class="otext">Parce que le mini-batch garantit toujours de converger vers le minimum global.</span></label>
+              <div class="qcm-explain">Faux : aucune des trois variantes ne garantit d'atteindre le minimum global en général (surface de coût non convexe) ; ce n'est pas l'argument en faveur du mini-batch.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>D'après le cours, pourquoi le Deep Learning connaît-il un tel succès <b>depuis les années 2010</b> alors que les idées de base (perceptron, rétropropagation) sont bien plus anciennes ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-5"><span class="otext">Parce qu'une nouvelle théorie mathématique a été découverte, rendant obsolètes les approches précédentes.</span></label>
+              <div class="qcm-explain">Faux : le cours souligne explicitement que ce n'est <b>pas</b> une rupture théorique soudaine.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-5"><span class="otext">Parce que les fonctions d'activation sigmoïde ont été remplacées par le softmax, ce qui a tout changé.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'explication donnée ; le remplacement de sigmoïde/tanh par ReLU dans les couches cachées a aidé, mais ce n'est pas la cause principale identifiée par le cours pour l'essor du Deep Learning.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-5"><span class="otext">(Beaucoup) plus de puissance de calcul disponible, (beaucoup) plus de données disponibles, et (beaucoup) plus de travaux de recherche accumulés : trois facteurs pratiques, pas une avancée théorique isolée.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la conclusion du cours (fiche 10, box « Sens ») : le succès récent tient à ces trois facteurs cumulés, pas à une découverte théorique soudaine.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-5"><span class="otext">Parce que le Deep Learning ne présente plus aucun inconvénient aujourd'hui.</span></label>
+              <div class="qcm-explain">Faux : le cours liste au contraire plusieurs limites persistantes (fiche 10, box ⚠) : boîte noire, coût en données/calcul, biais, peu de garanties théoriques.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -651,7 +855,7 @@ window.MathJax = {
 
             <div class="box box-warn">
               <p class="box-label">⚠ Explosion du nombre de paramètres</p>
-              <p>Une image de $1280\times 960$ contient $1\,228\,800$ pixels. Même un perceptron à une seule couche produisant <b>un seul</b> scalaire exige déjà une matrice $\boldsymbol W$ de taille $1\,228\,800\times 1$ : et le coût est multiplié par le nombre de neurones de la couche suivante.</p>
+              <p>Une image de $1280\times 960$ contient $1\,228\,800$ pixels. Même un perceptron à une seule couche produisant <b>un seul</b> scalaire exige déjà une matrice $\mathbf W$ de taille $1\,228\,800\times 1$ : et le coût est multiplié par le nombre de neurones de la couche suivante.</p>
             </div>
 
             <div class="box box-ex">
@@ -663,9 +867,9 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · De la matrice pleine au noyau partagé</p>
-              <p>Partant de $\boldsymbol W\in\mathbb R^{n\times p}$ dense, on applique deux contraintes successives :</p>
-              <p><b>Localité</b> → on force à $0$ les poids reliant des éléments distants : $\boldsymbol W$ devient <b>creuse et bande</b>. <b>Invariance</b> → on impose les <b>mêmes</b> poids sur chaque ligne, décalés d'un cran :</p>
-              <div class="formula">$$\boldsymbol W=\begin{pmatrix} W_1 & W_2 & W_3 & 0 & \cdots & 0\\ 0 & W_1 & W_2 & W_3 & \cdots & 0\\ 0 & 0 & W_1 & W_2 & \cdots & 0\\ \vdots & & & & \ddots & \vdots \end{pmatrix}$$</div>
+              <p>Partant de $\mathbf W\in\mathbb R^{n\times p}$ dense, on applique deux contraintes successives :</p>
+              <p><b>Localité</b> → on force à $0$ les poids reliant des éléments distants : $\mathbf W$ devient <b>creuse et bande</b>. <b>Invariance</b> → on impose les <b>mêmes</b> poids sur chaque ligne, décalés d'un cran :</p>
+              <div class="formula">$$\mathbf W=\begin{pmatrix} W_1 & W_2 & W_3 & 0 & \cdots & 0\\ 0 & W_1 & W_2 & W_3 & \cdots & 0\\ 0 & 0 & W_1 & W_2 & \cdots & 0\\ \vdots & & & & \ddots & \vdots \end{pmatrix}$$</div>
               <p class="sense"><b>Sens :</b> on passe de plusieurs millions de poids à <b>quelques dizaines</b>. Ce petit vecteur/matrice de poids partagés s'appelle un <b>noyau</b> (kernel) ou <i>matrice de convolution</i>.</p>
             </div>
           </article>
@@ -676,16 +880,16 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Opération de convolution (1D et 2D)</p>
-              <div class="formula">$$(\boldsymbol h*\boldsymbol w)_i := \sum_{k=1}^{N_w} h_{i+k}\,w_k \qquad\qquad (\boldsymbol H*\boldsymbol W)_{i,j} := \sum_{k=1}^{M_w}\sum_{l=1}^{N_w} H_{i+k,\,j+l}\,W_{k,l}$$</div>
-              <p>$\boldsymbol h\in\mathbb R^{N_h}$ (resp. $\boldsymbol H\in\mathbb R^{M_h\times N_h}$) = entrée/sortie de la couche précédente, $\boldsymbol w$ (resp. $\boldsymbol W$) = noyau, c'est-à-dire les <b>paramètres</b> de la couche.</p>
+              <div class="formula">$$(\mathbf h*\mathbf w)_i := \sum_{k=1}^{N_w} h_{i+k}\,w_k \qquad\qquad (\mathbf H*\mathbf W)_{i,j} := \sum_{k=1}^{M_w}\sum_{l=1}^{N_w} H_{i+k,\,j+l}\,W_{k,l}$$</div>
+              <p>$\mathbf h\in\mathbb R^{N_h}$ (resp. $\mathbf H\in\mathbb R^{M_h\times N_h}$) = entrée/sortie de la couche précédente, $\mathbf w$ (resp. $\mathbf W$) = noyau, c'est-à-dire les <b>paramètres</b> de la couche.</p>
               <p class="sense"><b>Sens :</b> en toute rigueur ce n'est pas la convolution mathématique (les indices ne sont pas retournés) mais une <b>corrélation croisée</b> ; elle coïncide avec la convolution usuelle à un retournement d'indices près. L'usage a gardé le nom.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Couche de convolution + activation</p>
-              <div class="formula">$$\boldsymbol h^{[j]} \leftarrow \underbrace{\sigma}_{\text{activation}}\big(\underbrace{\boldsymbol h^{[j-1]} * \boldsymbol w^{[j]}}_{\text{convolution}}\big)$$</div>
-              <p>Chaque composante de $\boldsymbol h^{[j]}$ ne dépend que d'une <b>région locale</b> de $\boldsymbol h^{[j-1]}$, appelée son <b>champ récepteur</b> (receptive field) ⟹ localité + parcimonie. Le noyau $\boldsymbol w^{[j]}$ est <b>partagé</b> entre toutes les régions et <b>appris</b> par optimisation.</p>
-              <p class="sense"><b>Sens :</b> les entrées/sorties $\boldsymbol h^{[j]}$ d'une telle couche s'appellent des <b>cartes d'activation</b> ou <i>feature maps</i>.</p>
+              <div class="formula">$$\mathbf h^{[j]} \leftarrow \underbrace{\sigma}_{\text{activation}}\big(\underbrace{\mathbf h^{[j-1]} * \mathbf w^{[j]}}_{\text{convolution}}\big)$$</div>
+              <p>Chaque composante de $\mathbf h^{[j]}$ ne dépend que d'une <b>région locale</b> de $\mathbf h^{[j-1]}$, appelée son <b>champ récepteur</b> (receptive field) ⟹ localité + parcimonie. Le noyau $\mathbf w^{[j]}$ est <b>partagé</b> entre toutes les régions et <b>appris</b> par optimisation.</p>
+              <p class="sense"><b>Sens :</b> les entrées/sorties $\mathbf h^{[j]}$ d'une telle couche s'appellent des <b>cartes d'activation</b> ou <i>feature maps</i>.</p>
             </div>
 
             <div class="box box-ex">
@@ -717,7 +921,7 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Couche de pooling</p>
-              <p>Agrégation <b>locale</b> : chaque région de la carte $\boldsymbol h^{[j-1]}$ est résumée par une seule statistique : <b>max</b> (le plus courant), <b>moyenne</b>, somme, sous-échantillonnage aléatoire, norme $L_2$…</p>
+              <p>Agrégation <b>locale</b> : chaque région de la carte $\mathbf h^{[j-1]}$ est résumée par une seule statistique : <b>max</b> (le plus courant), <b>moyenne</b>, somme, sous-échantillonnage aléatoire, norme $L_2$…</p>
               <div class="formula">$$h^{[j]}_{a,b} = \max_{(k,l)\in \mathcal R_{a,b}} h^{[j-1]}_{k,l} \qquad\text{ou}\qquad h^{[j]}_{a,b} = \frac{1}{|\mathcal R_{a,b}|}\sum_{(k,l)\in\mathcal R_{a,b}} h^{[j-1]}_{k,l}$$</div>
               <p class="sense"><b>Sens :</b> deux effets : <b>réduire</b> la taille de la représentation, et <b>augmenter l'invariance</b> aux petites translations. Aucun paramètre à apprendre.</p>
             </div>
@@ -748,7 +952,7 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Canaux (channels)</p>
               <p>Axe supplémentaire du tenseur, destiné à garder plusieurs <b>types</b> de features :</p>
-              <div class="formula">$$\boldsymbol X \in \mathbb R^{\text{examples}\,\times\,\text{channels}\,\times\,\text{height}\,\times\,\text{width}}$$</div>
+              <div class="formula">$$\mathbf X \in \mathbb R^{\text{examples}\,\times\,\text{channels}\,\times\,\text{height}\,\times\,\text{width}}$$</div>
               <p class="sense"><b>Sens :</b> en entrée, 3 canaux (Rouge-Vert-Bleu). Dans une couche cachée, <b>autant de canaux que de noyaux appris</b> dans cette couche : chaque noyau produit sa propre carte d'activation.</p>
             </div>
           </article>
@@ -784,7 +988,7 @@ window.MathJax = {
               <p class="box-label">Théorème (empirique) · ResNet (2015) et les résidus</p>
               <p><b>Constat</b> : à structure identique, un réseau à 56 couches fait <b>pire qu'un réseau à 20 couches : en erreur d'entraînement comme en erreur de test</b> (ce n'est donc pas du surapprentissage, mais un problème d'optimisation).</p>
               <p><b>Hypothèse</b> : chaque bloc convolutif est relativement proche de l'identité. <b>Solution</b> : n'apprendre que la différence (le <b>résidu</b>) via une <b>connexion de raccourci</b> (shortcut) :</p>
-              <div class="formula">$$\boldsymbol h^{[j]}-\boldsymbol h^{[j-1]} = f\big(\boldsymbol h^{[j-1]};\boldsymbol W^{[j]}\big) \qquad\Longleftrightarrow\qquad \boldsymbol h^{[j]} = \Big(f\big(\,\cdot\,;\boldsymbol W^{[j]}\big)+\mathrm{id}\Big)\boldsymbol h^{[j-1]}$$</div>
+              <div class="formula">$$\mathbf h^{[j]}-\mathbf h^{[j-1]} = f\big(\mathbf h^{[j-1]};\mathbf W^{[j]}\big) \qquad\Longleftrightarrow\qquad \mathbf h^{[j]} = \Big(f\big(\,\cdot\,;\mathbf W^{[j]}\big)+\mathrm{id}\Big)\mathbf h^{[j-1]}$$</div>
               <div class="resnetblock-scroll">
                 <div class="resnetblock">
                   <span class="resnetblock-skiplabel">raccourci (identité)</span>
@@ -867,8 +1071,8 @@ window.MathJax = {
             <div class="box box-ex">
               <p class="box-label">Exemples · Quatre solutions</p>
               <p><b>0. Agrandir le noyau</b> : efficace mais exige beaucoup plus de paramètres ($w\times h$).</p>
-              <p><b>0.1 Noyau de rang faible</b> : $\boldsymbol K := \boldsymbol{UV}$ avec $\boldsymbol K\in\mathbb R^{w\times h}$, $\boldsymbol U\in\mathbb R^{w\times k}$, $\boldsymbol V\in\mathbb R^{k\times h}$, $k\lt\min(w,h)$ : peu de paramètres, mais les noyaux obtenus paraissent peu naturels.</p>
-              <p><b>1. Noyau de Kronecker</b> : $\boldsymbol K := \boldsymbol U\otimes\boldsymbol V\otimes\boldsymbol W\cdots$, où $\boldsymbol A\otimes\begin{bmatrix}a&b\\c&d\end{bmatrix} := \begin{bmatrix}a\boldsymbol A & b\boldsymbol A\\ c\boldsymbol A & d\boldsymbol A\end{bmatrix}$ : structure multi-échelle, résultat nettement meilleur.</p>
+              <p><b>0.1 Noyau de rang faible</b> : $\mathbf K := \mathbf{UV}$ avec $\mathbf K\in\mathbb R^{w\times h}$, $\mathbf U\in\mathbb R^{w\times k}$, $\mathbf V\in\mathbb R^{k\times h}$, $k\lt\min(w,h)$ : peu de paramètres, mais les noyaux obtenus paraissent peu naturels.</p>
+              <p><b>1. Noyau de Kronecker</b> : $\mathbf K := \mathbf U\otimes\mathbf V\otimes\mathbf W\cdots$, où $\mathbf A\otimes\begin{bmatrix}a&b\\c&d\end{bmatrix} := \begin{bmatrix}a\mathbf A & b\mathbf A\\ c\mathbf A & d\mathbf A\end{bmatrix}$ : structure multi-échelle, résultat nettement meilleur.</p>
               <p><b>2. Convolution dilatée</b> (dilated / à trous) : on <b>écarte</b> les éléments du noyau d'un facteur de dilatation. En enchaînant des dilatations $1$, puis $2$, puis $4$… :</p>
               <p class="sense"><b>Sens :</b> croissance <b>exponentielle</b> du champ récepteur avec un nombre <b>linéaire</b> de paramètres : le meilleur rapport qualité/prix.</p>
             </div>
@@ -880,6 +1084,80 @@ window.MathJax = {
               <p><b>Valeurs standards</b> : convolution $5\times5$, stride $=1$, avec padding · pooling $2\times2$, stride $=2$, sans padding · non-linéarité ReLU · dropout entre 20 % et 50 % de probabilité d'annulation.</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-2">
+            <div class="qcm-head">
+              <h3>QCM de révision · CNN</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Pourquoi un MLP classique est-il mal adapté pour traiter directement une image en entrée (fiche 11) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-1"><span class="otext">Parce qu'un MLP ne peut pas utiliser la fonction ReLU.</span></label>
+              <div class="qcm-explain">Faux : ReLU s'utilise très bien dans un MLP (fiche 4) ; ce n'est pas la raison de l'inadaptation aux images.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-1"><span class="otext">Parce qu'un MLP ne peut traiter que des données catégorielles.</span></label>
+              <div class="qcm-explain">Faux : un MLP traite très bien des entrées numériques continues, comme des pixels.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-1"><span class="otext">Parce qu'en aplatissant l'image en un vecteur, une couche dense connectant tous les pixels à tous les neurones demande un nombre de poids énorme (ex. une image 1280×960 = 1 228 800 pixels), et ignore la structure spatiale locale de l'image.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'argument de la fiche 11 : le nombre de paramètres explose, et surtout, une couche dense ne tire aucun parti du fait que des pixels voisins sont corrélés, contrairement à une convolution.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-1"><span class="otext">Parce qu'un MLP ne peut pas être entraîné par descente de gradient.</span></label>
+              <div class="qcm-explain">Faux : un MLP s'entraîne exactement par descente de gradient et rétropropagation (fiches 5-6), comme n'importe quel réseau.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Quel principe permet à une couche de convolution de n'utiliser « qu'à peine quelques dizaines de poids » (fiche 12) au lieu d'une matrice pleine ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-2"><span class="otext">Chaque neurone de sortie a ses propres poids, complètement indépendants des autres.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse qui est vrai : c'est justement le <b>partage</b> des poids qui réduit leur nombre, pas leur indépendance.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-2"><span class="otext">Deux contraintes combinées : chaque sortie ne dépend que d'une région <b>locale</b> de l'entrée (pas de tout le signal), et le <b>même</b> filtre (les mêmes poids) est appliqué à toutes les positions de l'image.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la construction de la fiche 12 : localité (élimine les poids vers les éléments distants) + partage de poids entre régions (un seul filtre réutilisé partout) réduisent une matrice de millions de poids à quelques dizaines.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-2"><span class="otext">La convolution n'utilise aucun biais.</span></label>
+              <div class="qcm-explain">Faux : sans rapport ; une couche convolutive a bien des biais, comme une couche dense.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-2"><span class="otext">La convolution ne fonctionne qu'en niveaux de gris (un seul canal).</span></label>
+              <div class="qcm-explain">Faux : la convolution se généralise naturellement à plusieurs canaux (fiche 15), c'est même la norme pour des images couleur (3 canaux RGB).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quel est le rôle principal d'une couche de pooling (fiche 14) dans un CNN ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-3"><span class="otext">Réduire la résolution spatiale des cartes de caractéristiques, ce qui diminue le coût de calcul des couches suivantes et augmente le champ récepteur effectif.</span></label>
+              <div class="qcm-explain">Correct : c'est le rôle standard du pooling (fiche 14), typiquement $2\times2$ avec stride $2$ (valeur standard de fiche 19) : sous-échantillonner tout en conservant l'information la plus saillante (max-pooling) ou moyenne (average-pooling).</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-3"><span class="otext">Ajouter des paramètres entraînables supplémentaires au réseau.</span></label>
+              <div class="qcm-explain">Faux : une couche de pooling standard (max ou average) n'a <b>aucun</b> paramètre entraînable, contrairement à une convolution.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-3"><span class="otext">Remplacer entièrement le besoin d'utiliser des couches de convolution.</span></label>
+              <div class="qcm-explain">Faux : le pooling complète les couches de convolution, il ne les remplace pas ; l'architecture typique alterne convolution+ReLU puis pooling (fiche 16).</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-3"><span class="otext">Appliquer la fonction d'activation ReLU.</span></label>
+              <div class="qcm-explain">Faux : ReLU est une couche/fonction distincte (fiche 4), appliquée séparément, généralement juste après la convolution et avant le pooling.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Sur quoi le <b>stride</b> (pas) d'une convolution a-t-il un effet direct (fiche 15) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-4"><span class="otext">Sur le nombre de canaux de sortie uniquement.</span></label>
+              <div class="qcm-explain">Faux : le nombre de canaux de sortie est fixé par le nombre de filtres appliqués, pas par le stride (fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-4"><span class="otext">Sur le choix de la fonction d'activation.</span></label>
+              <div class="qcm-explain">Faux : ces deux notions sont indépendantes : le stride est un paramètre géométrique de la convolution, l'activation est appliquée séparément.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-4"><span class="otext">Sur la taille spatiale (hauteur/largeur) de la carte de sortie : un stride plus grand fait « sauter » le filtre de plusieurs pixels à la fois, ce qui sous-échantillonne davantage.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le rôle du stride présenté en fiche 15 : avec un stride de 1 (valeur standard, fiche 19), le filtre glisse d'un pixel à la fois ; un stride plus grand réduit la résolution de sortie, un peu comme le pooling.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-4"><span class="otext">Sur le nombre total de paramètres du filtre lui-même.</span></label>
+              <div class="qcm-explain">Faux : le nombre de paramètres d'un filtre dépend de sa taille (ex. $5\times5$) et du nombre de canaux d'entrée/sortie, pas du stride (fiche 15).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi une architecture comme ResNet introduit-elle des connexions résiduelles (skip connections), fiche 16 ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-5"><span class="otext">Pour réduire le nombre total de couches du réseau.</span></label>
+              <div class="qcm-explain">Faux : ResNet est au contraire connu pour permettre des réseaux <b>très profonds</b> (plusieurs dizaines/centaines de couches), pas pour en réduire le nombre.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-5"><span class="otext">Pour créer un chemin direct qui permet au gradient de se propager plus facilement à travers de très nombreuses couches, atténuant le problème du gradient qui s'évanouit dans les réseaux très profonds.</span></label>
+              <div class="qcm-explain">Correct : c'est la motivation centrale des connexions résiduelles (fiche 16) : en ajoutant l'entrée d'un bloc directement à sa sortie ($\mathbf y = f(\mathbf x) + \mathbf x$), le gradient dispose d'un raccourci pour se propager, même si $f$ apprend une transformation proche de zéro.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-5"><span class="otext">Pour remplacer entièrement les couches de convolution par des couches denses.</span></label>
+              <div class="qcm-explain">Faux : ResNet reste une architecture convolutive classique ; les skip connections s'ajoutent par-dessus, elles ne remplacent pas les convolutions.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-5"><span class="otext">Pour supprimer le besoin de pooling.</span></label>
+              <div class="qcm-explain">Faux : les architectures ResNet conservent généralement des couches de pooling ; les deux idées (skip connections et pooling) sont indépendantes.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -916,10 +1194,10 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Formalisation &amp; partage des fonctions</p>
-              <p>Séquence d'entrée $\boldsymbol x_1,\dots,\boldsymbol x_T$, <b>état caché</b> $\boldsymbol h_t$ (avec $\boldsymbol h_0=\boldsymbol 0$), prédiction $\hat{\boldsymbol z}_t$ :</p>
-              <div class="formula">$$\boldsymbol h_t \leftarrow f_t(\boldsymbol h_{t-1},\boldsymbol x_t), \qquad \hat{\boldsymbol z}_t \leftarrow g_t(\boldsymbol h_t), \qquad t=1,\dots,T$$</div>
+              <p>Séquence d'entrée $\mathbf x_1,\dots,\mathbf x_T$, <b>état caché</b> $\mathbf h_t$ (avec $\mathbf h_0=\mathbf 0$), prédiction $\hat{\mathbf z}_t$ :</p>
+              <div class="formula">$$\mathbf h_t \leftarrow f_t(\mathbf h_{t-1},\mathbf x_t), \qquad \hat{\mathbf z}_t \leftarrow g_t(\mathbf h_t), \qquad t=1,\dots,T$$</div>
               <p>Apprendre séparément $f_1,\dots,f_T,g_1,\dots,g_T$ ? Beaucoup trop de fonctions : donc beaucoup trop de paramètres, et un $T$ variable serait ingérable. <b>Idée : partager les fonctions dans le temps</b>, $f_t=f$ et $g_t=g$ pour tout $t$ :</p>
-              <div class="formula">$$\boldsymbol h_t \leftarrow \underbrace{\sigma\big(\boldsymbol W_{hh}\boldsymbol h_{t-1}+\boldsymbol b_{hh}+\boldsymbol W_{xh}\boldsymbol x_t+\boldsymbol b_{xh}\big)}_{f(\boldsymbol h_{t-1},\boldsymbol x_t)}, \qquad \hat{\boldsymbol z}_t \leftarrow \underbrace{\sigma\big(\boldsymbol W_{hy}\boldsymbol h_t+\boldsymbol b_{hy}\big)}_{g(\boldsymbol h_t)}$$</div>
+              <div class="formula">$$\mathbf h_t \leftarrow \underbrace{\sigma\big(\mathbf W_{hh}\mathbf h_{t-1}+\mathbf b_{hh}+\mathbf W_{xh}\mathbf x_t+\mathbf b_{xh}\big)}_{f(\mathbf h_{t-1},\mathbf x_t)}, \qquad \hat{\mathbf z}_t \leftarrow \underbrace{\sigma\big(\mathbf W_{hy}\mathbf h_t+\mathbf b_{hy}\big)}_{g(\mathbf h_t)}$$</div>
               <p class="sense"><b>Sens :</b> exactement l'analogue temporel du <b>partage de poids</b> des CNN dans l'espace : un seul jeu de paramètres, réutilisable pour toute longueur de séquence.</p>
             </div>
           </article>
@@ -964,8 +1242,8 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · RNN vanille</p>
-              <div class="formula">$$\boldsymbol h^{(t)} = \tanh\big(\boldsymbol W_{xh}\boldsymbol x^{(t)} + \boldsymbol b_{xh} + \boldsymbol W_{hh}\boldsymbol h^{(t-1)} + \boldsymbol b_{hh}\big), \qquad \boldsymbol h^{(0)}=\boldsymbol 0$$</div>
-              <p class="sense"><b>Sens :</b> les <b>mêmes</b> matrices $\boldsymbol W_{xh}$ (entrée → état) et $\boldsymbol W_{hh}$ (état → état) sont réutilisées à <b>chaque</b> pas de temps. Vue « repliée » (folded) : une simple boucle $\boldsymbol h^{(t-1)}\to\tanh\to\boldsymbol h^{(t)}$ avec $\boldsymbol x^{(t)}$ en entrée.</p>
+              <div class="formula">$$\mathbf h^{(t)} = \tanh\big(\mathbf W_{xh}\mathbf x^{(t)} + \mathbf b_{xh} + \mathbf W_{hh}\mathbf h^{(t-1)} + \mathbf b_{hh}\big), \qquad \mathbf h^{(0)}=\mathbf 0$$</div>
+              <p class="sense"><b>Sens :</b> les <b>mêmes</b> matrices $\mathbf W_{xh}$ (entrée → état) et $\mathbf W_{hh}$ (état → état) sont réutilisées à <b>chaque</b> pas de temps. Vue « repliée » (folded) : une simple boucle $\mathbf h^{(t-1)}\to\tanh\to\mathbf h^{(t)}$ avec $\mathbf x^{(t)}$ en entrée.</p>
             </div>
           </article>
 
@@ -989,7 +1267,7 @@ window.MathJax = {
 
           <article class="topic" id="s23">
             <div class="tophead"><span class="num">23</span><h2>LSTM (Long Short-Term Memory)</h2></div>
-            <p>Hochreiter &amp; Schmidhuber (1997), proposé précisément pour traiter le problème du gradient évanescent. Idée : ajouter un <b>vecteur mémoire</b> $\boldsymbol c_t$ à côté de l'état caché $\boldsymbol h_t$, et contrôler ce qui y entre/sort par des <b>portes</b>.</p>
+            <p>Hochreiter &amp; Schmidhuber (1997), proposé précisément pour traiter le problème du gradient évanescent. Idée : ajouter un <b>vecteur mémoire</b> $\mathbf c_t$ à côté de l'état caché $\mathbf h_t$, et contrôler ce qui y entre/sort par des <b>portes</b>.</p>
 
             <div class="gatesmini">
               <div class="gatesmini-row">
@@ -1004,25 +1282,25 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Les trois portes + le candidat</p>
               <div class="formula">$$\begin{aligned}
-\text{oubli (forget)} &: \boldsymbol f_t = \sigma\big(\boldsymbol W_{if}\boldsymbol x_t+\boldsymbol W_{hf}\boldsymbol h_{t-1}+\boldsymbol b_f\big)\in[0,1]\\
-\text{entrée (input)} &: \boldsymbol i_t = \sigma\big(\boldsymbol W_{ii}\boldsymbol x_t+\boldsymbol W_{hi}\boldsymbol h_{t-1}+\boldsymbol b_i\big)\in[0,1]\\
-\text{candidat} &: \tilde{\boldsymbol c}_t = \tanh\big(\boldsymbol W_{ig}\boldsymbol x_t+\boldsymbol W_{hg}\boldsymbol h_{t-1}+\boldsymbol b_g\big)\in[-1,1]\\
-\text{sortie (output)} &: \boldsymbol o_t = \sigma\big(\boldsymbol W_{io}\boldsymbol x_t+\boldsymbol W_{ho}\boldsymbol h_{t-1}+\boldsymbol b_o\big)\in[0,1]
+\text{oubli (forget)} &: \mathbf f_t = \sigma\big(\mathbf W_{if}\mathbf x_t+\mathbf W_{hf}\mathbf h_{t-1}+\mathbf b_f\big)\in[0,1]\\
+\text{entrée (input)} &: \mathbf i_t = \sigma\big(\mathbf W_{ii}\mathbf x_t+\mathbf W_{hi}\mathbf h_{t-1}+\mathbf b_i\big)\in[0,1]\\
+\text{candidat} &: \tilde{\mathbf c}_t = \tanh\big(\mathbf W_{ig}\mathbf x_t+\mathbf W_{hg}\mathbf h_{t-1}+\mathbf b_g\big)\in[-1,1]\\
+\text{sortie (output)} &: \mathbf o_t = \sigma\big(\mathbf W_{io}\mathbf x_t+\mathbf W_{ho}\mathbf h_{t-1}+\mathbf b_o\big)\in[0,1]
 \end{aligned}$$</div>
               <p class="sense"><b>Sens :</b> les portes sont des <b>sigmoïdes</b> à valeurs dans $[0,1]$ : ce sont des « robinets » appris. Le candidat, lui, est un $\tanh$ à valeurs dans $[-1,1]$ : c'est du <b>contenu</b>, pas un robinet.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Mise à jour de la mémoire et de l'état</p>
-              <div class="formula">$$\boldsymbol c_t = \boldsymbol f_t\odot\boldsymbol c_{t-1} + \boldsymbol i_t\odot\tilde{\boldsymbol c}_t \qquad\qquad \boldsymbol h_t = \boldsymbol o_t\odot\tanh(\boldsymbol c_t)$$</div>
-              <p>« Oublier $\boldsymbol c_{t-1}$ si nécessaire, ajouter $\tilde{\boldsymbol c}_t$ si pertinent. » L'état caché $\boldsymbol h$ est une version <b>filtrée</b> de la mémoire $\boldsymbol c$ par la porte de sortie.</p>
-              <p class="sense"><b>Sens :</b> la mémoire se propage de façon quasi-<b>additive</b>, avec un produit terme à terme ($\odot$) et non un produit <b>matriciel</b> répété : si $\boldsymbol f_t\approx\boldsymbol 1$, le gradient traverse le temps presque sans atténuation : c'est là que le <i>vanishing gradient</i> est atténué.</p>
+              <div class="formula">$$\mathbf c_t = \mathbf f_t\odot\mathbf c_{t-1} + \mathbf i_t\odot\tilde{\mathbf c}_t \qquad\qquad \mathbf h_t = \mathbf o_t\odot\tanh(\mathbf c_t)$$</div>
+              <p>« Oublier $\mathbf c_{t-1}$ si nécessaire, ajouter $\tilde{\mathbf c}_t$ si pertinent. » L'état caché $\mathbf h$ est une version <b>filtrée</b> de la mémoire $\mathbf c$ par la porte de sortie.</p>
+              <p class="sense"><b>Sens :</b> la mémoire se propage de façon quasi-<b>additive</b>, avec un produit terme à terme ($\odot$) et non un produit <b>matriciel</b> répété : si $\mathbf f_t\approx\mathbf 1$, le gradient traverse le temps presque sans atténuation : c'est là que le <i>vanishing gradient</i> est atténué.</p>
             </div>
           </article>
 
           <article class="topic" id="s24">
             <div class="tophead"><span class="num">24</span><h2>GRU (Gated Recurrent Unit)</h2></div>
-            <p>Variante <b>simplifiée</b> du LSTM : une seule ligne d'état $\boldsymbol h_t$, deux portes au lieu de trois.</p>
+            <p>Variante <b>simplifiée</b> du LSTM : une seule ligne d'état $\mathbf h_t$, deux portes au lieu de trois.</p>
 
             <div class="gatesmini" style="max-width:260px;">
               <div class="gatesmini-row">
@@ -1036,18 +1314,18 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Portes et mise à jour du GRU</p>
               <div class="formula">$$\begin{aligned}
-\text{reset} &: \boldsymbol r_t = \sigma\big(\boldsymbol W_{ir}\boldsymbol x_t+\boldsymbol W_{hr}\boldsymbol h_{t-1}+\boldsymbol b_r\big)\in[0,1]\\
-\text{candidat} &: \tilde{\boldsymbol h}_t = \tanh\big(\boldsymbol W_{in}\boldsymbol x_t+\boldsymbol b_{in} + \boldsymbol r_t\odot(\boldsymbol W_{hn}\boldsymbol h_{t-1}+\boldsymbol b_{hn})\big)\\
-\text{update} &: \boldsymbol z_t = \sigma\big(\boldsymbol W_{iz}\boldsymbol x_t+\boldsymbol W_{hz}\boldsymbol h_{t-1}+\boldsymbol b_z\big)\\
-\text{sortie} &: \boldsymbol h_t = (\boldsymbol 1-\boldsymbol z_t)\odot\boldsymbol h_{t-1} + \boldsymbol z_t\odot\tilde{\boldsymbol h}_t
+\text{reset} &: \mathbf r_t = \sigma\big(\mathbf W_{ir}\mathbf x_t+\mathbf W_{hr}\mathbf h_{t-1}+\mathbf b_r\big)\in[0,1]\\
+\text{candidat} &: \tilde{\mathbf h}_t = \tanh\big(\mathbf W_{in}\mathbf x_t+\mathbf b_{in} + \mathbf r_t\odot(\mathbf W_{hn}\mathbf h_{t-1}+\mathbf b_{hn})\big)\\
+\text{update} &: \mathbf z_t = \sigma\big(\mathbf W_{iz}\mathbf x_t+\mathbf W_{hz}\mathbf h_{t-1}+\mathbf b_z\big)\\
+\text{sortie} &: \mathbf h_t = (\mathbf 1-\mathbf z_t)\odot\mathbf h_{t-1} + \mathbf z_t\odot\tilde{\mathbf h}_t
 \end{aligned}$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol r_t$ décide <b>quelle part du passé oublier</b> pour construire le candidat ; $\boldsymbol z_t$ arbitre entre <b>garder</b> l'ancien état et <b>adopter</b> le candidat. $\boldsymbol h_t$ est une <b>combinaison convexe</b> des deux (les coefficients somment à 1) : l'état ne peut pas exploser en amplitude.</p>
+              <p class="sense"><b>Sens :</b> $\mathbf r_t$ décide <b>quelle part du passé oublier</b> pour construire le candidat ; $\mathbf z_t$ arbitre entre <b>garder</b> l'ancien état et <b>adopter</b> le candidat. $\mathbf h_t$ est une <b>combinaison convexe</b> des deux (les coefficients somment à 1) : l'état ne peut pas exploser en amplitude.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Remarque · GRU vs LSTM</p>
-              <p>• Les portes <b>forget</b> et <b>input</b> du LSTM sont <b>fusionnées</b> en une unique porte <b>update</b> $\boldsymbol z_t$.<br>
-              • La <b>cellule mémoire</b> $\boldsymbol c$ et l'<b>état caché</b> $\boldsymbol h$ sont fusionnés en un seul état caché.<br>
+              <p>• Les portes <b>forget</b> et <b>input</b> du LSTM sont <b>fusionnées</b> en une unique porte <b>update</b> $\mathbf z_t$.<br>
+              • La <b>cellule mémoire</b> $\mathbf c$ et l'<b>état caché</b> $\mathbf h$ sont fusionnés en un seul état caché.<br>
               • ⟹ <b>moins de paramètres</b>, en conservant l'essentiel des caractéristiques (et donc des propriétés) du LSTM.</p>
               <p class="sense"><b>Sens :</b> Rehmer &amp; Kroll (2020) argumentent que c'est en fait l'<b>explosion</b> du gradient qui est le problème le plus gênant, et que le GRU s'y comporte mieux. En pratique : performances comparables, GRU plus léger et plus rapide.</p>
             </div>
@@ -1058,40 +1336,40 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · RNN bidirectionnel</p>
-              <p>Deux RNN <b>indépendants</b> parcourent la séquence en sens inverse l'un de l'autre : $\overrightarrow{\boldsymbol h}^{(t)}$ de gauche à droite, $\overleftarrow{\boldsymbol h}^{(t)}$ de droite à gauche. La sortie combine les deux états :</p>
-              <div class="formula">$$\boldsymbol h^{(t)} = \big[\,\overrightarrow{\boldsymbol h}^{(t)}\ ;\ \overleftarrow{\boldsymbol h}^{(t)}\,\big]$$</div>
+              <p>Deux RNN <b>indépendants</b> parcourent la séquence en sens inverse l'un de l'autre : $\overrightarrow{\mathbf h}^{(t)}$ de gauche à droite, $\overleftarrow{\mathbf h}^{(t)}$ de droite à gauche. La sortie combine les deux états :</p>
+              <div class="formula">$$\mathbf h^{(t)} = \big[\,\overrightarrow{\mathbf h}^{(t)}\ ;\ \overleftarrow{\mathbf h}^{(t)}\,\big]$$</div>
               <p class="sense"><b>Sens :</b> indispensable quand l'information pertinente se trouve <b>avant ET après</b> la position courante (mot manquant, étiquetage). <b>Impossible</b> en génération séquentielle : on ne peut pas lire un futur qui n'est pas encore écrit.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · RNN empilés (stacked)</p>
-              <p>La séquence d'états $\boldsymbol h^{[1](1)},\dots,\boldsymbol h^{[1](T)}$ produite par la 1<sup>re</sup> couche récurrente sert de <b>séquence d'entrée</b> à une 2<sup>e</sup> couche récurrente, et ainsi de suite.</p>
+              <p>La séquence d'états $\mathbf h^{[1](1)},\dots,\mathbf h^{[1](T)}$ produite par la 1<sup>re</sup> couche récurrente sert de <b>séquence d'entrée</b> à une 2<sup>e</sup> couche récurrente, et ainsi de suite.</p>
               <p class="sense"><b>Sens :</b> même logique que la profondeur dans un MLP ou un CNN : chaque couche construit une représentation temporelle <b>plus abstraite</b> que la précédente.</p>
             </div>
           </article>
 
           <article class="topic" id="s26">
             <div class="tophead"><span class="num">26</span><h2>Gradient d'un RNN : RTRL vs BPTT</h2></div>
-            <p>Perte totale $J(\boldsymbol w)=\sum_{t=1}^T\ell(\boldsymbol z_t,\hat{\boldsymbol z}_t)=\sum_{t=1}^T\ell(\hat{\boldsymbol z}_t)$. Comme $\boldsymbol w$ est partagé entre tous les pas de temps, calculer $\nabla J(\boldsymbol w)$ demande une méthode dédiée. Deux existent.</p>
+            <p>Perte totale $J(\mathbf w)=\sum_{t=1}^T\ell(\mathbf z_t,\hat{\mathbf z}_t)=\sum_{t=1}^T\ell(\hat{\mathbf z}_t)$. Comme $\mathbf w$ est partagé entre tous les pas de temps, calculer $\nabla J(\mathbf w)$ demande une méthode dédiée. Deux existent.</p>
 
             <div class="box box-def">
               <p class="box-label">Définition · RTRL (Real-Time Recurrent Learning)</p>
-              <p>Récurrence <b>avant</b> sur la jacobienne $\partial\boldsymbol h_t/\partial\boldsymbol w$ : $\boldsymbol w$ influence $\boldsymbol h_t$ par deux chemins : directement via $f(\cdot,\cdot;\boldsymbol w)$, et indirectement via $\boldsymbol h_{t-1}$.</p>
-              <div class="formula">$$\underbrace{\frac{\partial\boldsymbol h_t}{\partial\boldsymbol w}}_{=:\,\boldsymbol C_t} = \underbrace{\nabla_{\boldsymbol w}f(\boldsymbol h_{t-1},\boldsymbol x_t;\boldsymbol w)}_{=:\,\boldsymbol A_{t-1}} + \underbrace{\frac{\partial\boldsymbol h_{t-1}}{\partial\boldsymbol w}}_{=\,\boldsymbol C_{t-1}}\underbrace{\nabla_{\boldsymbol h}f(\boldsymbol h_{t-1},\boldsymbol x_t;\boldsymbol w)}_{=:\,\boldsymbol B_{t-1}}$$</div>
-              <p class="sense"><b>Sens :</b> tout se calcule <b>dans le sens du temps</b> ⟹ mises à jour <b>en ligne</b> possibles. Mais $\boldsymbol C_{t-1}\in\mathbb R^{d_w\times d_h}$ et $\boldsymbol B_{t-1}\in\mathbb R^{d_h\times d_h}$ : le produit coûte $O(d_w d_h^2)$ par pas de temps, avec $d_w\gg d_h$ : rédhibitoire.</p>
+              <p>Récurrence <b>avant</b> sur la jacobienne $\partial\mathbf h_t/\partial\mathbf w$ : $\mathbf w$ influence $\mathbf h_t$ par deux chemins : directement via $f(\cdot,\cdot;\mathbf w)$, et indirectement via $\mathbf h_{t-1}$.</p>
+              <div class="formula">$$\underbrace{\frac{\partial\mathbf h_t}{\partial\mathbf w}}_{=:\,\mathbf C_t} = \underbrace{\nabla_{\mathbf w}f(\mathbf h_{t-1},\mathbf x_t;\mathbf w)}_{=:\,\mathbf A_{t-1}} + \underbrace{\frac{\partial\mathbf h_{t-1}}{\partial\mathbf w}}_{=\,\mathbf C_{t-1}}\underbrace{\nabla_{\mathbf h}f(\mathbf h_{t-1},\mathbf x_t;\mathbf w)}_{=:\,\mathbf B_{t-1}}$$</div>
+              <p class="sense"><b>Sens :</b> tout se calcule <b>dans le sens du temps</b> ⟹ mises à jour <b>en ligne</b> possibles. Mais $\mathbf C_{t-1}\in\mathbb R^{d_w\times d_h}$ et $\mathbf B_{t-1}\in\mathbb R^{d_h\times d_h}$ : le produit coûte $O(d_w d_h^2)$ par pas de temps, avec $d_w\gg d_h$ : rédhibitoire.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · BPTT (Back Propagation Through Time)</p>
-              <p>On décompose l'impact de $\boldsymbol w$ selon les chemins $\boldsymbol w\Rightarrow\boldsymbol h_t$, et on propage $\boldsymbol d_t := \partial L/\partial\boldsymbol h_t$ par une récurrence <b>arrière</b> ($\boldsymbol d_{T+1}=\boldsymbol 0$) :</p>
-              <div class="formula">$$\boldsymbol d_t \leftarrow \underbrace{\nabla_{\boldsymbol h}g(\boldsymbol h_t)\,\nabla_{\hat{\boldsymbol z}}\ell(g(\boldsymbol h_t))}_{\boldsymbol h_t\Rightarrow L} + \underbrace{\nabla_{\boldsymbol h}f(\boldsymbol h_t,\boldsymbol x_{t+1};\boldsymbol w)\,\boldsymbol d_{t+1}}_{\boldsymbol h_t\Rightarrow\boldsymbol h_{t+1}}, \qquad \frac{\partial J}{\partial\boldsymbol w}=\sum_{t=1}^T\nabla_{\boldsymbol w}f(\boldsymbol h_{t-1},\boldsymbol x_t;\boldsymbol w)\,\boldsymbol d_t$$</div>
+              <p>On décompose l'impact de $\mathbf w$ selon les chemins $\mathbf w\Rightarrow\mathbf h_t$, et on propage $\mathbf d_t := \partial L/\partial\mathbf h_t$ par une récurrence <b>arrière</b> ($\mathbf d_{T+1}=\mathbf 0$) :</p>
+              <div class="formula">$$\mathbf d_t \leftarrow \underbrace{\nabla_{\mathbf h}g(\mathbf h_t)\,\nabla_{\hat{\mathbf z}}\ell(g(\mathbf h_t))}_{\mathbf h_t\Rightarrow L} + \underbrace{\nabla_{\mathbf h}f(\mathbf h_t,\mathbf x_{t+1};\mathbf w)\,\mathbf d_{t+1}}_{\mathbf h_t\Rightarrow\mathbf h_{t+1}}, \qquad \frac{\partial J}{\partial\mathbf w}=\sum_{t=1}^T\nabla_{\mathbf w}f(\mathbf h_{t-1},\mathbf x_t;\mathbf w)\,\mathbf d_t$$</div>
               <p class="sense"><b>Sens :</b> uniquement des produits <b>matrice/vecteur</b> ⟹ complexité $T\times O(d_w d_h)$, réduite à $T\times O(d_h^2+d_x d_h+d_h)$ pour le modèle affine. Le gros facteur $d_w$ a disparu.</p>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Théorème · Équivalence RTRL ≡ BPTT</p>
-              <p>En substituant $\boldsymbol A_{t-1}=\boldsymbol C_t-\boldsymbol C_{t-1}\boldsymbol B_{t-1}$ dans $\sum_t \boldsymbol A_{t-1}\boldsymbol d_t$, la somme <b>télescope</b> (car $\boldsymbol d_{T+1}=\boldsymbol 0$ et $\boldsymbol C_0=\boldsymbol 0$) :</p>
-              <div class="formula">$$\sum_{t=1}^T \boldsymbol A_{t-1}\boldsymbol d_t = \sum_{t=1}^T \boldsymbol C_t\,\boldsymbol e_t = \nabla J(\boldsymbol w), \qquad \boldsymbol e_t:=\nabla g(\boldsymbol h_t)\nabla\ell(\hat{\boldsymbol z}_t)$$</div>
+              <p>En substituant $\mathbf A_{t-1}=\mathbf C_t-\mathbf C_{t-1}\mathbf B_{t-1}$ dans $\sum_t \mathbf A_{t-1}\mathbf d_t$, la somme <b>télescope</b> (car $\mathbf d_{T+1}=\mathbf 0$ et $\mathbf C_0=\mathbf 0$) :</p>
+              <div class="formula">$$\sum_{t=1}^T \mathbf A_{t-1}\mathbf d_t = \sum_{t=1}^T \mathbf C_t\,\mathbf e_t = \nabla J(\mathbf w), \qquad \mathbf e_t:=\nabla g(\mathbf h_t)\nabla\ell(\hat{\mathbf z}_t)$$</div>
               <p class="sense"><b>Sens :</b> les deux méthodes donnent <b>exactement</b> le même gradient. BPTT est celle qu'implémentent tous les frameworks (<code>autograd</code>) car elle est bien moins chère : au prix de devoir stocker toute la séquence d'états avant de rétropropager.</p>
             </div>
           </article>
@@ -1101,9 +1379,9 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Exemples · Trois tâches, trois architectures</p>
-              <p><b>1. Prévision de série temporelle</b> : entrée $(\boldsymbol x_1,\dots,\boldsymbol x_t)$, cible $(\boldsymbol x_{t+1},\dots,\boldsymbol x_{t+k})$ : on lit la séquence, puis on génère de façon <b>autorégressive</b> en réinjectant chaque prédiction $\hat{\boldsymbol x}_{t+i}$ comme entrée suivante (many-to-many décalé).</p>
-              <p><b>2. Correction orthographique / grammaticale</b> : <b>classification binaire</b> d'une phrase (correcte / fautive). Architecture : Input → RNN → couche linéaire → Output, en utilisant le <b>dernier</b> état caché $\boldsymbol h_t$ qui a « scanné » toute la phrase. C'est du <b>many-to-one</b>.</p>
-              <p><b>3. Prédiction d'un mot manquant</b> : l'information pertinente est répartie <b>avant et après</b> le blanc ; on a donc <b>deux</b> séquences de mots et il faut un RNN <b>bidirectionnel</b> : $\boldsymbol h_k$ combine $\overrightarrow{\boldsymbol h}_{k-1}$ et $\overleftarrow{\boldsymbol h}_{k+1}$ pour prédire $\hat y_k$.</p>
+              <p><b>1. Prévision de série temporelle</b> : entrée $(\mathbf x_1,\dots,\mathbf x_t)$, cible $(\mathbf x_{t+1},\dots,\mathbf x_{t+k})$ : on lit la séquence, puis on génère de façon <b>autorégressive</b> en réinjectant chaque prédiction $\hat{\mathbf x}_{t+i}$ comme entrée suivante (many-to-many décalé).</p>
+              <p><b>2. Correction orthographique / grammaticale</b> : <b>classification binaire</b> d'une phrase (correcte / fautive). Architecture : Input → RNN → couche linéaire → Output, en utilisant le <b>dernier</b> état caché $\mathbf h_t$ qui a « scanné » toute la phrase. C'est du <b>many-to-one</b>.</p>
+              <p><b>3. Prédiction d'un mot manquant</b> : l'information pertinente est répartie <b>avant et après</b> le blanc ; on a donc <b>deux</b> séquences de mots et il faut un RNN <b>bidirectionnel</b> : $\mathbf h_k$ combine $\overrightarrow{\mathbf h}_{k-1}$ et $\overleftarrow{\mathbf h}_{k+1}$ pour prédire $\hat y_k$.</p>
               <p class="sense"><b>Sens :</b> chaque mot est d'abord converti en <b>vecteur de réels</b> (embedding) : un RNN ne consomme pas des chaînes de caractères.</p>
             </div>
 
@@ -1114,6 +1392,80 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> ce n'est pas un problème pour les paramètres, mais c'en est un pour le <b>gradient</b>, qui est un produit de (très) nombreuses dérivées partielles : donc surtout pour les <b>RNN profonds</b>, où un sous-dépassement met le gradient à $0$ et un dépassement le met à $\pm\infty$.</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-3">
+            <div class="qcm-head">
+              <h3>QCM de révision · RNN</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Dans un RNN vanille, $\mathbf h^{(t)} = \tanh(\mathbf W_{xh}\mathbf x^{(t)} + \mathbf b_{xh} + \mathbf W_{hh}\mathbf h^{(t-1)} + \mathbf b_{hh})$. Que peut-on dire des matrices $\mathbf W_{xh}$ et $\mathbf W_{hh}$ au cours d'une séquence ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-1"><span class="otext">Une nouvelle paire de matrices est créée à chaque pas de temps.</span></label>
+              <div class="qcm-explain">Faux : cela ferait exploser le nombre de paramètres avec la longueur de la séquence, et empêcherait de traiter des séquences de longueur variable.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-1"><span class="otext">$\mathbf W_{hh}$ change à chaque pas mais $\mathbf W_{xh}$ reste fixe.</span></label>
+              <div class="qcm-explain">Faux : les deux matrices sont fixes au cours de la séquence (fiche 21), pas seulement l'une des deux.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-1"><span class="otext">Les <b>mêmes</b> matrices $\mathbf W_{xh}$ et $\mathbf W_{hh}$ sont réutilisées à <b>chaque</b> pas de temps : c'est le partage de paramètres qui permet au RNN de traiter des séquences de longueur arbitraire.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le sens de la fiche 21 : la vue « repliée » montre une seule boucle réutilisée, pas une chaîne de couches différentes.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-1"><span class="otext">Elles ne sont utilisées qu'au premier pas de temps.</span></label>
+              <div class="qcm-explain">Faux : elles interviennent à <b>chaque</b> pas de temps $t$, c'est ce qui définit la récurrence.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Pourquoi le $\tanh$ n'empêche-t-il pas complètement le problème du gradient qui s'évanouit ou explose (fiche 22) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-1b"><span class="otext">Parce que $\tanh$ n'est pas dérivable.</span></label>
+              <div class="qcm-explain">Faux : $\tanh$ est parfaitement dérivable partout, c'est même l'une des raisons de son usage historique dans les RNN.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-1b"><span class="otext">Le facteur $1-\tanh^2$ est toujours $\le 1$, donc structurellement contractant (favorise le vanishing) ; mais multiplié par le poids $a$, la dérivée $f'=a(1-\tanh^2)$ n'est pas bornée : l'explosion reste possible si $|a|$ est grand.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la proposition de la fiche 22 (Pascanu, Mikolov &amp; Bengio, 2013) : $1-\tanh^2\in(0,1]$ tend à contracter, mais le poids $a$ peut compenser et faire diverger le produit de dérivées.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-1b"><span class="otext">Parce que $\tanh$ n'est utilisée que dans les couches de sortie, jamais dans les couches récurrentes.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : $\tanh$ est utilisée précisément dans la mise à jour de l'état caché récurrent (fiche 21), pas en sortie.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-1b"><span class="otext">Parce que le problème du gradient qui explose ou s'évanouit ne concerne que les CNN.</span></label>
+              <div class="qcm-explain">Faux : c'est un problème caractéristique des réseaux <b>profonds dans le temps</b>, donc particulièrement aigu pour les RNN sur de longues séquences (fiche 22).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quelle est l'idée centrale du LSTM pour répondre au problème du gradient évanescent ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-3"><span class="otext">Ajouter un vecteur mémoire $\mathbf c_t$, séparé de l'état caché $\mathbf h_t$, dont le contenu est régulé par des portes (gates) qui contrôlent ce qui y entre, y reste, ou en sort.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'idée de Hochreiter &amp; Schmidhuber (1997) présentée en fiche 23 : la cellule mémoire $\mathbf c_t$, protégée par des portes, peut transporter l'information sur de longues distances sans s'atténuer aussi vite.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-3"><span class="otext">Remplacer $\tanh$ par ReLU dans toute la récurrence.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas le mécanisme du LSTM (fiche 23), qui introduit une architecture à portes, pas un simple changement de fonction d'activation.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-3"><span class="otext">Supprimer complètement la récurrence.</span></label>
+              <div class="qcm-explain">Faux : le LSTM reste un réseau récurrent ; il modifie <b>comment</b> l'information est transmise dans le temps, sans supprimer la récurrence elle-même.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-3"><span class="otext">Entraîner un réseau séparé pour chaque pas de temps.</span></label>
+              <div class="qcm-explain">Faux : comme le RNN vanille, le LSTM réutilise les mêmes paramètres à chaque pas de temps.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Qu'est-ce qui distingue principalement le GRU du LSTM ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-4"><span class="otext">Le GRU n'a aucune porte.</span></label>
+              <div class="qcm-explain">Faux : le GRU a bien des portes (fiche 24), simplement moins que le LSTM.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-4"><span class="otext">Le GRU n'est pas récurrent.</span></label>
+              <div class="qcm-explain">Faux : le GRU (Gated Recurrent Unit) est bien une architecture récurrente, au même titre que le RNN vanille et le LSTM.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-4"><span class="otext">Le GRU fusionne l'état caché et la cellule mémoire en un seul vecteur, et utilise moins de portes que le LSTM : une architecture plus légère, moins de paramètres, souvent des performances comparables.</span></label>
+              <div class="qcm-explain">Correct : c'est le compromis présenté en fiche 24 : le GRU simplifie l'architecture du LSTM (pas de cellule mémoire séparée) tout en gardant l'essentiel du mécanisme de portes.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-4"><span class="otext">Le GRU ne peut traiter que des séquences de longueur fixe.</span></label>
+              <div class="qcm-explain">Faux : comme tous les RNN de ce chapitre, le GRU traite des séquences de longueur variable.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Qu'apporte un RNN <b>bidirectionnel</b> par rapport à un RNN standard (fiche 25) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-5"><span class="otext">Il traite la séquence deux fois plus vite.</span></label>
+              <div class="qcm-explain">Faux : au contraire, il double le calcul (un passage avant + un passage arrière), donc il est plus coûteux, pas plus rapide.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-5"><span class="otext">Il combine un passage dans le sens direct et un passage dans le sens inverse de la séquence, pour que la représentation à chaque position dépende du contexte <b>avant ET après</b>, pas seulement du passé.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'apport de la fiche 25, l'analogue récurrent de ce que BERT fera plus tard avec l'attention (fiche 41) : utile pour la compréhension, mais incompatible avec la génération autorégressive (on ne peut pas voir le futur au moment de le générer).</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-5"><span class="otext">Il élimine complètement le problème du gradient qui s'évanouit.</span></label>
+              <div class="qcm-explain">Faux : la bidirectionnalité n'agit pas sur ce problème (fiche 22) ; elle change seulement quel contexte est visible, pas la dynamique du gradient dans le temps.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-5"><span class="otext">Il remplace la nécessité d'utiliser un LSTM ou un GRU.</span></label>
+              <div class="qcm-explain">Faux : la bidirectionnalité est une dimension orthogonale : on peut empiler des RNN vanille, LSTM ou GRU bidirectionnels (fiche 25), les deux idées se combinent.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -1134,28 +1486,28 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Encodeur, décodeur, objectif</p>
               <div class="flow">
-                <div class="fb accent">$\boldsymbol x$</div><div class="arrow">→</div>
+                <div class="fb accent">$\mathbf x$</div><div class="arrow">→</div>
                 <div class="fb">Encodeur $f$</div><div class="arrow">→</div>
-                <div class="fb accent">code $\boldsymbol z$</div><div class="arrow">→</div>
+                <div class="fb accent">code $\mathbf z$</div><div class="arrow">→</div>
                 <div class="fb">Décodeur $g$</div><div class="arrow">→</div>
-                <div class="fb accent">$\boldsymbol x'$</div>
+                <div class="fb accent">$\mathbf x'$</div>
               </div>
-              <div class="formula">$$\boldsymbol z=f(\boldsymbol x), \qquad \boldsymbol x'=g(\boldsymbol z)=g(f(\boldsymbol x)), \qquad \min_{f,g}\ \mathrm{Distance}\big(\boldsymbol x,\,g(f(\boldsymbol x))\big)$$</div>
-              <p class="sense"><b>Sens :</b> $\boldsymbol z$ est de dimension <b>réduite</b> : la reconstruction n'est pas triviale, car $\boldsymbol z$ ne peut pas contenir toute l'information de $\boldsymbol x$. Le goulot d'étranglement force le réseau à retenir ce qui compte. Usages : apprentissage de représentation sans étiquettes, pré-entraînement, débruitage, visualisation en faible dimension, génération.</p>
+              <div class="formula">$$\mathbf z=f(\mathbf x), \qquad \mathbf x'=g(\mathbf z)=g(f(\mathbf x)), \qquad \min_{f,g}\ \mathrm{Distance}\big(\mathbf x,\,g(f(\mathbf x))\big)$$</div>
+              <p class="sense"><b>Sens :</b> $\mathbf z$ est de dimension <b>réduite</b> : la reconstruction n'est pas triviale, car $\mathbf z$ ne peut pas contenir toute l'information de $\mathbf x$. Le goulot d'étranglement force le réseau à retenir ce qui compte. Usages : apprentissage de représentation sans étiquettes, pré-entraînement, débruitage, visualisation en faible dimension, génération.</p>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Théorème · L'AE linéaire coïncide avec l'ACP</p>
-              <p>Avec $f(\boldsymbol x)=\boldsymbol W_e\boldsymbol x+\boldsymbol b_e$, $g(\boldsymbol z)=\boldsymbol W_d\boldsymbol z+\boldsymbol b_d$ et une perte quadratique</p>
-              <div class="formula">$$\ell\big(\boldsymbol x,g(f(\boldsymbol x))\big)=\big\|\boldsymbol x-g(f(\boldsymbol x))\big\|_2^2 = \big\|\boldsymbol x-\boldsymbol W_d(\boldsymbol W_e\boldsymbol x+\boldsymbol b_e)-\boldsymbol b_d\big\|_2^2,$$</div>
-              <p>l'autoencodeur coïncide avec l'<b>analyse en composantes principales</b> lorsque $\boldsymbol b_e=\boldsymbol b_d=\boldsymbol 0$, $\boldsymbol W_d=\boldsymbol W_e^\top$ et $\boldsymbol W_e^\top\boldsymbol W_e=\boldsymbol I$ (colonnes orthonormées).</p>
+              <p>Avec $f(\mathbf x)=\mathbf W_e\mathbf x+\mathbf b_e$, $g(\mathbf z)=\mathbf W_d\mathbf z+\mathbf b_d$ et une perte quadratique</p>
+              <div class="formula">$$\ell\big(\mathbf x,g(f(\mathbf x))\big)=\big\|\mathbf x-g(f(\mathbf x))\big\|_2^2 = \big\|\mathbf x-\mathbf W_d(\mathbf W_e\mathbf x+\mathbf b_e)-\mathbf b_d\big\|_2^2,$$</div>
+              <p>l'autoencodeur coïncide avec l'<b>analyse en composantes principales</b> lorsque $\mathbf b_e=\mathbf b_d=\mathbf 0$, $\mathbf W_d=\mathbf W_e^\top$ et $\mathbf W_e^\top\mathbf W_e=\mathbf I$ (colonnes orthonormées).</p>
               <p class="sense"><b>Sens :</b> l'ACP ne peut ajuster qu'un <b>sous-espace affine</b> ; un AE <b>non linéaire</b> ajuste une <b>variété courbe</b> et suit donc bien mieux un nuage de points non linéaire.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Exemple · Autoencodeur débruiteur (denoising AE)</p>
-              <p>On remplace l'entrée $\boldsymbol x$ par une version <b>corrompue</b> $\tilde{\boldsymbol x}$ (bruit ajouté), mais la perte reste mesurée <b>par rapport à l'original propre</b> :</p>
-              <div class="formula">$$\ell\big(\boldsymbol x,\,g(f(\tilde{\boldsymbol x}))\big)$$</div>
+              <p>On remplace l'entrée $\mathbf x$ par une version <b>corrompue</b> $\tilde{\mathbf x}$ (bruit ajouté), mais la perte reste mesurée <b>par rapport à l'original propre</b> :</p>
+              <div class="formula">$$\ell\big(\mathbf x,\,g(f(\tilde{\mathbf x}))\big)$$</div>
               <p class="sense"><b>Sens :</b> l'identité n'est plus une solution : le réseau est obligé d'apprendre la <b>structure</b> des données au lieu de recopier son entrée.</p>
             </div>
           </article>
@@ -1166,14 +1518,14 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Décoder une image : convolution transposée</p>
               <p><b>Encodeur</b> : image ↦ code, donc <b>réduction</b> des dimensions (<i>downscaling</i>) : par convolution et pooling. <b>Décodeur</b> : code ↦ image, donc <b>augmentation</b> des dimensions (<i>upscaling</i>) : typiquement par <b>convolution transposée</b> (aussi appelée <i>déconvolution</i> ou convolution à pas fractionnaire).</p>
-              <div class="formula">$$\text{convolution}:\ \boldsymbol x\mapsto \boldsymbol M\boldsymbol x \qquad\Longrightarrow\qquad \text{convolution transposée}:\ \boldsymbol x\mapsto \boldsymbol M^\top\boldsymbol x$$</div>
-              <p class="sense"><b>Sens :</b> d'où le nom. $\boldsymbol M$ étant creuse et rectangulaire (grande entrée → petite sortie), $\boldsymbol M^\top$ va bien d'une petite entrée vers une grande sortie. Ce n'est <b>pas</b> l'inverse de la convolution, seulement sa transposée.</p>
+              <div class="formula">$$\text{convolution}:\ \mathbf x\mapsto \mathbf M\mathbf x \qquad\Longrightarrow\qquad \text{convolution transposée}:\ \mathbf x\mapsto \mathbf M^\top\mathbf x$$</div>
+              <p class="sense"><b>Sens :</b> d'où le nom. $\mathbf M$ étant creuse et rectangulaire (grande entrée → petite sortie), $\mathbf M^\top$ va bien d'une petite entrée vers une grande sortie. Ce n'est <b>pas</b> l'inverse de la convolution, seulement sa transposée.</p>
             </div>
 
             <div class="box box-warn">
               <p class="box-label">⚠ Deux façons naïves de générer : et pourquoi elles échouent</p>
-              <p><b>Méthode 1 · combinaison convexe dans l'espace des pixels</b> : $\boldsymbol x_{\text{new}}=\sum_i w_i\boldsymbol x_i$. Fonctionne très rarement : une <b>combinaison convexe d'images de chats n'est pas une image de chat</b> : on obtient une superposition fantomatique.</p>
-              <p><b>Méthode 2 · code aléatoire</b> : tirer $\boldsymbol z$ au hasard (p. ex. gaussien) puis $\boldsymbol x_{\text{new}}:=g(\boldsymbol z)$. Un peu mieux, mais toujours médiocre : <b>l'AE n'a jamais été entraîné pour cet usage</b> : rien ne contraint la distribution des codes appris à ressembler à une gaussienne.</p>
+              <p><b>Méthode 1 · combinaison convexe dans l'espace des pixels</b> : $\mathbf x_{\text{new}}=\sum_i w_i\mathbf x_i$. Fonctionne très rarement : une <b>combinaison convexe d'images de chats n'est pas une image de chat</b> : on obtient une superposition fantomatique.</p>
+              <p><b>Méthode 2 · code aléatoire</b> : tirer $\mathbf z$ au hasard (p. ex. gaussien) puis $\mathbf x_{\text{new}}:=g(\mathbf z)$. Un peu mieux, mais toujours médiocre : <b>l'AE n'a jamais été entraîné pour cet usage</b> : rien ne contraint la distribution des codes appris à ressembler à une gaussienne.</p>
               <p class="sense"><b>Sens :</b> on garde l'idée encodeur-décodeur, mais il faut l'entraîner à produire de <b>bons codes</b> autant que de bonnes images ⟹ le VAE.</p>
             </div>
           </article>
@@ -1203,23 +1555,23 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · Autoencodeur variationnel (VAE)</p>
-              <p><b>Loi a priori</b> : $\boldsymbol z\sim p_\theta(\boldsymbol z)$ : souvent $\mathcal N(\boldsymbol 0,\boldsymbol I)$. <b>Décodeur probabiliste</b> : $\boldsymbol z\mapsto\boldsymbol x\sim p_\theta(\boldsymbol x\mid\boldsymbol z)$, avec $\boldsymbol z$ la <b>variable latente</b> (le code aléatoire) et $\theta$ les paramètres.</p>
-              <p><b>Génération</b> une fois $\theta$ entraîné : tirer $\boldsymbol z\sim p_\theta(\boldsymbol z)$, puis $\boldsymbol x_{\text{new}}\sim p_\theta(\boldsymbol x\mid\boldsymbol z)$.</p>
-              <p>Le couple (prior, décodeur) définit <b>implicitement</b> un <b>encodeur probabiliste</b> $p_\theta(\boldsymbol z\mid\boldsymbol x)$, que l'on approche par un modèle auxiliaire $q_\phi(\boldsymbol z\mid\boldsymbol x)$ : <b>utilisé uniquement pour l'entraînement</b>, pas pour la génération.</p>
-              <p class="sense"><b>Sens :</b> combiner un prior simple et un décodeur non linéaire suffit à représenter une <b>marginale $p_\theta(\boldsymbol x)$ très complexe</b>, multimodale et courbe.</p>
+              <p><b>Loi a priori</b> : $\mathbf z\sim p_\theta(\mathbf z)$ : souvent $\mathcal N(\mathbf 0,\mathbf I)$. <b>Décodeur probabiliste</b> : $\mathbf z\mapsto\mathbf x\sim p_\theta(\mathbf x\mid\mathbf z)$, avec $\mathbf z$ la <b>variable latente</b> (le code aléatoire) et $\theta$ les paramètres.</p>
+              <p><b>Génération</b> une fois $\theta$ entraîné : tirer $\mathbf z\sim p_\theta(\mathbf z)$, puis $\mathbf x_{\text{new}}\sim p_\theta(\mathbf x\mid\mathbf z)$.</p>
+              <p>Le couple (prior, décodeur) définit <b>implicitement</b> un <b>encodeur probabiliste</b> $p_\theta(\mathbf z\mid\mathbf x)$, que l'on approche par un modèle auxiliaire $q_\phi(\mathbf z\mid\mathbf x)$ : <b>utilisé uniquement pour l'entraînement</b>, pas pour la génération.</p>
+              <p class="sense"><b>Sens :</b> combiner un prior simple et un décodeur non linéaire suffit à représenter une <b>marginale $p_\theta(\mathbf x)$ très complexe</b>, multimodale et courbe.</p>
             </div>
 
             <div class="box box-warn">
               <p class="box-label">⚠ Le maximum de vraisemblance est intraitable</p>
-              <p>Les $\boldsymbol z^{(i)}$ ne sont <b>pas observés</b> : on ne peut évaluer ni $p_\theta(\boldsymbol x\mid\boldsymbol z)$ ni $p_\theta(\boldsymbol z)$ sur les données. Seuls les $\boldsymbol x^{(i)}$ le sont, d'où un MLE sur la marginale : mais l'intégrale qui y apparaît est <b>numériquement hors de portée</b> à chaque point et à chaque pas :</p>
-              <div class="formula">$$\nabla_\theta\sum_{i=1}^n\log p_\theta(\boldsymbol x_i)=\nabla_\theta\sum_{i=1}^n\log\int p_\theta(\boldsymbol x^{(i)}\mid\boldsymbol z)\,p_\theta(\boldsymbol z)\,d\boldsymbol z$$</div>
+              <p>Les $\mathbf z^{(i)}$ ne sont <b>pas observés</b> : on ne peut évaluer ni $p_\theta(\mathbf x\mid\mathbf z)$ ni $p_\theta(\mathbf z)$ sur les données. Seuls les $\mathbf x^{(i)}$ le sont, d'où un MLE sur la marginale : mais l'intégrale qui y apparaît est <b>numériquement hors de portée</b> à chaque point et à chaque pas :</p>
+              <div class="formula">$$\nabla_\theta\sum_{i=1}^n\log p_\theta(\mathbf x_i)=\nabla_\theta\sum_{i=1}^n\log\int p_\theta(\mathbf x^{(i)}\mid\mathbf z)\,p_\theta(\mathbf z)\,d\mathbf z$$</div>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Théorème · Décomposition ELBO</p>
-              <div class="formula">$$\log p_\theta(\boldsymbol x)=\underbrace{\mathbb E_{q_\phi(\boldsymbol z\mid\boldsymbol x)}\!\left[\log\frac{p_\theta(\boldsymbol x,\boldsymbol z)}{q_\phi(\boldsymbol z\mid\boldsymbol x)}\right]}_{=:\ \mathcal L_{\theta,\phi}(\boldsymbol x)\ \ \text{(ELBO)}}\ +\ \underbrace{\mathbb E_{q_\phi(\boldsymbol z\mid\boldsymbol x)}\!\left[\log\frac{q_\phi(\boldsymbol z\mid\boldsymbol x)}{p_\theta(\boldsymbol z\mid\boldsymbol x)}\right]}_{=\ \mathrm{KL}\left(q_\phi(\boldsymbol z\mid\boldsymbol x),\,p_\theta(\boldsymbol z\mid\boldsymbol x)\right)\ \ge\ 0}$$</div>
-              <p>Par conséquent $\mathcal L_{\theta,\phi}(\boldsymbol x)\le\log p_\theta(\boldsymbol x)$ : d'où le nom <i>Evidence Lower BOund</i>. Et :</p>
-              <div class="formula">$$\max_{\theta,\phi}\ \mathbb E_{\boldsymbol x}\big[\mathcal L_{\theta,\phi}(\boldsymbol x)\big] \;=\; \max_\theta\ \underbrace{\mathbb E_{\boldsymbol x}[\log p_\theta(\boldsymbol x)]}_{\text{log-vraisemblance}}\ -\ \min_\phi\ \underbrace{\mathbb E_{\boldsymbol x}\big[\mathrm{KL}(q_\phi(\boldsymbol z\mid\boldsymbol x),p_\theta(\boldsymbol z\mid\boldsymbol x))\big]}_{=\,0\ \text{si}\ q_\phi=p_\theta(\boldsymbol z\mid\boldsymbol x)}$$</div>
+              <div class="formula">$$\log p_\theta(\mathbf x)=\underbrace{\mathbb E_{q_\phi(\mathbf z\mid\mathbf x)}\!\left[\log\frac{p_\theta(\mathbf x,\mathbf z)}{q_\phi(\mathbf z\mid\mathbf x)}\right]}_{=:\ \mathcal L_{\theta,\phi}(\mathbf x)\ \ \text{(ELBO)}}\ +\ \underbrace{\mathbb E_{q_\phi(\mathbf z\mid\mathbf x)}\!\left[\log\frac{q_\phi(\mathbf z\mid\mathbf x)}{p_\theta(\mathbf z\mid\mathbf x)}\right]}_{=\ \mathrm{KL}\left(q_\phi(\mathbf z\mid\mathbf x),\,p_\theta(\mathbf z\mid\mathbf x)\right)\ \ge\ 0}$$</div>
+              <p>Par conséquent $\mathcal L_{\theta,\phi}(\mathbf x)\le\log p_\theta(\mathbf x)$ : d'où le nom <i>Evidence Lower BOund</i>. Et :</p>
+              <div class="formula">$$\max_{\theta,\phi}\ \mathbb E_{\mathbf x}\big[\mathcal L_{\theta,\phi}(\mathbf x)\big] \;=\; \max_\theta\ \underbrace{\mathbb E_{\mathbf x}[\log p_\theta(\mathbf x)]}_{\text{log-vraisemblance}}\ -\ \min_\phi\ \underbrace{\mathbb E_{\mathbf x}\big[\mathrm{KL}(q_\phi(\mathbf z\mid\mathbf x),p_\theta(\mathbf z\mid\mathbf x))\big]}_{=\,0\ \text{si}\ q_\phi=p_\theta(\mathbf z\mid\mathbf x)}$$</div>
               <p class="sense"><b>Sens :</b> la vraisemblance exacte est incalculable, <b>l'ELBO est calculable</b>. Maximiser l'ELBO en $(\theta,\phi)$ revient à maximiser la log-vraisemblance <b>et</b> à rendre $q_\phi$ aussi proche que possible du vrai postérieur : l'écart entre les deux est exactement la KL.</p>
             </div>
           </article>
@@ -1229,24 +1581,24 @@ window.MathJax = {
 
             <div class="box box-warn">
               <p class="box-label">⚠ Gradient et espérance ne commutent pas</p>
-              <div class="formula">$$\nabla_{\theta,\phi}\,\mathbb E_{q_\phi(\boldsymbol z\mid\boldsymbol x)}\big[\mathcal L_{\theta,\phi}(\boldsymbol x,\boldsymbol z)\big] \ \neq\ \mathbb E_{q_\phi(\boldsymbol z\mid\boldsymbol x)}\big[\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\boldsymbol x,\boldsymbol z)\big]$$</div>
-              <p>car la <b>loi sur laquelle on intègre dépend elle-même de $\phi$</b>. L'estimateur mini-batch naïf $\frac1M\sum_i\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\boldsymbol x^{(i)},\boldsymbol z^{(i)})$ avec $\boldsymbol z^{(i)}\sim q_\phi(\boldsymbol z\mid\boldsymbol x^{(i)})$ serait donc <b>biaisé</b>.</p>
+              <div class="formula">$$\nabla_{\theta,\phi}\,\mathbb E_{q_\phi(\mathbf z\mid\mathbf x)}\big[\mathcal L_{\theta,\phi}(\mathbf x,\mathbf z)\big] \ \neq\ \mathbb E_{q_\phi(\mathbf z\mid\mathbf x)}\big[\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\mathbf x,\mathbf z)\big]$$</div>
+              <p>car la <b>loi sur laquelle on intègre dépend elle-même de $\phi$</b>. L'estimateur mini-batch naïf $\frac1M\sum_i\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\mathbf x^{(i)},\mathbf z^{(i)})$ avec $\mathbf z^{(i)}\sim q_\phi(\mathbf z\mid\mathbf x^{(i)})$ serait donc <b>biaisé</b>.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Reparameterization trick</p>
-              <p><b>Idée : isoler l'aléa des paramètres.</b> On redéfinit $q_\phi(\boldsymbol z\mid\boldsymbol x)$ comme la loi de</p>
-              <div class="formula">$$\boldsymbol z_\epsilon := \boldsymbol h_\phi(\boldsymbol x,\boldsymbol\epsilon), \qquad \boldsymbol\epsilon\sim q(\boldsymbol\epsilon)\ \text{connue et fixe (p. ex. } \mathcal N(\boldsymbol 0,\boldsymbol I)),$$</div>
-              <p>où $\boldsymbol h_\phi$ est un réseau de paramètres $\phi$. L'espérance porte alors sur $\boldsymbol\epsilon$, qui ne dépend plus de $\phi$, d'où l'échange licite :</p>
-              <div class="formula">$$\nabla_{\theta,\phi}\,\mathbb E_{\boldsymbol\epsilon}\big[\mathcal L_{\theta,\phi}(\boldsymbol x,\boldsymbol z_\epsilon)\big]=\mathbb E_{\boldsymbol\epsilon}\big[\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\boldsymbol x,\boldsymbol z_\epsilon)\big]$$</div>
+              <p><b>Idée : isoler l'aléa des paramètres.</b> On redéfinit $q_\phi(\mathbf z\mid\mathbf x)$ comme la loi de</p>
+              <div class="formula">$$\mathbf z_\epsilon := \mathbf h_\phi(\mathbf x,\mathbf\epsilon), \qquad \mathbf\epsilon\sim q(\mathbf\epsilon)\ \text{connue et fixe (p. ex. } \mathcal N(\mathbf 0,\mathbf I)),$$</div>
+              <p>où $\mathbf h_\phi$ est un réseau de paramètres $\phi$. L'espérance porte alors sur $\mathbf\epsilon$, qui ne dépend plus de $\phi$, d'où l'échange licite :</p>
+              <div class="formula">$$\nabla_{\theta,\phi}\,\mathbb E_{\mathbf\epsilon}\big[\mathcal L_{\theta,\phi}(\mathbf x,\mathbf z_\epsilon)\big]=\mathbb E_{\mathbf\epsilon}\big[\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\mathbf x,\mathbf z_\epsilon)\big]$$</div>
               <p class="sense"><b>Sens :</b> l'estimateur mini-batch redevient <b>non biaisé</b> : c'est ce qui rend le VAE entraînable par SGD.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Exemple · VAE gaussien en pratique</p>
-              <p>Le réseau encodeur sort $\boldsymbol\mu$ et $\log\boldsymbol\sigma^2$ (on prédit le <b>log</b>-variance pour garantir $\boldsymbol\sigma\gt 0$ sans contrainte), puis :</p>
-              <div class="formula">$$\boldsymbol z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\epsilon,\qquad \boldsymbol\epsilon\sim\mathcal N(\boldsymbol 0,\boldsymbol I)$$</div>
-              <p class="sense"><b>Sens :</b> à la génération, l'encodeur disparaît : on tire directement $\boldsymbol z\sim\mathcal N(\boldsymbol 0,\boldsymbol I)$ puis $\boldsymbol x_{\text{new}}\sim p_\theta(\boldsymbol x\mid\boldsymbol z)$.</p>
+              <p>Le réseau encodeur sort $\mathbf\mu$ et $\log\mathbf\sigma^2$ (on prédit le <b>log</b>-variance pour garantir $\mathbf\sigma\gt 0$ sans contrainte), puis :</p>
+              <div class="formula">$$\mathbf z=\mathbf\mu+\mathbf\sigma\odot\mathbf\epsilon,\qquad \mathbf\epsilon\sim\mathcal N(\mathbf 0,\mathbf I)$$</div>
+              <p class="sense"><b>Sens :</b> à la génération, l'encodeur disparaît : on tire directement $\mathbf z\sim\mathcal N(\mathbf 0,\mathbf I)$ puis $\mathbf x_{\text{new}}\sim p_\theta(\mathbf x\mid\mathbf z)$.</p>
             </div>
           </article>
 
@@ -1278,15 +1630,15 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Le duel générateur / discriminateur</p>
               <p><b>Idée</b> : apprendre à générer <b>directement</b> des données, sans modéliser explicitement la distribution : en trompant un second réseau.</p>
-              <p>• <b>Générateur</b> $G$ : transforme un bruit $\boldsymbol z$ en fausse donnée $G(\boldsymbol z)$, visant à la rendre indiscernable du réel.<br>
-              • <b>Discriminateur</b> $D$ : classifieur <b>binaire</b> réel/faux ; $D(\boldsymbol x)$ = probabilité que $\boldsymbol x$ soit une vraie donnée.</p>
+              <p>• <b>Générateur</b> $G$ : transforme un bruit $\mathbf z$ en fausse donnée $G(\mathbf z)$, visant à la rendre indiscernable du réel.<br>
+              • <b>Discriminateur</b> $D$ : classifieur <b>binaire</b> réel/faux ; $D(\mathbf x)$ = probabilité que $\mathbf x$ soit une vraie donnée.</p>
               <p class="sense"><b>Sens :</b> à la fin de l'entraînement on obtient un bon générateur (et, accessoirement, un bon discriminateur).</p>
             </div>
 
             <div class="box box-thm">
               <p class="box-label">Théorème · Perte adversariale (problème minimax)</p>
               <p>$D$ <b>maximise</b> la probabilité d'attribuer $+1$ au vrai et $-1$ au faux ; $G$ <b>minimise</b> cette même quantité :</p>
-              <div class="formula">$$\min_G\ \max_D\ \ \mathbb E_{p(\boldsymbol x)}\big[\log D(\boldsymbol x)\big] + \mathbb E_{p(\boldsymbol z)}\big[\log\big(1-D(G(\boldsymbol z))\big)\big]$$</div>
+              <div class="formula">$$\min_G\ \max_D\ \ \mathbb E_{p(\mathbf x)}\big[\log D(\mathbf x)\big] + \mathbb E_{p(\mathbf z)}\big[\log\big(1-D(G(\mathbf z))\big)\big]$$</div>
               <p class="sense"><b>Sens :</b> seul le second terme dépend de $G$. L'entraînement est <b>alterné</b> par SGD : $D\to G\to D\to\cdots$, chacun cherchant à battre l'autre. C'est un jeu à deux joueurs : d'où sa réputation d'instabilité (effondrement de modes, non-convergence).</p>
             </div>
           </article>
@@ -1296,7 +1648,7 @@ window.MathJax = {
 
             <div class="box box-def">
               <p class="box-label">Définition · cGAN (GAN conditionnel)</p>
-              <p>Un GAN ordinaire n'offre <b>aucun contrôle</b> sur le contenu généré. Solution : fournir <b>en plus</b> une condition $\boldsymbol y$ (classe, texte, image source) <b>aux deux</b> réseaux : $G(\boldsymbol z,\boldsymbol y)$ et $D(\boldsymbol x,\boldsymbol y)$.</p>
+              <p>Un GAN ordinaire n'offre <b>aucun contrôle</b> sur le contenu généré. Solution : fournir <b>en plus</b> une condition $\mathbf y$ (classe, texte, image source) <b>aux deux</b> réseaux : $G(\mathbf z,\mathbf y)$ et $D(\mathbf x,\mathbf y)$.</p>
               <p class="sense"><b>Sens :</b> génération contextuelle. Applications : traduction image↦image (croquis→photo, jour→nuit), texte↦image, super-résolution, transfert de style, augmentation de données.</p>
             </div>
 
@@ -1305,7 +1657,7 @@ window.MathJax = {
               <p><b>Problème</b> : traduction $\mathcal X\to\mathcal Y$ avec des données <b>non appariées</b> (on a des photos et des Monet, mais pas les photos correspondant aux Monet) : de loin le scénario le plus fréquent.</p>
               <p><b>Difficulté</b> : le discriminateur force $G$ à produire un « bon » faux Monet… mais rien ne garantit qu'il corresponde encore à la <b>photo d'entrée</b>. Traduction $=$ génération <b>conditionnelle</b>, pas inconditionnelle.</p>
               <p><b>Solution</b> : deux GAN, $G:\mathcal X\to\mathcal Y$ (discriminateur $D_{\mathcal Y}$) et $F:\mathcal Y\to\mathcal X$ (discriminateur $D_{\mathcal X}$), plus une <b>perte de cohérence cyclique</b> ajoutée aux pertes adversariales :</p>
-              <div class="formula">$$\mathrm{Loss}_{\text{Cycle}}(G,F)=\frac1{n_x}\sum_{i=1}^{n_x}\underbrace{\big\|F(G(\boldsymbol x_i))-\boldsymbol x_i\big\|_1}_{\text{cycle avant}}+\frac1{n_y}\sum_{i=1}^{n_y}\underbrace{\big\|G(F(\boldsymbol y_i))-\boldsymbol y_i\big\|_1}_{\text{cycle arrière}}$$</div>
+              <div class="formula">$$\mathrm{Loss}_{\text{Cycle}}(G,F)=\frac1{n_x}\sum_{i=1}^{n_x}\underbrace{\big\|F(G(\mathbf x_i))-\mathbf x_i\big\|_1}_{\text{cycle avant}}+\frac1{n_y}\sum_{i=1}^{n_y}\underbrace{\big\|G(F(\mathbf y_i))-\mathbf y_i\big\|_1}_{\text{cycle arrière}}$$</div>
               <p class="sense"><b>Sens :</b> on impose $\mathcal X\xrightarrow{G}\mathcal Y\xrightarrow{F}\mathcal X\approx\mathrm{id}$ (norme $L_1$). Sans cette contrainte, rien n'empêche $G$ de produire un Monet parfaitement crédible… mais représentant tout autre chose.</p>
             </div>
           </article>
@@ -1338,44 +1690,44 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Processus avant / arrière</p>
               <p>« <i>Détruire systématiquement et lentement la structure d'une distribution de données par un processus de diffusion avant itératif, puis apprendre un processus de diffusion inverse qui restaure la structure.</i> » (Sohl-Dickstein et al., 2015)</p>
-              <p>C'est exactement un <b>VAE hiérarchique markovien</b> (HMVAE) : $p(\boldsymbol x_{t}\mid\boldsymbol x_{t+1},\dots,\boldsymbol x_T)=p(\boldsymbol x_t\mid\boldsymbol x_{t+1})$, avec trois particularités :</p>
-              <p>① la dimension des latentes $\boldsymbol x_1,\dots,\boldsymbol x_T$ <b>égale</b> celle des données $\boldsymbol x_0$ (contrairement à l'AE/VAE) ;<br>
-              ② l'<b>encodeur n'est pas appris</b> : il est fixé : $q(\boldsymbol x_t\mid\boldsymbol x_{t-1})=\mathcal N\big(\boldsymbol x_t;\sqrt{\alpha_t}\,\boldsymbol x_{t-1},\,(1-\alpha_t)\boldsymbol I\big)$ ;<br>
-              ③ la dernière latente suit la loi normale standard : $p(\boldsymbol x_T)=\mathcal N(\boldsymbol x_T;\boldsymbol 0,\boldsymbol I)$.</p>
+              <p>C'est exactement un <b>VAE hiérarchique markovien</b> (HMVAE) : $p(\mathbf x_{t}\mid\mathbf x_{t+1},\dots,\mathbf x_T)=p(\mathbf x_t\mid\mathbf x_{t+1})$, avec trois particularités :</p>
+              <p>① la dimension des latentes $\mathbf x_1,\dots,\mathbf x_T$ <b>égale</b> celle des données $\mathbf x_0$ (contrairement à l'AE/VAE) ;<br>
+              ② l'<b>encodeur n'est pas appris</b> : il est fixé : $q(\mathbf x_t\mid\mathbf x_{t-1})=\mathcal N\big(\mathbf x_t;\sqrt{\alpha_t}\,\mathbf x_{t-1},\,(1-\alpha_t)\mathbf I\big)$ ;<br>
+              ③ la dernière latente suit la loi normale standard : $p(\mathbf x_T)=\mathcal N(\mathbf x_T;\mathbf 0,\mathbf I)$.</p>
               <p class="sense"><b>Sens :</b> seul le <b>décodeur</b> (processus inverse) est entraîné, par maximisation de l'ELBO : exactement comme un VAE, mais avec $T$ étages.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Entraînement DDPM (Ho et al., 2020)</p>
-              <p>On entraîne un réseau $\epsilon_\theta$ à <b>débruiter</b> $\boldsymbol x_t$ à un instant $t$ tiré au hasard. <b>Répéter jusqu'à convergence</b> : tirer $\boldsymbol x_0\sim q(\boldsymbol x_0)$, $t\sim\mathcal U(\{1,\dots,T\})$, $\boldsymbol\epsilon\sim\mathcal N(\boldsymbol 0,\boldsymbol I)$, puis un pas de descente sur</p>
-              <div class="formula">$$\nabla_\theta\Big\|\boldsymbol\epsilon-\epsilon_\theta\big(\underbrace{\sqrt{\bar\alpha_t}\,\boldsymbol x_0+\sqrt{1-\bar\alpha_t}\,\boldsymbol\epsilon}_{=\,\boldsymbol x_t},\ t\big)\Big\|^2, \qquad \bar\alpha_t:=\prod_{s=1}^t\alpha_s$$</div>
-              <p class="sense"><b>Sens :</b> l'astuce clé est que $\boldsymbol x_t$ s'obtient <b>en une seule étape</b> depuis $\boldsymbol x_0$ (composition de gaussiennes) : pas besoin de simuler les $t$ pas. Le réseau ne prédit pas l'image propre mais <b>le bruit ajouté</b> ; c'est équivalent à du <i>denoising score matching</i> sur toutes les échelles de bruit.</p>
+              <p>On entraîne un réseau $\epsilon_\theta$ à <b>débruiter</b> $\mathbf x_t$ à un instant $t$ tiré au hasard. <b>Répéter jusqu'à convergence</b> : tirer $\mathbf x_0\sim q(\mathbf x_0)$, $t\sim\mathcal U(\{1,\dots,T\})$, $\mathbf\epsilon\sim\mathcal N(\mathbf 0,\mathbf I)$, puis un pas de descente sur</p>
+              <div class="formula">$$\nabla_\theta\Big\|\mathbf\epsilon-\epsilon_\theta\big(\underbrace{\sqrt{\bar\alpha_t}\,\mathbf x_0+\sqrt{1-\bar\alpha_t}\,\mathbf\epsilon}_{=\,\mathbf x_t},\ t\big)\Big\|^2, \qquad \bar\alpha_t:=\prod_{s=1}^t\alpha_s$$</div>
+              <p class="sense"><b>Sens :</b> l'astuce clé est que $\mathbf x_t$ s'obtient <b>en une seule étape</b> depuis $\mathbf x_0$ (composition de gaussiennes) : pas besoin de simuler les $t$ pas. Le réseau ne prédit pas l'image propre mais <b>le bruit ajouté</b> ; c'est équivalent à du <i>denoising score matching</i> sur toutes les échelles de bruit.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Génération (échantillonnage)</p>
-              <p>Initialiser $\boldsymbol x_T\sim\mathcal N(\boldsymbol 0,\boldsymbol I)$, puis pour $t=T,\dots,1$ : tirer $\boldsymbol z\sim\mathcal N(\boldsymbol 0,\boldsymbol I)$ si $t\gt1$, sinon $\boldsymbol z=\boldsymbol 0$, et</p>
-              <div class="formula">$$\boldsymbol x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\left(\boldsymbol x_t-\frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}}\,\epsilon_\theta(\boldsymbol x_t,t)\right)+\sigma_t\boldsymbol z$$</div>
-              <p>Retourner $\boldsymbol x_0$.</p>
-              <p class="sense"><b>Sens :</b> on applique le débruiteur de façon répétée. Le bruit $\sigma_t\boldsymbol z$ réinjecté à chaque étape (<b>sauf la dernière</b>) maintient la diversité des échantillons ; sans lui, la trajectoire serait déterministe et collapserait.</p>
+              <p>Initialiser $\mathbf x_T\sim\mathcal N(\mathbf 0,\mathbf I)$, puis pour $t=T,\dots,1$ : tirer $\mathbf z\sim\mathcal N(\mathbf 0,\mathbf I)$ si $t\gt1$, sinon $\mathbf z=\mathbf 0$, et</p>
+              <div class="formula">$$\mathbf x_{t-1}=\frac{1}{\sqrt{\alpha_t}}\left(\mathbf x_t-\frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}}\,\epsilon_\theta(\mathbf x_t,t)\right)+\sigma_t\mathbf z$$</div>
+              <p>Retourner $\mathbf x_0$.</p>
+              <p class="sense"><b>Sens :</b> on applique le débruiteur de façon répétée. Le bruit $\sigma_t\mathbf z$ réinjecté à chaque étape (<b>sauf la dernière</b>) maintient la diversité des échantillons ; sans lui, la trajectoire serait déterministe et collapserait.</p>
             </div>
           </article>
 
           <article class="topic" id="s35">
             <div class="tophead"><span class="num">35</span><h2>Guidage &amp; diffusion latente (Stable Diffusion)</h2></div>
-            <p>Jusqu'ici on ne modélise que $p(\boldsymbol x)$ : on ne sait générer qu'<b>une seule</b> distribution. En pratique on veut conditionner sur un <i>prompt</i> $\boldsymbol y$, donc modéliser $p(\boldsymbol x\mid\boldsymbol y)$, en remplaçant $p(\boldsymbol x_{0:T})=p(\boldsymbol x_T)\prod_t p(\boldsymbol x_{t-1}\mid\boldsymbol x_t)$ par $p(\boldsymbol x_{0:T}\mid\boldsymbol y)=p(\boldsymbol x_T)\prod_t p(\boldsymbol x_{t-1}\mid\boldsymbol x_t,\boldsymbol y)$.</p>
+            <p>Jusqu'ici on ne modélise que $p(\mathbf x)$ : on ne sait générer qu'<b>une seule</b> distribution. En pratique on veut conditionner sur un <i>prompt</i> $\mathbf y$, donc modéliser $p(\mathbf x\mid\mathbf y)$, en remplaçant $p(\mathbf x_{0:T})=p(\mathbf x_T)\prod_t p(\mathbf x_{t-1}\mid\mathbf x_t)$ par $p(\mathbf x_{0:T}\mid\mathbf y)=p(\mathbf x_T)\prod_t p(\mathbf x_{t-1}\mid\mathbf x_t,\mathbf y)$.</p>
 
             <div class="box box-def">
               <p class="box-label">Définition · Classifier guidance</p>
-              <p>Il existe une formulation équivalente de l'entraînement par le <b>score</b> $\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t)$. Par Bayes, $\nabla_{\boldsymbol x_t}\log p(\boldsymbol y)=0$ donc :</p>
-              <div class="formula">$$\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t\mid\boldsymbol y)\ \leftarrow\ \underbrace{\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t)}_{\text{score inconditionnel}}\ +\ \gamma\times\underbrace{\nabla_{\boldsymbol x_t}\log p(\boldsymbol y\mid\boldsymbol x_t)}_{\text{score conditionnel}}$$</div>
-              <p class="sense"><b>Sens :</b> <b>problème</b> : le score conditionnel peut devenir négligeable devant l'inconditionnel, et la condition être ignorée. Le facteur $\gamma$ <b>amplifie</b> son influence : $\gamma=1$ donne des corgis parfois absents, $\gamma=10$ des corgis nets et systématiques. Coût : il faut un classifieur $p(\boldsymbol y\mid\boldsymbol x_t)$ entraîné sur des images bruitées.</p>
+              <p>Il existe une formulation équivalente de l'entraînement par le <b>score</b> $\nabla_{\mathbf x_t}\log p(\mathbf x_t)$. Par Bayes, $\nabla_{\mathbf x_t}\log p(\mathbf y)=0$ donc :</p>
+              <div class="formula">$$\nabla_{\mathbf x_t}\log p(\mathbf x_t\mid\mathbf y)\ \leftarrow\ \underbrace{\nabla_{\mathbf x_t}\log p(\mathbf x_t)}_{\text{score inconditionnel}}\ +\ \gamma\times\underbrace{\nabla_{\mathbf x_t}\log p(\mathbf y\mid\mathbf x_t)}_{\text{score conditionnel}}$$</div>
+              <p class="sense"><b>Sens :</b> <b>problème</b> : le score conditionnel peut devenir négligeable devant l'inconditionnel, et la condition être ignorée. Le facteur $\gamma$ <b>amplifie</b> son influence : $\gamma=1$ donne des corgis parfois absents, $\gamma=10$ des corgis nets et systématiques. Coût : il faut un classifieur $p(\mathbf y\mid\mathbf x_t)$ entraîné sur des images bruitées.</p>
             </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Classifier-free guidance (méthode standard)</p>
-              <p>En substituant $\nabla\log p(\boldsymbol y\mid\boldsymbol x_t)=\nabla\log p(\boldsymbol x_t\mid\boldsymbol y)-\nabla\log p(\boldsymbol x_t)$, le classifieur <b>disparaît</b> :</p>
-              <div class="formula">$$\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t\mid\boldsymbol y)\ \leftarrow\ \gamma\times\underbrace{\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t\mid\boldsymbol y)}_{\text{score conditionnel}}\ +\ (1-\gamma)\times\underbrace{\nabla_{\boldsymbol x_t}\log p(\boldsymbol x_t)}_{\text{score inconditionnel}}$$</div>
+              <p>En substituant $\nabla\log p(\mathbf y\mid\mathbf x_t)=\nabla\log p(\mathbf x_t\mid\mathbf y)-\nabla\log p(\mathbf x_t)$, le classifieur <b>disparaît</b> :</p>
+              <div class="formula">$$\nabla_{\mathbf x_t}\log p(\mathbf x_t\mid\mathbf y)\ \leftarrow\ \gamma\times\underbrace{\nabla_{\mathbf x_t}\log p(\mathbf x_t\mid\mathbf y)}_{\text{score conditionnel}}\ +\ (1-\gamma)\times\underbrace{\nabla_{\mathbf x_t}\log p(\mathbf x_t)}_{\text{score inconditionnel}}$$</div>
               <p>Les deux scores sont appris par le <b>même</b> réseau (on annule la condition au hasard pendant l'entraînement).</p>
               <p class="sense"><b>Sens :</b> $\gamma=0$ ⟹ condition totalement ignorée ; $\gamma=1$ ⟹ distribution conditionnelle d'origine, sans modification ; $\gamma\gt1$ ⟹ le modèle privilégie la condition <b>et va à l'encontre</b> de l'inconditionnel (images plus typiques, moins diverses).</p>
             </div>
@@ -1388,6 +1740,80 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> un encodeur $\mathcal E$ / décodeur $\mathcal D$ (type VAE) encadre un U-Net débruiteur $\epsilon_\theta$, la condition (texte, carte sémantique, image) entrant par <b>cross-attention</b>. Coût très réduit, qualité conservée.</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-4">
+            <div class="qcm-head">
+              <h3>QCM de révision · Modèles génératifs</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Quelle est la différence fondamentale entre un autoencodeur (AE) classique et un VAE ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-1"><span class="otext">Le VAE n'a pas de décodeur.</span></label>
+              <div class="qcm-explain">Faux : le VAE a bien un encodeur et un décodeur, comme l'AE classique.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-1"><span class="otext">Le VAE est entraîné sans fonction de perte.</span></label>
+              <div class="qcm-explain">Faux : le VAE minimise une perte précise (l'opposé de l'ELBO), combinant reconstruction et régularisation.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-1"><span class="otext">Le VAE encode chaque donnée vers une <b>distribution</b> dans l'espace latent (via $\mathbf\mu,\mathbf\sigma$), pas un point unique : ce qui permet d'échantillonner de nouvelles données en générant depuis l'espace latent.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le principe du fiche 30 : le VAE sort $\mathbf\mu$ et $\log\mathbf\sigma^2$ pour chaque entrée, contrairement à l'AE classique qui produit un point latent déterministe : c'est ce qui rend le VAE génératif.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-1"><span class="otext">Le VAE n'a pas de goulot d'étranglement (bottleneck) dans son architecture.</span></label>
+              <div class="qcm-explain">Faux : le VAE, comme l'AE, compresse l'entrée dans un espace latent de dimension réduite : c'est même le principe central des deux architectures.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>À quoi sert exactement l'astuce de reparamétrisation ($\mathbf z=\mathbf\mu+\mathbf\sigma\odot\mathbf\epsilon$, $\mathbf\epsilon\sim\mathcal N(\mathbf0,\mathbf I)$) dans l'entraînement du VAE ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-2"><span class="otext">À réduire le nombre de paramètres du réseau encodeur.</span></label>
+              <div class="qcm-explain">Faux : l'astuce ne change rien au nombre de paramètres ; elle ne change que la façon dont on échantillonne $\mathbf z$.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-2"><span class="otext">À rendre possible la rétropropagation à travers une étape d'échantillonnage aléatoire, en déplaçant l'aléa sur une variable $\mathbf\epsilon$ indépendante des paramètres $\theta,\phi$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le sens de la fiche 31 : sans cette astuce, le gradient ne peut pas traverser un tirage aléatoire de $\mathbf z$ ; en isolant l'aléa dans $\mathbf\epsilon$, l'estimateur du gradient redevient non biaisé et le VAE devient entraînable par SGD.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-2"><span class="otext">À accélérer le calcul du décodeur.</span></label>
+              <div class="qcm-explain">Faux : le décodeur n'est pas concerné, seule l'étape d'échantillonnage de $\mathbf z$ à partir de l'encodeur l'est.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-2"><span class="otext">À garantir que $\mathbf\sigma$ reste positif.</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle de prédire $\log\mathbf\sigma^2$ plutôt que $\mathbf\sigma^2$ directement (fiche 31), pas celui de la reparamétrisation elle-même.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Dans un GAN, quel est le rôle respectif du générateur $G$ et du discriminateur $D$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-3"><span class="otext">$G$ transforme du bruit en fausses données visant à tromper $D$ ; $D$ est un classifieur binaire qui essaie de distinguer le vrai du faux.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la définition de la fiche 32 : un duel où $G$ cherche à rendre $G(\mathbf z)$ indiscernable du réel, et $D$ cherche à ne pas se faire tromper.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-3"><span class="otext">$G$ et $D$ apprennent tous les deux à reconnaître les vraies images, sans compétition entre eux.</span></label>
+              <div class="qcm-explain">Faux : c'est précisément l'absence de compétition (« duel ») qui définit le GAN, à la différence d'un simple classifieur (fiche 32).</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-3"><span class="otext">$D$ génère les données, $G$ les évalue.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse des rôles définis à la fiche 32.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-3"><span class="otext">$G$ et $D$ partagent toujours les mêmes poids.</span></label>
+              <div class="qcm-explain">Faux : ce sont deux réseaux distincts, avec des paramètres indépendants, entraînés en alternance l'un contre l'autre.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Quel est le principe de base d'un modèle de diffusion (DDPM) pour générer une donnée ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-4"><span class="otext">Il compresse l'image dans un espace latent puis la reconstruit directement, comme un autoencodeur.</span></label>
+              <div class="qcm-explain">Faux : c'est le principe de l'AE/VAE (fiches 28-31), pas de la diffusion.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-4"><span class="otext">Il fait s'affronter deux réseaux jusqu'à ce que l'un trompe l'autre.</span></label>
+              <div class="qcm-explain">Faux : c'est le principe du GAN (fiche 32), pas de la diffusion, qui n'a pas de composante adversariale.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-4"><span class="otext">Il part d'un bruit aléatoire pur et apprend à le débruiter progressivement, étape par étape, pour reconstituer une donnée réaliste : l'inverse exact d'un processus qui aurait progressivement noyé une vraie donnée dans du bruit.</span></label>
+              <div class="qcm-explain">Correct : c'est le principe du DDPM (fiche 34) : un processus direct ajoute du bruit progressivement ; le réseau $\epsilon_\theta$ apprend le processus inverse, le débruitage pas à pas, pour générer depuis du bruit pur.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-4"><span class="otext">Il génère l'image entière en une seule passe du réseau, sans étapes intermédiaires.</span></label>
+              <div class="qcm-explain">Faux : c'est justement la spécificité (et le coût) de la diffusion : de nombreuses étapes de débruitage successives sont nécessaires, contrairement à un GAN qui génère en une passe.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi Stable Diffusion effectue-t-il la diffusion dans un espace latent réduit plutôt que directement dans l'espace des pixels ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-5"><span class="otext">Parce que la diffusion dans l'espace des pixels donnerait de moins bonnes images.</span></label>
+              <div class="qcm-explain">Faux : la fiche 35 indique que la qualité est <b>conservée</b> en passant au latent, pas améliorée par nature ; l'enjeu est ailleurs.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-5"><span class="otext">Parce que la diffusion complète en espace pixel est très coûteuse en calcul (plus l'espace est grand, plus le modèle doit être profond) : travailler dans un espace latent bien plus petit (ex. ratio 48 sur chaque dimension, fiche 35) réduit fortement ce coût, à qualité comparable.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'argument de la fiche 35 : un encodeur/décodeur type VAE réduit l'image $(3,512,512)$ à un latent $(4,64,64)$, un facteur de réduction de 48 (2304 en surface), rendant l'entraînement et l'inférence bien plus rapides.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-5"><span class="otext">Parce que l'espace latent permet d'éviter complètement l'usage d'un U-Net.</span></label>
+              <div class="qcm-explain">Faux : Stable Diffusion utilise toujours un U-Net débruiteur $\epsilon_\theta$, simplement appliqué dans l'espace latent plutôt que dans l'espace des pixels (fiche 35).</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-5"><span class="otext">Parce que cela supprime le besoin de conditionner la génération par du texte.</span></label>
+              <div class="qcm-explain">Faux : le conditionnement (texte, carte sémantique...) reste présent, via cross-attention, qu'on soit dans l'espace pixel ou latent (fiche 35).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -1408,7 +1834,7 @@ window.MathJax = {
             <div class="box box-warn">
               <p class="box-label">⚠ Les deux limites du RNN</p>
               <p>Un RNN sait aussi générer des séquences, mais :</p>
-              <p>• il impose un <b>calcul séquentiel à l'entraînement</b> : $\boldsymbol h_t$ requiert $\boldsymbol h_{t-1}$, donc aucune parallélisation dans le temps ;<br>
+              <p>• il impose un <b>calcul séquentiel à l'entraînement</b> : $\mathbf h_t$ requiert $\mathbf h_{t-1}$, donc aucune parallélisation dans le temps ;<br>
               • il induit une <b>dépendance plus faible entre tokens éloignés</b>, car toute l'information doit transiter par l'état caché, goulot d'étranglement de taille fixe.</p>
             </div>
 
@@ -1453,10 +1879,10 @@ window.MathJax = {
             <div class="box box-def">
               <p class="box-label">Définition · Entraînement (teacher forcing)</p>
               <p>On entraîne à prédire le <b>token suivant</b> étant donné les tokens précédents :</p>
-              <div class="formula">$$\min\ \frac1n\sum_{i=1}^n \mathrm{CrossEntropy}\big(\hat{\boldsymbol y}^{(i)},\boldsymbol y^{(i)}\big), \qquad \hat{\boldsymbol y}^{(i)}:=\text{Décodeur}\big(\mathrm{ShiftR}(\boldsymbol y^{(i)});\,\boldsymbol x^{(i)}\big)$$</div>
+              <div class="formula">$$\min\ \frac1n\sum_{i=1}^n \mathrm{CrossEntropy}\big(\hat{\mathbf y}^{(i)},\mathbf y^{(i)}\big), \qquad \hat{\mathbf y}^{(i)}:=\text{Décodeur}\big(\mathrm{ShiftR}(\mathbf y^{(i)});\,\mathbf x^{(i)}\big)$$</div>
               <table class="cmp">
-                <tr><th>$\boldsymbol y$</th><td>I</td><td>am</td><td>a</td><td>student</td><td>[END]</td></tr>
-                <tr><th>$\mathrm{ShiftR}(\boldsymbol y)$</th><td>[START]</td><td>I</td><td>am</td><td>a</td><td>student</td></tr>
+                <tr><th>$\mathbf y$</th><td>I</td><td>am</td><td>a</td><td>student</td><td>[END]</td></tr>
+                <tr><th>$\mathrm{ShiftR}(\mathbf y)$</th><td>[START]</td><td>I</td><td>am</td><td>a</td><td>student</td></tr>
               </table>
               <p class="sense"><b>Sens :</b> $\mathrm{ShiftR}$ décale la cible d'un cran vers la droite en insérant <code>[START]</code>. Le décodeur reçoit donc la <b>vraie</b> séquence cible décalée (et non ses propres prédictions) : les $T$ positions peuvent être traitées <b>en une seule passe parallèle</b>.</p>
             </div>
@@ -1467,7 +1893,7 @@ window.MathJax = {
 
             <div class="box box-warn">
               <p class="box-label">⚠ Le problème de la triche</p>
-              <p>Si l'on donne toute la séquence $\mathrm{ShiftR}(\boldsymbol y)$ d'un coup, prédire le token suivant devient <b>trop facile</b> : pour prédire la position $i$, il suffit au modèle de <b>regarder</b> les tokens « futurs », en position $\gt i$, et de recopier. La perte tomberait à zéro sans rien apprendre.</p>
+              <p>Si l'on donne toute la séquence $\mathrm{ShiftR}(\mathbf y)$ d'un coup, prédire le token suivant devient <b>trop facile</b> : pour prédire la position $i$, il suffit au modèle de <b>regarder</b> les tokens « futurs », en position $\gt i$, et de recopier. La perte tomberait à zéro sans rien apprendre.</p>
             </div>
 
             <div class="box box-def">
@@ -1485,7 +1911,7 @@ window.MathJax = {
               <p class="box-label">Définition · Forme générale : clé, requête, valeur</p>
               <div class="formula">$$\mathrm{Attention}(\text{keys},\text{query},\text{values})=\sum_j \underbrace{\mathrm{RelevanceScore}(\text{key}_j,\text{query})}_{\text{poids d'attention}}\cdot\,\text{value}_j$$</div>
               <p>$\mathrm{RelevanceScore}$ = <b>Scaled Dot-Product Attention</b> + softmax, soit sous forme matricielle :</p>
-              <div class="formula">$$\mathrm{Attention}(\boldsymbol Q,\boldsymbol K,\boldsymbol V)=\mathrm{softmax}\!\left(\frac{\boldsymbol Q\boldsymbol K^\top}{\sqrt{d_k}}\right)\boldsymbol V$$</div>
+              <div class="formula">$$\mathrm{Attention}(\mathbf Q,\mathbf K,\mathbf V)=\mathrm{softmax}\!\left(\frac{\mathbf Q\mathbf K^\top}{\sqrt{d_k}}\right)\mathbf V$$</div>
 
               <div class="attnbox">
                 <div class="attnbox-qkv">
@@ -1555,6 +1981,80 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> exploite le contexte <b>avant ET après</b> chaque token ⟹ adapté à la <b>compréhension</b> (classification, extraction, question-réponse) : c'est l'analogue Transformer du RNN bidirectionnel de la fiche 25, et la raison pour laquelle BERT ne sait pas générer de texte librement.</p>
             </div>
           </article>
+
+          <div class="qcm" id="qcm-5">
+            <div class="qcm-head">
+              <h3>QCM de révision · Transformers</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Pourquoi le calcul de la self-attention est-il plus favorable au GPU qu'un RNN, à longueur de séquence égale ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-1"><span class="otext">Parce que l'attention utilise moins de paramètres qu'un RNN.</span></label>
+              <div class="qcm-explain">Faux : un Transformer a en général <b>plus</b> de paramètres qu'un RNN comparable ; ce n'est pas une question de taille du modèle.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-1"><span class="otext">Parce que l'attention calcule les scores entre tous les tokens simultanément, alors qu'un RNN doit traiter les pas de temps un par un, séquentiellement.</span></label>
+              <div class="qcm-explain">Correct : le RNN vanille (fiche 21) calcule $\mathbf h^{(t)}$ à partir de $\mathbf h^{(t-1)}$ : intrinsèquement séquentiel. L'attention, elle, calcule tous les scores en parallèle (produits matriciels) : bien mieux adapté au calcul massivement parallèle des GPU.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-1"><span class="otext">Parce que l'attention n'utilise pas de rétropropagation.</span></label>
+              <div class="qcm-explain">Faux : un Transformer s'entraîne exactement comme les autres réseaux, par rétropropagation du gradient (fiche 6).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-1"><span class="otext">Parce que l'attention ne nécessite aucune fonction d'activation.</span></label>
+              <div class="qcm-explain">Faux : les blocs Transformer contiennent bien des couches denses avec activation (souvent GELU) après le module d'attention.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Pourquoi GPT utilise-t-il un <b>masquage causal</b> dans son self-attention ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-2"><span class="otext">Pour réduire le nombre de paramètres du modèle.</span></label>
+              <div class="qcm-explain">Faux : le masquage n'enlève aucun paramètre, il modifie seulement quels scores d'attention sont autorisés à être non nuls.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-2"><span class="otext">Pour accélérer l'entraînement sur GPU.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas la motivation première ; le masquage est une contrainte de <b>cohérence</b>, pas d'optimisation matérielle.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-2"><span class="otext">Pour empêcher un token de « voir » les tokens qui le suivent, condition nécessaire à une génération autorégressive cohérente (fiche 41).</span></label>
+              <div class="qcm-explain">Correct : GPT n'utilise que le <b>décodeur</b> du Transformer, avec masquage causal (fiche 41) : à l'entraînement comme à la génération, prédire le token $t$ ne doit dépendre que des tokens $1,\dots,t-1$, jamais du futur.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-2"><span class="otext">Pour permettre le pré-entraînement par masked language model.</span></label>
+              <div class="qcm-explain">Faux : le masked language model (masquer des tokens au hasard puis les prédire) est la tâche de pré-entraînement de <b>BERT</b>, qui lui n'utilise <b>pas</b> de masquage causal (fiche 41).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quelle est la différence architecturale essentielle entre GPT et BERT ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-3"><span class="otext">GPT n'utilise que le décodeur (masquage causal, ne voit que le passé) ; BERT n'utilise que l'encodeur (pas de masquage, voit toute la séquence).</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la distinction de la fiche 41 : deux moitiés différentes du même Transformer original, pour deux usages différents (génération vs compréhension).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-3"><span class="otext">GPT est plus petit que BERT en nombre de paramètres.</span></label>
+              <div class="qcm-explain">Faux : la taille n'est pas la distinction structurelle entre les deux familles : les deux existent en de nombreuses tailles.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-3"><span class="otext">GPT utilise des convolutions, BERT de l'attention.</span></label>
+              <div class="qcm-explain">Faux : les deux sont des Transformers, aucun des deux n'utilise de convolution.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-3"><span class="otext">BERT est autorégressif, GPT ne l'est pas.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : GPT est autorégressif (génère token par token à partir du passé) ; BERT ne génère pas de texte librement (fiche 41).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Comment le Vision Transformer (ViT) traite-t-il une image, en l'absence de toute convolution ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-4"><span class="otext">Il applique d'abord un CNN classique, puis un Transformer sur les cartes de caractéristiques obtenues.</span></label>
+              <div class="qcm-explain">Faux : le ViT original n'utilise <b>aucune</b> convolution (fiche 40) : c'est justement son originalité.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-4"><span class="otext">Il découpe l'image en patches de taille fixe, aplatit et projette chaque patch en un « token », y ajoute un encodage de position, puis applique un encodeur Transformer standard.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la méthode de la fiche 40 (« An image is worth 16×16 words ») : chaque patch devient un token, comme un mot dans une phrase.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-4"><span class="otext">Il traite chaque pixel individuellement comme un token.</span></label>
+              <div class="qcm-explain">Faux : traiter chaque pixel comme un token rendrait la séquence bien trop longue (ex. 1000×1000 pixels = 1 million de tokens) : d'où le découpage en patches (16×16 pixels typiquement).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-4"><span class="otext">Il redimensionne l'image en un seul vecteur, sans notion de patch.</span></label>
+              <div class="qcm-explain">Faux : cela perdrait toute la structure spatiale locale ; le découpage en patches est précisément ce qui permet à l'attention de raisonner sur des régions de l'image.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q5</span>Le ViT n'a, par construction, aucun a priori de localité ni d'invariance par translation (contrairement à un CNN, fiche 12-16). Quelle en est la conséquence pratique principale ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-5"><span class="otext">Le ViT ne peut traiter que des images en niveaux de gris.</span></label>
+              <div class="qcm-explain">Faux : aucun rapport avec le nombre de canaux de couleur.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-5"><span class="otext">Le ViT est toujours plus rapide à entraîner qu'un CNN équivalent.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas garanti, et ce n'est pas la conséquence mise en avant par le cours.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-5"><span class="otext">Le ViT ne peut jamais dépasser les performances d'un CNN.</span></label>
+              <div class="qcm-explain">Faux : en pratique, le ViT peut égaler voire dépasser un CNN, mais sous une condition précise (option suivante).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-5"><span class="otext">Le ViT doit apprendre ces a priori depuis les données elles-mêmes, ce qui exige beaucoup plus de données d'entraînement qu'un CNN pour atteindre une performance comparable.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le « sens » de la fiche 40 : sans le biais inductif de localité/invariance du CNN inscrit dans l'architecture, le ViT doit le découvrir empiriquement, ce qui nécessite beaucoup de données (ou un pré-entraînement massif).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -1699,6 +2199,246 @@ window.MathJax = {
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.style.scrollBehavior = 'auto';
   }
+
+  // ---------------------------------------------------------------------
+  // Exemple interactif : MLP chien/chat/oiseau, calcul neurone par neurone
+  // ---------------------------------------------------------------------
+  (function(){
+    var svg = document.getElementById('nnSvg');
+    if(!svg) return;
+
+    var LAYERS = [
+      { key:'x', count:4, x:90,  ys:[90,190,290,390],  labels:['x_1','x_2','x_3','x_4'], layerLabel:'Entrée', cls:'' },
+      { key:'h', count:5, x:300, ys:[60,150,240,330,420], labels:['h_1','h_2','h_3','h_4','h_5'], layerLabel:'Cachée 1 (ReLU)', cls:'' },
+      { key:'g', count:5, x:510, ys:[60,150,240,330,420], labels:['g_1','g_2','g_3','g_4','g_5'], layerLabel:'Cachée 2 (ReLU)', cls:'' },
+      { key:'z', count:3, x:700, ys:[140,240,340], labels:['z_1','z_2','z_3'], layerLabel:'Sortie', cls:'output' }
+    ];
+    var R = 24;
+
+    var xVals = [0.9, 0.2, 0.7, 0.4];
+
+    // [w1,w2,w3,w4,b] par neurone, pour chaque couche
+    var Wh = [
+      [0.5,-0.3,0.8,1.0,0.2],
+      [0.2,0.4,-0.6,0.1,-0.1],
+      [-0.4,0.9,0.3,-0.2,0.05],
+      [0.6,-0.5,0.2,0.7,-0.3],
+      [0.1,0.3,0.4,-0.6,0.15]
+    ];
+    var Wg = [
+      [0.3,-0.2,0.5,0.1,-0.4,0.1],
+      [-0.5,0.6,0.2,-0.3,0.1,-0.05],
+      [0.2,0.1,-0.6,0.4,0.3,0.2],
+      [0.4,-0.3,0.1,0.5,-0.2,-0.1],
+      [-0.1,0.4,0.3,-0.5,0.6,0.05]
+    ];
+    var Wz = [
+      [0.4,-0.3,0.5,0.2,-0.1,0.1],
+      [-0.2,0.6,0.1,0.4,0.3,0.2],
+      [0.3,0.2,-0.4,-0.2,0.5,-0.1]
+    ];
+
+    var hVals = [1.55, 0, 0, 0.56, 0.34];
+    var gVals = [0.485, 0, 0.836, 0.732, 0];
+    var zVals = [0.858, 0.479, -0.435];
+    var probs = [0.511, 0.349, 0.140];
+    var classNames = ['chien', 'chat', 'oiseau'];
+    var trueIdx = 1, predIdx = 0, loss = 1.051;
+
+    function fmt(v){ var s = v.toFixed(2); return (v >= 0 ? '+' : '') + s; }
+    function coef(v, isFirst){
+      var s = Math.abs(v).toFixed(2);
+      if(isFirst) return (v < 0 ? '-' : '') + s;
+      return (v < 0 ? ' - ' : ' + ') + s;
+    }
+
+    function edgeFormula(w, prevVals, prevLabels, resultLabel, resultVal, relu){
+      var terms = [];
+      for(var i = 0; i < w.length - 1; i++){
+        terms.push(coef(w[i], i === 0) + '{\\times}' + prevLabels[i]);
+      }
+      var raw = terms.join('') + ' ' + fmt(w[w.length-1]);
+      var termsNum = [];
+      for(i = 0; i < w.length - 1; i++){
+        termsNum.push(coef(w[i], i === 0) + '{\\times}' + prevVals[i].toFixed(2));
+      }
+      var rawNum = termsNum.join('') + ' ' + fmt(w[w.length-1]);
+      var sum = w[w.length-1];
+      for(i = 0; i < w.length - 1; i++) sum += w[i]*prevVals[i];
+      var fn = relu ? '\\mathrm{ReLU}' : '';
+      return '$$' + resultLabel + ' = ' + fn + '(' + raw + ')$$' +
+             '$$\\phantom{' + resultLabel + '} = ' + fn + '(' + rawNum + ') = ' + fn + '(' + sum.toFixed(2) + ') = ' +
+             '\\boxed{' + resultVal.toFixed(2) + '}$$';
+    }
+
+    var xLabels = LAYERS[0].labels;
+    var hLabels = LAYERS[1].labels;
+    var gLabels = LAYERS[2].labels;
+
+    var steps = [{ type:'intro' }];
+    for(var i = 0; i < 5; i++){
+      steps.push({ type:'node', layer:1, node:i,
+        formula: edgeFormula(Wh[i], xVals, xLabels, 'h_' + (i+1), hVals[i], true) });
+    }
+    for(i = 0; i < 5; i++){
+      steps.push({ type:'node', layer:2, node:i,
+        formula: edgeFormula(Wg[i], hVals, hLabels, 'g_' + (i+1), gVals[i], true) });
+    }
+    var outSub = ['chien', 'chat', 'oiseau'];
+    for(i = 0; i < 3; i++){
+      steps.push({ type:'node', layer:3, node:i,
+        formula: edgeFormula(Wz[i], gVals, gLabels, 'z_{' + outSub[i] + '}', zVals[i], false) });
+    }
+    steps.push({ type:'softmax' });
+    steps.push({ type:'loss' });
+
+    // --- construction du SVG (dense, toutes couches connectées) ---
+    var svgParts = [];
+    for(i = 0; i < LAYERS.length - 1; i++){
+      var A = LAYERS[i], B = LAYERS[i+1];
+      for(var a = 0; a < A.count; a++){
+        for(var b = 0; b < B.count; b++){
+          svgParts.push('<line class="nn-edge" id="e-' + (i+1) + '-' + a + '-' + b + '" ' +
+            'x1="' + (A.x + R) + '" y1="' + A.ys[a] + '" x2="' + (B.x - R) + '" y2="' + B.ys[b] + '"></line>');
+        }
+      }
+    }
+    LAYERS.forEach(function(L, li){
+      svgParts.push('<text class="nn-layer-label" x="' + L.x + '" y="24">' + L.layerLabel + '</text>');
+      for(var k = 0; k < L.count; k++){
+        svgParts.push('<circle class="nn-node ' + L.cls + '" id="n-' + li + '-' + k + '" cx="' + L.x + '" cy="' + L.ys[k] + '" r="' + R + '"></circle>');
+        svgParts.push('<text class="nn-node-label" x="' + L.x + '" y="' + L.ys[k] + '">' + L.labels[k].replace(/[{}\\]/g,'').replace(/_(.)/,'$1') + '</text>');
+        svgParts.push('<text class="nn-node-value" id="v-' + li + '-' + k + '" x="' + L.x + '" y="' + (L.ys[k] + R + 14) + '"></text>');
+        if(L.key === 'z'){
+          svgParts.push('<text class="nn-layer-label" text-anchor="start" x="' + (L.x + R + 10) + '" y="' + (L.ys[k] + 4) + '">' + outSub[k] + '</text>');
+        }
+      }
+    });
+    svg.innerHTML = svgParts.join('');
+
+    var stepIdx = 0;
+    var stepNumEl = document.getElementById('nnStepNum');
+    var stepTotalEl = document.getElementById('nnStepTotal');
+    var formulaEl = document.getElementById('nnFormula');
+    var prevBtn = document.getElementById('nnPrev');
+    var nextBtn = document.getElementById('nnNext');
+    stepTotalEl.textContent = steps.length - 1;
+
+    function typeset(){
+      if(window.MathJax && window.MathJax.typesetPromise){
+        window.MathJax.typesetPromise([formulaEl]).then(markFormulaScroll);
+      }
+    }
+
+    function render(){
+      stepNumEl.textContent = stepIdx;
+      prevBtn.disabled = stepIdx === 0;
+      nextBtn.disabled = stepIdx === steps.length - 1;
+
+      // reset toutes les classes actives (pas les "done")
+      svg.querySelectorAll('.nn-node.active').forEach(function(n){ n.classList.remove('active'); });
+      svg.querySelectorAll('.nn-edge.active').forEach(function(e){ e.classList.remove('active'); });
+
+      // marque "done" tout ce qui a été calculé aux étapes précédentes
+      for(var s = 1; s < stepIdx; s++){
+        var st = steps[s];
+        if(st.type === 'node'){
+          var nd = document.getElementById('n-' + st.layer + '-' + st.node);
+          if(nd) nd.classList.add('done');
+        }
+      }
+
+      var current = steps[stepIdx];
+      if(current.type === 'intro'){
+        formulaEl.innerHTML = 'Réseau entraîné à l\'avance (poids fixés). Entrées : $x=(0.9,\\ 0.2,\\ 0.7,\\ 0.4)$. Cliquez sur « Suivant » pour calculer $h_1$, le premier neurone de la couche cachée 1.';
+        LAYERS[0].labels.forEach(function(_, k){
+          document.getElementById('v-0-' + k).textContent = xVals[k].toFixed(2);
+        });
+      } else if(current.type === 'node'){
+        var node = document.getElementById('n-' + current.layer + '-' + current.node);
+        node.classList.add('active');
+        for(var p = 0; p < LAYERS[current.layer - 1].count; p++){
+          var e = document.getElementById('e-' + current.layer + '-' + p + '-' + current.node);
+          if(e) e.classList.add('active');
+        }
+        var valArr = current.layer === 1 ? hVals : (current.layer === 2 ? gVals : zVals);
+        document.getElementById('v-' + current.layer + '-' + current.node).textContent = valArr[current.node].toFixed(2);
+        formulaEl.innerHTML = current.formula;
+      } else if(current.type === 'softmax'){
+        LAYERS[3].labels.forEach(function(_, k){ document.getElementById('n-3-' + k).classList.add('done'); });
+        var bars = '<p><b>Passage aux probabilités (softmax)</b> : $\\mathrm{softmax}(z)_j = e^{z_j}/\\sum_k e^{z_k}$</p>';
+        classNames.forEach(function(name, k){
+          bars += '<div class="nn-softmax-bar"><span class="lbl">' + name + '</span>' +
+            '<div class="track"><div class="fill" style="width:' + (probs[k]*100).toFixed(0) + '%"></div></div>' +
+            '<span class="pct">' + (probs[k]*100).toFixed(1) + ' %</span></div>';
+        });
+        bars += '<p class="sense"><b>Sens :</b> classe prédite = <b>' + classNames[predIdx] + '</b> (probabilité la plus haute), avec seulement ' + (probs[predIdx]*100).toFixed(0) + '% de confiance : le réseau hésite encore.</p>';
+        formulaEl.innerHTML = bars;
+      } else if(current.type === 'loss'){
+        formulaEl.innerHTML = '<p><b>La vraie étiquette est « chat »</b> (pas « chien »). La perte d\'entropie croisée pénalise la faible probabilité attribuée à la bonne classe :</p>' +
+          '$$L = -\\log(p_{\\text{chat}}) = -\\log(0.349) \\approx \\boxed{' + loss.toFixed(2) + '}$$' +
+          '<p class="sense"><b>Sens :</b> une prédiction correcte et confiante donnerait une perte proche de 0 ; ici $L\\approx1.05$ signale une erreur franche : c\'est exactement ce signal que la rétropropagation (fiche 6) utilise pour corriger tous les poids $W^{[j]}, b^{[j]}$ du réseau.</p>';
+      }
+      typeset();
+    }
+
+    prevBtn.addEventListener('click', function(){ if(stepIdx > 0){ stepIdx--; render(); } });
+    nextBtn.addEventListener('click', function(){ if(stepIdx < steps.length - 1){ stepIdx++; render(); } });
+    render();
+  })();
+
+  // ---------------------------------------------------------------------
+  // QCM : correction interactive
+  // ---------------------------------------------------------------------
+  document.querySelectorAll('.qcm').forEach(function(qcm){
+    var submitBtn = qcm.querySelector('.qcm-submit');
+    var resetBtn = qcm.querySelector('.qcm-reset');
+    var resultEl = qcm.querySelector('.qcm-result');
+    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+
+    submitBtn.addEventListener('click', function(){
+      var score = 0;
+      questions.forEach(function(q){
+        var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
+        var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
+        var checked = [];
+        opts.forEach(function(opt, idx){
+          if(opt.querySelector('input').checked) checked.push(idx);
+        });
+        checked.sort();
+        var isCorrect = checked.length === correct.length && checked.every(function(v, i){ return v === correct[i]; });
+        if(isCorrect) score++;
+        q.classList.add('graded');
+        q.classList.toggle('q-correct', isCorrect);
+        q.classList.toggle('q-incorrect', !isCorrect);
+        opts.forEach(function(opt, idx){
+          var input = opt.querySelector('input');
+          var isRight = correct.indexOf(idx) !== -1;
+          var wasChecked = input.checked;
+          opt.classList.toggle('opt-right', isRight);
+          opt.classList.toggle('opt-wrong-checked', wasChecked && !isRight);
+          input.disabled = true;
+        });
+      });
+      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      submitBtn.disabled = true;
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      questions.forEach(function(q){
+        q.classList.remove('graded', 'q-correct', 'q-incorrect');
+        q.querySelectorAll('.qcm-opt').forEach(function(opt){
+          opt.classList.remove('opt-right', 'opt-wrong-checked');
+          var input = opt.querySelector('input');
+          input.checked = false;
+          input.disabled = false;
+        });
+      });
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    });
+  });
 })();
 </script>
 
