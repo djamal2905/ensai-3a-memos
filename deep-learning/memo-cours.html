@@ -215,6 +215,21 @@ window.MathJax = {
   .nnamed-label-bold{ font-weight:700; fill:var(--accent-strong); }
   .nnamed-label-sub{ font:500 10px "JetBrains Mono",monospace; fill:var(--muted); }
   .nnamed-header{ font:700 11px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; text-transform:uppercase; letter-spacing:.03em; }
+  .nnamed-line, .nnamed-node{ transition:opacity .25s ease, stroke-width .25s ease, stroke .25s ease; }
+  .nnamed-line-dim{ opacity:.08; }
+  .nnamed-line-weak{ opacity:.32; stroke-dasharray:3 3; }
+  .nnamed-line-strong{ opacity:1; stroke:var(--accent-strong); stroke-width:2.5; }
+  .nnamed-clickable{ cursor:pointer; }
+  .nnamed-clickable:focus{ outline:none; }
+  .nnamed-clickable:focus-visible .nnamed-node{ outline:2px solid var(--accent); outline-offset:2px; }
+  .nnamed-clickable:hover .nnamed-node{ stroke-width:3; }
+  .nnamed-node-dim{ opacity:.35; }
+  .nnamed-node-strong{ stroke-width:3.5 !important; }
+  .nnamed-node-active{ stroke-width:4 !important; filter:drop-shadow(0 0 4px var(--accent)); }
+  .nnamed-hint{ margin:8px 0 0; font-size:.85rem; color:var(--muted); font-style:italic; }
+  .nnamed-infopanel{ margin:8px 0 0; padding:10px 14px; border-radius:8px; background:var(--surface-2); border:1px solid var(--border); font-size:.92rem; color:var(--ink-soft); min-height:1.4em; }
+  .nnamed-infopanel b{ color:var(--accent-strong); }
+  .nnamed-infopanel .weak-list{ color:var(--muted); }
 
   /* --- RNN unfolded: fixed-row grid so h-circles, y-outputs (top) and
          x-inputs (bottom) stay level, plus a W_hh-labelled connector --- */
@@ -614,52 +629,60 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
 
             <div class="box box-def">
               <p class="box-label">Rendre l'abstrait concret · Que « représente » un neurone caché ? (exemple d'Andrew Ng, le T-shirt)</p>
-              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique d'Andrew Ng consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction concret : <i>ce modèle de T-shirt va-t-il être un best-seller ?</i> On dispose de 4 variables brutes (prix, coût de livraison, budget marketing, qualité du matériau) ; on imagine qu'une couche cachée de 3 neurones pourrait faire émerger 3 concepts intermédiaires, avant de prédire la probabilité de best-seller. Le graphe ci-dessous représente ce réseau, avec le <b>nom de chaque neurone</b> et l'<b>appellation de chaque couche</b> :</p>
+              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique d'Andrew Ng consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction concret : <i>ce modèle de T-shirt va-t-il être un best-seller ?</i> On dispose de 4 variables brutes (prix, coût de livraison, budget marketing, qualité du matériau) ; on imagine qu'une couche cachée de 3 neurones pourrait faire émerger 3 concepts intermédiaires, avant de prédire la probabilité de best-seller. Idée : « prix » + « coût de livraison » pourraient ensemble informer un concept plus abstrait comme l'<b>abordabilité</b> perçue du produit ; « budget marketing » informe seul la <b>notoriété</b> ; « prix » + « qualité du matériau » informent ensemble la <b>qualité perçue</b>. Le graphe interactif ci-dessous représente ce réseau, avec le <b>nom de chaque neurone</b> et l'<b>appellation de chaque couche</b> :</p>
 
               <div class="nnamed-scroll">
-                <svg class="nnamed-svg" viewBox="0 0 780 405" xmlns="http://www.w3.org/2000/svg">
+                <svg class="nnamed-svg" id="nnamedSvg" viewBox="0 0 780 405" xmlns="http://www.w3.org/2000/svg">
                   <!-- lignes denses col1 -> col2 -->
-                  <line class="nnamed-line" x1="110" y1="55" x2="354" y2="125"/>
-                  <line class="nnamed-line" x1="110" y1="55" x2="354" y2="225"/>
-                  <line class="nnamed-line" x1="110" y1="55" x2="354" y2="325"/>
-                  <line class="nnamed-line" x1="110" y1="155" x2="354" y2="125"/>
-                  <line class="nnamed-line" x1="110" y1="155" x2="354" y2="225"/>
-                  <line class="nnamed-line" x1="110" y1="155" x2="354" y2="325"/>
-                  <line class="nnamed-line" x1="110" y1="255" x2="354" y2="125"/>
-                  <line class="nnamed-line" x1="110" y1="255" x2="354" y2="225"/>
-                  <line class="nnamed-line" x1="110" y1="255" x2="354" y2="325"/>
-                  <line class="nnamed-line" x1="110" y1="355" x2="354" y2="125"/>
-                  <line class="nnamed-line" x1="110" y1="355" x2="354" y2="225"/>
-                  <line class="nnamed-line" x1="110" y1="355" x2="354" y2="325"/>
+                  <line class="nnamed-line" data-from="0" data-to="0" x1="110" y1="55" x2="354" y2="125"/>
+                  <line class="nnamed-line" data-from="0" data-to="1" x1="110" y1="55" x2="354" y2="225"/>
+                  <line class="nnamed-line" data-from="0" data-to="2" x1="110" y1="55" x2="354" y2="325"/>
+                  <line class="nnamed-line" data-from="1" data-to="0" x1="110" y1="155" x2="354" y2="125"/>
+                  <line class="nnamed-line" data-from="1" data-to="1" x1="110" y1="155" x2="354" y2="225"/>
+                  <line class="nnamed-line" data-from="1" data-to="2" x1="110" y1="155" x2="354" y2="325"/>
+                  <line class="nnamed-line" data-from="2" data-to="0" x1="110" y1="255" x2="354" y2="125"/>
+                  <line class="nnamed-line" data-from="2" data-to="1" x1="110" y1="255" x2="354" y2="225"/>
+                  <line class="nnamed-line" data-from="2" data-to="2" x1="110" y1="255" x2="354" y2="325"/>
+                  <line class="nnamed-line" data-from="3" data-to="0" x1="110" y1="355" x2="354" y2="125"/>
+                  <line class="nnamed-line" data-from="3" data-to="1" x1="110" y1="355" x2="354" y2="225"/>
+                  <line class="nnamed-line" data-from="3" data-to="2" x1="110" y1="355" x2="354" y2="325"/>
                   <!-- lignes denses col2 -> col3 -->
-                  <line class="nnamed-line" x1="406" y1="125" x2="614" y2="225"/>
-                  <line class="nnamed-line" x1="406" y1="225" x2="614" y2="225"/>
-                  <line class="nnamed-line" x1="406" y1="325" x2="614" y2="225"/>
+                  <line class="nnamed-line" data-hidden="0" x1="406" y1="125" x2="614" y2="225"/>
+                  <line class="nnamed-line" data-hidden="1" x1="406" y1="225" x2="614" y2="225"/>
+                  <line class="nnamed-line" data-hidden="2" x1="406" y1="325" x2="614" y2="225"/>
                   <!-- noeuds colonne 1 (entree) -->
-                  <circle class="nnamed-node nnamed-in" cx="90" cy="55" r="20"/>
+                  <circle class="nnamed-node nnamed-in" data-in="0" cx="90" cy="55" r="20"/>
                   <text class="nnamed-label nnamed-label-left" x="60" y="59">prix</text>
-                  <circle class="nnamed-node nnamed-in" cx="90" cy="155" r="20"/>
+                  <circle class="nnamed-node nnamed-in" data-in="1" cx="90" cy="155" r="20"/>
                   <text class="nnamed-label nnamed-label-left" x="60" y="152.5">coût de</text>
                   <text class="nnamed-label nnamed-label-left" x="60" y="165.5">livraison</text>
-                  <circle class="nnamed-node nnamed-in" cx="90" cy="255" r="20"/>
+                  <circle class="nnamed-node nnamed-in" data-in="2" cx="90" cy="255" r="20"/>
                   <text class="nnamed-label nnamed-label-left" x="60" y="252.5">budget</text>
                   <text class="nnamed-label nnamed-label-left" x="60" y="265.5">marketing</text>
-                  <circle class="nnamed-node nnamed-in" cx="90" cy="355" r="20"/>
+                  <circle class="nnamed-node nnamed-in" data-in="3" cx="90" cy="355" r="20"/>
                   <text class="nnamed-label nnamed-label-left" x="60" y="352.5">qualité du</text>
                   <text class="nnamed-label nnamed-label-left" x="60" y="365.5">matériau</text>
-                  <!-- noeuds colonne 2 (cachee, nommee) -->
-                  <circle class="nnamed-node nnamed-hidden" cx="380" cy="125" r="26"/>
-                  <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="77">abordabilité</text>
-                  <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="91">(affordability)</text>
-                  <circle class="nnamed-node nnamed-hidden" cx="380" cy="225" r="26"/>
-                  <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="177">notoriété</text>
-                  <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="191">(awareness)</text>
-                  <circle class="nnamed-node nnamed-hidden" cx="380" cy="325" r="26"/>
-                  <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="277">qualité perçue</text>
-                  <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="291">(perceived quality)</text>
-                  <!-- noeud colonne 3 (sortie) -->
-                  <circle class="nnamed-node nnamed-out" cx="640" cy="225" r="26"/>
-                  <text class="nnamed-label nnamed-label-left nnamed-label-bold" x="676" y="229">best-seller ?</text>
+                  <!-- noeuds colonne 2 (cachee, nommee), cliquables -->
+                  <g class="nnamed-clickable" data-hidden="0" tabindex="0" role="button" aria-label="Neurone abordabilité">
+                    <circle class="nnamed-node nnamed-hidden" cx="380" cy="125" r="26"/>
+                    <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="77">abordabilité</text>
+                    <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="91">(affordability)</text>
+                  </g>
+                  <g class="nnamed-clickable" data-hidden="1" tabindex="0" role="button" aria-label="Neurone notoriété">
+                    <circle class="nnamed-node nnamed-hidden" cx="380" cy="225" r="26"/>
+                    <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="177">notoriété</text>
+                    <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="191">(awareness)</text>
+                  </g>
+                  <g class="nnamed-clickable" data-hidden="2" tabindex="0" role="button" aria-label="Neurone qualité perçue">
+                    <circle class="nnamed-node nnamed-hidden" cx="380" cy="325" r="26"/>
+                    <text class="nnamed-label nnamed-label-center nnamed-label-bold" x="380" y="277">qualité perçue</text>
+                    <text class="nnamed-label nnamed-label-center nnamed-label-sub" x="380" y="291">(perceived quality)</text>
+                  </g>
+                  <!-- noeud colonne 3 (sortie), cliquable -->
+                  <g class="nnamed-clickable" data-out="0" tabindex="0" role="button" aria-label="Neurone de sortie best-seller">
+                    <circle class="nnamed-node nnamed-out" cx="640" cy="225" r="26"/>
+                    <text class="nnamed-label nnamed-label-left nnamed-label-bold" x="676" y="229">best-seller ?</text>
+                  </g>
                   <!-- en-tetes de colonnes -->
                   <text class="nnamed-header" x="90" y="20">ENTRÉE</text>
                   <text class="nnamed-header" x="90" y="34">(4 variables brutes)</text>
@@ -668,8 +691,10 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
                   <text class="nnamed-header" x="640" y="20">SORTIE</text>
                 </svg>
               </div>
+              <p class="nnamed-hint">💡 Cliquez sur un neurone de la couche cachée (ou sur la sortie) pour voir quelles entrées l'influencent le plus.</p>
+              <div class="nnamed-infopanel" id="nnamedInfo">Sélectionnez un neurone ci-dessus pour voir le détail de ses contributions.</div>
 
-              <p>Idée : « prix » + « coût de livraison » pourraient ensemble informer un concept plus abstrait comme l'<b>abordabilité</b> perçue du produit ; « budget marketing » informe seul la <b>notoriété</b> ; « prix » + « qualité du matériau » informent ensemble la <b>qualité perçue</b>. Si on ajoutait une <b>deuxième</b> couche cachée, elle pourrait à son tour recombiner ces trois concepts en une notion encore plus abstraite (ex. « attractivité globale ») : c'est le même principe, couche après couche : chaque couche construit des représentations de plus en plus abstraites à partir de celles de la couche précédente (l'exemple original d'Andrew Ng n'utilise qu'une seule couche cachée, par souci de simplicité).</p>
+              <p>Si on ajoutait une <b>deuxième</b> couche cachée, elle pourrait à son tour recombiner ces trois concepts en une notion encore plus abstraite (ex. « attractivité globale ») : c'est le même principe, couche après couche : chaque couche construit des représentations de plus en plus abstraites à partir de celles de la couche précédente (l'exemple original d'Andrew Ng n'utilise qu'une seule couche cachée, par souci de simplicité).</p>
               <div class="box box-warn" style="margin-top:10px;">
                 <p class="box-label">⚠ Attention : ces noms sont didactiques, pas réels</p>
                 <p>En pratique, <b>on ne choisit jamais</b> ce qu'un neurone caché doit représenter : le réseau est entraîné de bout en bout (end-to-end), et chaque neurone reçoit une entrée pondérée de <b>toutes</b> les entrées de la couche précédente (les 4 variables, pas seulement « prix » et « coût de livraison » pour le neurone « abordabilité »), pas seulement d'un sous-groupe « logique ». Ce qu'apprend réellement chaque neurone est déterminé automatiquement par la descente de gradient, et n'est presque jamais aussi lisible qu'un concept humain nommé (« abordabilité »). Cet exemple sert uniquement à construire l'intuition qu'une couche cachée peut, <i>en principe</i>, faire émerger des représentations intermédiaires utiles.</p>
@@ -2677,6 +2702,102 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
     });
   });
 })();
+
+  // ---------------------------------------------------------------------
+  // Graphe interactif : neurones nommés (exemple T-shirt)
+  // ---------------------------------------------------------------------
+  (function(){
+    var svg = document.getElementById('nnamedSvg');
+    if(!svg) return;
+    var info = document.getElementById('nnamedInfo');
+
+    var IN_NAMES = ['prix', 'coût de livraison', 'budget marketing', 'qualité du matériau'];
+    var HIDDEN_NAMES = ['abordabilité (affordability)', 'notoriété (awareness)', 'qualité perçue (perceived quality)'];
+    var STRONG = { 0: [0, 1], 1: [2], 2: [0, 3] };
+
+    var edgesInHidden = Array.prototype.slice.call(svg.querySelectorAll('line[data-from]'));
+    var edgesHiddenOut = Array.prototype.slice.call(svg.querySelectorAll('line[data-hidden]'));
+    var inNodes = Array.prototype.slice.call(svg.querySelectorAll('[data-in]'));
+    var hiddenGroups = Array.prototype.slice.call(svg.querySelectorAll('g[data-hidden]'));
+    var outGroup = svg.querySelector('g[data-out]');
+
+    var active = null;
+
+    function clearAll(){
+      edgesInHidden.forEach(function(l){ l.classList.remove('nnamed-line-dim', 'nnamed-line-weak', 'nnamed-line-strong'); });
+      edgesHiddenOut.forEach(function(l){ l.classList.remove('nnamed-line-dim', 'nnamed-line-weak', 'nnamed-line-strong'); });
+      inNodes.forEach(function(n){ n.classList.remove('nnamed-node-dim', 'nnamed-node-strong'); });
+      hiddenGroups.forEach(function(g){ g.querySelector('.nnamed-node').classList.remove('nnamed-node-active', 'nnamed-node-dim', 'nnamed-node-strong'); });
+      if(outGroup) outGroup.querySelector('.nnamed-node').classList.remove('nnamed-node-active', 'nnamed-node-dim', 'nnamed-node-strong');
+    }
+
+    function showDefault(){
+      clearAll();
+      info.innerHTML = 'Sélectionnez un neurone ci-dessus pour voir le détail de ses contributions.';
+    }
+
+    function selectHidden(idx){
+      clearAll();
+      var strong = STRONG[idx] || [];
+      edgesInHidden.forEach(function(l){
+        var to = Number(l.getAttribute('data-to'));
+        var from = Number(l.getAttribute('data-from'));
+        if(to !== idx){ l.classList.add('nnamed-line-dim'); return; }
+        l.classList.add(strong.indexOf(from) !== -1 ? 'nnamed-line-strong' : 'nnamed-line-weak');
+      });
+      edgesHiddenOut.forEach(function(l){
+        var h = Number(l.getAttribute('data-hidden'));
+        l.classList.add(h === idx ? 'nnamed-line-strong' : 'nnamed-line-dim');
+      });
+      inNodes.forEach(function(n){
+        var i = Number(n.getAttribute('data-in'));
+        n.classList.add(strong.indexOf(i) !== -1 ? 'nnamed-node-strong' : 'nnamed-node-dim');
+      });
+      hiddenGroups.forEach(function(g){
+        var i = Number(g.getAttribute('data-hidden'));
+        var node = g.querySelector('.nnamed-node');
+        if(i === idx) node.classList.add('nnamed-node-active');
+        else node.classList.add('nnamed-node-dim');
+      });
+
+      var strongNames = strong.map(function(i){ return IN_NAMES[i]; });
+      var weakNames = IN_NAMES.filter(function(_, i){ return strong.indexOf(i) === -1; });
+      info.innerHTML = '<b>' + HIDDEN_NAMES[idx] + '</b> : contribution forte (intuition pédagogique) : <b>' + strongNames.join(', ') + '</b>. ' +
+        'Contribution plus faible : <span class="weak-list">' + weakNames.join(', ') + '</span>. ' +
+        'Rappel : en réalité, le réseau pondère les <b>4</b> entrées pour ce neurone (voir l\'encadré ci-dessous).';
+    }
+
+    function selectOut(){
+      clearAll();
+      edgesInHidden.forEach(function(l){ l.classList.add('nnamed-line-dim'); });
+      edgesHiddenOut.forEach(function(l){ l.classList.add('nnamed-line-strong'); });
+      inNodes.forEach(function(n){ n.classList.add('nnamed-node-dim'); });
+      hiddenGroups.forEach(function(g){ g.querySelector('.nnamed-node').classList.add('nnamed-node-strong'); });
+      if(outGroup) outGroup.querySelector('.nnamed-node').classList.add('nnamed-node-active');
+      info.innerHTML = '<b>Sortie (best-seller ?)</b> combine les <b>3</b> concepts appris (abordabilité, notoriété, qualité perçue), eux-mêmes calculés à partir des 4 entrées.';
+    }
+
+    hiddenGroups.forEach(function(g){
+      var idx = Number(g.getAttribute('data-hidden'));
+      function toggle(){
+        if(active && active.type === 'hidden' && active.idx === idx){ active = null; showDefault(); return; }
+        active = { type: 'hidden', idx: idx };
+        selectHidden(idx);
+      }
+      g.addEventListener('click', toggle);
+      g.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+    });
+
+    if(outGroup){
+      function toggleOut(){
+        if(active && active.type === 'out'){ active = null; showDefault(); return; }
+        active = { type: 'out' };
+        selectOut();
+      }
+      outGroup.addEventListener('click', toggleOut);
+      outGroup.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOut(); } });
+    }
+  })();
 </script>
 
 </body>
