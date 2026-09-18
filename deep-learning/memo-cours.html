@@ -138,7 +138,12 @@ window.MathJax = {
 
   .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:14px 0; }
   .box-label{ display:flex; align-items:center; gap:8px; font:700 .76rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px; }
-  .box p{ margin:.35em 0; font-size:.94rem; }
+  .box p{ margin:.35em 0; font-size:.94rem; max-width:none; }
+  .box ul{ margin:.35em 0; padding-left:1.3em; font-size:.94rem; }
+  .box ul li{ margin:.4em 0; padding-left:.2em; }
+  .box ul li::marker{ color:var(--accent); }
+  .box h4.sub{ font-size:.86rem; font-weight:700; color:var(--ink); margin:.9em 0 .2em; }
+  .box h4.sub:first-child{ margin-top:0; }
   .box-def{ background:var(--def-bg); border-color:var(--def-border); } .box-def .box-label{ color:var(--def-label); }
   .box-thm{ background:var(--thm-bg); border-color:var(--thm-border); } .box-thm .box-label{ color:var(--thm-label); }
   .box-ex{ background:var(--ex-bg); border-color:var(--ex-border); } .box-ex .box-label{ color:var(--ex-label); }
@@ -184,6 +189,18 @@ window.MathJax = {
   .resnetblock-skip path{ fill:none; stroke:var(--accent); stroke-width:2; }
   .resnetblock-skip .arrowhead{ fill:var(--accent); }
   .resnetblock-skiplabel{ position:absolute; top:0; left:35%; transform:translateX(-50%); font:600 .68rem "JetBrains Mono",monospace; color:var(--muted); font-style:italic; white-space:nowrap; }
+
+  .cnnviz-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:16px 0; }
+  .cnnviz{ display:block; min-width:820px; }
+  .cnnviz-rect{ stroke:var(--accent); stroke-width:1.2; }
+  .cnnviz-arrow{ stroke:var(--muted); stroke-width:1.6; }
+  .cnnviz-dot{ fill:var(--ink-soft); }
+  .cnnviz-fcline{ stroke:var(--border); stroke-width:1; opacity:.6; }
+  .cnnviz-node{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.6; }
+  .cnnviz-outnode{ fill:var(--def-bg); stroke:var(--def-border); stroke-width:2; }
+  .cnnviz-outlabel{ font:600 12px "Source Sans 3",sans-serif; fill:var(--ink); dominant-baseline:middle; }
+  .cnnviz-stagelabel{ font:600 11px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; }
+  marker#cnnArrow path{ fill:var(--muted); }
 
   /* --- RNN unfolded: fixed-row grid so h-circles, y-outputs (top) and
          x-inputs (bottom) stay level, plus a W_hh-labelled connector --- */
@@ -269,9 +286,9 @@ window.MathJax = {
   .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
   .qcm-head h3{ font-size:1.05rem; margin:0; }
   .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
-  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; max-width:none; }
   .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
-  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; max-width:none; }
   .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
   .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
   .qcm-opt:hover{ background:var(--surface-2); }
@@ -316,6 +333,7 @@ window.MathJax = {
   .nn-edge.active{ stroke:var(--accent); stroke-width:2.2; opacity:1; }
   .nn-edge.done{ stroke:var(--def-border); opacity:.35; }
   .nn-formula-panel{ margin-top:12px; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px 16px; min-height:2.4em; font-size:.92rem; color:var(--ink); }
+  .nn-formula-panel p{ max-width:none; }
   .nn-formula-panel .nn-result{ color:var(--accent-strong); font-weight:700; }
   .nn-softmax-bar{ display:flex; align-items:center; gap:10px; margin:6px 0; }
   .nn-softmax-bar .lbl{ width:70px; font:600 .82rem "JetBrains Mono",monospace; }
@@ -581,41 +599,50 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
 
             <div class="box box-def">
-              <p class="box-label">Rendre l'abstrait concret · Que « représente » un neurone caché ? (exemple d'Andrew Ng)</p>
-              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique (Andrew Ng, <i>Neural Networks and Deep Learning</i>) consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction du prix d'une maison :</p>
+              <p class="box-label">Rendre l'abstrait concret · Que « représente » un neurone caché ? (exemple d'Andrew Ng, le T-shirt)</p>
+              <p>Formellement, un neurone caché n'est qu'un nombre : $g(\mathbf w\cdot\mathbf x+b)$. Mais pour se construire une intuition, l'exemple pédagogique classique d'Andrew Ng consiste à <b>nommer</b> ce que chaque neurone pourrait représenter, sur un problème de prédiction : <i>ce modèle de T-shirt va-t-il être un best-seller ?</i></p>
               <div class="flow">
-                <div class="fb">taille</div>
-                <div class="fb">nb. chambres</div>
-                <div class="fb">code postal</div>
-                <div class="fb">richesse du quartier</div>
+                <div class="fb">prix</div>
+                <div class="fb">coût de livraison</div>
+                <div class="fb">budget marketing</div>
+                <div class="fb">qualité du matériau</div>
               </div>
-              <p style="text-align:center; margin:6px 0;">↓ (couche d'entrée → couche cachée)</p>
+              <p style="text-align:center; margin:6px 0;">↓ (couche d'entrée → couche cachée 1, <b>4 entrées</b>)</p>
               <div class="flow">
-                <div class="fb accent">taille de la famille</div>
-                <div class="fb accent">marchabilité</div>
-                <div class="fb accent">qualité des écoles</div>
+                <div class="fb accent">abordabilité<br><span class="mono" style="font-size:.75em;">(affordability)</span></div>
+                <div class="fb accent">notoriété<br><span class="mono" style="font-size:.75em;">(awareness)</span></div>
+                <div class="fb accent">qualité perçue<br><span class="mono" style="font-size:.75em;">(perceived quality)</span></div>
               </div>
-              <p style="text-align:center; margin:6px 0;">↓</p>
-              <div class="flow"><div class="fb accent">prix prédit $\hat y$</div></div>
-              <p>Idée : « taille » + « nb. chambres » pourraient ensemble informer un concept plus abstrait comme la « taille de la famille » adaptée au bien ; « code postal » informe la « marchabilité » du quartier ; « code postal » + « richesse » informent la « qualité des écoles » perçue.</p>
+              <p style="text-align:center; margin:6px 0;">↓ (couche cachée 1 → sortie, <b>3 entrées</b>)</p>
+              <div class="flow"><div class="fb accent">$\hat y$ = probabilité de best-seller</div></div>
+              <p>Idée : « prix » + « coût de livraison » pourraient ensemble informer un concept plus abstrait comme l'<b>abordabilité</b> perçue du produit ; « budget marketing » informe seul la <b>notoriété</b> ; « prix » + « qualité du matériau » informent ensemble la <b>qualité perçue</b>. Si on ajoutait une <b>deuxième</b> couche cachée, elle pourrait à son tour recombiner ces trois concepts en une notion encore plus abstraite (ex. « attractivité globale ») : c'est le même principe, couche après couche : chaque couche construit des représentations de plus en plus abstraites à partir de celles de la couche précédente (l'exemple original d'Andrew Ng n'utilise qu'une seule couche cachée, par souci de simplicité).</p>
               <div class="box box-warn" style="margin-top:10px;">
                 <p class="box-label">⚠ Attention : ces noms sont didactiques, pas réels</p>
-                <p>En pratique, <b>on ne choisit jamais</b> ce qu'un neurone caché doit représenter : le réseau est entraîné de bout en bout (end-to-end), et chaque neurone reçoit une entrée pondérée de <b>toutes</b> les entrées de la couche précédente, pas seulement d'un sous-groupe « logique ». Ce qu'apprend réellement chaque neurone est déterminé automatiquement par la descente de gradient, et n'est presque jamais aussi lisible qu'un concept humain nommé (« marchabilité »). Cet exemple sert uniquement à construire l'intuition qu'une couche cachée peut, <i>en principe</i>, faire émerger des représentations intermédiaires utiles.</p>
+                <p>En pratique, <b>on ne choisit jamais</b> ce qu'un neurone caché doit représenter : le réseau est entraîné de bout en bout (end-to-end), et chaque neurone reçoit une entrée pondérée de <b>toutes</b> les entrées de la couche précédente (les 4 variables, pas seulement « prix » et « coût de livraison » pour le neurone « abordabilité »), pas seulement d'un sous-groupe « logique ». Ce qu'apprend réellement chaque neurone est déterminé automatiquement par la descente de gradient, et n'est presque jamais aussi lisible qu'un concept humain nommé (« abordabilité »). Cet exemple sert uniquement à construire l'intuition qu'une couche cachée peut, <i>en principe</i>, faire émerger des représentations intermédiaires utiles.</p>
               </div>
             </div>
 
             <div class="box box-def">
-              <p class="box-label">En pratique · Comment choisir le nombre de neurones, de couches, et l'activation ? (ce n'est jamais au hasard)</p>
-              <p><b>Nombre de couches et de neurones par couche</b> : quelques repères utilisés en pratique :</p>
-              <p>• <b>Partir d'une architecture connue</b> qui a fait ses preuves sur une tâche similaire, puis l'adapter (plutôt que partir de zéro).<br>
-              • <b>Plus de données et une tâche plus complexe</b> $\Rightarrow$ justifient un réseau plus grand (plus de capacité) ; peu de données $\Rightarrow$ un grand réseau <b>sur-apprend</b> (fiche 9).<br>
-              • <b>Forme « entonnoir »</b> fréquente : les couches rétrécissent progressivement vers la sortie (ex. 128 → 64 → 32 → sortie), pour compresser l'information utile.<br>
-              • <b>Choix par validation empirique</b> : on compare plusieurs architectures sur un jeu de validation (fiche 9) et on garde celle qui généralise le mieux : jamais un choix théorique pur (cf. slide « Deep Learning is not a Solution to Everything » du cours : les architectures restent en grande partie <i>heuristiques</i>).<br>
-              • <b>Contrainte de calcul/mémoire</b> : le nombre de paramètres (cheat sheet ci-dessus) doit rester compatible avec le budget GPU disponible.</p>
-              <p><b>Fonction d'activation</b> : le choix dépend du rôle de la couche, jamais arbitraire :</p>
-              <p>• <b>Couches cachées</b> : ReLU par défaut (rapide, évite en grande partie le problème de gradient qui s'évanouit des fonctions saturantes comme sigmoïde/tanh) ; Leaky ReLU si on observe des neurones « morts » (toujours à 0, cf. $h_3=0$ dans l'exemple interactif ci-dessus).<br>
-              • <b>Couche de sortie</b> : dictée par la tâche, pas par préférence : <b>identité</b> pour une régression, <b>sigmoïde</b> pour une classification binaire ($\hat y\in[0,1]$), <b>softmax</b> pour une classification multi-classe ($\hat y$ = vecteur de probabilités, comme dans l'exemple chien/chat/oiseau).<br>
-              • <b>tanh</b> reste utilisée dans certaines architectures récurrentes (fiche 21) ; <b>GELU</b> est devenue standard dans les Transformers (fiche 36+).</p>
+              <p class="box-label">En pratique · Comment choisir le nombre d'entrées, de neurones, de couches, et l'activation ? (ce n'est jamais au hasard)</p>
+
+              <h4 class="sub">Nombre d'entrées d'une couche : ce n'est <i>pas</i> un choix</h4>
+              <p>À ne pas confondre avec le nombre de neurones ! Le nombre d'<b>entrées</b> d'une couche est entièrement <b>déterminé</b>, jamais choisi librement : pour la toute première couche, c'est le nombre de variables brutes retenues (4 dans l'exemple du T-shirt : prix, livraison, marketing, matériau) ; pour toute couche suivante, c'est simplement le nombre de <b>neurones de la couche précédente</b> (3, la taille de la couche cachée 1). Ce qui <b>est</b> un vrai choix de conception, c'est le nombre de <b>neurones</b> (= sorties) de chaque couche cachée : ici, 3, parce qu'on a choisi de faire émerger 3 concepts intermédiaires. Rien n'empêche d'en choisir 5 ou 10 à la place, au prix de plus de paramètres à entraîner (cheat sheet ci-dessus).</p>
+
+              <h4 class="sub">Nombre de couches et de neurones par couche : quelques repères utilisés en pratique</h4>
+              <ul>
+                <li><b>Partir d'une architecture connue</b> qui a fait ses preuves sur une tâche similaire, puis l'adapter (plutôt que partir de zéro).</li>
+                <li><b>Plus de données et une tâche plus complexe</b> $\Rightarrow$ justifient un réseau plus grand (plus de capacité) ; peu de données $\Rightarrow$ un grand réseau <b>sur-apprend</b> (fiche 9).</li>
+                <li><b>Forme « entonnoir »</b> fréquente : les couches rétrécissent progressivement vers la sortie (ex. 128 → 64 → 32 → sortie), pour compresser l'information utile.</li>
+                <li><b>Choix par validation empirique</b> : on compare plusieurs architectures sur un jeu de validation (fiche 9) et on garde celle qui généralise le mieux : jamais un choix théorique pur (cf. slide « Deep Learning is not a Solution to Everything » du cours : les architectures restent en grande partie <i>heuristiques</i>).</li>
+                <li><b>Contrainte de calcul/mémoire</b> : le nombre de paramètres (cheat sheet ci-dessus) doit rester compatible avec le budget GPU disponible.</li>
+              </ul>
+
+              <h4 class="sub">Fonction d'activation : le choix dépend du rôle de la couche, jamais arbitraire</h4>
+              <ul>
+                <li><b>Couches cachées</b> : ReLU par défaut (rapide, évite en grande partie le problème de gradient qui s'évanouit des fonctions saturantes comme sigmoïde/tanh) ; Leaky ReLU si on observe des neurones « morts » (toujours à 0, cf. $h_3=0$ dans l'exemple interactif ci-dessus).</li>
+                <li><b>Couche de sortie</b> : dictée par la tâche, pas par préférence : <b>identité</b> pour une régression, <b>sigmoïde</b> pour une classification binaire ($\hat y\in[0,1]$, comme la probabilité de best-seller ci-dessus), <b>softmax</b> pour une classification multi-classe ($\hat y$ = vecteur de probabilités, comme dans l'exemple chien/chat/oiseau).</li>
+                <li><b>tanh</b> reste utilisée dans certaines architectures récurrentes (fiche 21) ; <b>GELU</b> est devenue standard dans les Transformers (fiche 36+).</li>
+              </ul>
               <p class="sense"><b>Sens :</b> retenir la logique, pas des règles rigides : chaque choix architectural (profondeur, largeur, activation) est une hypothèse qu'on <b>valide empiriquement</b>, jamais une certitude théorique : d'où l'importance du triplet train/validation/test (fiche 9).</p>
             </div>
           </article>
@@ -973,6 +1000,120 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <div class="fb accent">Softmax</div>
             </div>
 
+            <div class="cnnviz-scroll">
+              <svg class="cnnviz" viewBox="0 0 840 230" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <marker id="cnnArrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 Z"/>
+                  </marker>
+                </defs>
+                <!-- ===== feature maps ===== -->
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="8.0" y="86.0" width="84" height="84" rx="3" fill="var(--surface-2)" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="150.0" y="93.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="0.62"/>
+                <rect class="cnnviz-rect" x="156.0" y="88.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="162.0" y="83.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="0.88"/>
+                <rect class="cnnviz-rect" x="168.0" y="78.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="275.0" y="103.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="0.62"/>
+                <rect class="cnnviz-rect" x="281.0" y="98.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="287.0" y="93.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="0.88"/>
+                <rect class="cnnviz-rect" x="293.0" y="88.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="385.0" y="108.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.58"/>
+                <rect class="cnnviz-rect" x="391.0" y="103.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.67"/>
+                <rect class="cnnviz-rect" x="397.0" y="98.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="403.0" y="93.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.83"/>
+                <rect class="cnnviz-rect" x="409.0" y="88.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.92"/>
+                <rect class="cnnviz-rect" x="415.0" y="83.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="487.0" y="115.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.58"/>
+                <rect class="cnnviz-rect" x="493.0" y="110.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.67"/>
+                <rect class="cnnviz-rect" x="499.0" y="105.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="505.0" y="100.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.83"/>
+                <rect class="cnnviz-rect" x="511.0" y="95.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.92"/>
+                <rect class="cnnviz-rect" x="517.0" y="90.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="1.00"/></g>
+                <!-- ===== fleches entre stages ===== -->
+                <line class="cnnviz-arrow" x1="97.0" y1="128" x2="145.0" y2="128" marker-end="url(#cnnArrow)"/>
+                <line class="cnnviz-arrow" x1="243.0" y1="128" x2="270.0" y2="128" marker-end="url(#cnnArrow)"/>
+                <line class="cnnviz-arrow" x1="348.0" y1="128" x2="380.0" y2="128" marker-end="url(#cnnArrow)"/>
+                <line class="cnnviz-arrow" x1="460.0" y1="128" x2="482.0" y2="128" marker-end="url(#cnnArrow)"/>
+                <!-- ===== flatten ===== -->
+                <line class="cnnviz-arrow" x1="548.0" y1="128" x2="578.0" y2="128" marker-end="url(#cnnArrow)"/>
+                <circle class="cnnviz-dot" cx="588.0" cy="88" r="4"/>
+                <circle class="cnnviz-dot" cx="588.0" cy="104" r="4"/>
+                <circle class="cnnviz-dot" cx="588.0" cy="120" r="4"/>
+                <circle class="cnnviz-dot" cx="588.0" cy="136" r="4"/>
+                <circle class="cnnviz-dot" cx="588.0" cy="152" r="4"/>
+                <circle class="cnnviz-dot" cx="588.0" cy="168" r="4"/>
+                <!-- ===== fully connected ===== -->
+                <line class="cnnviz-fcline" x1="592.0" y1="88" x2="647.0" y2="92"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="104" x2="647.0" y2="92"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="120" x2="647.0" y2="92"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="136" x2="647.0" y2="92"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="152" x2="647.0" y2="92"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="168" x2="647.0" y2="92"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="88" x2="647.0" y2="112"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="104" x2="647.0" y2="112"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="120" x2="647.0" y2="112"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="136" x2="647.0" y2="112"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="152" x2="647.0" y2="112"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="168" x2="647.0" y2="112"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="88" x2="647.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="104" x2="647.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="120" x2="647.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="136" x2="647.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="152" x2="647.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="168" x2="647.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="88" x2="647.0" y2="152"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="104" x2="647.0" y2="152"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="120" x2="647.0" y2="152"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="136" x2="647.0" y2="152"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="152" x2="647.0" y2="152"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="168" x2="647.0" y2="152"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="88" x2="647.0" y2="172"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="104" x2="647.0" y2="172"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="120" x2="647.0" y2="172"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="136" x2="647.0" y2="172"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="152" x2="647.0" y2="172"/>
+                <line class="cnnviz-fcline" x1="592.0" y1="168" x2="647.0" y2="172"/>
+                <circle class="cnnviz-node" cx="658.0" cy="92" r="11"/>
+                <circle class="cnnviz-node" cx="658.0" cy="112" r="11"/>
+                <circle class="cnnviz-node" cx="658.0" cy="132" r="11"/>
+                <circle class="cnnviz-node" cx="658.0" cy="152" r="11"/>
+                <circle class="cnnviz-node" cx="658.0" cy="172" r="11"/>
+                <!-- ===== sortie (softmax) ===== -->
+                <line class="cnnviz-fcline" x1="669.0" y1="92" x2="735.0" y2="96"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="112" x2="735.0" y2="96"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="132" x2="735.0" y2="96"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="152" x2="735.0" y2="96"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="172" x2="735.0" y2="96"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="92" x2="735.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="112" x2="735.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="132" x2="735.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="152" x2="735.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="172" x2="735.0" y2="132"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="92" x2="735.0" y2="168"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="112" x2="735.0" y2="168"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="132" x2="735.0" y2="168"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="152" x2="735.0" y2="168"/>
+                <line class="cnnviz-fcline" x1="669.0" y1="172" x2="735.0" y2="168"/>
+                <circle class="cnnviz-node cnnviz-outnode" cx="748.0" cy="96" r="13"/>
+                <text class="cnnviz-outlabel" x="768.0" y="100">voiture</text>
+                <circle class="cnnviz-node cnnviz-outnode" cx="748.0" cy="132" r="13"/>
+                <text class="cnnviz-outlabel" x="768.0" y="136">vélo</text>
+                <circle class="cnnviz-node cnnviz-outnode" cx="748.0" cy="168" r="13"/>
+                <text class="cnnviz-outlabel" x="768.0" y="172">camion</text>
+                <!-- ===== labels ===== -->
+                <text class="cnnviz-stagelabel" x="50" y="210">Image</text>
+                <text class="cnnviz-stagelabel" x="50" y="224">(H×W×3)</text>
+                <text class="cnnviz-stagelabel" x="185" y="210">Conv+ReLU</text>
+                <text class="cnnviz-stagelabel" x="300" y="210">Pooling</text>
+                <text class="cnnviz-stagelabel" x="405" y="210">Conv+ReLU</text>
+                <text class="cnnviz-stagelabel" x="500" y="210">Pooling</text>
+                <text class="cnnviz-stagelabel" x="588.0" y="210">Flatten</text>
+                <text class="cnnviz-stagelabel" x="658.0" y="210">Dense</text>
+                <text class="cnnviz-stagelabel" x="748.0" y="210">Softmax</text>
+              </svg>
+            </div>
+            <p class="sense"><b>Sens :</b> à chaque bloc [Conv+ReLU → Pooling], les cartes de caractéristiques rétrécissent en largeur/hauteur (pooling) mais gagnent en profondeur (davantage de filtres, donc de canaux) : on échange de la résolution spatiale contre des motifs de plus en plus abstraits, jusqu'à ce qu'un vecteur aplati (flatten) puisse être classé par les couches denses finales.</p>
+
             <div class="box box-def">
               <p class="box-label">Définition · Architecture typique</p>
               <p>Une suite de <b>blocs convolutifs</b> (couche de convolution + activation + pooling), puis une suite de <b>blocs linéaires</b> (couche dense + activation).</p>
@@ -992,16 +1133,16 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <div class="resnetblock-scroll">
                 <div class="resnetblock">
                   <span class="resnetblock-skiplabel">raccourci (identité)</span>
-                  <svg class="resnetblock-skip" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+                  <svg class="resnetblock-skip" id="rbSkipSvg" aria-hidden="true">
                     <defs>
-                      <marker id="rbArrow" markerWidth="8" markerHeight="8" refX="3" refY="3" orient="auto">
+                      <marker id="rbArrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
                         <path class="arrowhead" d="M0,0 L6,3 L0,6 Z"/>
                       </marker>
                     </defs>
-                    <path d="M 6 38 C 6 8, 64 8, 64 36" marker-end="url(#rbArrow)"/>
+                    <path id="rbSkipPath" marker-end="url(#rbArrow)"></path>
                   </svg>
                   <div class="resnetblock-row">
-                    <div class="rb-node">$h^{[j-1]}$</div>
+                    <div class="rb-node" id="rbNodeStart">$h^{[j-1]}$</div>
                     <div class="rb-arrow">→</div>
                     <div class="fb">Conv</div>
                     <div class="rb-arrow">→</div>
@@ -2143,6 +2284,7 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
     btn.addEventListener('click', function(){
       btn.closest('.lecture').classList.toggle('collapsed');
       setTimeout(markFormulaScroll, 50);
+      setTimeout(function(){ if(typeof drawResnetArrow === 'function') drawResnetArrow(); }, 60);
     });
   });
 
@@ -2201,6 +2343,47 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
   }
 
   // ---------------------------------------------------------------------
+  // Fleche du raccourci ResNet : calculee dynamiquement (pas de coordonnees
+  // en dur) pour toujours pointer exactement du 1er noeud au noeud "+",
+  // quelle que soit la largeur reelle rendue par MathJax.
+  // ---------------------------------------------------------------------
+  function drawResnetArrow(){
+    document.querySelectorAll('.resnetblock').forEach(function(block){
+      var svg = block.querySelector('.resnetblock-skip');
+      var path = block.querySelector('#rbSkipPath') || block.querySelector('.resnetblock-skip path');
+      var startNode = block.querySelector('.rb-node');
+      var endNode = block.querySelector('.rb-plus');
+      if(!svg || !path || !startNode || !endNode) return;
+      var blockRect = block.getBoundingClientRect();
+      var w = blockRect.width;
+      if(w <= 0) return;
+      var sR = startNode.getBoundingClientRect();
+      var eR = endNode.getBoundingClientRect();
+      var startX = (sR.left + sR.width / 2) - blockRect.left;
+      var endX = (eR.left + eR.width / 2) - blockRect.left;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' 40');
+      svg.removeAttribute('preserveAspectRatio');
+      path.setAttribute('d', 'M ' + startX.toFixed(1) + ' 38 C ' + startX.toFixed(1) + ' 8, ' + endX.toFixed(1) + ' 8, ' + endX.toFixed(1) + ' 36');
+    });
+  }
+  (function hookResnetArrow(tries){
+    tries = tries || 0;
+    if(!document.querySelector('.resnetblock')) return;
+    if(window.MathJax && window.MathJax.startup && window.MathJax.startup.promise){
+      window.MathJax.startup.promise.then(function(){ setTimeout(drawResnetArrow, 30); });
+    } else if(tries < 100){
+      setTimeout(function(){ hookResnetArrow(tries + 1); }, 100);
+    } else {
+      drawResnetArrow();
+    }
+  })();
+  var resnetResizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resnetResizeTimer);
+    resnetResizeTimer = setTimeout(drawResnetArrow, 150);
+  });
+
+  // ---------------------------------------------------------------------
   // Exemple interactif : MLP chien/chat/oiseau, calcul neurone par neurone
   // ---------------------------------------------------------------------
   (function(){
@@ -2210,7 +2393,7 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
     var LAYERS = [
       { key:'x', count:4, x:90,  ys:[90,190,290,390],  labels:['x_1','x_2','x_3','x_4'], layerLabel:'Entrée', cls:'' },
       { key:'h', count:5, x:300, ys:[60,150,240,330,420], labels:['h_1','h_2','h_3','h_4','h_5'], layerLabel:'Cachée 1 (ReLU)', cls:'' },
-      { key:'g', count:5, x:510, ys:[60,150,240,330,420], labels:['g_1','g_2','g_3','g_4','g_5'], layerLabel:'Cachée 2 (ReLU)', cls:'' },
+      { key:'g', count:5, x:510, ys:[60,150,240,330,420], labels:['a_1','a_2','a_3','a_4','a_5'], layerLabel:'Cachée 2 (ReLU)', cls:'' },
       { key:'z', count:3, x:700, ys:[140,240,340], labels:['z_1','z_2','z_3'], layerLabel:'Sortie', cls:'output' }
     ];
     var R = 24;
@@ -2282,7 +2465,7 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
     }
     for(i = 0; i < 5; i++){
       steps.push({ type:'node', layer:2, node:i,
-        formula: edgeFormula(Wg[i], hVals, hLabels, 'g_' + (i+1), gVals[i], true) });
+        formula: edgeFormula(Wg[i], hVals, hLabels, 'a_' + (i+1), gVals[i], true) });
     }
     var outSub = ['chien', 'chat', 'oiseau'];
     for(i = 0; i < 3; i++){
