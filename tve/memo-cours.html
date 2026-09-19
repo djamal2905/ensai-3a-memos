@@ -25,7 +25,7 @@ window.MathJax = {
   }
   function showMathWarning(){
     var b = document.createElement('div');
-    b.textContent = '⚠ Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
+    b.textContent = 'Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
     b.style.cssText = 'position:sticky;top:0;z-index:90;background:#c1483c;color:#fff;font:600 .78rem "Source Sans 3",sans-serif;padding:9px 14px;text-align:center;';
     document.body.insertBefore(b, document.body.firstChild);
   }
@@ -97,6 +97,8 @@ window.MathJax = {
   .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
   .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
   .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-14{ width:14px; height:14px; flex-shrink:0; }
+  .icon-16{ width:16px; height:16px; flex-shrink:0; }
   .icon-btn{
     display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
     border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
@@ -215,6 +217,7 @@ window.MathJax = {
   .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
   .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
   .qcm-result:empty{ display:none; }
+  .multi-badge{ display:inline-block; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px; margin-left:8px; vertical-align:middle; }
 
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
@@ -268,7 +271,7 @@ window.MathJax = {
         <input id="search" type="text" placeholder="Filtrer : Hill, GEV, Pareto…" aria-label="Filtrer le mémo" />
       </div>
       <span id="searchCount"></span>
-      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème">🌓</button>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     </div>
   </header>
 
@@ -326,9 +329,9 @@ window.MathJax = {
         <h1>Des maxima aux quantiles extrêmes</h1>
         <p>Synthèse des deux premiers chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), puis comment estimer en pratique un quantile ou une probabilité bien au-delà des données observées.</p>
         <div class="meta">
-          <span>📄 <b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
-          <span>📚 <b>25 fiches</b></span>
-          <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>25 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
 
@@ -352,7 +355,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Pourquoi la statistique classique échoue</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pourquoi la statistique classique échoue</p>
               <p>Les méthodes statistiques classiques sont inappropriées pour l'étude des événements extrêmes. Supposons $X\sim H$ et qu'on dispose de $n$ réalisations i.i.d. Pour un seuil élevé $x$, comment évaluer $\mathbb P(X>x)=\bar H(x)$ alors qu'on n'a, par construction, presque aucune observation au-delà de $x$ ? Un ajustement paramétrique standard (ex. gaussien) peut radicalement <b>sous-estimer</b> la probabilité de queue : la densité gaussienne décroît beaucoup plus vite que celle de nombreux phénomènes réels.</p>
             </div>
 
@@ -374,7 +377,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ La distribution de $M_n$ seule est dégénérée</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>La distribution de $M_n$ seule est dégénérée</p>
               <div class="formula">$$\mathbb P(M_n\le x) = \prod_{i=1}^n \mathbb P(X_i\le x) = F^n(x) \ \xrightarrow[n\to\infty]{}\ \begin{cases} 0 & \text{si } x\lt x_F \\ 1 & \text{si } x\ge x_F \end{cases}$$</div>
               <p class="sense"><b>Sens :</b> $M_n$ "toute seule" se concentre en $x_F$ : aucune information utile. Question naturelle : existe-t-il $a_n>0$, $b_n\in\mathbb R$ telles que $(M_n-b_n)/a_n$ converge vers une loi <b>non dégénérée</b> ?</p>
             </div>
@@ -630,7 +633,7 @@ window.MathJax = {
             <details class="solution">
               <summary>Voir le calcul détaillé</summary>
               <div class="box box-thm">
-                <p class="method-label">⚠ Piège de vocabulaire avant même de commencer</p>
+                <p class="method-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Piège de vocabulaire avant même de commencer</p>
                 <p>La <b>loi de Weibull</b> (une loi de probabilité usuelle, ici $F(x)=1-e^{-x^k}$) et le <b>domaine de Weibull</b> (un des trois domaines d'attraction de la fiche 5, $\gamma\lt0$) sont deux notions <b>totalement différentes</b>, qui partagent seulement un nom. Il ne faut <b>surtout pas</b> conclure « loi de Weibull $\Rightarrow$ domaine de Weibull » sans calcul : c'est exactement le même piège que $F(x)=e^{-1/x}$ (exercice 19), qui elle est une loi de <b>Fréchet</b>.</p>
                 <p class="method-label">Pourquoi ce domaine ? (fiche 5)</p>
                 <p>Support $(0,\infty)$, donc $x_F=+\infty$ : par la <b>fiche 5</b>, ceci élimine le <b>domaine</b> de Weibull ! Il ne peut donc s'agir que de Fréchet ou Gumbel.</p>
@@ -752,6 +755,30 @@ window.MathJax = {
               <div class="qcm-explain">Faux : ce n'est pas l'argument avancé dans le cours : GEV et GPD partagent le même paramètre $\gamma$ (fiche 7) ; la préférence pour le POT vient de l'usage plus efficace des données, pas d'une différence de domaine de définition.</div>
             </div>
 
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Que signifie exactement $\bar F\in RV_{-1/\gamma}$ (variation régulière) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-6"><span class="otext">$\bar F(x)=cx^{-1/\gamma}$ exactement, pour une constante $c>0$.</span></label>
+              <div class="qcm-explain">Faux : la variation régulière n'impose pas une forme exacte, seulement un comportement <b>asymptotique</b> du rapport $\bar F(tx)/\bar F(t)$ quand $t\to\infty$ (fiche 6) ; $\bar F(x)=cx^{-1/\gamma}\log(x)$ par exemple est aussi à variation régulière d'indice $-1/\gamma$, sans être de cette forme exacte.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-6"><span class="otext">$\bar F$ est dérivable et sa dérivée est monotone.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas la définition de la variation régulière, qui ne porte que sur un comportement en limite de rapport, sans exiger de dérivabilité.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-6"><span class="otext">$\lim_{t\to\infty}\bar F(tx)/\bar F(t)=x^{-1/\gamma}$ pour tout $x>0$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la définition de la fiche 6, appliquée à $g=\bar F$ avec $\alpha=-1/\gamma$.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-6"><span class="otext">$\bar F$ tend vers 0 plus vite que n'importe quelle fonction exponentielle.</span></label>
+              <div class="qcm-explain">Faux : c'est plutôt le contraire : les queues à variation régulière (indice fini) décroissent <b>polynomialement</b>, donc plus lentement qu'une exponentielle, ce qui caractérise justement le domaine de Fréchet par opposition à Gumbel.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>Pourquoi commence-t-on en pratique par tracer le QQ-plot de <b>Fréchet</b>, plutôt que celui de Weibull ou de Gumbel, avant même de connaître le domaine d'attraction des données ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t1-7"><span class="otext">Parce qu'il ne nécessite pas de connaître ou d'estimer au préalable $x_F$, contrairement au QQ-plot de Weibull qui en a besoin pour son effet « miroir ».</span></label>
+              <div class="qcm-explain">Correct : fiche 6, remarque de synthèse ; le QQ-plot de Weibull exige un $x_F$ correctement estimé (sinon le nuage se courbe artificiellement), un préalable dont le QQ-plot de Fréchet n'a pas besoin.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-7"><span class="otext">Parce que le domaine de Fréchet est statistiquement le plus fréquent dans la nature.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'argument donné dans le cours ; le choix de commencer par Fréchet est méthodologique (pas besoin de $x_F$ au préalable), pas une question de fréquence empirique des domaines.</div>
+              <label class="qcm-opt"><input type="radio" name="t1-7"><span class="otext">Parce que c'est le seul des trois QQ-plots dont la pente est directement égale à $\gamma$.</span></label>
+              <div class="qcm-explain">Faux : le QQ-plot de Weibull donne lui aussi une pente reliée à $\gamma$ (pente $\approx-\gamma$, fiche 6) ; seul celui de Gumbel fait exception (la pente n'estime pas $\gamma$, qui vaut 0 par hypothèse).</div>
+              <label class="qcm-opt"><input type="radio" name="t1-7"><span class="otext">Parce que le QQ-plot de Fréchet est valable même quand $\gamma<0$.</span></label>
+              <div class="qcm-explain">Faux : le QQ-plot de Fréchet suppose au contraire $\gamma>0$ (queue lourde, $\bar F\in RV_{-1/\gamma}$) ; ce n'est pas ce qui justifie de commencer par lui en pratique.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -775,7 +802,7 @@ window.MathJax = {
             <div class="tophead"><span class="num">9</span><h2>Le problème de l'extrapolation</h2></div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Deux questions fondamentales</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Deux questions fondamentales</p>
               <p>1. Comment estimer $\mathbb P(X\gt x)$ quand on n'a <b>pas</b> observé de données supérieures à $x$ ?<br>
               2. Comment calculer le quantile $q(\alpha)$ quand $\alpha\to1$ (quantile extrême, au-delà du support empirique) ?</p>
             </div>
@@ -809,7 +836,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Ce résultat s'effondre si $\alpha=\alpha_n\to1$</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Ce résultat s'effondre si $\alpha=\alpha_n\to1$</p>
               <p>Prendre $\alpha_n=1-1/n$ revient à considérer $M_n$ lui-même. Or :</p>
               <div class="formula">$$\frac{M_n}{q(1-1/n)}-1 \approx \gamma\,\frac{M_n-U(n)}{\gamma\,U(n)} \ \xrightarrow{\ \mathcal L\ }\ G_\gamma - 1 \ \ (\neq 0 \text{ en général})$$</div>
               <p>$M_n$ n'est donc <b>pas</b> un estimateur consistant de $q(1-1/n)$. Plus généralement, pour $K$ fixé, $\hat q(1-K/n)$ n'est pas consistant de $q(1-K/n)$.</p>
@@ -993,6 +1020,30 @@ window.MathJax = {
               <div class="qcm-explain">Faux : ce n'est pas une erreur : le théorème 2.1.2/Hill (fiche 13-14) prévoit explicitement ce terme de biais non nul en général, contrairement à un résultat de normalité asymptotique « sans biais » plus simple.</div>
               <label class="qcm-opt"><input type="radio" name="t2-5"><span class="otext">C'est le paramètre de second ordre $\rho$ lui-même, renommé.</span></label>
               <div class="qcm-explain">Faux : $\rho$ est un paramètre à part entière de la condition $\mathcal C_2(\gamma,\rho,A)$ (fiche 13) ; $\lambda/(1-\rho)$ est une expression qui combine $\rho$ et $\lambda$ (la limite de $\sqrt K\,A(n/K)$), pas $\rho$ seul.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Dans l'estimateur de Weissman $\hat q(\beta_n)=\big(n(1-\beta_n)/K\big)^{-\hat\gamma^H}X_{n-K,n}$, à quoi sert le facteur $\big(n(1-\beta_n)/K\big)^{-\hat\gamma^H}$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-6"><span class="otext">À corriger un biais d'estimation de $X_{n-K,n}$ lui-même.</span></label>
+              <div class="qcm-explain">Faux : $X_{n-K,n}$ est une statistique d'ordre <b>observée</b>, pas un estimateur biaisé à corriger ; le facteur sert à tout autre chose (voir la bonne réponse).</div>
+              <label class="qcm-opt"><input type="radio" name="t2-6"><span class="otext">À extrapoler depuis le niveau intermédiaire <b>observable</b> $K/n$ jusqu'au niveau extrême <b>non observé</b> $1-\beta_n$, via la relation (B) et l'exposant $\gamma$.</span></label>
+              <div class="qcm-explain">Correct : fiche 16, c'est exactement le rôle de ce facteur : réécrire le rapport des deux niveaux de queue $(1-\beta_n)$ et $K/n$ à la puissance $-\gamma$, pour transporter l'information du point intermédiaire observé vers le quantile extrême cible.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-6"><span class="otext">À normaliser $\hat\gamma^H$ pour qu'il soit toujours positif.</span></label>
+              <div class="qcm-explain">Faux : $\hat\gamma^H$ (estimateur de Hill) est déjà positif par construction dans le domaine de Fréchet (fiche 14) ; ce n'est pas le rôle de ce facteur.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-6"><span class="otext">À garantir que $\hat q(\beta_n)$ reste inférieur à $X_{n-K,n}$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse recherché : on veut extrapoler <b>au-delà</b> de $X_{n-K,n}$ (vers un quantile plus extrême), pas rester en-dessous.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q7</span>Sur un « Hill plot » (tracé de $\hat\gamma^H_K$ en fonction de $K$), que cherche-t-on visuellement pour choisir $K$ en pratique ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t2-7"><span class="otext">La plus grande valeur de $K$ possible, pour maximiser le nombre d'observations utilisées.</span></label>
+              <div class="qcm-explain">Faux : un $K$ trop grand fait grossir le biais (exercice/fiche 13, Q3 de ce QCM) : ce n'est pas un critère de choix valable à lui seul.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-7"><span class="otext">La plus petite valeur de $K$ possible, pour minimiser le biais à tout prix.</span></label>
+              <div class="qcm-explain">Faux : un $K$ trop petit fait au contraire exploser la variance (fiche 13) : minimiser uniquement le biais ignore l'autre moitié du compromis.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-7"><span class="otext">Une zone de $K$ où la courbe $\hat\gamma^H_K$ est visuellement stable (un « plateau »), signe que ni le bruit (K trop petit) ni le biais (K trop grand) ne dominent.</span></label>
+              <div class="qcm-explain">Correct : fiche 15, c'est exactement la méthode empirique standard pour choisir $K$ face au compromis biais-variance de la fiche 13.</div>
+              <label class="qcm-opt"><input type="radio" name="t2-7"><span class="otext">Le point où $\hat\gamma^H_K$ s'annule exactement.</span></label>
+              <div class="qcm-explain">Faux : $\hat\gamma^H_K=0$ n'a pas de signification particulière pour le choix de $K$ ; on cherche une zone de <b>stabilité</b>, pas un zéro.</div>
             </div>
 
             <div class="qcm-actions">
@@ -1328,11 +1379,39 @@ window.MathJax = {
     var submitBtn = qcm.querySelector('.qcm-submit');
     var resetBtn = qcm.querySelector('.qcm-reset');
     var resultEl = qcm.querySelector('.qcm-result');
-    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var pool = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var VISIBLE = Math.min(5, pool.length);
+    var windowStart = 0;
+    var visible = [];
+
+    function resetQuestion(q){
+      q.classList.remove('graded', 'q-correct', 'q-incorrect');
+      q.querySelectorAll('.qcm-opt').forEach(function(opt){
+        opt.classList.remove('opt-right', 'opt-wrong-checked');
+        var input = opt.querySelector('input');
+        input.checked = false;
+        input.disabled = false;
+      });
+    }
+
+    function showWindow(start){
+      windowStart = ((start % pool.length) + pool.length) % pool.length;
+      visible = [];
+      pool.forEach(function(q){ q.style.display = 'none'; resetQuestion(q); });
+      for(var i = 0; i < VISIBLE; i++){
+        var q = pool[(windowStart + i) % pool.length];
+        q.style.display = '';
+        var qnum = q.querySelector('.qnum');
+        if(qnum) qnum.textContent = 'Q' + (i + 1);
+        visible.push(q);
+      }
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    }
 
     submitBtn.addEventListener('click', function(){
       var score = 0;
-      questions.forEach(function(q){
+      visible.forEach(function(q){
         var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
         var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
         var checked = [];
@@ -1354,24 +1433,17 @@ window.MathJax = {
           input.disabled = true;
         });
       });
-      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      resultEl.textContent = 'Score : ' + score + ' / ' + visible.length;
       submitBtn.disabled = true;
       setTimeout(markFormulaScroll, 50);
     });
 
     resetBtn.addEventListener('click', function(){
-      questions.forEach(function(q){
-        q.classList.remove('graded', 'q-correct', 'q-incorrect');
-        q.querySelectorAll('.qcm-opt').forEach(function(opt){
-          opt.classList.remove('opt-right', 'opt-wrong-checked');
-          var input = opt.querySelector('input');
-          input.checked = false;
-          input.disabled = false;
-        });
-      });
-      resultEl.textContent = '';
-      submitBtn.disabled = false;
+      showWindow(windowStart + 2);
+      setTimeout(markFormulaScroll, 50);
     });
+
+    showWindow(0);
   });
 })();
 </script>

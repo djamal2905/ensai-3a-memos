@@ -80,6 +80,8 @@ window.MathJax = {
   .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
   .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
   .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-14{ width:14px; height:14px; flex-shrink:0; }
+  .icon-16{ width:16px; height:16px; flex-shrink:0; }
   .icon-btn{
     display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
     border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
@@ -443,7 +445,7 @@ window.MathJax = {
       </div>
       <span id="searchCount"></span>
       <a class="xlink" href="rappel-express.html">Rappel express →</a>
-      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème">🌓</button>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     </div>
   </header>
 
@@ -527,9 +529,9 @@ window.MathJax = {
         <h1>Du perceptron aux Transformers</h1>
         <p>Synthèse complète du cours de Deep Learning : MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers.</p>
         <div class="meta">
-          <span>📄 <b>Source</b> : J. Faouzi, I. Yamane &amp; A. Bousse : ENSAI 3A, 2025</span>
-          <span>📚 <b>41 fiches</b></span>
-          <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : J. Faouzi, I. Yamane &amp; A. Bousse : ENSAI 3A, 2025</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>41 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
 
@@ -709,12 +711,12 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
                   <text class="nnamed-header" x="640" y="20">SORTIE</text>
                 </svg>
               </div>
-              <p class="nnamed-hint">💡 Cliquez sur un neurone de la couche cachée (ou sur la sortie) pour voir quelles entrées l'influencent le plus.</p>
+              <p class="nnamed-hint"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>Cliquez sur un neurone de la couche cachée (ou sur la sortie) pour voir quelles entrées l'influencent le plus.</p>
               <div class="nnamed-infopanel" id="nnamedInfo">Sélectionnez un neurone ci-dessus pour voir le détail de ses contributions.</div>
 
               <p>Si on ajoutait une <b>deuxième</b> couche cachée, elle pourrait à son tour recombiner ces trois concepts en une notion encore plus abstraite (ex. « attractivité globale ») : c'est le même principe, couche après couche : chaque couche construit des représentations de plus en plus abstraites à partir de celles de la couche précédente (l'exemple original d'Andrew Ng n'utilise qu'une seule couche cachée, par souci de simplicité).</p>
               <div class="box box-warn" style="margin-top:10px;">
-                <p class="box-label">⚠ Attention : ces noms sont didactiques, pas réels</p>
+                <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Attention : ces noms sont didactiques, pas réels</p>
                 <p>En pratique, <b>on ne choisit jamais</b> ce qu'un neurone caché doit représenter : le réseau est entraîné de bout en bout (end-to-end), et chaque neurone reçoit une entrée pondérée de <b>toutes</b> les entrées de la couche précédente (les 4 variables, pas seulement « prix » et « coût de livraison » pour le neurone « abordabilité »), pas seulement d'un sous-groupe « logique ». Ce qu'apprend réellement chaque neurone est déterminé automatiquement par la descente de gradient, et n'est presque jamais aussi lisible qu'un concept humain nommé (« abordabilité »). Cet exemple sert uniquement à construire l'intuition qu'une couche cachée peut, <i>en principe</i>, faire émerger des représentations intermédiaires utiles.</p>
               </div>
             </div>
@@ -840,7 +842,7 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Attention</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Attention</p>
               <p>Le gradient stochastique/mini-batch ne garantit pas $J(\theta_t)\le J(\theta_{t-1})$ à chaque itération (gradient bruité). En pratique, on utilise souvent un pas <b>constant</b> plutôt que la suite théorique décroissante.</p>
             </div>
           </article>
@@ -928,7 +930,7 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Le Deep Learning n'est pas une solution à tout</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le Deep Learning n'est pas une solution à tout</p>
               <p>Biais de publication (peu d'échecs rapportés) · accessibilité limitée (données, calcul) · explicabilité faible et peu fiable · risques de biais/équité · peu de garanties théoriques · justifications parfois empiriques (essais-erreurs) : un chercheur a qualifié le domaine d'« alchimie ».</p>
             </div>
           </article>
@@ -1078,7 +1080,7 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <label class="qcm-opt"><input type="radio" name="dl1-5"><span class="otext">(Beaucoup) plus de puissance de calcul disponible, (beaucoup) plus de données disponibles, et (beaucoup) plus de travaux de recherche accumulés : trois facteurs pratiques, pas une avancée théorique isolée.</span></label>
               <div class="qcm-explain">Correct : c'est exactement la conclusion du cours (fiche 10, box « Sens ») : le succès récent tient à ces trois facteurs cumulés, pas à une découverte théorique soudaine.</div>
               <label class="qcm-opt"><input type="radio" name="dl1-5"><span class="otext">Parce que le Deep Learning ne présente plus aucun inconvénient aujourd'hui.</span></label>
-              <div class="qcm-explain">Faux : le cours liste au contraire plusieurs limites persistantes (fiche 10, box ⚠) : boîte noire, coût en données/calcul, biais, peu de garanties théoriques.</div>
+              <div class="qcm-explain">Faux : le cours liste au contraire plusieurs limites persistantes (fiche 10, encadré « Attention ») : boîte noire, coût en données/calcul, biais, peu de garanties théoriques.</div>
             </div>
 
             <div class="qcm-actions">
@@ -1105,7 +1107,7 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <p>Dans un MLP, les couches sont <i>fully connected</i> : un paramètre distinct pour chaque couple (entrée, sortie). Sur une image, ce choix devient intenable.</p>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Explosion du nombre de paramètres</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Explosion du nombre de paramètres</p>
               <p>Une image de $1280\times 960$ contient $1\,228\,800$ pixels. Même un perceptron à une seule couche produisant <b>un seul</b> scalaire exige déjà une matrice $\mathbf W$ de taille $1\,228\,800\times 1$ : et le coût est multiplié par le nombre de neurones de la couche suivante.</p>
             </div>
 
@@ -1420,7 +1422,7 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Uniquement à l'entraînement</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Uniquement à l'entraînement</p>
               <p>Aucune augmentation de données en <b>validation</b>, en <b>test</b> ni en <b>déploiement</b>. Augmenter le jeu de validation fausserait l'estimation du risque et le réglage des hyperparamètres.</p>
             </div>
           </article>
@@ -1429,7 +1431,7 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <div class="tophead"><span class="num">19</span><h2>Champ récepteur : solutions &amp; bonnes pratiques</h2></div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Le problème du champ récepteur</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le problème du champ récepteur</p>
               <p>Un neurone d'une couche profonde est influencé par une zone plus large de l'image d'entrée, mais à taille de noyau fixée cette zone ne croît que <b>linéairement</b> avec le nombre de couches. Croissance beaucoup trop lente pour capturer un contexte global.</p>
             </div>
 
@@ -1696,7 +1698,7 @@ for layer in layers:
             <div class="tophead"><span class="num">22</span><h2>Gradients qui s'évanouissent ou explosent</h2></div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Entraînement instable par descente de gradient</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Entraînement instable par descente de gradient</p>
               <p>Par la règle de la chaîne, le gradient traversant $T$ pas de temps est un <b>produit</b> de nombreuses dérivées partielles :</p>
               <p>• dérivées <b>petites</b> ($\lt 1$ en module) ⟹ le produit tend vers $0$ : <b>vanishing gradients</b> (les dépendances longues ne sont plus apprises) ;<br>
               • dérivées <b>grandes</b> ($\gt 1$) ⟹ le produit diverge : <b>exploding gradients</b> (mises à jour aberrantes, <code>NaN</code>).</p>
@@ -1831,7 +1833,7 @@ for layer in layers:
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Aparté · arithmétique en virgule flottante</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Aparté · arithmétique en virgule flottante</p>
               <p>$\mathbb R$ est <b>non dénombrable</b>, mais une machine ne dispose que d'un <b>ensemble fini</b> d'encodages binaires : la plupart des réels ne sont qu'<b>approximés</b>, et les opérations aussi. En Python : <code>0.1 + 0.2 == 0.3</code> renvoie <code>False</code> (on obtient $0{,}30000000000000004$).</p>
               <p>En Deep Learning, le format standard est la <b>simple précision</b> (32 bits : 1 signe, 8 exposant, 23 mantisse ; ~7,2 décimales significatives) : meilleure précision du gradient que le 16 bits, et deux fois moins de mémoire que le 64 bits. Tous les paramètres doivent tenir dans $\pm[3{,}4028\cdot10^{-38},\,3{,}4028\cdot10^{38}]$.</p>
               <p class="sense"><b>Sens :</b> ce n'est pas un problème pour les paramètres, mais c'en est un pour le <b>gradient</b>, qui est un produit de (très) nombreuses dérivées partielles : donc surtout pour les <b>RNN profonds</b>, où un sous-dépassement met le gradient à $0$ et un dépassement le met à $\pm\infty$.</p>
@@ -2041,7 +2043,7 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Deux façons naïves de générer : et pourquoi elles échouent</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Deux façons naïves de générer : et pourquoi elles échouent</p>
               <p><b>Méthode 1 · combinaison convexe dans l'espace des pixels</b> : $\mathbf x_{\text{new}}=\sum_i w_i\mathbf x_i$. Fonctionne très rarement : une <b>combinaison convexe d'images de chats n'est pas une image de chat</b> : on obtient une superposition fantomatique.</p>
               <p><b>Méthode 2 · code aléatoire</b> : tirer $\mathbf z$ au hasard (p. ex. gaussien) puis $\mathbf x_{\text{new}}:=g(\mathbf z)$. Un peu mieux, mais toujours médiocre : <b>l'AE n'a jamais été entraîné pour cet usage</b> : rien ne contraint la distribution des codes appris à ressembler à une gaussienne.</p>
               <p class="sense"><b>Sens :</b> on garde l'idée encodeur-décodeur, mais il faut l'entraîner à produire de <b>bons codes</b> autant que de bonnes images ⟹ le VAE.</p>
@@ -2080,7 +2082,7 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Le maximum de vraisemblance est intraitable</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le maximum de vraisemblance est intraitable</p>
               <p>Les $\mathbf z^{(i)}$ ne sont <b>pas observés</b> : on ne peut évaluer ni $p_\theta(\mathbf x\mid\mathbf z)$ ni $p_\theta(\mathbf z)$ sur les données. Seuls les $\mathbf x^{(i)}$ le sont, d'où un MLE sur la marginale : mais l'intégrale qui y apparaît est <b>numériquement hors de portée</b> à chaque point et à chaque pas :</p>
               <div class="formula">$$\nabla_\theta\sum_{i=1}^n\log p_\theta(\mathbf x_i)=\nabla_\theta\sum_{i=1}^n\log\int p_\theta(\mathbf x^{(i)}\mid\mathbf z)\,p_\theta(\mathbf z)\,d\mathbf z$$</div>
             </div>
@@ -2098,7 +2100,7 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
             <div class="tophead"><span class="num">31</span><h2>Astuce de reparamétrisation</h2></div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Gradient et espérance ne commutent pas</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Gradient et espérance ne commutent pas</p>
               <div class="formula">$$\nabla_{\theta,\phi}\,\mathbb E_{q_\phi(\mathbf z\mid\mathbf x)}\big[\mathcal L_{\theta,\phi}(\mathbf x,\mathbf z)\big] \ \neq\ \mathbb E_{q_\phi(\mathbf z\mid\mathbf x)}\big[\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\mathbf x,\mathbf z)\big]$$</div>
               <p>car la <b>loi sur laquelle on intègre dépend elle-même de $\phi$</b>. L'estimateur mini-batch naïf $\frac1M\sum_i\nabla_{\theta,\phi}\mathcal L_{\theta,\phi}(\mathbf x^{(i)},\mathbf z^{(i)})$ avec $\mathbf z^{(i)}\sim q_\phi(\mathbf z\mid\mathbf x^{(i)})$ serait donc <b>biaisé</b>.</p>
             </div>
@@ -2425,7 +2427,7 @@ print(mu.grad)  # doit etre non nul (egal a 1 ici, cf. exercice 2)</code></pre>
             <p>Objectif du Transformer (Vaswani et al., 2017) : une architecture capable de <b>générer une séquence à partir d'un contexte</b> et qui s'entraîne <b>efficacement</b>. Exemple fil rouge : la traduction anglais → français.</p>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Les deux limites du RNN</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Les deux limites du RNN</p>
               <p>Un RNN sait aussi générer des séquences, mais :</p>
               <p>• il impose un <b>calcul séquentiel à l'entraînement</b> : $\mathbf h_t$ requiert $\mathbf h_{t-1}$, donc aucune parallélisation dans le temps ;<br>
               • il induit une <b>dépendance plus faible entre tokens éloignés</b>, car toute l'information doit transiter par l'état caché, goulot d'étranglement de taille fixe.</p>
@@ -2485,7 +2487,7 @@ print(mu.grad)  # doit etre non nul (egal a 1 ici, cf. exercice 2)</code></pre>
             <div class="tophead"><span class="num">38</span><h2>Masquage causal</h2></div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Le problème de la triche</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le problème de la triche</p>
               <p>Si l'on donne toute la séquence $\mathrm{ShiftR}(\mathbf y)$ d'un coup, prédire le token suivant devient <b>trop facile</b> : pour prédire la position $i$, il suffit au modèle de <b>regarder</b> les tokens « futurs », en position $\gt i$, et de recopier. La perte tomberait à zéro sans rien apprendre.</p>
             </div>
 
@@ -3105,11 +3107,39 @@ print(torch.allclose(w_masked.triu(1), torch.zeros_like(w_masked)))  # doit etre
     var submitBtn = qcm.querySelector('.qcm-submit');
     var resetBtn = qcm.querySelector('.qcm-reset');
     var resultEl = qcm.querySelector('.qcm-result');
-    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var pool = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var VISIBLE = Math.min(5, pool.length);
+    var windowStart = 0;
+    var visible = [];
+
+    function resetQuestion(q){
+      q.classList.remove('graded', 'q-correct', 'q-incorrect');
+      q.querySelectorAll('.qcm-opt').forEach(function(opt){
+        opt.classList.remove('opt-right', 'opt-wrong-checked');
+        var input = opt.querySelector('input');
+        input.checked = false;
+        input.disabled = false;
+      });
+    }
+
+    function showWindow(start){
+      windowStart = ((start % pool.length) + pool.length) % pool.length;
+      visible = [];
+      pool.forEach(function(q){ q.style.display = 'none'; resetQuestion(q); });
+      for(var i = 0; i < VISIBLE; i++){
+        var q = pool[(windowStart + i) % pool.length];
+        q.style.display = '';
+        var qnum = q.querySelector('.qnum');
+        if(qnum) qnum.textContent = 'Q' + (i + 1);
+        visible.push(q);
+      }
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    }
 
     submitBtn.addEventListener('click', function(){
       var score = 0;
-      questions.forEach(function(q){
+      visible.forEach(function(q){
         var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
         var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
         var checked = [];
@@ -3131,24 +3161,17 @@ print(torch.allclose(w_masked.triu(1), torch.zeros_like(w_masked)))  # doit etre
           input.disabled = true;
         });
       });
-      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      resultEl.textContent = 'Score : ' + score + ' / ' + visible.length;
       submitBtn.disabled = true;
       setTimeout(markFormulaScroll, 50);
     });
 
     resetBtn.addEventListener('click', function(){
-      questions.forEach(function(q){
-        q.classList.remove('graded', 'q-correct', 'q-incorrect');
-        q.querySelectorAll('.qcm-opt').forEach(function(opt){
-          opt.classList.remove('opt-right', 'opt-wrong-checked');
-          var input = opt.querySelector('input');
-          input.checked = false;
-          input.disabled = false;
-        });
-      });
-      resultEl.textContent = '';
-      submitBtn.disabled = false;
+      showWindow(windowStart + 2);
+      setTimeout(markFormulaScroll, 50);
     });
+
+    showWindow(0);
   });
 })();
 

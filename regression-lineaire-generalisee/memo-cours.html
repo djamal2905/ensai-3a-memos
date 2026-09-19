@@ -25,7 +25,7 @@ window.MathJax = {
   }
   function showMathWarning(){
     var b = document.createElement('div');
-    b.textContent = '⚠ Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
+    b.textContent = 'Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
     b.style.cssText = 'position:sticky;top:0;z-index:90;background:#c1483c;color:#fff;font:600 .78rem "Source Sans 3",sans-serif;padding:9px 14px;text-align:center;';
     document.body.insertBefore(b, document.body.firstChild);
   }
@@ -97,6 +97,8 @@ window.MathJax = {
   .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
   .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
   .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-14{ width:14px; height:14px; flex-shrink:0; }
+  .icon-16{ width:16px; height:16px; flex-shrink:0; }
   .icon-btn{
     display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
     border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
@@ -263,7 +265,7 @@ window.MathJax = {
         <input id="search" type="text" placeholder="Filtrer : MCO, ANOVA, logit…" aria-label="Filtrer le mémo" />
       </div>
       <span id="searchCount"></span>
-      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème">🌓</button>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     </div>
   </header>
 
@@ -360,9 +362,9 @@ window.MathJax = {
         <h1>De la droite des moindres carrés aux modèles linéaires généralisés</h1>
         <p>Synthèse complète du cours : régression linéaire (MCO, inférence, validation, sélection de modèles), analyse de la variance et de la covariance (ANOVA/ANCOVA), puis modèles linéaires généralisés (logistique, multinomiale, comptage), avec un exemple travaillé, issu des données réelles du cours, pour chaque notion.</p>
         <div class="meta">
-          <span>📄 <b>Source</b> : F. Lavancier, ENSAI 2A, 2025-2026</span>
-          <span>📚 <b>59 fiches</b></span>
-          <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : F. Lavancier, ENSAI 2A, 2025-2026</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>59 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
 
@@ -1319,7 +1321,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Deux contraintes usuelles, deux interprétations</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Deux contraintes usuelles, deux interprétations</p>
               <p><b>1) $m=0$</b> : on retrouve le modèle initial sans constante, et alors $\alpha_i=\mu_i=\mathbb E(Y\mid A_i)$. Sous R : <code>lm(Y~A-1)</code>.<br>
               <b>2) $\alpha_1=0$</b> : l'interprétation change complètement,
               $$m=\mu_1\quad\text{et}\quad \alpha_i=\mu_i-\mu_1\ \text{ pour tout }i=2,\dots,I.$$
@@ -1348,7 +1350,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Conditions de validité</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Conditions de validité</p>
               <p>• Le test d'analyse de la variance teste l'égalité des <b>espérances</b> entre modalités, et <b>non</b> celle des variances.<br>
               • Il est valable sous l'hypothèse $\varepsilon\sim\mathcal N(0,\sigma^2 I_n)$. L'hypothèse gaussienne <b>n'est pas critique</b> si $n$ est grand.<br>
               • Par contre l'<b>homoscédasticité est importante</b>. On l'examine en testant l'égalité des variances dans chaque modalité, via le <b>test de Levene</b> ou le <b>test de Bartlett</b>.<br>
@@ -1361,7 +1363,7 @@ window.MathJax = {
             <p>Si le facteur $A$ est significatif, on souhaite en savoir davantage : <b>quelle(s)</b> modalité(s) diffère(nt) des autres ? On voudrait effectuer tous les tests $H_0^{i,j}:\mu_i=\mu_j$ contre $H_1^{i,j}:\mu_i\ne\mu_j$ pour $i\ne j$, soit $I(I-1)/2$ tests.</p>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Le problème des tests multiples</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le problème des tests multiples</p>
               <p>L'idée naïve consiste à effectuer tous les tests de Student de comparaison des moyennes, chacun au niveau $\alpha$. Mais vu le nombre de tests, cela conduirait à de nombreux <b>faux positifs</b>. Il faut apporter une <b>correction</b> à la règle de décision : corrections « universelles » de <b>Bonferroni</b>, de <b>Benjamini–Hochberg</b>, ... Pour l'ANOVA à 1 facteur, le <b>test de Tukey</b> répond spécifiquement au problème.</p>
             </div>
 
@@ -1474,7 +1476,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Les contraintes par défaut de R sont différentes</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Les contraintes par défaut de R sont différentes</p>
               <p>Le modèle complet (avec interaction) se lance avec <code>lm(Y~A+B+A:B)</code>, ou de façon équivalente <code>lm(Y~A*B)</code>. Par défaut, les contraintes ne sont <b>pas</b> celles ci-dessus mais
               $$\alpha_1=0,\quad \beta_1=0,\quad \forall j\ \gamma_{1j}=0,\quad \forall i\ \gamma_{i1}=0.$$
               Avec ces contraintes, l'interprétation devient
@@ -1566,7 +1568,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Deux limites pratiques</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Deux limites pratiques</p>
               <p>• Cela fait <b>beaucoup de tests</b> (retour du problème des tests multiples).<br>
               • L'effectif dans chaque modalité croisée risque d'être <b>trop faible</b> : avec $k$ facteurs, le nombre de cases explose et chacune se vide.<br>
               <b>En pratique</b> : on fait des choix pour ne faire intervenir qu'un <b>nombre limité d'effets et d'interactions</b>.</p>
@@ -1596,7 +1598,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Interprétation délicate</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Interprétation délicate</p>
               <p>En ANCOVA, l'interprétation d'un coefficient est plus subtile qu'en ANOVA pure : elle dépend à la fois (i) de la <b>contrainte d'identifiabilité</b> choisie par le logiciel (ici $\alpha_1=0$, donc tout se lit <b>relativement à la modalité de référence</b> $A_1$) et (ii) de la présence ou non d'<b>interactions</b> avec les variables quantitatives. Comme pour l'ANOVA à $k$ facteurs, <b>il faut faire des choix</b> : on ne peut pas inclure tous les effets et toutes les interactions.</p>
               <p class="sense"><b>Sens :</b> une activité de présentation de l'ANCOVA et de mise en œuvre sous R (via une vidéo) est disponible sur Moodle.</p>
             </div>
@@ -1789,7 +1791,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Attention</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Attention</p>
               <p>L'amplitude de $|\beta_j|$ dépend de l'<b>unité de mesure</b> du régresseur : comparer deux coefficients bruts n'a de sens que si les régresseurs sont comparables. Et attention à l'interprétation si le régresseur est <b>qualitatif</b> (comme en ANOVA / ANCOVA en régression linéaire) : les coefficients sont relatifs à une modalité de référence.</p>
             </div>
 
@@ -1826,7 +1828,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Ne pas confondre odds-ratio et rapport de probabilités</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Ne pas confondre odds-ratio et rapport de probabilités</p>
               <p>$OR(x_1,x_2)\ne p(x_1)/p(x_2)$ en général. Seule exception : si $p(x_1)$ et $p(x_2)$ sont très petits, alors $1-p\approx 1$ et $OR(x_1,x_2)\approx p(x_1)/p(x_2)$.</p>
               <p>On garde cependant : $OR(x_1,x_2)\gt 1\iff \frac{p(x_1)}{p(x_2)}\gt 1$ (et de même pour $\lt$ et $=$), avec en plus $OR(x_1,x_2)\gt \frac{p(x_1)}{p(x_2)}$ dès que $OR\gt 1$ : <b>l'OR accentue les différences</b>.</p>
             </div>
@@ -1864,7 +1866,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Existence : le problème du non-recouvrement</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Existence : le problème du non-recouvrement</p>
               <p>Bien que $L$ soit strictement concave, son maximum peut survenir <b>à l'infini</b> : $\hat\beta$ n'existe alors pas. Cela arrive s'il y a <b>non-recouvrement</b>, c'est-à-dire séparation par un hyperplan des $x_i$ avec $y_i=0$ et de ceux avec $y_i=1$ : il existe $\alpha\in\mathbb R^p$ tel que $\alpha'x_i\ge 0$ pour tout $i$ avec $y_i=0$ et $\alpha'x_i\le 0$ pour tout $i$ avec $y_i=1$.</p>
               <p>Conséquences : $\hat p(x)=0$ ou $1$ selon la position de $x$ ; il subsiste une « zone morte » entre les deux nuages car l'hyperplan séparateur n'est pas unique ; la classification est triviale, mais <b>aucune interprétation n'est possible</b> (les OR valent $0$ ou $+\infty$).</p>
             </div>
@@ -2008,7 +2010,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Le seuil dépend du contexte</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le seuil dépend du contexte</p>
               <p>Le score d'intérêt dépend de l'étude : il peut être beaucoup plus grave de prédire à tort $\hat Y=0$ que $\hat Y=1$ : par exemple si $Y=1$ signifie « le patient présente une maladie grave » : ou l'inverse. Ne pas choisir $s=0{,}5$ par automatisme.</p>
             </div>
           </article>
@@ -2156,7 +2158,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ $Y$ conditionnelle ≠ $Y$ marginale</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>$Y$ conditionnelle ≠ $Y$ marginale</p>
               <p>Pour $x$ fixé, $Y\mid (X=x)\sim\mathcal P(\lambda(x))$, mais la loi <b>marginale</b> de $Y$ ne suit pas une loi de Poisson : c'est un mélange de Poisson. Illustration du cours avec $X$ binaire équiréparti : $Y\mid(X=0)\sim\mathcal P(2)$, $Y\mid(X=1)\sim\mathcal P(10)$, et l'histogramme de $Y$ est nettement bimodal, donc non poissonnien.</p>
             </div>
           </article>
@@ -2286,7 +2288,7 @@ window.MathJax = {
             <p>La loi de Poisson impose une contrainte forte, souvent violée en pratique.</p>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ La contrainte moyenne = variance</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>La contrainte moyenne = variance</p>
               <p>Si $Y\mid(X=x)\sim\mathcal P(\lambda(x))$, alors $\mathbb E(Y\mid X=x)=\lambda(x)$ <b>et aussi</b> $\mathbb V(Y\mid X=x)=\lambda(x)$. Or beaucoup de données sont <b>sur-dispersées</b> : $\mathbb V(Y\mid X=x)\gt \mathbb E(Y\mid X=x)$ (plus rarement sous-dispersées). En cas de sur-dispersion, la variance estimée des estimateurs est <b>sous-estimée</b> (inversement pour la sous-dispersion), ce qui <b>fausse l'inférence</b> : écarts-types trop petits, $p$-valeurs trop optimistes, variables déclarées significatives à tort.</p>
             </div>
 
@@ -2317,7 +2319,7 @@ window.MathJax = {
             </div>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Pas de vraie vraisemblance</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pas de vraie vraisemblance</p>
               <p>La procédure d'estimation ne s'appuie pas sur la « vraie » vraisemblance (à cause de $\phi$) : on n'a donc <b>pas accès à $L_{mod}$</b>. En conséquence R renvoie <code>AIC: NA</code> et la <i>Residual deviance</i> affichée est fausse : c'est celle du modèle de Poisson.</p>
             </div>
 
@@ -2385,7 +2387,7 @@ window.MathJax = {
             <p>Lorsque $Y$ est une variable de comptage, il n'est pas rare que $Y=0$ apparaisse <b>très souvent</b> dans l'échantillon : quantité de pluie (en mm) tombée chaque jour, quantité d'alcool (en verres) consommée chaque semaine, etc. L'histogramme présente alors un pic massif en $0$, détaché du reste de la distribution.</p>
 
             <div class="box box-warn">
-              <p class="box-label">⚠ Poisson et $NB$ sont inadaptés</p>
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Poisson et $NB$ sont inadaptés</p>
               <p>Un modèle de Poisson ou binomial négatif n'est <b>pas adapté</b> à ce type de situation : aucune de ces lois ne peut produire à la fois une masse énorme en $0$ et une queue étalée pour les valeurs positives, avec la même espérance $\lambda(x)$.</p>
             </div>
 
@@ -2736,11 +2738,39 @@ window.MathJax = {
     var submitBtn = qcm.querySelector('.qcm-submit');
     var resetBtn = qcm.querySelector('.qcm-reset');
     var resultEl = qcm.querySelector('.qcm-result');
-    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var pool = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var VISIBLE = Math.min(5, pool.length);
+    var windowStart = 0;
+    var visible = [];
+
+    function resetQuestion(q){
+      q.classList.remove('graded', 'q-correct', 'q-incorrect');
+      q.querySelectorAll('.qcm-opt').forEach(function(opt){
+        opt.classList.remove('opt-right', 'opt-wrong-checked');
+        var input = opt.querySelector('input');
+        input.checked = false;
+        input.disabled = false;
+      });
+    }
+
+    function showWindow(start){
+      windowStart = ((start % pool.length) + pool.length) % pool.length;
+      visible = [];
+      pool.forEach(function(q){ q.style.display = 'none'; resetQuestion(q); });
+      for(var i = 0; i < VISIBLE; i++){
+        var q = pool[(windowStart + i) % pool.length];
+        q.style.display = '';
+        var qnum = q.querySelector('.qnum');
+        if(qnum) qnum.textContent = 'Q' + (i + 1);
+        visible.push(q);
+      }
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    }
 
     submitBtn.addEventListener('click', function(){
       var score = 0;
-      questions.forEach(function(q){
+      visible.forEach(function(q){
         var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
         var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
         var checked = [];
@@ -2762,24 +2792,17 @@ window.MathJax = {
           input.disabled = true;
         });
       });
-      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      resultEl.textContent = 'Score : ' + score + ' / ' + visible.length;
       submitBtn.disabled = true;
       setTimeout(markFormulaScroll, 50);
     });
 
     resetBtn.addEventListener('click', function(){
-      questions.forEach(function(q){
-        q.classList.remove('graded', 'q-correct', 'q-incorrect');
-        q.querySelectorAll('.qcm-opt').forEach(function(opt){
-          opt.classList.remove('opt-right', 'opt-wrong-checked');
-          var input = opt.querySelector('input');
-          input.checked = false;
-          input.disabled = false;
-        });
-      });
-      resultEl.textContent = '';
-      submitBtn.disabled = false;
+      showWindow(windowStart + 2);
+      setTimeout(markFormulaScroll, 50);
     });
+
+    showWindow(0);
   });
 })();
 </script>
