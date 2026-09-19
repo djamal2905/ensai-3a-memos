@@ -667,6 +667,34 @@ def lasso_cd(X, y, lam, n_iter=100):
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · OLS, Ridge et Lasso sur un petit exemple numérique</p>
+            <p>On considère un problème de régression à deux variables explicatives <b>orthogonales</b> entre elles, telles que $Z^TZ=\begin{pmatrix}4&0\\0&1\end{pmatrix}$ et $Z^Ty=\begin{pmatrix}8\\2\end{pmatrix}$ (design déjà centré, sans intercept).</p>
+            <p>(a) Calculez l'estimateur OLS $\hat\theta$ (fiche 3).<br>
+            (b) Calculez l'estimateur Ridge $\hat\theta_\lambda^{\mathrm{rdg}}$ pour $\lambda=1$ (fiche 5).<br>
+            (c) $Z^TZ$ étant diagonale, la pénalité Lasso se découple coordonnée par coordonnée : montrez que $\hat\theta_{\lambda,k}^{\mathrm{Lasso}}=S_\lambda\big((Z^Ty)_k\big)/(Z^TZ)_{kk}$, puis calculez $\hat\theta_\lambda^{\mathrm{Lasso}}$ pour $\lambda=1$.<br>
+            (d) Comparez le taux de rétrécissement (ratio par rapport à l'OLS) de chaque coefficient pour Ridge et pour Lasso. Quel coefficient est le plus « rétréci » dans les deux cas, et pourquoi (en lien avec les valeurs diagonales de $Z^TZ$) ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) OLS</p>
+              <div class="formula">$$\hat\theta = (Z^TZ)^{-1}Z^Ty = \left(\frac84,\ \frac21\right) = (2,\ 2)$$</div>
+              <p class="method-label">(b) Ridge ($\lambda=1$)</p>
+              <div class="formula">$$\hat\theta_1^{\mathrm{rdg}} = \left(\frac{8}{4+1},\ \frac{2}{1+1}\right) = (1.6,\ 1)$$</div>
+              <p class="method-label">(c) Lasso ($\lambda=1$)</p>
+              <p>Le problème $\frac12\|y-Z\theta\|_2^2+\lambda\|\theta\|_1$ se réécrit, coordonnée par coordonnée (car $Z^TZ$ est diagonale, donc les coordonnées n'interagissent pas dans le terme quadratique) : $\min_{\theta_k}\ \frac12(Z^TZ)_{kk}\theta_k^2-(Z^Ty)_k\theta_k+\lambda|\theta_k|$, dont la solution est exactement le seuillage doux divisé par le coefficient diagonal : $\hat\theta_{\lambda,k}=S_\lambda\big((Z^Ty)_k\big)/(Z^TZ)_{kk}$ (identique à la fiche 14, coordinate descent, en une seule coordonnée). Numériquement :</p>
+              <div class="formula">$$\hat\theta_1^{\mathrm{Lasso}} = \left(\frac{S_1(8)}{4},\ \frac{S_1(2)}{1}\right) = \left(\frac{8-1}4,\ 2-1\right) = (1.75,\ 1)$$</div>
+              <p class="method-label">(d) Comparaison</p>
+              <table class="cmp">
+                <tr><th></th><th>OLS</th><th>Ridge</th><th>Lasso</th><th>Ratio Ridge/OLS</th><th>Ratio Lasso/OLS</th></tr>
+                <tr><td>$\theta_1$ ($(Z^TZ)_{11}=4$)</td><td>2</td><td>1.6</td><td>1.75</td><td>80%</td><td>87.5%</td></tr>
+                <tr><td>$\theta_2$ ($(Z^TZ)_{22}=1$)</td><td>2</td><td>1</td><td>1</td><td>50%</td><td>50%</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> $\theta_2$, associé à la plus petite valeur diagonale de $Z^TZ$ (donc à la direction la moins « informative », la plus incertaine), est proportionnellement bien plus rétréci que $\theta_1$ par les <b>deux</b> méthodes. C'est la traduction numérique directe des formules de biais : pour un $\lambda$ fixé, la pénalisation pèse relativement plus sur les coordonnées à faible variance expliquée (petit $(Z^TZ)_{kk}$), exactement comme le prédit $\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]-\theta^\star=-\lambda(Z^TZ+\lambda I)^{-1}\theta^\star$ (fiche 5).</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-1">
             <div class="qcm-head">
               <h3>QCM de révision · Lecture 1 (variantes de l'OLS)</h3>
@@ -958,6 +986,27 @@ def nesterov(X, y, gamma, n_iter):
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Trace à la main de la descente de gradient sur $F(\theta)=\theta^2$</p>
+            <p>On applique GD à $F(\theta)=\theta^2$ (donc $\theta^\star=0$), avec $\theta_0=10$ et un pas constant $\gamma$.</p>
+            <p>(a) Pour $\gamma=0.1$, calculez $\theta_1,\theta_2,\theta_3$ à la main.<br>
+            (b) Montrez que la suite vérifie la relation de récurrence exacte $\theta_{t+1}=(1-2\gamma)\theta_t$, et déduisez la condition sur $\gamma$ pour que $\theta_t\to\theta^\star=0$ quand $t\to\infty$.<br>
+            (c) Calculez la constante de smoothness $L$ de $F$ (fiche 9), et vérifiez que la condition trouvée en (b) est cohérente avec le critère $\gamma\le2/L$ de la Proposition « petits pas ne peuvent pas nuire » (fiche 10).</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Trace numérique</p>
+              <p>$\nabla F(\theta)=2\theta$, donc $\theta_{t}=\theta_{t-1}-\gamma\cdot2\theta_{t-1}$. Avec $\theta_0=10$, $\gamma=0.1$ :</p>
+              <div class="formula">$$\theta_1=10-0.1\times20=8 \qquad \theta_2=8-0.1\times16=6.4 \qquad \theta_3=6.4-0.1\times12.8=5.12$$</div>
+              <p class="method-label">(b) Récurrence et condition de convergence</p>
+              <p>$\theta_t=\theta_{t-1}-2\gamma\theta_{t-1}=(1-2\gamma)\theta_{t-1}$, donc $\theta_t=(1-2\gamma)^t\theta_0$. Cette suite géométrique tend vers $0$ si et seulement si $|1-2\gamma|<1$, c'est-à-dire $0<\gamma<1$.</p>
+              <p class="method-label">(c) Lien avec $L$</p>
+              <p>$\nabla^2F(\theta)=2$ (constant), donc $F$ est $L$-smooth avec $L=2$ (fiche 9). Le critère du cours donne $\gamma\le2/L=1$. La condition exacte trouvée en (b), $\gamma<1$, coïncide (à l'égalité $\gamma=1$ près, cas limite d'oscillation sans décroissance : $\theta_t=(-1)^t\theta_0$, borné mais non convergent) avec la borne théorique $2/L$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> ce petit exemple rend concret le critère $\gamma\le2/L$ : ici, il n'est pas qu'une garantie <i>suffisante</i> un peu conservatrice, il coïncide <b>exactement</b> avec le seuil de divergence réel, parce que $F$ est une fonction quadratique simple (Hessienne constante).</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-2">
             <div class="qcm-head">
               <h3>QCM de révision · Lecture 2 (optimisation)</h3>
@@ -1208,6 +1257,36 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Hyperplan séparateur par inspection géométrique</p>
+            <p>On dispose de 4 points en 2D : classe $+1$ : $(2,2)$ et $(2,0)$ ; classe $-1$ : $(0,0)$ et $(0,2)$.</p>
+            <p>(a) Par symétrie du problème, proposez (sans résoudre le programme quadratique) l'hyperplan séparateur $\mathbf w,b$ de marge maximale (fiche 15).<br>
+            (b) Vérifiez que votre solution satisfait $y_i(\mathbf w^T\mathbf x_i+b)\ge1$ pour les 4 points, avec égalité pour chacun d'eux.<br>
+            (c) Calculez la marge $1/\|\mathbf w\|_2$.<br>
+            (d) Combien de vecteurs de support identifiez-vous ici ? Commentez ce nombre par rapport au minimum théorique de $d+1=3$ points nécessaires pour déterminer une marge en dimension $d=2$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Hyperplan par symétrie</p>
+              <p>Les 4 points sont symétriques par rapport à la droite verticale $x^{(1)}=1$ : c'est la frontière naturelle. On cherche $\mathbf w=(w_1,0)$ (perpendiculaire à cette droite) et $b$ tels que le point $(2,\cdot)$ [classe $+1$] et $(0,\cdot)$ [classe $-1$] atteignent l'égalité : $2w_1+b=1$ et $0\cdot w_1+b=-1$. On résout : $b=-1$, puis $2w_1-1=1\Rightarrow w_1=1$. D'où $\mathbf w=(1,0)$, $b=-1$.</p>
+              <p class="method-label">(b) Vérification</p>
+              <table class="cmp">
+                <tr><th>Point</th><th>$y_i$</th><th>$\mathbf w^T\mathbf x_i+b$</th><th>$y_i(\mathbf w^T\mathbf x_i+b)$</th></tr>
+                <tr><td>$(2,2)$</td><td>$+1$</td><td>$2-1=1$</td><td>$1$</td></tr>
+                <tr><td>$(2,0)$</td><td>$+1$</td><td>$2-1=1$</td><td>$1$</td></tr>
+                <tr><td>$(0,0)$</td><td>$-1$</td><td>$0-1=-1$</td><td>$1$</td></tr>
+                <tr><td>$(0,2)$</td><td>$-1$</td><td>$0-1=-1$</td><td>$1$</td></tr>
+              </table>
+              <p>Les 4 égalités valent exactement $1$ : la contrainte est active (saturée) pour chacun des 4 points.</p>
+              <p class="method-label">(c) Marge</p>
+              <div class="formula">$$\frac{1}{\|\mathbf w\|_2} = \frac1{\sqrt{1^2+0^2}} = 1$$</div>
+              <p class="method-label">(d) Nombre de vecteurs de support</p>
+              <p>Les <b>4</b> points sont des vecteurs de support ici (tous à contrainte active), alors que $d+1=3$ suffiraient génériquement à déterminer une marge en dimension 2. C'est parce que cette configuration est <b>parfaitement symétrique</b> (un cas dégénéré) : en position générique (points tirés au hasard), on aurait typiquement observé exactement 3 vecteurs de support ; ici la symétrie du problème fait qu'un point supplémentaire se retrouve, par coïncidence géométrique, exactement sur la marge.</p>
+              <p class="sense"><b>Sens :</b> cet exercice illustre concrètement la fiche 15 : la solution du SVM à marge dure ne dépend que d'un petit sous-ensemble de points (ici, dans ce cas très symétrique, tous les points), jamais de leur nombre total.</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-3">
             <div class="qcm-head">
               <h3>QCM de révision · Lecture 3 (SVM &amp; noyaux)</h3>
@@ -1426,6 +1505,32 @@ def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Une itération d'AdaBoost, à la main</p>
+            <p>On dispose de 3 points, de poids initiaux uniformes $w^{(1)}=(1/3,1/3,1/3)$. Un premier classifieur faible $h_1$ se trompe sur exactement <b>1</b> des 3 points (le troisième).</p>
+            <p>(a) Calculez le taux d'erreur pondéré $\varepsilon_1=\sum_{i:\,y_i\neq h_1(\mathbf x_i)}w_i^{(1)}$.<br>
+            (b) Calculez $\beta_1=\frac12\ln\frac{1-\varepsilon_1}{\varepsilon_1}$ (fiche 20, exercice 3).<br>
+            (c) Les nouveaux poids non normalisés valent $w_i^{(2)}\propto w_i^{(1)}e^{-\beta_1}$ si $h_1(\mathbf x_i)=y_i$ (bien classé), $w_i^{(1)}e^{\beta_1}$ sinon. Calculez-les, puis normalisez-les pour qu'ils somment à 1.<br>
+            (d) Commentez l'effet visible sur le poids du point mal classé.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Taux d'erreur pondéré</p>
+              <div class="formula">$$\varepsilon_1 = w_3^{(1)} = \frac13$$</div>
+              <p class="method-label">(b) Poids du classifieur</p>
+              <div class="formula">$$\beta_1 = \frac12\ln\frac{1-1/3}{1/3} = \frac12\ln(2) \approx 0.3466$$</div>
+              <p class="method-label">(c) Mise à jour des poids</p>
+              <p>$e^{-\beta_1}=2^{-1/2}\approx0.7071$ et $e^{\beta_1}=2^{1/2}\approx1.4142$. Poids non normalisés :</p>
+              <div class="formula">$$w_1^{(2)}=\frac13\times0.7071\approx0.2357 \qquad w_2^{(2)}\approx0.2357 \qquad w_3^{(2)}=\frac13\times1.4142\approx0.4714$$</div>
+              <p>Somme $\approx0.9428$. Après normalisation :</p>
+              <div class="formula">$$w^{(2)} = (0.25,\ 0.25,\ 0.5)$$</div>
+              <p class="method-label">(d) Commentaire</p>
+              <p>Le poids du point mal classé <b>double exactement</b> par rapport aux deux autres (0.5 contre 0.25 chacun) : il pèsera deux fois plus lourd dans le calcul du taux d'erreur pondéré du <b>prochain</b> classifieur faible $h_2$, qui sera donc incité à se concentrer sur ce point difficile. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est exactement le mécanisme séquentiel de la fiche 20 : chaque round redistribue le poids vers les erreurs du round précédent, ce qui force les classifieurs faibles successifs à se spécialiser sur les points encore mal expliqués.</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-4">
             <div class="qcm-head">
               <h3>QCM de révision · Lecture 4 (méthodes d'ensemble)</h3>
@@ -1633,6 +1738,34 @@ print(f"Pearson r = {r:.4f}  |  HSIC = {h:.4f}")
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Pearson et information mutuelle à partir d'une loi jointe discrète</p>
+            <p>Deux variables binaires $X,Y\in\{0,1\}$ suivent la loi jointe donnée par le tableau :</p>
+            <table class="cmp">
+              <tr><th>$P(X=x,Y=y)$</th><th>$y=0$</th><th>$y=1$</th></tr>
+              <tr><td>$x=0$</td><td>0.4</td><td>0.1</td></tr>
+              <tr><td>$x=1$</td><td>0.1</td><td>0.4</td></tr>
+            </table>
+            <p>(a) Vérifiez que les deux marginales sont $\mathbb P(X=0)=\mathbb P(X=1)=\mathbb P(Y=0)=\mathbb P(Y=1)=0.5$.<br>
+            (b) Calculez la corrélation de Pearson $\rho(X,Y)$ (indice : pour $X,Y\in\{0,1\}$, $\mathbb E[XY]=\mathbb P(X=1,Y=1)$ et $\mathrm{Var}(X)=\mathbb E[X]-\mathbb E[X]^2$).<br>
+            (c) Calculez l'information mutuelle $I(X;Y)=\sum_{x,y}p(x,y)\log_2\!\big(p(x,y)/(p(x)p(y))\big)$ en bits.<br>
+            (d) $X$ et $Y$ sont-elles indépendantes ? Comment le lit-on sur chacune des deux quantités calculées ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Marginales</p>
+              <p>$\mathbb P(X=0)=0.4+0.1=0.5$, $\mathbb P(X=1)=0.1+0.4=0.5$ ; par symétrie du tableau, $\mathbb P(Y=0)=\mathbb P(Y=1)=0.5$ également.</p>
+              <p class="method-label">(b) Corrélation de Pearson</p>
+              <div class="formula">$$\mathbb E[XY]=\mathbb P(X=1,Y=1)=0.4, \qquad \mathrm{Cov}(X,Y)=0.4-0.5\times0.5=0.15$$</div>
+              <div class="formula">$$\mathrm{Var}(X)=\mathrm{Var}(Y)=0.5-0.5^2=0.25 \qquad\Rightarrow\qquad \rho(X,Y)=\frac{0.15}{\sqrt{0.25\times0.25}}=\frac{0.15}{0.25}=0.6$$</div>
+              <p class="method-label">(c) Information mutuelle</p>
+              <div class="formula">$$I(X;Y) = 2\times0.4\log_2\!\left(\frac{0.4}{0.25}\right) + 2\times0.1\log_2\!\left(\frac{0.1}{0.25}\right) \approx 0.8\times0.678 - 0.2\times1.322 \approx 0.278\ \text{bits}$$</div>
+              <p class="method-label">(d) Indépendance ?</p>
+              <p>Non : $\rho(X,Y)=0.6\neq0$ <b>et</b> $I(X;Y)\approx0.278>0$ signalent tous deux une dépendance. Ici, contrairement à l'exemple $Y=X^2$ (exercice 1), la dépendance a une composante <b>linéaire</b> significative : les deux mesures s'accordent, ce qui n'est pas toujours le cas (fiche 22).</p>
+              <p class="sense"><b>Sens :</b> cet exemple complète l'exercice 1 : Pearson et information mutuelle ne sont <b>pas toujours en désaccord</b> ; ils coïncident dès que la dépendance a une composante linéaire suffisante. Le piège de Pearson n'apparaît que pour des dépendances <i>purement</i> non linéaires (symétriques, comme $Y=X^2$).</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-5">
             <div class="qcm-head">
@@ -1837,6 +1970,37 @@ def irls_lad(X, y, n_iter=20, eps=1e-6):
         theta = np.linalg.solve(X.T @ W @ X, X.T @ W @ y)   # WLS (exercice 1)
     return theta</code></pre>
               <p class="sense"><b>Sens :</b> <code>eps</code> évite la division par zéro si un résidu s'annule exactement. Testez sur un jeu $y=2x+1+\varepsilon$ auquel vous ajoutez un seul point très aberrant : la droite OLS doit être nettement « tirée » vers l'outlier (son résidu, mis au carré, pèse énormément dans la perte, fiche 24), alors que la droite IRLS/LAD doit rester proche de la tendance des points normaux.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Deux itérations d'IRLS à la main, face à un outlier</p>
+            <p>Modèle sans intercept $y=\theta x$, avec 4 points $(x_i,y_i)$ : $(1,1),(2,2),(3,3)$ (alignés sur $y=x$) et $(4,20)$ (un outlier).</p>
+            <p>(a) Calculez $\hat\theta^{\mathrm{OLS}}=\sum x_iy_i/\sum x_i^2$ (fiche 3), et commentez : est-il proche de la pente « normale » 1 ?<br>
+            (b) Calculez les résidus $r_i=y_i-\hat\theta^{\mathrm{OLS}}x_i$ et les poids IRLS $w_i=1/|r_i|$ (fiche 25, exercice 3).<br>
+            (c) Calculez $\theta_1=\sum w_ix_iy_i/\sum w_ix_i^2$ (une itération de WLS, fiche 24). Le résultat s'est-il rapproché de la pente « normale » 1 ?<br>
+            (d) Sans refaire tous les calculs, indiquez qualitativement pourquoi une seconde itération rapprochera encore $\theta_2$ de 1.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) OLS</p>
+              <div class="formula">$$\hat\theta^{\mathrm{OLS}} = \frac{1\times1+2\times2+3\times3+4\times20}{1^2+2^2+3^2+4^2} = \frac{1+4+9+80}{30} = \frac{94}{30} \approx 3.133$$</div>
+              <p>Très éloigné de la pente « normale » $1$ : l'outlier $(4,20)$ a fortement attiré l'estimateur OLS.</p>
+              <p class="method-label">(b) Résidus et poids après l'OLS</p>
+              <table class="cmp">
+                <tr><th>$i$</th><th>$x_i$</th><th>$y_i$</th><th>$r_i=y_i-3.133x_i$</th><th>$w_i=1/|r_i|$</th></tr>
+                <tr><td>1</td><td>1</td><td>1</td><td>$-2.133$</td><td>$0.469$</td></tr>
+                <tr><td>2</td><td>2</td><td>2</td><td>$-4.267$</td><td>$0.234$</td></tr>
+                <tr><td>3</td><td>3</td><td>3</td><td>$-6.400$</td><td>$0.156$</td></tr>
+                <tr><td>4</td><td>4</td><td>20</td><td>$+7.467$</td><td>$0.134$</td></tr>
+              </table>
+              <p class="method-label">(c) Première itération WLS</p>
+              <div class="formula">$$\theta_1 = \frac{\sum w_ix_iy_i}{\sum w_ix_i^2} = \frac{13.527}{4.955} \approx 2.730$$</div>
+              <p>$\theta_1\approx2.730 < \hat\theta^{\mathrm{OLS}}\approx3.133$ : une seule itération a déjà rapproché l'estimation de la pente « normale » 1.</p>
+              <p class="method-label">(d) Pourquoi ça continue de converger</p>
+              <p>À $\theta_1\approx2.730$, le résidu du point aberrant $|r_4|=|20-2.730\times4|\approx9.08$ reste très supérieur à ceux des 3 points normaux (qui, eux, diminuent car $\theta_1$ se rapproche de 1) : son poids $w_4=1/|r_4|$ continue donc de <b>diminuer</b> relativement aux autres à chaque itération, ce qui réduit encore son influence sur l'estimateur au tour suivant. $\blacksquare$ (numériquement, $\theta_2\approx2.347$, confirmant la tendance).</p>
+              <p class="sense"><b>Sens :</b> contrairement à l'OLS qui pondère <b>tous</b> les résidus de la même façon (au carré), l'IRLS/LAD réduit <b>progressivement et automatiquement</b> le poids des points à grand résidu, sans jamais les exclure explicitement (fiche 24-25) : c'est un mécanisme continu, pas un seuillage brutal.</p>
             </div>
           </details>
 
