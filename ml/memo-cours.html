@@ -762,6 +762,30 @@ def lasso_cd(X, y, lam, n_iter=100):
               <div class="qcm-explain">Faux : un $K$ trop petit dégrade la performance, mais ce n'est pas la situation où la méthode est intrinsèquement inutile par construction des données.</div>
             </div>
 
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>L'Elastic-Net utilise deux hyperparamètres $\lambda$ et $\gamma$. Que règle $\gamma$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-6"><span class="otext">L'intensité globale de la régularisation, comme $\lambda$ pour Ridge ou Lasso seuls.</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle de $\lambda$ (fiche 8), pas de $\gamma$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-6"><span class="otext">L'arbitrage entre la pénalité $L^1$ (Lasso) et $L^2$ (Ridge) : $\gamma=1$ donne le Lasso pur, $\gamma=0$ le Ridge pur.</span></label>
+              <div class="qcm-explain">Correct : fiche 8, c'est exactement la définition de $\gamma$ dans $\gamma\|\theta\|_1+(1-\gamma)\|\theta\|_2^2/2$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-6"><span class="otext">Le nombre de folds utilisé en validation croisée.</span></label>
+              <div class="qcm-explain">Faux : $\gamma$ est un hyperparamètre du modèle Elastic-Net lui-même, sans rapport avec la procédure de validation croisée.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-6"><span class="otext">Le nombre de composantes principales retenues.</span></label>
+              <div class="qcm-explain">Faux : c'est le paramètre $K$ du PCA-OLS (fiche 6), une méthode différente de l'Elastic-Net.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>Le critère de Mallows $C_p=\hat R_n(\hat\theta_n)+2\sigma^2\frac{d+1}n$ (fiche 4) est une alternative à quelle méthode, pour quel type d'estimateur ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-7"><span class="otext">Une alternative moins coûteuse à la validation croisée, valable uniquement pour l'estimateur OLS.</span></label>
+              <div class="qcm-explain">Correct : fiche 4, le $C_p$ corrige le biais du risque empirique spécifiquement pour l'OLS, sans nécessiter de découpage train/validation répété.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-7"><span class="otext">Une alternative au Lasso, valable pour n'importe quel estimateur.</span></label>
+              <div class="qcm-explain">Faux : le $C_p$ n'est ni une méthode de sélection de variables comme le Lasso, ni valable pour n'importe quel estimateur (fiche 4 : uniquement l'OLS).</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-7"><span class="otext">Une alternative au bootstrap, valable pour tous les modèles non linéaires.</span></label>
+              <div class="qcm-explain">Faux : ce n'est ni son rôle, ni son champ de validité annoncé dans le cours.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-7"><span class="otext">Une alternative à la régularisation Ridge.</span></label>
+              <div class="qcm-explain">Faux : le $C_p$ est un critère d'évaluation du risque, pas une méthode de régularisation comme le Ridge.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1074,6 +1098,30 @@ def nesterov(X, y, gamma, n_iter):
               <div class="qcm-explain">Faux : le gradient proximal (fiche 12) gère lui aussi les pénalités non lisses.</div>
             </div>
 
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Pourquoi utilise-t-on des méthodes de réduction de variance (Momentum, SVRG, SAG, SAGA) plutôt que d'augmenter simplement $m$ dans le SGD (fiche 13) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-6"><span class="otext">Augmenter $m$ n'a aucun effet sur la variance du gradient stochastique.</span></label>
+              <div class="qcm-explain">Faux : augmenter $m$ (taille du mini-batch) réduit bien la variance, c'est justement pourquoi c'est la première idée envisagée (fiche 13).</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-6"><span class="otext">Ces méthodes sont plus simples à implémenter que d'augmenter $m$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'argument avancé ; augmenter $m$ est au contraire la modification la plus simple.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-6"><span class="otext">Augmenter $m$ réduit la variance mais augmente directement le coût par itération (plus de gradients à calculer) ; les méthodes de réduction de variance visent le même effet sans ce coût.</span></label>
+              <div class="qcm-explain">Correct : fiche 13, c'est exactement le compromis évoqué : $m\uparrow$ coûte plus cher par itération, d'où l'intérêt d'approches alternatives comme le moyennage.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-6"><span class="otext">Ces méthodes ne s'appliquent qu'aux problèmes non convexes.</span></label>
+              <div class="qcm-explain">Faux : rien dans le cours ne restreint ces méthodes aux problèmes non convexes ; elles s'appliquent aussi bien à des objectifs convexes.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q7</span>Quel est le principal inconvénient de la méthode de Newton par rapport à BFGS (fiche 11) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-7"><span class="otext">Newton ne converge jamais, contrairement à BFGS.</span></label>
+              <div class="qcm-explain">Faux : Newton converge, et même quadratiquement en local (fiche 11), plus vite que BFGS en général ; ce n'est pas là le problème.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-7"><span class="otext">Newton nécessite de calculer (et inverser) la Hessienne exacte à chaque itération, un coût $O(d^3)$ ; BFGS l'approxime pour un coût $O(d^2)$.</span></label>
+              <div class="qcm-explain">Correct : fiche 11, c'est exactement le compromis entre les deux méthodes.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-7"><span class="otext">Newton ne peut s'appliquer qu'à des fonctions non convexes.</span></label>
+              <div class="qcm-explain">Faux : Newton s'applique aussi bien (et surtout) à des fonctions convexes ; rien ne le restreint aux fonctions non convexes.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-7"><span class="otext">Newton ne fonctionne qu'en dimension 1.</span></label>
+              <div class="qcm-explain">Faux : Newton se généralise nativement à toute dimension $d$ via la Hessienne $d\times d$ (fiche 11).</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1354,6 +1402,30 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
               <div class="qcm-explain">Correct : fiche 16.</div>
             </div>
 
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Dans la formulation duale du SVM à marge souple (fiche 16), à quoi correspond la contrainte $0\le\alpha_i\le C$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-6"><span class="otext">Elle borne le nombre de vecteurs de support à $C$.</span></label>
+              <div class="qcm-explain">Faux : $C$ n'est pas un nombre entier de points, mais un hyperparamètre continu qui borne chaque $\alpha_i$ individuellement.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-6"><span class="otext">Elle traduit, via les conditions KKT, le fait que chaque point peut violer la marge (via $\xi_i$) mais avec un poids $\alpha_i$ borné par $C$ dans la solution duale.</span></label>
+              <div class="qcm-explain">Correct : fiche 16, c'est la contrepartie duale exacte des variables ressort $\xi_i\ge0$ et de leur pénalité $C$ dans le primal.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-6"><span class="otext">Elle garantit que le noyau utilisé est semi-défini positif.</span></label>
+              <div class="qcm-explain">Faux : la positivité semi-définie du noyau (fiche 17) est une propriété séparée, indépendante de la borne sur $\alpha_i$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-6"><span class="otext">Elle n'a aucun rôle particulier, c'est une contrainte purement technique sans interprétation.</span></label>
+              <div class="qcm-explain">Faux : elle a une interprétation précise et importante (voir la bonne réponse), ce n'est pas un artefact technique sans signification.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q7</span>Parmi les noyaux usuels de la fiche 17, lequel correspond à une feature map $\phi$ de dimension <b>infinie</b> ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-7"><span class="otext">Le noyau linéaire $\mathbf x^T\mathbf x'$.</span></label>
+              <div class="qcm-explain">Faux : sa feature map est $\phi(\mathbf x)=\mathbf x$, de dimension finie (celle de $\mathbf x$).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-7"><span class="otext">Le noyau polynomial de degré $d$.</span></label>
+              <div class="qcm-explain">Faux : sa feature map (les monômes de degré $\le d$) est de dimension finie, quoique grande (fiche 17).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-7"><span class="otext">Le noyau gaussien / RBF.</span></label>
+              <div class="qcm-explain">Correct : fiche 17-18, c'est justement ce qui rend le noyau gaussien si flexible : son espace $\mathcal H_k$ associé est de dimension infinie.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-7"><span class="otext">Aucun des trois n'a de dimension infinie.</span></label>
+              <div class="qcm-explain">Faux : le noyau gaussien en a bien une (voir la bonne réponse).</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1598,6 +1670,30 @@ def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
               <div class="qcm-explain">Correct : fiche 20.</div>
             </div>
 
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q6</span>Dans un Random Forest, comment obtient-on une estimation du risque sans jeu de validation séparé (fiche 19) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-6"><span class="otext">L'erreur out-of-bag (OOB) : chaque point est prédit par les seuls arbres qui ne l'ont pas vu à l'entraînement (environ 36,8% des arbres, en moyenne, pour chaque point).</span></label>
+              <div class="qcm-explain">Correct : fiche 19, c'est le mécanisme exact de l'erreur OOB, sous-produit gratuit du tirage bootstrap.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-6"><span class="otext">En utilisant systématiquement 20% des données comme jeu de test, comme pour n'importe quel modèle.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas spécifique au Random Forest, et ce n'est pas ce que désigne l'erreur OOB (fiche 19).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-6"><span class="otext">En calculant le $R^2$ ajusté sur les données d'entraînement.</span></label>
+              <div class="qcm-explain">Faux : le $R^2$ ajusté (memo RegLin) n'est pas l'outil utilisé ici, et évaluer sur les données d'entraînement serait de toute façon optimiste.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-6"><span class="otext">Ce n'est pas possible : un jeu de validation séparé est toujours nécessaire pour un Random Forest.</span></label>
+              <div class="qcm-explain">Faux : c'est précisément l'intérêt de l'erreur OOB, qui rend ce jeu de validation séparé inutile (fiche 19).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q7</span>En quoi le stacking (fiche 21) diffère-t-il du bagging et du boosting ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-7"><span class="otext">Le stacking n'utilise jamais d'arbres de décision.</span></label>
+              <div class="qcm-explain">Faux : le stacking peut très bien inclure des arbres parmi ses modèles de base, sans restriction de ce type.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-7"><span class="otext">Le stacking entraîne toujours exactement 2 modèles de base.</span></label>
+              <div class="qcm-explain">Faux : le nombre de modèles de base $K$ est libre, ce n'est pas limité à 2 (fiche 21).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-7"><span class="otext">Le stacking combine des modèles potentiellement hétérogènes (familles différentes) via un méta-modèle entraîné sur leurs prédictions, plutôt que de combiner des modèles de même famille par moyenne ou vote pondéré.</span></label>
+              <div class="qcm-explain">Correct : fiche 21, c'est la différence essentielle avec le bagging/boosting (qui combinent typiquement des modèles de même famille, souvent des arbres).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-7"><span class="otext">Le stacking ne peut s'appliquer qu'à des problèmes de classification.</span></label>
+              <div class="qcm-explain">Faux : le stacking s'applique aussi bien à la régression qu'à la classification, comme le bagging et le boosting.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1832,6 +1928,30 @@ print(f"Pearson r = {r:.4f}  |  HSIC = {h:.4f}")
               <div class="qcm-explain">Correct : fiche 23, c'est exactement l'avantage pratique mis en avant dans le cours.</div>
               <label class="qcm-opt"><input type="radio" name="ml5-5"><span class="otext">L'HSIC est toujours égale à l'information mutuelle, ce n'est qu'une autre notation.</span></label>
               <div class="qcm-explain">Faux : ce sont deux quantités différentes (sauf coïncidences particulières), qui partagent seulement la propriété « nulle ssi indépendance ».</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Avec des noyaux <b>linéaires</b> $k(x,x')=xx'$ et $l(y,y')=yy'$, à quoi se réduit l'HSIC(X,Y) (fiche 23) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-6"><span class="otext">Elle vaut toujours 0, quel que soit $(X,Y)$.</span></label>
+              <div class="qcm-explain">Faux : elle ne vaut 0 que si $X,Y$ sont indépendantes (ou plus précisément non corrélées ici), pas systématiquement.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-6"><span class="otext">Elle se réduit au carré de la covariance, $\mathrm{Cov}(X,Y)^2$ : elle ne capture plus alors que la dépendance linéaire, comme Pearson.</span></label>
+              <div class="qcm-explain">Correct : avec des noyaux linéaires, l'HSIC perd sa capacité à détecter les dépendances non linéaires ; c'est le choix d'un noyau non linéaire (gaussien) qui lui donne cet avantage.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-6"><span class="otext">Elle devient égale à l'information mutuelle exacte.</span></label>
+              <div class="qcm-explain">Faux : rien ne garantit cette égalité, même avec des noyaux linéaires.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-6"><span class="otext">Elle diverge vers l'infini.</span></label>
+              <div class="qcm-explain">Faux : l'HSIC avec noyaux linéaires reste une quantité finie (le carré d'une covariance).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>Pourquoi l'estimation de l'information mutuelle devient-elle particulièrement difficile en grande dimension (fiche 22) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-7"><span class="otext">Parce qu'elle nécessite d'estimer des densités de probabilité, un problème statistiquement difficile qui se dégrade avec la dimension (fléau de la dimension).</span></label>
+              <div class="qcm-explain">Correct : fiche 22, c'est exactement l'argument qui motive l'HSIC comme alternative.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-7"><span class="otext">Parce que la formule de l'information mutuelle n'est définie qu'en dimension 1.</span></label>
+              <div class="qcm-explain">Faux : l'information mutuelle est définie en toute dimension ; le problème est un problème d'<b>estimation</b>, pas de définition.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-7"><span class="otext">Parce qu'elle devient toujours négative en grande dimension.</span></label>
+              <div class="qcm-explain">Faux : $I(X;Y)\ge0$ reste vrai en toute dimension (positivité de la divergence KL).</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-7"><span class="otext">Parce qu'elle nécessite un noyau caractéristique, difficile à construire en grande dimension.</span></label>
+              <div class="qcm-explain">Faux : c'est l'HSIC qui nécessite un noyau, pas l'information mutuelle (fiche 22-23).</div>
             </div>
 
             <div class="qcm-actions">
@@ -2069,6 +2189,30 @@ def irls_lad(X, y, n_iter=20, eps=1e-6):
               <div class="qcm-explain">Faux : c'est l'inverse ; l'IRLS/LAD est justement conçu pour être <b>moins</b> sensible à l'outlier.</div>
               <label class="qcm-opt"><input type="radio" name="ml6-5"><span class="otext">Aucune des deux méthodes ne peut être appliquée en présence d'un outlier.</span></label>
               <div class="qcm-explain">Faux : les deux méthodes restent applicables ; seule leur sensibilité au point aberrant diffère.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Dans quel cas utilise-t-on les moindres carrés pondérés (WLS) avec des poids <i>connus a priori</i> (fiche 24), plutôt que dans un cadre robuste ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-6"><span class="otext">Quand on soupçonne la présence d'outliers dans les données.</span></label>
+              <div class="qcm-explain">Faux : c'est le cas d'usage du LAD/IRLS (fiche 24-25), où les poids sont recalculés à partir des résidus, pas connus à l'avance.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-6"><span class="otext">Quand toutes les observations ont exactement la même fiabilité.</span></label>
+              <div class="qcm-explain">Faux : dans ce cas, $w_i\equiv1$ et le WLS se réduit exactement à l'OLS ; il n'y a pas besoin de pondérer.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-6"><span class="otext">Quand le bruit est hétéroscédastique (variance différente selon les observations), et qu'on connaît (ou estime séparément) $\sigma_i^2$ : on prend alors $w_i=1/\sigma_i^2$.</span></label>
+              <div class="qcm-explain">Correct : fiche 24, c'est l'usage classique du WLS, distinct de son usage comme brique de construction des méthodes robustes.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-6"><span class="otext">Uniquement pour la classification, jamais pour la régression.</span></label>
+              <div class="qcm-explain">Faux : le WLS est une méthode de régression (fiche 24), sans rapport avec la classification.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>En M-estimation (fiche 25), la fonction $\rho$ peut être choisie différemment de $r^2/2$ (OLS) ou $|r|$ (LAD). Que garantit le cadre général de la M-estimation ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-7"><span class="otext">Pour n'importe quel choix de $\rho$ différentiable, la condition d'optimalité se ramène toujours à un WLS de poids $w_i=\psi(r_i)/r_i$ avec $\psi=\rho'$, ce qui permet de résoudre le problème par IRLS.</span></label>
+              <div class="qcm-explain">Correct : fiche 25, c'est exactement l'intérêt du cadre unifié de la M-estimation.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-7"><span class="otext">Que $\rho$ doit obligatoirement être quadratique.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, la M-estimation généralise précisément au-delà du cas quadratique (OLS).</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-7"><span class="otext">Que la solution est toujours identique, quel que soit $\rho$.</span></label>
+              <div class="qcm-explain">Faux : des choix différents de $\rho$ (OLS, LAD, Huber…) donnent des estimateurs différents, avec des propriétés de robustesse différentes.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-7"><span class="otext">Que l'algorithme IRLS n'est jamais nécessaire.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, IRLS est l'algorithme standard pour résoudre le problème dès que $\rho\neq r^2/2$ (fiche 25).</div>
             </div>
 
             <div class="qcm-actions">
