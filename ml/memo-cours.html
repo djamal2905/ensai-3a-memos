@@ -201,12 +201,23 @@ window.MathJax = {
   .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
   .cmp td:first-child, .cmp th:first-child{ text-align:left; }
 
-  .box-practice{ background:var(--surface-2); border-color:var(--accent); }
-  .box-practice .box-label{ color:var(--accent-strong); }
-  .box-practice pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
-  .box-practice code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
-  .box-practice .exo-step{ font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--accent-strong); margin:10px 0 2px; }
-  .box-practice .exo-step:first-of-type{ margin-top:0; }
+  .box pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
+  .box code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+
+  details.solution{ margin:14px 0; }
+  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
+  details.solution summary::-webkit-details-marker{ display:none; }
+  details.solution summary::before{ content:"▶"; font-size:.7em; transition:transform .15s ease; }
+  details.solution[open] summary::before{ transform:rotate(90deg); }
+  details.solution[open] summary{ border-radius:8px 8px 0 0; }
+  details.solution > .box{ margin-top:0; border-radius:0 0 10px 10px; border-top:none; }
+  .method-label{ display:inline-block; font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--ex-label); background:var(--ex-bg); border:1px solid var(--ex-border); border-radius:6px; padding:2px 8px; margin:10px 0 6px; }
+  .method-label:first-child{ margin-top:0; }
+
+  .exo-scratch{ margin:10px 0; }
+  .exo-scratch label{ display:block; font:600 .76rem "JetBrains Mono",monospace; color:var(--muted); margin-bottom:4px; }
+  .exo-textarea{ width:100%; min-height:100px; resize:vertical; font:400 .84rem "JetBrains Mono",monospace; background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 12px; box-sizing:border-box; }
+  .exo-textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
 
   .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
   .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
@@ -570,23 +581,89 @@ window.MathJax = {
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Computer class 1 : Ridge et Lasso sur un jeu de données contaminé</p>
-            <p>Un jeu de données diabète ($n=442$, $d=10$) a été « contaminé » par l'ajout de 200 variables inutiles, puis toutes les colonnes ont été permutées aléatoirement (<code>data_dm3.csv</code>) : à vous de retrouver, sans connaître leur identité, quelles variables sont réellement informatives.</p>
-            <p class="exo-step">Étape 1 · Vérifier numériquement les formules de biais/variance</p>
-            <p>Sur un jeu simulé à design fixe (fiche 4), comparez le biais théorique $-\lambda(X^TX+\lambda I)^{-1}\theta^\star$ (fiche 5) à l'estimation empirique obtenue en ré-entraînant <code>Ridge</code> de <code>scikit-learn</code> plusieurs fois (bruit différent à chaque fois), pour toute une grille de $\lambda$.</p>
-            <p class="exo-step">Étape 2 · Ridge vs Lasso sur les données contaminées</p>
-            <p>Découpez train/test (80/20), réglez $\lambda$ par validation croisée (<code>RidgeCV</code> puis <code>LassoCV</code>), tracez les chemins de coefficients (fiches 5 et 7), et comparez le nombre de coefficients <b>non nuls</b> retenus par chacun : lequel des deux « résout l'énigme » et pointe vers les vraies variables ?</p>
-            <pre><code>from sklearn.linear_model import RidgeCV, LassoCV
-
-ridge_cv = RidgeCV(alphas=lambdas, cv=5).fit(X_train, y_train)
-lasso_cv = LassoCV(alphas=lambdas, cv=5).fit(X_train, y_train)
-print("Ridge :", (ridge_cv.coef_ != 0).sum(), "/ 210 coefficients non nuls")
-print("Lasso :", (lasso_cv.coef_ != 0).sum(), "/ 210 coefficients non nuls")</code></pre>
-            <p class="exo-step">Étape 3 (bonus) · Pourquoi la LOOCV est « gratuite » pour Ridge/OLS</p>
-            <p>Démontrez, en utilisant la formule de Sherman-Morrison sur $X^TX$ privé d'une ligne, que $y_i-\hat f_{-i}(x_i) = \big(y_i-\hat f(x_i)\big)/(1-S_{ii})$ avec $S=X(X^TX)^{-1}X^T$ : un <b>seul</b> ajustement sur toutes les données suffit pour obtenir l'erreur de validation croisée <i>leave-one-out</i> de tous les points à la fois, sans jamais ré-entraîner $n$ fois le modèle. Étendez le résultat au Ridge en écrivant $\hat\theta_\lambda^{\mathrm{rdg}}$ comme un OLS sur des données augmentées $\big(\begin{smallmatrix}X\\\sqrt\lambda I_d\end{smallmatrix}\big)$.</p>
-            <p class="sense"><b>Corrigé complet</b> (code exécuté + démonstration détaillée du bonus) : notebooks <code>tp-td-01/activity-1.ipynb</code> et <code>activity-2.ipynb</code>.</p>
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Comportement limite du Ridge quand $\lambda\to0$ et $\lambda\to\infty$</p>
+            <p>À partir des formules de la fiche 5 ($\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]-\theta^\star=-\lambda(X^TX+\lambda I_d)^{-1}\theta^\star$ et $V_\lambda^{\mathrm{rdg}}=\sigma^2(\lambda I_d+X^TX)^{-2}X^TX$, avec $X^TX$ inversible), montrez rigoureusement que :</p>
+            <p>(a) $\lim_{\lambda\to0}\big(\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]-\theta^\star\big)=0$ et $\lim_{\lambda\to0}V_\lambda^{\mathrm{rdg}}=\sigma^2(X^TX)^{-1}$ (la variance de l'OLS).<br>
+            (b) $\lim_{\lambda\to\infty}\big(\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]-\theta^\star\big)=-\theta^\star$ et $\lim_{\lambda\to\infty}V_\lambda^{\mathrm{rdg}}=0$.</p>
           </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Limite $\lambda\to0$</p>
+              <p>Comme $X^TX$ est inversible, $(X^TX+\lambda I_d)^{-1}\to(X^TX)^{-1}$ quand $\lambda\to0$ (continuité de l'inversion matricielle au voisinage d'une matrice inversible). Le biais $-\lambda(X^TX+\lambda I_d)^{-1}\theta^\star$ est donc le produit de $\lambda\to0$ par une quantité qui reste bornée : il tend vers $0$. De même, $(\lambda I_d+X^TX)^{-2}\to(X^TX)^{-2}$, d'où $V_\lambda^{\mathrm{rdg}}\to\sigma^2(X^TX)^{-2}X^TX=\sigma^2(X^TX)^{-1}$, exactement la variance de l'OLS (fiche 4) : cohérent, puisque $\hat\theta_0^{\mathrm{rdg}}=\hat\theta^{\mathrm{OLS}}$.</p>
+              <p class="method-label">(b) Limite $\lambda\to\infty$</p>
+              <p>Pour $\lambda$ grand, $(X^TX+\lambda I_d)^{-1}=\frac1\lambda\big(I_d+\frac{X^TX}{\lambda}\big)^{-1}\to\frac1\lambda I_d$ (le second facteur tend vers $I_d$). Le biais devient $-\lambda\cdot\frac1\lambda I_d\,\theta^\star=-\theta^\star$ : les $\lambda$ s'annulent exactement, ce qui confirme $\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]\to0$ (cohérent avec $\hat\theta_\lambda^{\mathrm{rdg}}\to0$ rappelé en fiche 5). Pour la variance, $(\lambda I_d+X^TX)^{-2}\sim\frac1{\lambda^2}I_d\to0$ plus vite que ne diverge $X^TX$ (fixe), donc $V_\lambda^{\mathrm{rdg}}\to0$.</p>
+              <p class="sense"><b>Sens :</b> ces deux limites sont exactement les deux extrêmes du compromis biais-variance illustré par la fiche 5 : $\lambda=0$ (OLS, sans biais, variance maximale) et $\lambda=\infty$ (biais maximal $-\theta^\star$, variance nulle) ; la cross-validation choisit un point intermédiaire qui minimise leur somme.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Pourquoi le Ridge ne peut (presque) jamais annuler un coefficient, contrairement au Lasso</p>
+            <p>En considérant la condition d'optimalité du premier ordre (annulation du (sous-)gradient) pour chacun des deux problèmes de la fiche 5 (Ridge) et de la fiche 7 (Lasso), expliquez pourquoi une solution avec $\theta_j=0$ exactement est un événement <i>générique</i> pour le Lasso (il « arrive normalement » pour une plage de valeurs des données), alors qu'il ne peut arriver pour le Ridge que par une coïncidence exacte, de probabilité nulle si les données sont continues.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Ridge : la pénalité est différentiable en 0</p>
+              <p>Pour le Ridge, la condition d'optimalité s'écrit $-2X_j^T(y-X\theta)+2\lambda\theta_j=0$ pour chaque coordonnée $j$ (fiche 5, dérivée du terme $\lambda\|\theta\|_2^2$). En $\theta_j=0$, cette équation devient $X_j^T(y-X\theta)=0$ : une égalité <b>exacte</b> entre deux quantités continues issues des données, qui n'a essentiellement aucune chance de se produire pour des données bruitées (événement de mesure nulle). Le Ridge « peut » en théorie donner $\theta_j=0$, mais seulement par coïncidence exacte, jamais par construction.</p>
+              <p class="method-label">Lasso : la pénalité a un sous-différentiel non trivial en 0</p>
+              <p>Pour le Lasso (fiche 12 pour la notion de sous-gradient), la condition d'optimalité en $\theta_j=0$ s'écrit $-X_j^T(y-X\theta)\in[-\lambda,\lambda]$ (et non plus une égalité stricte à une seule valeur) : c'est une condition d'<b>inégalité</b>, vraie sur toute une <i>plage</i> de valeurs possibles de la corrélation résiduelle $X_j^T(y-X\theta)$. Dès que cette corrélation résiduelle est suffisamment faible (en valeur absolue $\le\lambda$), $\theta_j=0$ devient optimal : ce n'est plus un événement exceptionnel, mais le comportement normal du Lasso pour toute variable $X_j$ peu corrélée au résidu.</p>
+              <p class="sense"><b>Sens :</b> c'est la traduction analytique exacte de l'argument géométrique de la fiche 7 (la boule $L^1$ a des « pointes » sur les axes, la boule $L^2$ du Ridge est ronde et n'en a pas) : un sous-différentiel qui contient tout un intervalle en 0 (Lasso) rend $\theta_j=0$ « robuste » à atteindre, alors qu'une dérivée classique qui ne s'annule qu'en un point précis (Ridge) ne l'est pas.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Pourquoi la validation croisée <i>leave-one-out</i> est « gratuite » pour Ridge/OLS</p>
+            <p>On note $S=X(X^TX)^{-1}X^T$ (matrice chapeau de l'OLS) et $\hat f_{-i}(\mathbf x_i)$ la prédiction en $\mathbf x_i$ d'un modèle entraîné sur toutes les observations <b>sauf</b> la $i$-ème. Démontrez que :</p>
+            <div class="formula">$$y_i-\hat f_{-i}(\mathbf x_i) = \frac{y_i-\hat f(\mathbf x_i)}{1-S_{ii}}$$</div>
+            <p>où $\hat f$ est le modèle entraîné sur <b>toutes</b> les données. Expliquez en une phrase pourquoi cette identité rend la LOOCV aussi rapide qu'un seul ajustement du modèle, au lieu de $n$ ré-entraînements. Indice : notez $V$ la matrice $X$ privée de sa $i$-ème ligne, exprimez $X^TX=V^TV+\mathbf x_i\mathbf x_i^T$, puis utilisez la formule de Sherman-Morrison $(A+\mathbf u\mathbf v^T)^{-1}=A^{-1}-\frac{A^{-1}\mathbf u\mathbf v^T A^{-1}}{1+\mathbf v^TA^{-1}\mathbf u}$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Étape 1 · Identités de base</p>
+              <p>Avec $V$ = $X$ privée de la ligne $i$ et $Y_{-i}$ = $Y$ privé de l'entrée $i$ : $S_{ii}=\mathbf x_i^T(X^TX)^{-1}\mathbf x_i$ (élément diagonal de $S=X(X^TX)^{-1}X^T$) ; $\hat f_{-i}(\mathbf x_i)=\mathbf x_i^T(V^TV)^{-1}V^TY_{-i}$ (par définition, c'est l'OLS entraîné sur $(V,Y_{-i})$) ; et $X^TX=V^TV+\mathbf x_i\mathbf x_i^T$, $X^TY=V^TY_{-i}+\mathbf x_iy_i$ (chaque somme sur $n$ termes moins le terme $i$ retiré dans $V,Y_{-i}$).</p>
+              <p class="method-label">Étape 2 · Sherman-Morrison</p>
+              <p>Puisque $V^TV=X^TX-\mathbf x_i\mathbf x_i^T$, Sherman-Morrison (avec $\mathbf u=\mathbf v=-\mathbf x_i$, pour une <i>soustraction</i> de rang 1) donne $(V^TV)^{-1}=(X^TX)^{-1}+\frac{(X^TX)^{-1}\mathbf x_i\mathbf x_i^T(X^TX)^{-1}}{1-S_{ii}}$. En notant $\hat f(\mathbf x_i)=\mathbf x_i^T(X^TX)^{-1}X^TY$ la prédiction du modèle complet, et en substituant $V^TY_{-i}=X^TY-\mathbf x_iy_i$ :</p>
+              <div class="formula">$$\hat f_{-i}(\mathbf x_i) = \big(\hat f(\mathbf x_i)-S_{ii}y_i\big)\left(1+\frac{S_{ii}}{1-S_{ii}}\right) = \frac{\hat f(\mathbf x_i)-S_{ii}y_i}{1-S_{ii}}$$</div>
+              <p>d'où, en soustrayant des deux côtés à $y_i$ et en simplifiant : $y_i-\hat f_{-i}(\mathbf x_i)=\dfrac{y_i(1-S_{ii})-\hat f(\mathbf x_i)+S_{ii}y_i}{1-S_{ii}}=\dfrac{y_i-\hat f(\mathbf x_i)}{1-S_{ii}}$. $\blacksquare$</p>
+              <p class="method-label">Extension au Ridge</p>
+              <p>En écrivant $\hat\theta_\lambda^{\mathrm{rdg}}$ comme l'OLS sur les données augmentées $\widetilde X=\big(\begin{smallmatrix}X\\\sqrt\lambda I_d\end{smallmatrix}\big)$, $\widetilde Y=\big(\begin{smallmatrix}Y\\0_d\end{smallmatrix}\big)$ (on vérifie $\|\widetilde Y-\widetilde X\theta\|_2^2=\|Y-X\theta\|_2^2+\lambda\|\theta\|_2^2$), retirer la ligne $i\le n$ de $\widetilde X$ revient exactement au Ridge entraîné sur les $n-1$ points restants avec le même $\lambda$ (les $d$ lignes de padding $\sqrt\lambda I_d$ restent, elles, toujours présentes). Le résultat de l'étape 2 s'applique donc tel quel à $\widetilde X$, avec $S_{ii}^{\mathrm{rdg}}=\mathbf x_i^T(\lambda I_d+X^TX)^{-1}\mathbf x_i$.</p>
+              <p class="sense"><b>Sens :</b> un seul calcul de $(X^TX)^{-1}$ (ou $(\lambda I_d+X^TX)^{-1}$ pour le Ridge) donne à la fois $\hat f(\mathbf x_i)$ et $S_{ii}$ pour <b>tous</b> les $i$ simultanément : la formule remplace $n$ ré-entraînements coûteux ($O(nd^3)$ au total) par de simples produits matrice-vecteur ($O(nd^2)$), le coût d'un seul ajustement.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Coordinate descent pour le Lasso, sans <code>scikit-learn</code></p>
+            <p>En vous appuyant sur la mise à jour 1D de la fiche 7 (seuillage doux $S_\lambda$) et de la coordinate descent (fiche 14), écrivez une fonction <code>lasso_cd(X, y, lam, n_iter)</code> qui calcule $\hat\theta^{\mathrm{Lasso}}$ par descente par coordonnées cyclique, <b>sans appeler</b> <code>sklearn.linear_model.Lasso</code>. Écrivez votre tentative ci-dessous, puis dépliez la correction pour comparer.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-1-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-1-4" class="exo-textarea" spellcheck="false" placeholder="def lasso_cd(X, y, lam, n_iter=100):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
+
+def soft_threshold(x, lam):
+    return np.sign(x) * np.maximum(np.abs(x) - lam, 0.0)
+
+def lasso_cd(X, y, lam, n_iter=100):
+    n, d = X.shape
+    theta = np.zeros(d)
+    col_norm2 = (X ** 2).sum(axis=0)          # ||Z_k||_2^2 pour chaque colonne
+    for _ in range(n_iter):
+        for k in range(d):
+            r_partial = y - X @ theta + theta[k] * X[:, k]   # residu sans la colonne k
+            rho_k = X[:, k] @ r_partial
+            theta[k] = soft_threshold(rho_k, lam) / col_norm2[k]
+    return theta</code></pre>
+              <p class="sense"><b>Sens :</b> à chaque coordonnée $k$, <code>r_partial</code> est le résidu partiel $r^{(-k)}$ de la fiche 14 (on retire la contribution de la colonne $k$ avant de la ré-estimer), et <code>rho_k / col_norm2[k]</code> correspond exactement à l'argument $\langle r^{(-k)},Z_k\rangle/\|Z_k\|_2^2$ du seuillage doux. Comparez vos résultats à <code>Lasso(alpha=lam/n, fit_intercept=False).fit(X, y).coef_</code> (attention à la convention d'échelle de <code>scikit-learn</code>, fiche 7 vs documentation <code>sklearn</code>) : ils doivent coïncider à la précision numérique près après convergence.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-1">
             <div class="qcm-head">
@@ -794,23 +871,90 @@ print("Lasso :", (lasso_cv.coef_ != 0).sum(), "/ 210 coefficients non nuls")</co
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Computer class 2 : coder GD, Nesterov, SGD et coordinate descent à la main</p>
-            <p>Contrairement au Computer class 1 (Ridge/Lasso avec <code>scikit-learn</code>), l'objectif ici est d'implémenter <b>vous-même, sans bibliothèque d'optimisation</b>, les algorithmes de cette lecture, pour vérifier concrètement leurs garanties théoriques.</p>
-            <p class="exo-step">Activity 1 · Descente de gradient, taux de convergence, Nesterov</p>
-            <p>Sur l'objectif OLS $F(\theta)=\frac1n\|y-X\theta\|_2^2$ : calculez $L$ et $\mu$ à partir des valeurs propres de $\frac2n X^TX$ (fiche 9), codez <code>gradient_descent</code> à la main, puis vérifiez empiriquement le Théorème 1 (fiche 10) en traçant $\log(F(\theta_t)-F(\theta^\star))$ pour $\gamma=1/L$ : la pente doit approcher $\log(1-\mu/L)$. Terminez en codant Nesterov (fiche 11) et en comparant sa vitesse à celle de GD sur un problème mal conditionné ($\kappa=L/\mu$ grand).</p>
-            <pre><code>def gradient_descent(X, y, gamma, n_iter, theta0=None):
-    theta = np.zeros(X.shape[1]) if theta0 is None else theta0.copy()
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Constantes $L$ et $\mu$ de l'objectif OLS</p>
+            <p>Soit $F(\theta)=\frac1n\|y-X\theta\|_2^2$. Calculez $\nabla F(\theta)$ et $\nabla^2F(\theta)$, puis déduisez, à partir des caractérisations par la Hessienne rappelées en fiche 9, les valeurs de $L$ (constante de $L$-smoothness) et $\mu$ (constante de forte convexité, si $X^TX$ est inversible) en fonction des valeurs propres de $\frac2nX^TX$. Que vaut alors le conditionnement $\kappa=L/\mu$, et pourquoi des colonnes de $X$ fortement corrélées le rendent-elles grand ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Gradient et Hessienne</p>
+              <div class="formula">$$\nabla F(\theta) = -\frac2n X^T(y-X\theta) \qquad \nabla^2F(\theta) = \frac2n X^TX \ \ (\text{constante, ne dépend pas de }\theta)$$</div>
+              <p class="method-label">Constantes $L$ et $\mu$</p>
+              <p>Puisque $\nabla^2F$ est constante et symétrique, $F$ est $L$-smooth avec $L=\lambda_{\max}(\frac2nX^TX)$ (borne $\nabla^2F\preceq LI_d$ ⟺ $L\ge$ plus grande valeur propre) et, si $X^TX$ est inversible, $\mu$-fortement convexe avec $\mu=\lambda_{\min}(\frac2nX^TX)>0$ (borne $\nabla^2F\succeq\mu I_d$ ⟺ $\mu\le$ plus petite valeur propre). D'où $\kappa=L/\mu=\lambda_{\max}(X^TX)/\lambda_{\min}(X^TX)$.</p>
+              <p class="sense"><b>Sens :</b> des colonnes fortement corrélées rendent $X^TX$ <i>presque</i> non inversible (déterminant proche de 0), donc $\lambda_{\min}(X^TX)$ proche de 0 : $\kappa\to\infty$. C'est précisément la situation où GD (fiche 10) devient très lent, et où Ridge (fiche 5) est traditionnellement introduit pour stabiliser numériquement l'inversion.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Démontrer que « les petits pas ne peuvent pas nuire » (Proposition 2, fiche 10)</p>
+            <p>$F$ est $L$-smooth. Montrez que pour tout pas constant $\gamma\le2/L$, une itération de GD ne peut pas augmenter $F$ : $F(\theta_t)\le F(\theta_{t-1})$. Indice : partez de la définition de $L$-smoothness sous forme d'inégalité ($|F(\eta)-F(\theta)-\nabla F(\theta)^T(\eta-\theta)|\le\frac L2\|\eta-\theta\|_2^2$), appliquée en $\eta=\theta_t=\theta_{t-1}-\gamma\nabla F(\theta_{t-1})$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>La $L$-smoothness (fiche 9) donne en particulier $F(\theta_t)\le F(\theta_{t-1})+\nabla F(\theta_{t-1})^T(\theta_t-\theta_{t-1})+\frac L2\|\theta_t-\theta_{t-1}\|_2^2$. En substituant $\theta_t-\theta_{t-1}=-\gamma\nabla F(\theta_{t-1})$ :</p>
+              <div class="formula">$$F(\theta_t) \le F(\theta_{t-1}) - \gamma\|\nabla F(\theta_{t-1})\|_2^2 + \frac{L\gamma^2}{2}\|\nabla F(\theta_{t-1})\|_2^2 = F(\theta_{t-1}) - \gamma\Big(1-\frac{L\gamma}{2}\Big)\|\nabla F(\theta_{t-1})\|_2^2$$</div>
+              <p>Le coefficient $\gamma\big(1-\frac{L\gamma}2\big)$ est $\ge0$ dès que $\gamma\le2/L$ (racines en $\gamma=0$ et $\gamma=2/L$, parabole vers le bas). Le terme soustrait à $F(\theta_{t-1})$ est donc toujours $\ge0$, d'où $F(\theta_t)\le F(\theta_{t-1})$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est une garantie purement <i>qualitative</i> (la perte ne peut pas remonter), différente du Théorème 1 qui donne une <i>vitesse</i> de convergence quantitative ; elle explique pourquoi $\gamma>2/L$ est le seuil au-delà duquel GD peut diverger ou osciller (ce que l'on observe numériquement en pratique).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Condition d'optimalité pour une fonction convexe sous-différentiable</p>
+            <p>$F$ est convexe et sous-différentiable (fiche 12). Démontrez que $\eta^\star$ est un minimiseur global de $F$ si et seulement si $0\in\partial F(\eta^\star)$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">($\Leftarrow$) $0\in\partial F(\eta^\star)\Rightarrow\eta^\star$ minimiseur</p>
+              <p>Par définition du sous-gradient (fiche 12), $\mathbf u\in\partial F(\eta^\star)$ signifie $F(\eta)\ge F(\eta^\star)+\mathbf u^T(\eta-\eta^\star)$ pour tout $\eta$. Avec $\mathbf u=0$, cela devient directement $F(\eta)\ge F(\eta^\star)$ pour tout $\eta$ : $\eta^\star$ est un minimiseur global.</p>
+              <p class="method-label">($\Rightarrow$) $\eta^\star$ minimiseur $\Rightarrow 0\in\partial F(\eta^\star)$</p>
+              <p>Si $\eta^\star$ minimise $F$, alors $F(\eta)\ge F(\eta^\star)$ pour tout $\eta$, ce qui se réécrit $F(\eta)\ge F(\eta^\star)+0^T(\eta-\eta^\star)$ : $\mathbf u=0$ vérifie exactement la définition d'un sous-gradient de $F$ en $\eta^\star$, donc $0\in\partial F(\eta^\star)$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est la généralisation directe de « $\nabla F(\theta^\star)=0$ caractérise le minimum d'une fonction convexe différentiable » (fiche 9) au cas non lisse : on remplace le gradient unique par l'ensemble (potentiellement infini) des sous-gradients, et on demande que $0$ en fasse partie.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Gradient descent et Nesterov, sans bibliothèque d'optimisation</p>
+            <p>Écrivez deux fonctions <code>gradient_descent(X, y, gamma, n_iter)</code> et <code>nesterov(X, y, gamma, n_iter)</code> qui minimisent $F(\theta)=\frac1n\|y-X\theta\|_2^2$ à partir de $\theta_0=0$, en réutilisant les formules des fiches 9 et 11. Écrivez votre tentative ci-dessous, puis dépliez la correction.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-2-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-2-4" class="exo-textarea" spellcheck="false" placeholder="def gradient_descent(X, y, gamma, n_iter):
+    ...
+
+def nesterov(X, y, gamma, n_iter):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
+
+def grad_F(theta, X, y):
+    return -(2 / len(y)) * X.T @ (y - X @ theta)
+
+def gradient_descent(X, y, gamma, n_iter):
+    theta = np.zeros(X.shape[1])
     thetas = [theta.copy()]
     for _ in range(n_iter):
-        grad = -(2/len(y)) * X.T @ (y - X @ theta)
-        theta = theta - gamma * grad
+        theta = theta - gamma * grad_F(theta, X, y)
+        thetas.append(theta.copy())
+    return np.array(thetas)
+
+def nesterov(X, y, gamma, n_iter):
+    theta = eta = np.zeros(X.shape[1])
+    thetas = [theta.copy()]
+    for t in range(1, n_iter + 1):
+        theta_new = eta - gamma * grad_F(eta, X, y)
+        eta = theta_new + (t - 1) / (t + 2) * (theta_new - theta)
+        theta = theta_new
         thetas.append(theta.copy())
     return np.array(thetas)</code></pre>
-            <p class="exo-step">Activity 2 · SGD et coordinate descent pour le Lasso</p>
-            <p>Codez le gradient stochastique $g_m(\theta)$ (fiche 13) et vérifiez sur un graphe que <b>SGD n'est pas une méthode de descente</b> ($F(\theta_t)$ peut augmenter). Puis implémentez la coordinate descent du Lasso (fiche 14, seuillage doux) et comparez vos coefficients à ceux de <code>sklearn.linear_model.Lasso</code> sur le jeu de données contaminé du Computer class 1 : ils doivent coïncider à la précision numérique près.</p>
-            <p class="sense"><b>À faire :</b> énoncés complets, indices et squelettes de fonctions (à compléter, non corrigés) dans <code>tp-td-02/activity-1.ipynb</code> et <code>activity-2.ipynb</code>.</p>
-          </div>
+              <p class="sense"><b>Sens :</b> notez que <code>nesterov</code> évalue le gradient en $\eta_{t-1}$ (le point « extrapolé »), pas en $\theta_{t-1}$ (fiche 11) : c'est cette seule différence qui produit l'accélération. Sur un problème mal conditionné ($X$ à colonnes très corrélées, exercice 1), <code>nesterov</code> doit atteindre une valeur de $F$ donnée en nettement moins d'itérations que <code>gradient_descent</code>, conformément au passage de $(1-1/\kappa)$ à $(1-1/\sqrt\kappa)$ du cours.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-2">
             <div class="qcm-head">
@@ -990,11 +1134,67 @@ print("Lasso :", (lasso_cv.coef_ != 0).sum(), "/ 210 coefficients non nuls")</co
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Vérifier et utiliser le noyau gaussien</p>
-            <p class="exo-step">Étape 1 · Vérifier la positivité semi-définie numériquement</p>
-            <p>Implémentez <code>gaussian_kernel(X, gamma)</code> qui renvoie la matrice de Gram $[k(\mathbf x_i,\mathbf x_j)]$ pour un jeu de points $X$, et vérifiez que toutes ses valeurs propres sont $\ge0$ (à la précision numérique près) avec <code>np.linalg.eigvalsh</code>.</p>
-            <pre><code>import numpy as np
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Exhiber la feature map du noyau polynomial de degré 2</p>
+            <p>Sur $\mathcal X=\mathbb R^2$, on pose $k(\mathbf x,\mathbf x')=(\mathbf x^T\mathbf x')^2$. Montrez que $k$ est bien un noyau en exhibant explicitement une feature map $\phi:\mathbb R^2\to\mathbb R^3$ telle que $k(\mathbf x,\mathbf x')=\langle\phi(\mathbf x),\phi(\mathbf x')\rangle$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Avec $\mathbf x=(x_1,x_2)$, $\mathbf x'=(x_1',x_2')$ :</p>
+              <div class="formula">$$(\mathbf x^T\mathbf x')^2 = (x_1x_1'+x_2x_2')^2 = x_1^2x_1'^2 + 2x_1x_2x_1'x_2' + x_2^2x_2'^2$$</div>
+              <p>Ce qui se réécrit comme le produit scalaire $\langle\phi(\mathbf x),\phi(\mathbf x')\rangle$ pour :</p>
+              <div class="formula">$$\phi(\mathbf x) = \big(x_1^2,\ \sqrt2\,x_1x_2,\ x_2^2\big) \in\mathbb R^3$$</div>
+              <p>En effet $\langle\phi(\mathbf x),\phi(\mathbf x')\rangle = x_1^2x_1'^2+2x_1x_2x_1'x_2'+x_2^2x_2'^2$, identique au calcul ci-dessus. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> $k$ est donc bien un noyau (fiche 17), et calculer $k(\mathbf x,\mathbf x')$ directement (un produit scalaire en dimension 2, puis un carré) coûte bien moins cher que de construire $\phi(\mathbf x)\in\mathbb R^3$ explicitement pour ensuite faire leur produit scalaire : c'est déjà, à toute petite échelle, le principe du kernel trick.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · La règle « produit » : $k_1\cdot k_2$ est un noyau</p>
+            <p>Si $k_1,k_2$ sont deux noyaux sur $\mathcal X$, de feature maps respectives $\phi_1:\mathcal X\to\mathcal H_1$ et $\phi_2:\mathcal X\to\mathcal H_2$, montrez que $k(\mathbf x,\mathbf x'):=k_1(\mathbf x,\mathbf x')\,k_2(\mathbf x,\mathbf x')$ est aussi un noyau. Indice : considérez le produit tensoriel $\phi(\mathbf x):=\phi_1(\mathbf x)\otimes\phi_2(\mathbf x)$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Le produit tensoriel de deux espaces de Hilbert vérifie $\langle\mathbf u_1\otimes\mathbf u_2,\ \mathbf v_1\otimes\mathbf v_2\rangle_{\mathcal H_1\otimes\mathcal H_2} = \langle\mathbf u_1,\mathbf v_1\rangle_{\mathcal H_1}\,\langle\mathbf u_2,\mathbf v_2\rangle_{\mathcal H_2}$. En posant $\phi(\mathbf x)=\phi_1(\mathbf x)\otimes\phi_2(\mathbf x)$ :</p>
+              <div class="formula">$$\langle\phi(\mathbf x),\phi(\mathbf x')\rangle = \langle\phi_1(\mathbf x),\phi_1(\mathbf x')\rangle\,\langle\phi_2(\mathbf x),\phi_2(\mathbf x')\rangle = k_1(\mathbf x,\mathbf x')\,k_2(\mathbf x,\mathbf x') = k(\mathbf x,\mathbf x')$$</div>
+              <p>$k$ s'écrit donc bien comme un produit scalaire $\langle\phi(\mathbf x),\phi(\mathbf x')\rangle$ pour la feature map $\phi=\phi_1\otimes\phi_2$ : c'est un noyau. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est cette règle « produit » (non énoncée explicitement en fiche 18, mais utilisée implicitement) qui fonde la règle « puissance » $k_1^n$ du tableau de la fiche 18 : il suffit de l'appliquer $n-1$ fois avec $k_2=k_1$ à chaque fois.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Retrouver la formulation duale du SVM à marge dure par Lagrangien</p>
+            <p>Partez du problème primal de la fiche 15 : $\min_{\mathbf w,b}\frac12\|\mathbf w\|_2^2$ sous $y_i(\mathbf w^T\mathbf x_i+b)\ge1$ pour tout $i$. Écrivez le Lagrangien $\mathcal L(\mathbf w,b,\mathbf{\alpha})$ avec des multiplicateurs $\alpha_i\ge0$, annulez ses dérivées partielles par rapport à $\mathbf w$ et $b$, puis substituez pour retrouver la formulation duale de la fiche 16.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <div class="formula">$$\mathcal L(\mathbf w,b,\mathbf{\alpha}) = \frac12\|\mathbf w\|_2^2 - \sum_{i=1}^n\alpha_i\big[y_i(\mathbf w^T\mathbf x_i+b)-1\big], \qquad \alpha_i\ge0$$</div>
+              <p class="method-label">Stationnarité</p>
+              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf w}=\mathbf w-\sum_i\alpha_iy_i\mathbf x_i=0 \ \Rightarrow\ \mathbf w=\sum_i\alpha_iy_i\mathbf x_i \qquad\qquad \frac{\partial\mathcal L}{\partial b}=-\sum_i\alpha_iy_i=0 \ \Rightarrow\ \sum_i\alpha_iy_i=0$$</div>
+              <p class="method-label">Substitution dans $\mathcal L$</p>
+              <p>En remplaçant $\mathbf w$ par $\sum_i\alpha_iy_i\mathbf x_i$ :</p>
+              <div class="formula">$$\mathcal L = \frac12\sum_{i,j}\alpha_i\alpha_jy_iy_j\mathbf x_i^T\mathbf x_j - \sum_{i,j}\alpha_i\alpha_jy_iy_j\mathbf x_i^T\mathbf x_j - b\underbrace{\sum_i\alpha_iy_i}_{=0} + \sum_i\alpha_i = \sum_i\alpha_i - \frac12\sum_{i,j}\alpha_i\alpha_jy_iy_j\mathbf x_i^T\mathbf x_j$$</div>
+              <p>Maximiser cette expression sous $\alpha_i\ge0$ et $\sum_i\alpha_iy_i=0$ est exactement le problème dual de la fiche 16. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est cette dérivation qui explique <b>pourquoi</b> $\mathbf w=\sum_i\alpha_iy_i\mathbf x_i$ (fiche 16) : c'est directement la condition de stationnarité du Lagrangien, pas un résultat admis.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Vérifier numériquement que le noyau gaussien est semi-défini positif</p>
+            <p>Écrivez une fonction <code>gaussian_kernel(X, gamma)</code> qui renvoie la matrice de Gram $[k(\mathbf x_i,\mathbf x_j)]$ pour un jeu de points $X$ (fiche 18), puis vérifiez que toutes ses valeurs propres sont $\ge0$.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-3-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-3-4" class="exo-textarea" spellcheck="false" placeholder="def gaussian_kernel(X, gamma):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
 
 def gaussian_kernel(X, gamma):
     sq_dists = ((X[:, None, :] - X[None, :, :]) ** 2).sum(-1)
@@ -1002,9 +1202,9 @@ def gaussian_kernel(X, gamma):
 
 K = gaussian_kernel(X, gamma=0.5)
 print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></pre>
-            <p class="exo-step">Étape 2 · Linéaire vs RBF sur des données non séparables</p>
-            <p>Générez un jeu de données non linéairement séparable (<code>sklearn.datasets.make_moons</code> ou <code>make_circles</code>), entraînez <code>SVC(kernel='linear')</code> et <code>SVC(kernel='rbf')</code>, et affichez la frontière de décision de chacun (par ex. via <code>DecisionBoundaryDisplay</code>) : constatez que seul le noyau RBF sépare correctement les deux classes. Identifiez les vecteurs de support (<code>model.support_vectors_</code>) et observez leur position par rapport à la frontière.</p>
-          </div>
+              <p class="sense"><b>Sens :</b> <code>eigvalsh</code> (plutôt que <code>eig</code>) exploite la symétrie de $K$ pour un calcul plus stable ; un léger seuil négatif ($-10^{-8}$) tolère les erreurs d'arrondi flottant, la théorie (fiche 18) garantissant des valeurs propres exactement $\ge0$.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-3">
             <div class="qcm-head">
@@ -1152,22 +1352,77 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Bagging fait main, puis Random Forest / Gradient Boosting</p>
-            <p class="exo-step">Étape 1 · Coder le bagging à la main</p>
-            <p>Sur un jeu de données jouet, entraînez un unique <code>DecisionTreeRegressor(max_depth=None)</code> (forte variance) et comparez sa variabilité, sur plusieurs ré-échantillonnages du jeu d'entraînement, à celle d'un bagging fait main de $B=100$ arbres (tirage bootstrap avec <code>np.random.choice(n, n, replace=True)</code> puis moyenne des prédictions).</p>
-            <pre><code>def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Pourquoi décorréler les arbres (Random Forest) aide au-delà du simple bagging</p>
+            <p>Soient $B$ prédicteurs $\hat g^{(1)},\dots,\hat g^{(B)}$, chacun de variance $\sigma^2$, et de corrélation deux-à-deux constante $\rho$ entre eux. Montrez que la variance de leur moyenne $\hat g_{\mathrm{bag}}=\frac1B\sum_b\hat g^{(b)}$ vaut $\rho\sigma^2+\frac{1-\rho}B\sigma^2$. Que devient cette expression quand $B\to\infty$ ? Concluez sur l'intérêt de réduire $\rho$ (ce que fait le Random Forest en randomisant les variables à chaque split, fiche 19), au-delà du simple fait d'augmenter $B$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <div class="formula">$$\mathrm{Var}(\hat g_{\mathrm{bag}}) = \frac1{B^2}\mathrm{Var}\Big(\sum_b\hat g^{(b)}\Big) = \frac1{B^2}\left(\sum_b\mathrm{Var}(\hat g^{(b)}) + \sum_{b\neq b'}\mathrm{Cov}(\hat g^{(b)},\hat g^{(b')})\right)$$</div>
+              <p>Il y a $B$ termes de variance ($=\sigma^2$ chacun) et $B(B-1)$ termes de covariance ($=\rho\sigma^2$ chacun, par définition de $\rho$) :</p>
+              <div class="formula">$$\mathrm{Var}(\hat g_{\mathrm{bag}}) = \frac1{B^2}\big(B\sigma^2 + B(B-1)\rho\sigma^2\big) = \frac{\sigma^2}B + \frac{B-1}B\rho\sigma^2 \xrightarrow[B\ \text{fixé, réarrangé}]{} \rho\sigma^2+\frac{1-\rho}B\sigma^2$$</div>
+              <p>Quand $B\to\infty$, le second terme s'annule et $\mathrm{Var}(\hat g_{\mathrm{bag}})\to\rho\sigma^2$ : la variance ne peut <b>jamais</b> descendre en dessous de $\rho\sigma^2$, quel que soit le nombre d'arbres ajoutés. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> augmenter $B$ seul (bagging simple) ne suffit donc pas à réduire la variance en dessous de ce plancher $\rho\sigma^2$ : il faut aussi réduire $\rho$ lui-même, exactement ce que fait le Random Forest en tirant un sous-ensemble aléatoire de variables à chaque split (fiche 19), ce qui décorrèle les arbres entre eux.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · La fraction out-of-bag tend vers $1/e$</p>
+            <p>Un tirage bootstrap de taille $n$ sélectionne, à chaque tirage, un point uniformément parmi $n$, avec remise. Montrez que la probabilité qu'un point fixé $\mathbf x_i$ ne soit <b>jamais</b> tiré au cours des $n$ tirages tend vers $e^{-1}\approx36.8\%$ quand $n\to\infty$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>À chaque tirage, $\mathbf x_i$ n'est pas choisi avec probabilité $1-\frac1n$ (un tirage uniforme parmi $n$ points). Les $n$ tirages sont indépendants, donc la probabilité de n'être <b>jamais</b> choisi sur les $n$ tirages est :</p>
+              <div class="formula">$$\left(1-\frac1n\right)^n \xrightarrow[n\to\infty]{} e^{-1}$$</div>
+              <p>en reconnaissant la définition classique de $e^{-1}=\lim_{n\to\infty}(1-1/n)^n$ (cas particulier de $\lim_n(1+u/n)^n=e^u$ pour $u=-1$). $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est exactement le calcul qui justifie que ~36.8% des observations sont, en moyenne, laissées « out-of-bag » par chaque arbre (fiche 19), et peuvent donc servir de validation gratuite pour cet arbre précis.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Retrouver le poids $\beta_t$ d'AdaBoost par minimisation de la perte exponentielle</p>
+            <p>AdaBoost construit $f_t=f_{t-1}+\beta_th_t$ en minimisant, à chaque étape $t$, la perte exponentielle pondérée $\sum_iw_i^{(t)}e^{-\beta y_ih_t(\mathbf x_i)}$ où $w_i^{(t)}=e^{-y_if_{t-1}(\mathbf x_i)}$ et $h_t(\mathbf x_i)\in\{-1,+1\}$. En notant $\varepsilon_t=\frac{\sum_{i:\,y_i\neq h_t(\mathbf x_i)}w_i^{(t)}}{\sum_iw_i^{(t)}}$ le taux d'erreur pondéré de $h_t$, montrez que le $\beta_t\gt0$ optimal (minimisant cette perte à $h_t$ fixé) vaut $\beta_t=\frac12\ln\frac{1-\varepsilon_t}{\varepsilon_t}$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>En séparant les points bien classés ($y_ih_t(\mathbf x_i)=1$) des points mal classés ($y_ih_t(\mathbf x_i)=-1$), et en notant $W=\sum_iw_i^{(t)}$ :</p>
+              <div class="formula">$$\sum_iw_i^{(t)}e^{-\beta y_ih_t(\mathbf x_i)} = e^{-\beta}\!\!\sum_{\text{bien classés}}\!\!w_i^{(t)} + e^{\beta}\!\!\sum_{\text{mal classés}}\!\!w_i^{(t)} = W\big[(1-\varepsilon_t)e^{-\beta}+\varepsilon_te^{\beta}\big]$$</div>
+              <p>en utilisant $\sum_{\text{mal classés}}w_i^{(t)}=\varepsilon_tW$ et $\sum_{\text{bien classés}}w_i^{(t)}=(1-\varepsilon_t)W$. On annule la dérivée par rapport à $\beta$ :</p>
+              <div class="formula">$$\frac{\partial}{\partial\beta}\Big[(1-\varepsilon_t)e^{-\beta}+\varepsilon_te^{\beta}\Big] = -(1-\varepsilon_t)e^{-\beta}+\varepsilon_te^{\beta} = 0 \ \Longrightarrow\ e^{2\beta}=\frac{1-\varepsilon_t}{\varepsilon_t} \ \Longrightarrow\ \beta_t=\frac12\ln\frac{1-\varepsilon_t}{\varepsilon_t}$$</div>
+              <p class="sense"><b>Sens :</b> $\beta_t>0$ dès que $\varepsilon_t<1/2$ (le classifieur faible fait mieux que le hasard), et $\beta_t\to\infty$ quand $\varepsilon_t\to0$ (un classifieur parfait reçoit un poids arbitrairement grand dans le vote final) : c'est ce qui donne à AdaBoost (fiche 20) sa règle de pondération, dérivée directement de la perte exponentielle qu'il minimise implicitement.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Bagging fait main pour un arbre de régression</p>
+            <p>Écrivez une fonction <code>bagging_predict(X_train, y_train, X_test, n_estimators)</code> qui entraîne <code>n_estimators</code> arbres sur des ré-échantillons bootstrap, et renvoie la moyenne et la variance de leurs prédictions sur <code>X_test</code>, sans utiliser <code>BaggingRegressor</code> ni <code>RandomForestRegressor</code>.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-4-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-4-4" class="exo-textarea" spellcheck="false" placeholder="def bagging_predict(X_train, y_train, X_test, n_estimators=100):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
+from sklearn.tree import DecisionTreeRegressor
+
+def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
     rng = np.random.default_rng() if rng is None else rng
     n = len(X_train)
     preds = np.zeros((n_estimators, len(X_test)))
     for b in range(n_estimators):
-        idx = rng.integers(0, n, size=n)  # tirage bootstrap
+        idx = rng.integers(0, n, size=n)              # tirage bootstrap
         tree = DecisionTreeRegressor().fit(X_train[idx], y_train[idx])
         preds[b] = tree.predict(X_test)
     return preds.mean(axis=0), preds.var(axis=0)</code></pre>
-            <p class="exo-step">Étape 2 · Comparer à Random Forest et Gradient Boosting de scikit-learn</p>
-            <p>Comparez le risque test de votre bagging fait main à <code>RandomForestRegressor</code> (qui randomise aussi les variables, fiche 19) et à <code>GradientBoostingRegressor</code> (fiche 20) pour plusieurs valeurs de <code>learning_rate</code> et <code>n_estimators</code> : observez le compromis shrinkage/nombre d'arbres.</p>
-          </div>
+              <p class="sense"><b>Sens :</b> chaque arbre est entraîné sur un tirage <b>indépendant</b> (avec remise) des données : c'est cette indépendance qui, par l'exercice 1, réduit la variance de la moyenne. Comparez le risque test obtenu à un <code>RandomForestRegressor</code> (fiche 19) sur les mêmes données : ce dernier doit faire au moins aussi bien, grâce à la randomisation supplémentaire des variables.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-4">
             <div class="qcm-head">
@@ -1298,24 +1553,84 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
             <p class="sense"><b>Sens :</b> l'HSIC hérite du meilleur des deux mondes : la sensibilité de l'information mutuelle à toute forme de dépendance, sans son coût d'estimation de densité. C'est ce qui la rend particulièrement utile en sélection de variables à haute dimension.</p>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Démasquer une dépendance non linéaire</p>
-            <p>Générez $X\sim\mathcal U(-\pi,\pi)$ et $Y=\sin(X)+\varepsilon$ (bruit léger) : $X$ et $Y$ sont clairement dépendantes, mais leur corrélation de Pearson doit être proche de 0 par symétrie. Calculez et comparez :</p>
-            <pre><code>from scipy.stats import pearsonr
-from sklearn.feature_selection import mutual_info_regression
-
-r, _ = pearsonr(X, Y)                       # doit être proche de 0
-mi = mutual_info_regression(X.reshape(-1, 1), Y)[0]  # doit être nettement > 0
-
-# HSIC fait main (noyaux gaussiens sur X et Y, cf. gaussian_kernel de la fiche 18)
-K, L = gaussian_kernel(X.reshape(-1, 1), gamma=0.5), gaussian_kernel(Y.reshape(-1, 1), gamma=0.5)
-n = len(X)
-H = np.eye(n) - np.ones((n, n)) / n
-hsic = np.trace(K @ H @ L @ H) / n**2        # doit aussi être nettement > 0
-
-print(f"Pearson r = {r:.3f} | Mutual info = {mi:.3f} | HSIC = {hsic:.4f}")</code></pre>
-            <p class="sense"><b>Attendu :</b> $r\approx0$ (Pearson « rate » la dépendance) alors que <code>mi</code> et <code>hsic</code> sont nettement positifs : les deux détectent correctement que $Y$ dépend de $X$, malgré une corrélation linéaire nulle.</p>
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Prouver que $\mathrm{Cov}(X,X^2)=0$ pour $X$ symétrique autour de 0</p>
+            <p>Soit $X$ une variable aléatoire réelle dont la loi est symétrique par rapport à 0 (i.e. $X$ et $-X$ ont la même loi ; par exemple $X\sim\mathcal N(0,1)$), avec $\mathbb E[|X|^3]<\infty$. Montrez que $\mathrm{Cov}(X,X^2)=0$, bien que $Y=X^2$ soit une fonction déterministe (donc parfaitement dépendante) de $X$.</p>
           </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Par symétrie, $\mathbb E[X]=0$ (l'espérance d'une variable symétrique autour de 0, si elle existe, vaut 0). Donc $\mathrm{Cov}(X,X^2)=\mathbb E[X\cdot X^2]-\mathbb E[X]\,\mathbb E[X^2]=\mathbb E[X^3]-0=\mathbb E[X^3]$.</p>
+              <p>Reste à montrer $\mathbb E[X^3]=0$. Comme $X$ et $-X$ ont la même loi, $\mathbb E[X^3]=\mathbb E[(-X)^3]=-\mathbb E[X^3]$, donc $2\,\mathbb E[X^3]=0$, d'où $\mathbb E[X^3]=0$. Ainsi $\mathrm{Cov}(X,X^2)=0$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> l'argument ne dépend pas de la loi précise de $X$, seulement de sa symétrie : $x\mapsto x^3$ est une fonction <b>impaire</b>, donc son espérance sous une loi symétrique est nulle, quelle que soit la variance ou la forme exacte de la distribution. C'est cet argument qui est à la base de l'exemple canonique de la fiche 22.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · $I(X;Y)\ge0$, avec égalité si et seulement si $X\perp\!\!\!\perp Y$</p>
+            <p>En admettant l'inégalité de Gibbs (positivité de la divergence de Kullback-Leibler : $D_{\mathrm{KL}}(P\|Q)\ge0$ pour toutes lois $P,Q$ de même support, avec égalité si et seulement si $P=Q$ presque partout), déduisez que $I(X;Y)\ge0$, avec égalité si et seulement si $X$ et $Y$ sont indépendantes.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Par définition (fiche 22), $I(X;Y)=D_{\mathrm{KL}}(\mathbb P_{XY}\,\|\,\mathbb P_X\otimes\mathbb P_Y)$, où $\mathbb P_X\otimes\mathbb P_Y$ est la loi produit (celle qu'auraient $X,Y$ s'ils étaient indépendants). En appliquant directement l'inégalité de Gibbs avec $P=\mathbb P_{XY}$ et $Q=\mathbb P_X\otimes\mathbb P_Y$ :</p>
+              <div class="formula">$$I(X;Y) = D_{\mathrm{KL}}(\mathbb P_{XY}\,\|\,\mathbb P_X\otimes\mathbb P_Y) \ge 0$$</div>
+              <p>avec égalité si et seulement si $\mathbb P_{XY}=\mathbb P_X\otimes\mathbb P_Y$ (presque partout), c'est-à-dire si et seulement si la loi jointe de $(X,Y)$ est exactement le produit de leurs lois marginales : c'est la <b>définition même</b> de l'indépendance de $X$ et $Y$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> cette propriété découle uniquement de la positivité de la divergence KL, pas d'un calcul spécifique à $I(X;Y)$ : c'est pour cela qu'elle est beaucoup plus robuste que la propriété analogue de la corrélation de Pearson (qui, elle, peut être nulle sans indépendance, cf. exercice 1).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · HSIC avec noyaux linéaires se réduit au carré de la covariance</p>
+            <p>On prend des noyaux linéaires $k(x,x')=xx'$ et $l(y,y')=yy'$ dans la définition de la fiche 23 : $\mathrm{HSIC}(X,Y)=\mathbb E[k(X,X')l(Y,Y')]+\mathbb E[k(X,X')]\mathbb E[l(Y,Y')]-2\,\mathbb E[k(X,X')l(Y,Y'')]$, où $(X,Y),(X',Y')$ sont deux copies i.i.d. de $(X,Y)$ et $Y''$ une copie indépendante de $Y$ seule. Montrez que $\mathrm{HSIC}(X,Y)=\mathrm{Cov}(X,Y)^2$ dans ce cas.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Avec $k(x,x')=xx'$, $l(y,y')=yy'$, on calcule chaque terme séparément, en utilisant l'indépendance entre $(X,Y)$, $(X',Y')$ et $Y''$ :</p>
+              <div class="formula">$$\mathbb E[k(X,X')l(Y,Y')] = \mathbb E[XX'YY'] = \mathbb E[XY]\,\mathbb E[X'Y'] = \mathbb E[XY]^2$$</div>
+              <div class="formula">$$\mathbb E[k(X,X')]\,\mathbb E[l(Y,Y')] = \mathbb E[X]\mathbb E[X']\cdot\mathbb E[Y]\mathbb E[Y'] = \mathbb E[X]^2\mathbb E[Y]^2$$</div>
+              <div class="formula">$$\mathbb E[k(X,X')l(Y,Y'')] = \mathbb E[XX'YY''] = \mathbb E[X']\,\mathbb E[Y'']\,\mathbb E[XY] = \mathbb E[X]\,\mathbb E[Y]\,\mathbb E[XY]$$</div>
+              <p>(dans le dernier terme, $X'\perp(X,Y)$ et $Y''\perp(X,X',Y)$, donc l'espérance du produit se factorise). En sommant :</p>
+              <div class="formula">$$\mathrm{HSIC}(X,Y) = \mathbb E[XY]^2 + \mathbb E[X]^2\mathbb E[Y]^2 - 2\,\mathbb E[X]\mathbb E[Y]\mathbb E[XY] = \big(\mathbb E[XY]-\mathbb E[X]\mathbb E[Y]\big)^2 = \mathrm{Cov}(X,Y)^2$$</div>
+              <p>(on reconnaît le développement de $(a-b)^2$ avec $a=\mathbb E[XY]$, $b=\mathbb E[X]\mathbb E[Y]$). $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> avec un noyau <b>linéaire</b>, l'HSIC ne fait donc que redécouvrir la covariance (au carré) : rien de plus qu'une mesure de dépendance linéaire, comme Pearson. C'est le choix d'un noyau <b>non linéaire</b> (gaussien, fiche 18) qui donne à l'HSIC sa capacité à détecter des dépendances non linéaires, comme le montre l'exercice 1.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Comparer Pearson et HSIC sur une dépendance non linéaire</p>
+            <p>Écrivez une fonction <code>hsic(X, Y, gamma)</code> qui calcule $\widehat{\mathrm{HSIC}}(X,Y)=\frac1{n^2}\mathrm{Trace}(KHLH)$ (fiche 23) à partir de deux noyaux gaussiens, puis appliquez-la à $X\sim\mathcal N(0,1)$, $Y=X^2$ (exercice 1) : la corrélation de Pearson doit être quasi nulle, l'HSIC nettement positive.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-5-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-5-4" class="exo-textarea" spellcheck="false" placeholder="def hsic(X, Y, gamma):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
+from scipy.stats import pearsonr
+
+def hsic(X, Y, gamma):
+    K = gaussian_kernel(X.reshape(-1, 1), gamma)   # fiche 18
+    L = gaussian_kernel(Y.reshape(-1, 1), gamma)
+    n = len(X)
+    H = np.eye(n) - np.ones((n, n)) / n
+    return np.trace(K @ H @ L @ H) / n**2
+
+X = np.random.default_rng(0).normal(size=2000)
+Y = X**2
+
+r, _ = pearsonr(X, Y)
+h = hsic(X, Y, gamma=0.5)
+print(f"Pearson r = {r:.4f}  |  HSIC = {h:.4f}")
+# attendu : r proche de 0, HSIC nettement positif</code></pre>
+              <p class="sense"><b>Sens :</b> c'est la démonstration numérique directe de l'exercice 1 (Pearson aveugle à cette dépendance) et de la fiche 23 (HSIC, elle, la détecte) : une sélection de variables fondée uniquement sur Pearson écarterait à tort $X$, alors qu'elle est parfaitement (et même totalement) informative sur $Y$.</p>
+            </div>
+          </details>
+
 
           <div class="qcm" id="qcm-5">
             <div class="qcm-head">
@@ -1448,19 +1763,80 @@ print(f"Pearson r = {r:.3f} | Mutual info = {mi:.3f} | HSIC = {hsic:.4f}")</code
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · IRLS pour la régression LAD, face à un outlier</p>
-            <p>Générez un jeu de données linéaire simple (par ex. $y=2x+1+\varepsilon$), puis ajoutez <b>un seul</b> point aberrant très éloigné de la tendance. Comparez la droite ajustée par OLS à celle ajustée par IRLS (LAD).</p>
-            <pre><code>def irls_lad(X, y, n_iter=20, eps=1e-6):
-    theta = np.linalg.lstsq(X, y, rcond=None)[0]      # depart : OLS
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Retrouver la formule explicite du WLS</p>
+            <p>Partez de l'objectif $\sum_{i=1}^nw_i(y_i-\mathbf x_i^T\theta)^2$ de la fiche 24, avec $w_i>0$ fixés. En notant $W=\mathrm{diag}(w_1,\dots,w_n)$, réécrivez l'objectif sous forme matricielle, annulez son gradient par rapport à $\theta$, et retrouvez $\hat\theta^{\mathrm{WLS}}=(X^TWX)^{-1}X^TWy$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>L'objectif se réécrit $F(\theta)=(y-X\theta)^TW(y-X\theta)$ (on vérifie que le terme $(i,i)$ de cette forme quadratique redonne bien $w_i(y_i-\mathbf x_i^T\theta)^2$, $W$ étant diagonale). En développant : $F(\theta)=y^TWy-2\theta^TX^TWy+\theta^TX^TWX\theta$ (en utilisant $W^T=W$). Le gradient est :</p>
+              <div class="formula">$$\nabla F(\theta) = -2X^TWy + 2X^TWX\theta$$</div>
+              <p>En l'annulant : $X^TWX\,\theta=X^TWy$, d'où, si $X^TWX$ est inversible, $\hat\theta^{\mathrm{WLS}}=(X^TWX)^{-1}X^TWy$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est la généralisation directe des équations normales de l'OLS (fiche 3, $Z^TZ\hat\theta=Z^TY$) : on retrouve exactement l'OLS en prenant $W=I_n$ (tous les poids égaux à 1).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Démontrer l'équivalence M-estimation / WLS pondéré par $w_i=\psi(r_i)/r_i$</p>
+            <p>Pour la M-estimation $\hat\theta^M=\arg\min_\theta\sum_i\rho(y_i-\mathbf x_i^T\theta)$ (fiche 25), avec $\psi=\rho'$ : (a) écrivez la condition d'optimalité du premier ordre en annulant le gradient ; (b) montrez qu'elle est identique à la condition d'optimalité d'un WLS de poids $w_i=\psi(r_i)/r_i$ (avec $r_i=y_i-\mathbf x_i^T\theta$), en admettant que la condition d'optimalité du WLS s'écrit $\sum_iw_i(y_i-\mathbf x_i^T\theta)\mathbf x_i=0$ (cas particulier de l'exercice 1).</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Condition d'optimalité de la M-estimation</p>
+              <p>Par la règle de dérivation en chaîne, $\frac{\partial}{\partial\theta}\rho(y_i-\mathbf x_i^T\theta)=-\rho'(y_i-\mathbf x_i^T\theta)\,\mathbf x_i=-\psi(r_i)\mathbf x_i$. En sommant sur $i$ et en annulant :</p>
+              <div class="formula">$$\sum_i\psi(r_i)\,\mathbf x_i = 0$$</div>
+              <p class="method-label">(b) Identification avec la condition WLS</p>
+              <p>La condition d'optimalité du WLS rappelée dans l'énoncé, $\sum_iw_ir_i\mathbf x_i=0$ (en substituant $y_i-\mathbf x_i^T\theta=r_i$), devient, en posant $w_i=\psi(r_i)/r_i$ :</p>
+              <div class="formula">$$\sum_iw_ir_i\mathbf x_i = \sum_i\frac{\psi(r_i)}{r_i}\,r_i\,\mathbf x_i = \sum_i\psi(r_i)\,\mathbf x_i$$</div>
+              <p>qui est <b>exactement</b> la condition (a). Les deux conditions d'optimalité coïncident donc pour ce choix de poids. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est cette identification qui permet de résoudre un problème de M-estimation (potentiellement non linéaire en $\theta$ via $\psi$) comme une <b>séquence de WLS</b> à poids reconstruits à chaque itération : c'est exactement l'algorithme IRLS de la fiche 25.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Retrouver les poids IRLS de l'OLS et du LAD comme cas particuliers</p>
+            <p>En utilisant le résultat de l'exercice 2 ($w_i=\psi(r_i)/r_i$), retrouvez le poids IRLS de l'OLS ($\rho(r)=r^2/2$) et celui du LAD ($\rho(r)=|r|$, $\psi(r)=\mathrm{sign}(r)$ en tout point où $r\neq0$). Pourquoi l'algorithme IRLS converge-t-il en une seule itération pour l'OLS, mais pas pour le LAD ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">OLS</p>
+              <p>$\rho(r)=r^2/2\ \Rightarrow\ \psi(r)=\rho'(r)=r$, donc $w=\psi(r)/r=r/r=1$ : le poids est <b>constant</b>, indépendant de $\theta$.</p>
+              <p class="method-label">LAD</p>
+              <p>$\rho(r)=|r|\ \Rightarrow\ \psi(r)=\mathrm{sign}(r)$ (pour $r\neq0$), donc $w=\psi(r)/r=\mathrm{sign}(r)/r=1/|r|$.</p>
+              <p class="method-label">Pourquoi une seule itération suffit pour l'OLS</p>
+              <p>IRLS recalcule les poids $w_i$ à partir des résidus courants $r_i=y_i-\mathbf x_i^T\theta^{(t)}$, puis résout un WLS. Pour l'OLS, $w_i=1$ <b>quel que soit</b> $\theta^{(t)}$ : les poids ne changent jamais d'une itération à l'autre, donc résoudre le WLS une seule fois (avec $W=I_n$) donne directement la solution finale. Pour le LAD, $w_i=1/|r_i|$ dépend explicitement de $\theta^{(t)}$ (via $r_i$) : chaque nouvelle valeur de $\theta$ change les poids, qu'il faut donc recalculer et re-résoudre jusqu'à convergence. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est cette dépendance des poids en $\theta$ (ou son absence) qui distingue fondamentalement les deux cas, et qui explique pourquoi le LAD (comme toute M-estimation non quadratique) nécessite un algorithme itératif là où l'OLS a une formule fermée directe.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · IRLS pour la régression LAD, face à un outlier</p>
+            <p>Écrivez <code>irls_lad(X, y, n_iter)</code> qui calcule $\hat\theta^{\mathrm{LAD}}$ par IRLS (poids $w_i=1/|r_i|$, exercice 3), en partant de l'OLS comme initialisation.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-6-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-6-4" class="exo-textarea" spellcheck="false" placeholder="def irls_lad(X, y, n_iter=20):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
+
+def irls_lad(X, y, n_iter=20, eps=1e-6):
+    theta = np.linalg.lstsq(X, y, rcond=None)[0]        # depart : OLS
     for _ in range(n_iter):
         r = y - X @ theta
-        w = 1.0 / np.maximum(np.abs(r), eps)            # poids LAD
+        w = 1.0 / np.maximum(np.abs(r), eps)              # poids LAD (exercice 3)
         W = np.diag(w)
-        theta = np.linalg.solve(X.T @ W @ X, X.T @ W @ y)  # WLS
+        theta = np.linalg.solve(X.T @ W @ X, X.T @ W @ y)   # WLS (exercice 1)
     return theta</code></pre>
-            <p class="sense"><b>Attendu :</b> la droite OLS est nettement « tirée » vers l'outlier (son résidu, mis au carré, pèse énormément dans la perte), alors que la droite IRLS/LAD reste proche de la tendance des points normaux : c'est la propriété de robustesse illustrée numériquement.</p>
-          </div>
+              <p class="sense"><b>Sens :</b> <code>eps</code> évite la division par zéro si un résidu s'annule exactement. Testez sur un jeu $y=2x+1+\varepsilon$ auquel vous ajoutez un seul point très aberrant : la droite OLS doit être nettement « tirée » vers l'outlier (son résidu, mis au carré, pèse énormément dans la perte, fiche 24), alors que la droite IRLS/LAD doit rester proche de la tendance des points normaux.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-6">
             <div class="qcm-head">
