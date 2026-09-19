@@ -651,6 +651,30 @@ window.MathJax = {
               <div class="qcm-explain">Faux : elle a un impact réel et documenté sur la fiabilité de l'estimation de $\beta$, même si la prévision reste correcte.</div>
             </div>
 
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Pourquoi la régression cherche-t-elle à modéliser $\mathbb E(Y|X)$ plutôt qu'à prédire $Y$ exactement ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-6"><span class="otext">Parce que $Y$ n'a jamais de composante aléatoire une fois $X$ connu.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, $Y$ garde en général une part de variabilité résiduelle même en connaissant $X$ (fiche 6), sinon le problème serait trivial.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-6"><span class="otext">Parce que $\mathbb E(Y|X)$ est toujours une fonction linéaire de $X$.</span></label>
+              <div class="qcm-explain">Faux : rien ne garantit a priori que $\mathbb E(Y|X)$ soit linéaire en $X$ (fiche 6) ; la linéarité est une hypothèse de modélisation ajoutée ensuite, pas une propriété automatique.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-6"><span class="otext">Parce que $\mathbb E(Y|X)$ est la fonction de $X$ qui minimise le risque quadratique $\mathbb E[(Y-f(X))^2]$ parmi toutes les fonctions $f$.</span></label>
+              <div class="qcm-explain">Correct : c'est le résultat fondamental de la fiche 6, l'oracle théorique pour la perte quadratique.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-6"><span class="otext">Parce que c'est la seule quantité calculable sans faire d'hypothèse sur la loi de $Y$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'argument du cours ; $\mathbb E(Y|X)$ est ciblée pour sa propriété d'optimalité (minimiser le risque quadratique), indépendamment des difficultés de calcul.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q7</span>Pour mesurer le lien entre deux variables <b>qualitatives</b> $X$ et $Y$, quel outil utilise-t-on (fiche 4) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q1-7"><span class="otext">Le coefficient de corrélation de Pearson $\hat\rho$.</span></label>
+              <div class="qcm-explain">Faux : $\hat\rho$ suppose deux variables quantitatives (fiche 3), il n'est pas défini pour des modalités qualitatives sans codage numérique arbitraire.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-7"><span class="otext">Le tableau de contingence et la distance du $\chi^2$ (test d'indépendance).</span></label>
+              <div class="qcm-explain">Correct : fiche 4, c'est l'outil dédié au croisement qualitatif × qualitatif.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-7"><span class="otext">Le rapport de corrélation $\hat\eta^2$.</span></label>
+              <div class="qcm-explain">Faux : $\hat\eta^2$ (fiche 5) s'applique au croisement quantitatif × qualitatif, pas qualitatif × qualitatif.</div>
+              <label class="qcm-opt"><input type="radio" name="q1-7"><span class="otext">Le $R^2$ ajusté.</span></label>
+              <div class="qcm-explain">Faux : le $R^2$ ajusté (fiche 16) est un critère de qualité d'ajustement d'un modèle de régression, pas une mesure de lien entre deux variables qualitatives.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1237,6 +1261,30 @@ window.MathJax = {
               <div class="qcm-explain">Correct : le BIC est le seul critère consistant du cours (fiche 22) : c'est aussi le plus parcimonieux dans l'ordre $BIC\le F\text{-test}\le C_p\approx AIC\le R_a^2$.</div>
             </div>
 
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Pour une même valeur de $X_0$, comment se comparent un intervalle de confiance (IC) pour $\mathbb E(Y|X_0)$ et un intervalle de prévision (IP) pour une nouvelle observation $Y_0$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-6"><span class="otext">L'IC est toujours plus large que l'IP.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse (fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-6"><span class="otext">Les deux intervalles ont exactement la même largeur.</span></label>
+              <div class="qcm-explain">Faux : ils diffèrent par un terme de variance supplémentaire (fiche 15) ; leurs largeurs ne coïncident que dans un cas limite dégénéré.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-6"><span class="otext">L'IP est plus large que l'IC, car il doit tenir compte à la fois de l'incertitude sur $\mathbb E(Y|X_0)$ et de la variabilité résiduelle $\varepsilon_0$ propre à une nouvelle observation.</span></label>
+              <div class="qcm-explain">Correct : fiche 15, l'IP ajoute la variance de $\varepsilon_0$ (terme $\sigma^2$ supplémentaire) à celle de $\hat{\mathbb E}(Y|X_0)$, d'où une largeur toujours plus grande.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-6"><span class="otext">La comparaison dépend uniquement du niveau de confiance choisi.</span></label>
+              <div class="qcm-explain">Faux : à niveau de confiance identique, l'IP est structurellement plus large que l'IC, quel que soit ce niveau (fiche 15).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q7</span>À quoi sert la distance de Cook d'une observation (fiche 21) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q2-7"><span class="otext">À mesurer uniquement à quel point la valeur de $Y_i$ est éloignée de sa prédiction $\hat Y_i$ (un résidu classique).</span></label>
+              <div class="qcm-explain">Faux : c'est la définition d'un résidu, pas de la distance de Cook, qui combine résidu <b>et</b> effet levier.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-7"><span class="otext">À mesurer l'influence globale d'une observation sur l'ensemble des coefficients estimés $\hat\beta$, en combinant son résidu et son effet levier.</span></label>
+              <div class="qcm-explain">Correct : fiche 21, c'est précisément ce qui distingue la distance de Cook d'un simple résidu ou d'un simple levier pris isolément.</div>
+              <label class="qcm-opt"><input type="radio" name="q2-7"><span class="otext">À tester la normalité des résidus.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas son rôle ; la normalité des résidus se teste par d'autres outils (QQ-plot, tests de normalité, fiche 20).</div>
+              <label class="qcm-opt"><input type="radio" name="q2-7"><span class="otext">À détecter la colinéarité entre régresseurs.</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle du VIF (fiche 19), pas de la distance de Cook, qui porte sur les <b>observations</b> (individus), pas sur les variables.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1669,6 +1717,30 @@ window.MathJax = {
               <div class="qcm-explain">Faux : c'est le rôle du coefficient principal $\beta$ (celui de $X$ seul), pas celui de l'interaction.</div>
               <label class="qcm-opt"><input type="radio" name="q3-5"><span class="otext">La corrélation entre $X$ et $A$.</span></label>
               <div class="qcm-explain">Faux : $A$ est qualitative, la notion de corrélation de Pearson ne s'applique pas ici ; ce n'est pas ce que mesure un coefficient de régression.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Qu'est-ce qui distingue fondamentalement une ANCOVA d'une ANOVA (fiche 24) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-6"><span class="otext">L'ANCOVA n'a qu'un seul facteur qualitatif, l'ANOVA peut en avoir plusieurs.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas le critère de distinction ; les deux peuvent avoir un ou plusieurs facteurs qualitatifs (fiche 34).</div>
+              <label class="qcm-opt"><input type="radio" name="q3-6"><span class="otext">L'ANCOVA combine au moins un facteur qualitatif et au moins une variable quantitative (covariable) ; l'ANOVA ne comporte que des facteurs qualitatifs.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la définition de la fiche 24 : l'ANCOVA « augmente » l'ANOVA d'une ou plusieurs covariables quantitatives.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-6"><span class="otext">L'ANCOVA ne s'utilise que pour des tailles d'échantillon inférieures à 30.</span></label>
+              <div class="qcm-explain">Faux : aucun critère de ce type n'est mentionné dans le cours ; la distinction porte sur la nature des variables explicatives, pas sur la taille de l'échantillon.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-6"><span class="otext">L'ANCOVA n'utilise jamais les moindres carrés.</span></label>
+              <div class="qcm-explain">Faux : ANOVA et ANCOVA sont toutes deux des cas particuliers du modèle linéaire général, estimés par MCO (fiche 24).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q7</span>Dans le tableau d'ANOVA à 2 facteurs (fiche 33), comment la somme des carrés totale $SC_T$ se décompose-t-elle ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q3-7"><span class="otext">$SC_T = SC_A \times SC_B$</span></label>
+              <div class="qcm-explain">Faux : la décomposition est <b>additive</b>, pas multiplicative (fiche 33).</div>
+              <label class="qcm-opt"><input type="radio" name="q3-7"><span class="otext">$SC_T = SC_A - SC_B$</span></label>
+              <div class="qcm-explain">Faux : tous les termes de la décomposition s'additionnent, aucun n'est soustrait.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-7"><span class="otext">$SC_T = SC_A + SC_B + SC_{AB} + SC_R$</span></label>
+              <div class="qcm-explain">Correct : fiche 33, la variabilité totale se décompose en effet de $A$, effet de $B$, interaction $A{:}B$, et résidu.</div>
+              <label class="qcm-opt"><input type="radio" name="q3-7"><span class="otext">$SC_T = SC_{AB} + SC_R$ uniquement (les effets marginaux de $A$ et $B$ ne comptent pas séparément).</span></label>
+              <div class="qcm-explain">Faux : les effets marginaux $SC_A$ et $SC_B$ apparaissent bien séparément dans la décomposition, en plus de l'interaction et du résidu.</div>
             </div>
 
             <div class="qcm-actions">
@@ -2581,6 +2653,30 @@ window.MathJax = {
               <div class="qcm-explain">Faux : changer la fonction de lien ne résout pas un problème structurel de mélange de deux populations (fiche 56) : ce n'est pas un problème de lien mais de loi.</div>
               <label class="qcm-opt"><input type="radio" name="q4-5"><span class="otext">ZIP remplace tous les zéros observés par la moyenne prédite $\lambda(x)$.</span></label>
               <div class="qcm-explain">Faux : ZIP ne remplace aucune donnée : il modélise probabilistement l'origine de chaque zéro (structurel ou d'échantillonnage), fiche 57.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Pourquoi estime-t-on les coefficients d'un GLM par maximum de vraisemblance plutôt que par moindres carrés (fiche 40) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-6"><span class="otext">Parce que le maximum de vraisemblance est toujours plus rapide à calculer.</span></label>
+              <div class="qcm-explain">Faux : c'est même l'inverse en général : la vraisemblance d'un GLM se maximise par un algorithme itératif (Newton-Raphson / IRLS), plus coûteux qu'une formule fermée de moindres carrés.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-6"><span class="otext">Parce que les moindres carrés ne s'appliquent qu'à des variables qualitatives.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas le critère en jeu ici (les moindres carrés s'appliquent à $Y$ quantitative, mais ce n'est pas la raison du choix du MLE pour les GLM).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-6"><span class="otext">Parce que, hors du cas Gaussien, il n'existe en général pas de formule fermée minimisant une somme de carrés qui soit cohérente avec la loi de $Y$ (Bernoulli, Poisson, etc.) ; le MLE, lui, s'adapte à n'importe quelle loi de la famille exponentielle.</span></label>
+              <div class="qcm-explain">Correct : fiche 40, c'est précisément l'intérêt du cadre GLM : unifier l'estimation via la vraisemblance, quelle que soit la loi de $Y$ dans la famille exponentielle.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-6"><span class="otext">Parce que le MLE ne nécessite aucune hypothèse sur la loi de $Y$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, le MLE repose explicitement sur la loi supposée de $Y$ (Bernoulli, Poisson…) pour construire la vraisemblance à maximiser.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>Pour un GLM binaire, quelle est la fonction de lien la plus utilisée en pratique, et pour quelle raison principale (fiche 37-39) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="q4-7"><span class="otext">Le lien logit, car il donne des coefficients directement interprétables en termes d'odds-ratios ($\exp(\beta_j)$).</span></label>
+              <div class="qcm-explain">Correct : fiche 39, c'est l'atout principal du lien logit par rapport aux alternatives (probit, cloglog) : une lecture directe en odds-ratio.</div>
+              <label class="qcm-opt"><input type="radio" name="q4-7"><span class="otext">Le lien identité, car il est le plus simple à programmer.</span></label>
+              <div class="qcm-explain">Faux : le lien identité n'est pas adapté au cas binaire, il peut produire des probabilités prédites hors de $[0,1]$ (fiche 37).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-7"><span class="otext">Le lien probit, car c'est le seul valable pour une réponse binaire.</span></label>
+              <div class="qcm-explain">Faux : le probit est une alternative valable, mais pas la seule ni la plus utilisée ; le logit reste le choix par défaut (fiche 37).</div>
+              <label class="qcm-opt"><input type="radio" name="q4-7"><span class="otext">Le lien log, car il garantit des prédictions toujours positives.</span></label>
+              <div class="qcm-explain">Faux : le lien log est associé au modèle de Poisson (comptages), pas au cas binaire (fiche 37).</div>
             </div>
 
             <div class="qcm-actions">
