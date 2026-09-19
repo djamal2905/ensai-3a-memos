@@ -1104,6 +1104,30 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <div class="qcm-explain">Faux : le cours liste au contraire plusieurs limites persistantes (fiche 10, encadré « Attention ») : boîte noire, coût en données/calcul, biais, peu de garanties théoriques.</div>
             </div>
 
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Comment fonctionne le dropout, et à quel moment s'applique-t-il ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-6"><span class="otext">Il supprime définitivement certains neurones du réseau, à l'entraînement comme à l'inférence.</span></label>
+              <div class="qcm-explain">Faux : le dropout n'agit que <b>pendant l'entraînement</b> ; à l'inférence, tous les neurones sont actifs (fiche 9).</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-6"><span class="otext">Il annule aléatoirement une fraction des unités à chaque itération d'entraînement, jamais à l'inférence.</span></label>
+              <div class="qcm-explain">Correct : fiche 9, c'est exactement la définition du dropout.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-6"><span class="otext">Il augmente artificiellement la taille du jeu de données d'entraînement.</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle de l'augmentation de données (fiche 18), pas du dropout.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-6"><span class="otext">Il réduit le taux d'apprentissage au fil des itérations.</span></label>
+              <div class="qcm-explain">Faux : c'est un « learning rate schedule », un mécanisme différent du dropout.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q7</span>Dans Adam, à quoi sert le terme $\hat{\mathbf v}_k$ (moyenne mobile du carré du gradient) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl1-7"><span class="otext">À lisser la direction de la mise à jour, comme le fait $\hat{\mathbf m}_k$ (momentum).</span></label>
+              <div class="qcm-explain">Faux : c'est le rôle de $\hat{\mathbf m}_k$ (fiche 8) ; $\hat{\mathbf v}_k$ a un rôle différent.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-7"><span class="otext">À corriger uniquement le biais dû à l'initialisation à 0.</span></label>
+              <div class="qcm-explain">Faux : la correction de biais est le rôle de la division par $1-\beta_2^k$ (fiche 8), pas de $\mathbf v_k$ lui-même.</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-7"><span class="otext">À adapter le pas effectif pour chaque coordonnée : diviser par $\sqrt{\hat{\mathbf v}_k}$ réduit le pas des coordonnées à gradient historiquement grand, et l'augmente relativement pour celles à gradient historiquement petit.</span></label>
+              <div class="qcm-explain">Correct : fiche 8, c'est exactement le mécanisme illustré par l'exemple numérique « Adam équilibre le pas entre deux coordonnées très différentes ».</div>
+              <label class="qcm-opt"><input type="radio" name="dl1-7"><span class="otext">À remplacer complètement le taux d'apprentissage $\eta$, qui n'a alors plus aucun effet.</span></label>
+              <div class="qcm-explain">Faux : $\eta$ reste un facteur multiplicatif de la mise à jour (fiche 8, formule $\Delta\theta_k=-\eta\times\hat{\mathbf m}_k/(\sqrt{\hat{\mathbf v}_k}+\epsilon)$) ; il n'est pas annulé par $\hat{\mathbf v}_k$.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -1646,6 +1670,30 @@ for layer in layers:
               <div class="qcm-explain">Faux : les architectures ResNet conservent généralement des couches de pooling ; les deux idées (skip connections et pooling) sont indépendantes.</div>
             </div>
 
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Pourquoi ajoute-t-on du padding (par ex. $P=1$ avec un noyau $3\times3$) avant une convolution (fiche 15) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-6"><span class="otext">Pour augmenter le nombre de paramètres du filtre.</span></label>
+              <div class="qcm-explain">Faux : le padding n'ajoute aucun poids au filtre ; le nombre de paramètres d'une couche de convolution ne dépend que de la taille du noyau et des canaux, pas du padding.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-6"><span class="otext">Pour contrôler la taille spatiale de la sortie (par ex. la conserver identique à l'entrée, padding « same »), et éviter de perdre trop vite de l'information sur les bords de l'image au fil des couches.</span></label>
+              <div class="qcm-explain">Correct : fiche 15, c'est exactement le double rôle du padding.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-6"><span class="otext">Pour remplacer la fonction d'activation ReLU.</span></label>
+              <div class="qcm-explain">Faux : le padding et l'activation sont deux mécanismes indépendants et complémentaires, pas substituables l'un à l'autre.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-6"><span class="otext">Pour forcer le réseau à ignorer les pixels centraux de l'image.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : le padding concerne les <b>bords</b> de l'image, pas le centre, et ne fait ignorer aucun pixel.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>Quel est l'objectif principal de l'augmentation de données (fiche 18) pour un CNN ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl2-7"><span class="otext">Simuler artificiellement plus de données d'entraînement (rotations, recadrages, retournements…) pour réduire le sur-apprentissage et améliorer la généralisation, sans collecter de nouvelles images.</span></label>
+              <div class="qcm-explain">Correct : fiche 18.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-7"><span class="otext">Augmenter le nombre de couches du réseau.</span></label>
+              <div class="qcm-explain">Faux : l'augmentation de données porte sur le jeu de données, pas sur l'architecture du réseau.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-7"><span class="otext">Remplacer le besoin d'un jeu de validation.</span></label>
+              <div class="qcm-explain">Faux : l'augmentation de données ne remplace pas le triptyque train/validation/test (fiche 9) ; elle enrichit uniquement les données d'entraînement.</div>
+              <label class="qcm-opt"><input type="radio" name="dl2-7"><span class="otext">Réduire le temps de calcul d'une époque d'entraînement.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : générer et traiter des versions augmentées des images augmente en général le temps de calcul, pas l'inverse.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -2045,6 +2093,30 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <div class="qcm-explain">Faux : la bidirectionnalité n'agit pas sur ce problème (fiche 22) ; elle change seulement quel contexte est visible, pas la dynamique du gradient dans le temps.</div>
               <label class="qcm-opt"><input type="radio" name="dl3-5"><span class="otext">Il remplace la nécessité d'utiliser un LSTM ou un GRU.</span></label>
               <div class="qcm-explain">Faux : la bidirectionnalité est une dimension orthogonale : on peut empiler des RNN vanille, LSTM ou GRU bidirectionnels (fiche 25), les deux idées se combinent.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q6</span>Pour calculer le gradient d'un RNN en pratique, quel algorithme utilise-t-on (fiche 26) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-6"><span class="otext">RTRL (Real-Time Recurrent Learning), car il est le moins coûteux en mémoire et en calcul.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : RTRL est plus coûteux que BPTT en pratique, ce qui explique qu'il soit peu utilisé (fiche 26).</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-6"><span class="otext">BPTT (Backpropagation Through Time) : on « déplie » la récurrence sur toute la séquence, puis on applique la rétropropagation classique sur ce graphe déplié.</span></label>
+              <div class="qcm-explain">Correct : fiche 26, c'est la méthode standard utilisée en pratique (par PyTorch notamment).</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-6"><span class="otext">On ne peut pas calculer de gradient pour un RNN, ils s'entraînent par recherche aléatoire.</span></label>
+              <div class="qcm-explain">Faux : les RNN sont entraînés par descente de gradient, exactement comme les autres réseaux (fiche 26).</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-6"><span class="otext">La méthode de Newton, appliquée directement sur les poids récurrents.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas la méthode standard pour les RNN, trop coûteuse à cette échelle (fiche 11 pour Newton en général).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q7</span>Pour une tâche de traduction automatique (séquence de mots en entrée → séquence de mots en sortie, de longueurs différentes), quelle architecture de tâche est adaptée (fiche 20) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl3-7"><span class="otext">« One-to-many » : une seule entrée produit une séquence de sorties.</span></label>
+              <div class="qcm-explain">Faux : cette architecture convient à une tâche comme la génération de légende d'image (une image → une phrase), pas à la traduction (séquence → séquence).</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-7"><span class="otext">« Many-to-one » : une séquence d'entrée produit une seule sortie.</span></label>
+              <div class="qcm-explain">Faux : cette architecture convient à une tâche comme l'analyse de sentiment (séquence de mots → une seule étiquette), pas à la traduction.</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-7"><span class="otext">« Many-to-many » de type encodeur-décodeur (séquence-à-séquence) : la séquence d'entrée est d'abord résumée, puis la séquence de sortie est générée, potentiellement de longueur différente.</span></label>
+              <div class="qcm-explain">Correct : fiche 20, c'est exactement l'architecture requise quand les longueurs des séquences d'entrée et de sortie diffèrent (ce qu'un « many-to-many » synchronisé terme à terme ne permet pas).</div>
+              <label class="qcm-opt"><input type="radio" name="dl3-7"><span class="otext">Aucune architecture RNN ne permet de traiter cette tâche.</span></label>
+              <div class="qcm-explain">Faux : c'est exactement le cas d'usage historique des RNN encodeur-décodeur (fiche 20), avant l'avènement des Transformers (fiche 36+).</div>
             </div>
 
             <div class="qcm-actions">
@@ -2491,6 +2563,30 @@ print(mu.grad)  # doit etre non nul (egal a 1 ici, cf. exercice 2)</code></pre>
               <div class="qcm-explain">Faux : le conditionnement (texte, carte sémantique...) reste présent, via cross-attention, qu'on soit dans l'espace pixel ou latent (fiche 35).</div>
             </div>
 
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Qu'apporte le CycleGAN par rapport à un GAN conditionnel (cGAN) classique (fiche 33) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-6"><span class="otext">Il supprime totalement le besoin d'un discriminateur.</span></label>
+              <div class="qcm-explain">Faux : le CycleGAN utilise bien des discriminateurs (un par domaine), comme tout GAN.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-6"><span class="otext">Il ne fonctionne que sur des images en niveaux de gris.</span></label>
+              <div class="qcm-explain">Faux : aucune restriction de ce type n'existe dans le cours ; le CycleGAN s'applique à des images couleur comme le cGAN.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-6"><span class="otext">Il permet la traduction d'un domaine d'images vers un autre <b>sans paires alignées</b> d'exemples (grâce à une perte de cohérence de cycle qui force $\mathrm{domaine}A\to B\to A$ à retrouver l'image de départ), là où le cGAN suppose des paires appariées.</span></label>
+              <div class="qcm-explain">Correct : fiche 33, c'est l'apport central du CycleGAN : s'affranchir des données appariées, grâce à la « cycle-consistency loss ».</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-6"><span class="otext">Il n'utilise jamais de conditionnement, contrairement au cGAN.</span></label>
+              <div class="qcm-explain">Faux : le CycleGAN reste conditionné (par l'image source du domaine A ou B) ; ce n'est pas la différence clé avec le cGAN.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q7</span>À quoi sert le guidage (guidance) dans un modèle de diffusion conditionné par du texte (fiche 35) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl4-7"><span class="otext">À accélérer le débruitage en réduisant le nombre d'étapes nécessaires.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas le rôle du guidage ; d'autres techniques (échantillonneurs rapides) visent la vitesse, pas le guidage.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-7"><span class="otext">À renforcer l'influence du conditionnement (ex. le prompt texte) sur la génération, au prix, si trop fort, d'une perte de diversité/réalisme.</span></label>
+              <div class="qcm-explain">Correct : fiche 35, c'est le rôle du guidage (notamment le « classifier-free guidance ») : accentuer la fidélité au conditionnement.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-7"><span class="otext">À remplacer entièrement le U-Net débruiteur.</span></label>
+              <div class="qcm-explain">Faux : le guidage s'applique en complément du U-Net $\epsilon_\theta$, il ne le remplace pas.</div>
+              <label class="qcm-opt"><input type="radio" name="dl4-7"><span class="otext">À garantir mathématiquement l'absence de tout biais dans les images générées.</span></label>
+              <div class="qcm-explain">Faux : ce n'est ni l'objectif ni une garantie du guidage (fiche 35) ; les biais du modèle restent un enjeu séparé.</div>
+            </div>
+
             <div class="qcm-actions">
               <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
               <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
@@ -2829,6 +2925,30 @@ print(torch.allclose(w_masked.triu(1), torch.zeros_like(w_masked)))  # doit etre
               <div class="qcm-explain">Faux : en pratique, le ViT peut égaler voire dépasser un CNN, mais sous une condition précise (option suivante).</div>
               <label class="qcm-opt"><input type="radio" name="dl5-5"><span class="otext">Le ViT doit apprendre ces a priori depuis les données elles-mêmes, ce qui exige beaucoup plus de données d'entraînement qu'un CNN pour atteindre une performance comparable.</span></label>
               <div class="qcm-explain">Correct : c'est exactement le « sens » de la fiche 40 : sans le biais inductif de localité/invariance du CNN inscrit dans l'architecture, le ViT doit le découvrir empiriquement, ce qui nécessite beaucoup de données (ou un pré-entraînement massif).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Pourquoi utilise-t-on plusieurs têtes (multi-head attention) plutôt qu'une seule attention, à $d_{\mathrm{model}}$ fixé (fiche 40) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-6"><span class="otext">Utiliser plusieurs têtes augmente toujours le nombre total de paramètres du modèle.</span></label>
+              <div class="qcm-explain">Faux : à $d_{\mathrm{model}}$ fixé, le nombre total de paramètres ($4\,d_{\mathrm{model}}^2$) est indépendant du nombre de têtes (fiche 39-40).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-6"><span class="otext">Une seule tête d'attention ne peut mathématiquement pas être calculée en parallèle sur GPU.</span></label>
+              <div class="qcm-explain">Faux : même une seule tête d'attention se parallélise très bien (c'est tout l'intérêt de l'attention face au RNN, fiche 39).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-6"><span class="otext">Chaque tête peut apprendre à capter un type de relation différent entre tokens (ex. syntaxique, positionnelle, sémantique) en parallèle, dans des sous-espaces de projection distincts.</span></label>
+              <div class="qcm-explain">Correct : fiche 40, c'est la motivation du multi-head : diversifier les types de dépendances capturées, plutôt qu'une seule attention « moyenne ».</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-6"><span class="otext">Le multi-head attention remplace le besoin d'un encodage de position.</span></label>
+              <div class="qcm-explain">Faux : l'encodage de position (fiche 39-40) reste nécessaire, quel que soit le nombre de têtes ; ce sont deux mécanismes indépendants.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q7</span>Dans l'architecture encodeur-décodeur originale du Transformer (fiche 37), à quoi sert la <b>cross-attention</b> dans le décodeur ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="dl5-7"><span class="otext">À permettre à chaque position du décodeur d'attendre sur les représentations produites par l'encodeur (la séquence source), en plus de sa propre self-attention causale sur la séquence déjà générée.</span></label>
+              <div class="qcm-explain">Correct : fiche 37, c'est ce mécanisme qui relie le décodeur à la séquence source (ex. la phrase à traduire), distinct de la self-attention causale interne au décodeur.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-7"><span class="otext">À remplacer entièrement le masquage causal du décodeur.</span></label>
+              <div class="qcm-explain">Faux : la self-attention causale du décodeur reste présente en plus de la cross-attention ; les deux mécanismes coexistent (fiche 37).</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-7"><span class="otext">À entraîner l'encodeur et le décodeur séparément, sans lien entre eux.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : la cross-attention est précisément le lien qui connecte l'encodeur et le décodeur pendant l'entraînement conjoint.</div>
+              <label class="qcm-opt"><input type="radio" name="dl5-7"><span class="otext">À accélérer uniquement l'inférence, sans rôle à l'entraînement.</span></label>
+              <div class="qcm-explain">Faux : la cross-attention intervient de la même façon à l'entraînement et à l'inférence (fiche 37).</div>
             </div>
 
             <div class="qcm-actions">
