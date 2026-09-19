@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>OLS &amp; Optimisation</title>
+<title>Machine Learning : Memo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -196,6 +196,50 @@ window.MathJax = {
   .kfold-cell{ width:32px; height:22px; border-radius:4px; background:var(--accent); flex:none; }
   .kfold-cell.is-val{ background:#3f6ea3; }
 
+  table.cmp{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.83rem; }
+  .cmp th, .cmp td{ padding:6px 10px; border:1px solid var(--border); text-align:center; color:var(--ink-soft); }
+  .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
+  .cmp td:first-child, .cmp th:first-child{ text-align:left; }
+
+  .box-practice{ background:var(--surface-2); border-color:var(--accent); }
+  .box-practice .box-label{ color:var(--accent-strong); }
+  .box-practice pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
+  .box-practice code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  .box-practice .exo-step{ font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--accent-strong); margin:10px 0 2px; }
+  .box-practice .exo-step:first-of-type{ margin-top:0; }
+
+  .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
+  .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .qcm-head h3{ font-size:1.05rem; margin:0; }
+  .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; max-width:none; }
+  .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; max-width:none; }
+  .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
+  .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
+  .qcm-opt:hover{ background:var(--surface-2); }
+  .qcm-opt input{ margin-top:3px; flex-shrink:0; accent-color:var(--accent); }
+  .qcm-opt .otext{ font-size:.89rem; color:var(--ink-soft); }
+  .qcm-explain{ display:none; font-size:.82rem; color:var(--muted); margin:2px 0 0 34px; padding:4px 0 4px 10px; border-left:2px solid var(--border); }
+  .qcm-q.graded .qcm-explain{ display:block; }
+  .qcm-q.graded .qcm-opt{ cursor:default; }
+  .qcm-q.graded .qcm-opt.opt-right{ background:var(--def-bg); border-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-right .qcm-explain{ border-left-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked{ background:var(--warn-bg); border-color:var(--warn-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked .qcm-explain{ border-left-color:var(--warn-border); }
+  .qcm-q .q-badge{ display:none; font:700 .72rem "JetBrains Mono",monospace; padding:2px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+  .qcm-q.graded .q-badge{ display:inline-block; }
+  .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
+  .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
+  .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
+  .qcm-btn.ghost:hover{ background:var(--accent-soft); }
+  .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
+  .qcm-result:empty{ display:none; }
+
   /* ---------- footer / mnemonics ---------- */
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
@@ -253,7 +297,7 @@ window.MathJax = {
       </button>
       <div class="brand">
         <span class="eyebrow">ENSAI · 3A · Machine Learning</span>
-        <span class="name">OLS &amp; Optimisation</span>
+        <span class="name">Machine Learning</span>
       </div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -295,16 +339,47 @@ window.MathJax = {
           <li><a href="#s14"><span class="toc-num">14</span>Coordinate descent</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>Lecture 3 : SVM &amp; noyaux</p>
+        <ol>
+          <li><a href="#s15"><span class="toc-num">15</span>Marge maximale &amp; SVM à marge dure</a></li>
+          <li><a href="#s16"><span class="toc-num">16</span>Marge souple &amp; dual</a></li>
+          <li><a href="#s17"><span class="toc-num">17</span>Astuce du noyau &amp; RKHS</a></li>
+          <li><a href="#s18"><span class="toc-num">18</span>Construire des noyaux</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>Lecture 4 : Méthodes d'ensemble</p>
+        <ol>
+          <li><a href="#s19"><span class="toc-num">19</span>Bagging &amp; Random Forest</a></li>
+          <li><a href="#s20"><span class="toc-num">20</span>Boosting : AdaBoost &amp; GB</a></li>
+          <li><a href="#s21"><span class="toc-num">21</span>Stacking</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>Lecture 5 : Sélection de variables</p>
+        <ol>
+          <li><a href="#s22"><span class="toc-num">22</span>Pearson vs Info. mutuelle</a></li>
+          <li><a href="#s23"><span class="toc-num">23</span>HSIC</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>Lecture 6 : Régression robuste</p>
+        <ol>
+          <li><a href="#s24"><span class="toc-num">24</span>WLS &amp; LAD</a></li>
+          <li><a href="#s25"><span class="toc-num">25</span>M-estimation &amp; IRLS</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
-        <h1>De l'ERM à la descente de gradient stochastique</h1>
-        <p>Synthèse des deux premiers chapitres du cours : comment choisir, régulariser et entraîner un prédicteur linéaire, puis comment résoudre numériquement le problème d'optimisation qui en résulte.</p>
+        <h1>De l'ERM au SVM, en passant par les ensembles et la robustesse</h1>
+        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation, et régresser en présence d'outliers.</p>
         <div class="meta">
-          <span>📄 <b>Source</b> : LectureNotesML, S. Da Veiga</span>
-          <span>📚 <b>14 fiches</b></span>
+          <span>📄 <b>Source</b> : LectureNotesML (S. Da Veiga), QCM, sujets d'examen et TP ENSAI 3A</span>
+          <span>📚 <b>25 fiches</b></span>
           <span>🔎 <b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -495,6 +570,98 @@ window.MathJax = {
             </div>
           </article>
 
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Computer class 1 : Ridge et Lasso sur un jeu de données contaminé</p>
+            <p>Un jeu de données diabète ($n=442$, $d=10$) a été « contaminé » par l'ajout de 200 variables inutiles, puis toutes les colonnes ont été permutées aléatoirement (<code>data_dm3.csv</code>) : à vous de retrouver, sans connaître leur identité, quelles variables sont réellement informatives.</p>
+            <p class="exo-step">Étape 1 · Vérifier numériquement les formules de biais/variance</p>
+            <p>Sur un jeu simulé à design fixe (fiche 4), comparez le biais théorique $-\lambda(X^TX+\lambda I)^{-1}\theta^\star$ (fiche 5) à l'estimation empirique obtenue en ré-entraînant <code>Ridge</code> de <code>scikit-learn</code> plusieurs fois (bruit différent à chaque fois), pour toute une grille de $\lambda$.</p>
+            <p class="exo-step">Étape 2 · Ridge vs Lasso sur les données contaminées</p>
+            <p>Découpez train/test (80/20), réglez $\lambda$ par validation croisée (<code>RidgeCV</code> puis <code>LassoCV</code>), tracez les chemins de coefficients (fiches 5 et 7), et comparez le nombre de coefficients <b>non nuls</b> retenus par chacun : lequel des deux « résout l'énigme » et pointe vers les vraies variables ?</p>
+            <pre><code>from sklearn.linear_model import RidgeCV, LassoCV
+
+ridge_cv = RidgeCV(alphas=lambdas, cv=5).fit(X_train, y_train)
+lasso_cv = LassoCV(alphas=lambdas, cv=5).fit(X_train, y_train)
+print("Ridge :", (ridge_cv.coef_ != 0).sum(), "/ 210 coefficients non nuls")
+print("Lasso :", (lasso_cv.coef_ != 0).sum(), "/ 210 coefficients non nuls")</code></pre>
+            <p class="exo-step">Étape 3 (bonus) · Pourquoi la LOOCV est « gratuite » pour Ridge/OLS</p>
+            <p>Démontrez, en utilisant la formule de Sherman-Morrison sur $X^TX$ privé d'une ligne, que $y_i-\hat f_{-i}(x_i) = \big(y_i-\hat f(x_i)\big)/(1-S_{ii})$ avec $S=X(X^TX)^{-1}X^T$ : un <b>seul</b> ajustement sur toutes les données suffit pour obtenir l'erreur de validation croisée <i>leave-one-out</i> de tous les points à la fois, sans jamais ré-entraîner $n$ fois le modèle. Étendez le résultat au Ridge en écrivant $\hat\theta_\lambda^{\mathrm{rdg}}$ comme un OLS sur des données augmentées $\big(\begin{smallmatrix}X\\\sqrt\lambda I_d\end{smallmatrix}\big)$.</p>
+            <p class="sense"><b>Corrigé complet</b> (code exécuté + démonstration détaillée du bonus) : notebooks <code>tp-td-01/activity-1.ipynb</code> et <code>activity-2.ipynb</code>.</p>
+          </div>
+
+          <div class="qcm" id="qcm-1">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 1 (variantes de l'OLS)</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Dans l'inégalité oracle pour un dictionnaire fini $\mathcal G=\{g_1,\dots,g_M\}$, que se passe-t-il quand $M$ augmente, à $n$ fixé ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-1"><span class="otext">La borne $\sqrt{\frac2n\log(2M/\delta)}$ diminue : un dictionnaire plus riche rapproche toujours l'ERM de l'oracle.</span></label>
+              <div class="qcm-explain">Faux : la borne croît (en $\log M$) quand $M$ augmente, c'est l'inverse.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-1"><span class="otext">La borne augmente, mais l'oracle $g^\star$ lui-même peut devenir meilleur : c'est l'arbitrage biais-variance.</span></label>
+              <div class="qcm-explain">Correct : fiche 1. Un $\mathcal G$ plus grand contient de meilleurs candidats (oracle meilleur, biais réduit) mais rend l'ERM statistiquement plus difficile à approcher (borne plus large, variance accrue).</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-1"><span class="otext">$M$ n'a aucun effet sur la borne, seul $n$ compte.</span></label>
+              <div class="qcm-explain">Faux : $M$ apparaît explicitement dans la borne, via $\log(2M/\delta)$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-1"><span class="otext">Un $M$ plus grand réduit strictement le risque théorique de l'ERM.</span></label>
+              <div class="qcm-explain">Faux : le risque théorique de l'ERM peut au contraire se dégrader, car la borne de convergence vers l'oracle s'élargit.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Sur les données d'entraînement, on trouve $R^2=0$ pour l'OLS. Que peut-on en conclure ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-2"><span class="otext">Le modèle prédit parfaitement chaque observation.</span></label>
+              <div class="qcm-explain">Faux : c'est le cas $R^2=1$ (fiche 3), pas $R^2=0$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-2"><span class="otext">$\hat\theta_n$ n'existe pas dans ce cas.</span></label>
+              <div class="qcm-explain">Faux : l'OLS existe toujours (fiche 3).</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-2"><span class="otext">Le prédicteur ne fait pas mieux que la moyenne empirique $\bar y$ : $\hat Y=\bar y^n\mathbf 1_n$ est une solution OLS.</span></label>
+              <div class="qcm-explain">Correct : fiche 3, $R^2=0 \iff \hat Y=\hat H_{\mathbf 1_n}Y$, i.e. la prédiction constante égale à la moyenne.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-2"><span class="otext">Toutes les variables explicatives sont inutiles par construction.</span></label>
+              <div class="qcm-explain">Faux : $R^2=0$ signale seulement que le modèle <i>ajusté</i> ne fait pas mieux que la moyenne, pas que les variables sont intrinsèquement sans lien avec $y$ (mauvaise spécification, sur-régularisation, etc.).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quand $\lambda\to+\infty$ en régression Ridge, que deviennent le biais et la variance de $\hat\theta_\lambda^{\mathrm{rdg}}$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-3"><span class="otext">Le biais (en valeur absolue) augmente vers $\|\theta^\star\|$, la variance diminue vers 0.</span></label>
+              <div class="qcm-explain">Correct : fiche 5, $\hat\theta_\lambda^{\mathrm{rdg}}\to0$ quand $\lambda\to\infty$, donc le biais $\mathbb E[\hat\theta_\lambda]-\theta^\star\to-\theta^\star$ et $V_\lambda^{\mathrm{rdg}}\to0$ (formule de la Proposition biais/variance).</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-3"><span class="otext">Le biais et la variance augmentent tous les deux.</span></label>
+              <div class="qcm-explain">Faux : c'est exactement l'inverse pour la variance, qui décroît avec $\lambda$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-3"><span class="otext">Le biais et la variance diminuent tous les deux vers 0.</span></label>
+              <div class="qcm-explain">Faux : le biais ne tend pas vers 0, il augmente (en valeur absolue) avec $\lambda$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-3"><span class="otext">Ni le biais ni la variance ne dépendent de $\lambda$ pour le Ridge.</span></label>
+              <div class="qcm-explain">Faux : les deux formules de la fiche 5 dépendent explicitement de $\lambda$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Quelle affirmation distingue correctement Lasso et Ridge ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-4"><span class="otext">Le Ridge peut mettre des coefficients exactement à zéro ; le Lasso ne le peut pas.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse (fiches 5 et 7).</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-4"><span class="otext">Le Lasso a une solution explicite en forme fermée ; pas le Ridge.</span></label>
+              <div class="qcm-explain">Faux : c'est encore l'inverse : le Ridge a une formule fermée $(\lambda I+X^TX)^{-1}X^Ty$ ; le Lasso n'en a pas (fiche 7).</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-4"><span class="otext">Géométriquement, la boule $L^1$ du Lasso a des « pointes » sur les axes, ce qui explique la sélection de variables.</span></label>
+              <div class="qcm-explain">Correct : fiche 7, remarque géométrie et biais.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-4"><span class="otext">Le Lasso est toujours l'estimateur de plus faible variance parmi les deux.</span></label>
+              <div class="qcm-explain">Faux : aucune comparaison générale de ce type n'est établie dans le cours ; cela dépend fortement des données.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Dans quel cas le PCA-OLS (fiche 6) n'apporte-t-il concrètement aucun bénéfice ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml1-5"><span class="otext">Quand $n$ est très grand devant $d$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas le critère déterminant évoqué dans le cours.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-5"><span class="otext">Quand $\sigma^2$ est très petit.</span></label>
+              <div class="qcm-explain">Faux : le niveau de bruit n'est pas ce qui détermine l'utilité du PCA-OLS.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-5"><span class="otext">Quand les variables explicatives d'origine sont indépendantes (non corrélées) entre elles.</span></label>
+              <div class="qcm-explain">Correct : fiche 6, la réduction préliminaire par PCA n'aide que si les features d'origine sont corrélées/dépendantes ; sinon aucune information n'est réellement compressée.</div>
+              <label class="qcm-opt"><input type="radio" name="ml1-5"><span class="otext">Quand $K$, le nombre de composantes gardées, est choisi trop petit.</span></label>
+              <div class="qcm-explain">Faux : un $K$ trop petit dégrade la performance, mais ce n'est pas la situation où la méthode est intrinsèquement inutile par construction des données.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -627,6 +794,748 @@ window.MathJax = {
             </div>
           </article>
 
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Computer class 2 : coder GD, Nesterov, SGD et coordinate descent à la main</p>
+            <p>Contrairement au Computer class 1 (Ridge/Lasso avec <code>scikit-learn</code>), l'objectif ici est d'implémenter <b>vous-même, sans bibliothèque d'optimisation</b>, les algorithmes de cette lecture, pour vérifier concrètement leurs garanties théoriques.</p>
+            <p class="exo-step">Activity 1 · Descente de gradient, taux de convergence, Nesterov</p>
+            <p>Sur l'objectif OLS $F(\theta)=\frac1n\|y-X\theta\|_2^2$ : calculez $L$ et $\mu$ à partir des valeurs propres de $\frac2n X^TX$ (fiche 9), codez <code>gradient_descent</code> à la main, puis vérifiez empiriquement le Théorème 1 (fiche 10) en traçant $\log(F(\theta_t)-F(\theta^\star))$ pour $\gamma=1/L$ : la pente doit approcher $\log(1-\mu/L)$. Terminez en codant Nesterov (fiche 11) et en comparant sa vitesse à celle de GD sur un problème mal conditionné ($\kappa=L/\mu$ grand).</p>
+            <pre><code>def gradient_descent(X, y, gamma, n_iter, theta0=None):
+    theta = np.zeros(X.shape[1]) if theta0 is None else theta0.copy()
+    thetas = [theta.copy()]
+    for _ in range(n_iter):
+        grad = -(2/len(y)) * X.T @ (y - X @ theta)
+        theta = theta - gamma * grad
+        thetas.append(theta.copy())
+    return np.array(thetas)</code></pre>
+            <p class="exo-step">Activity 2 · SGD et coordinate descent pour le Lasso</p>
+            <p>Codez le gradient stochastique $g_m(\theta)$ (fiche 13) et vérifiez sur un graphe que <b>SGD n'est pas une méthode de descente</b> ($F(\theta_t)$ peut augmenter). Puis implémentez la coordinate descent du Lasso (fiche 14, seuillage doux) et comparez vos coefficients à ceux de <code>sklearn.linear_model.Lasso</code> sur le jeu de données contaminé du Computer class 1 : ils doivent coïncider à la précision numérique près.</p>
+            <p class="sense"><b>À faire :</b> énoncés complets, indices et squelettes de fonctions (à compléter, non corrigés) dans <code>tp-td-02/activity-1.ipynb</code> et <code>activity-2.ipynb</code>.</p>
+          </div>
+
+          <div class="qcm" id="qcm-2">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 2 (optimisation)</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>$F$ est convexe et différentiable. Que peut-on dire d'un point stationnaire $\theta^\star$ (i.e. $\nabla F(\theta^\star)=0$) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-1"><span class="otext">C'est nécessairement un minimum local, mais pas forcément global.</span></label>
+              <div class="qcm-explain">Faux : pour une fonction convexe, tout point stationnaire est un minimum <b>global</b> (fiche 9), pas seulement local.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-1"><span class="otext">C'est un minimum global de $F$.</span></label>
+              <div class="qcm-explain">Correct : fiche 9, Proposition « caractérisation du minimum » : convexe + différentiable $\Rightarrow \nabla F(\theta^\star)=0 \iff \theta^\star$ minimiseur global.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-1"><span class="otext">Cela dépend uniquement de la valeur de $L$ (constante de smoothness).</span></label>
+              <div class="qcm-explain">Faux : la caractérisation ne dépend que de la convexité, pas de $L$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-1"><span class="otext">Ce résultat est vrai même si $F$ n'est pas convexe.</span></label>
+              <div class="qcm-explain">Faux : le cours insiste sur le fait que c'est <b>faux en général</b> si $F$ n'est pas convexe (un point stationnaire peut alors être un point-selle ou un minimum local seulement).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>$F$ est $\mu$-fortement convexe et $L$-smooth, avec $\gamma=1/L$. Quel est l'ordre de grandeur du nombre d'itérations de GD nécessaires pour atteindre une tolérance $\varepsilon$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-2"><span class="otext">$O(\varepsilon)$, quel que soit $\kappa=L/\mu$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est ni la bonne forme (fiche 10), ni indépendant de $\kappa$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-2"><span class="otext">$O(1/\varepsilon)$ : convergence sous-linéaire, comme dans le cas convexe simple.</span></label>
+              <div class="qcm-explain">Faux : c'est le taux du cas convexe (non fortement convexe), fiche 10.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-2"><span class="otext">$O(\kappa\log(1/\varepsilon))$ : convergence linéaire, avec un nombre d'itérations proportionnel au conditionnement $\kappa=L/\mu$.</span></label>
+              <div class="qcm-explain">Correct : fiche 10, le taux $(1-\mu/L)^t$ implique $t=O(\kappa\log(1/\varepsilon))$ itérations pour atteindre $F(\theta_t)-F(\theta^\star)\le\varepsilon$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-2"><span class="otext">Le nombre d'itérations ne dépend jamais de $\varepsilon$.</span></label>
+              <div class="qcm-explain">Faux : plus la tolérance $\varepsilon$ demandée est petite, plus il faut d'itérations, via le terme $\log(1/\varepsilon)$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>L'accélération de Nesterov change le taux de convergence de GD, dans le cas $\mu$-fortement convexe, de :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-3"><span class="otext">$(1-1/\kappa)$ à $(1-1/\sqrt\kappa)$, un gain d'autant plus net que $\kappa$ est grand.</span></label>
+              <div class="qcm-explain">Correct : fiche 11.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-3"><span class="otext">$O(1/t)$ à $O(1/t^3)$.</span></label>
+              <div class="qcm-explain">Faux : dans le cas convexe (non fortement convexe), le gain va de $O(1/t)$ à $O(1/t^2)$, pas $O(1/t^3)$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-3"><span class="otext">Nesterov ne change jamais le taux théorique, seulement la constante.</span></label>
+              <div class="qcm-explain">Faux : Nesterov change bien l'ordre du taux (l'exposant de $t$, ou la base de la puissance en fort convexe), pas juste une constante.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-3"><span class="otext">$(1-1/\kappa)$ à $(1-\kappa)$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas la bonne expression.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Pourquoi utilise-t-on des méthodes <b>proximales</b> plutôt que la sous-gradient descent pour le Lasso ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-4"><span class="otext">Parce que la sous-gradient descent ne peut pas du tout être appliquée à une fonction non différentiable.</span></label>
+              <div class="qcm-explain">Faux : la sous-gradient descent est justement conçue pour les fonctions non lisses (fiche 12) ; elle reste applicable au Lasso.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-4"><span class="otext">Parce que le proximal est toujours plus rapide en pratique, sans exception.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'argument avancé dans le cours ; la justification est structurelle (voir la bonne réponse), pas une comparaison de vitesse universelle.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-4"><span class="otext">Parce que le Lasso n'a pas de partie lisse $G$ à séparer de la partie non lisse $H$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, le Lasso se décompose naturellement en $G$ (le terme des moindres carrés, lisse) et $H$ (la pénalité $L^1$, non lisse).</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-4"><span class="otext">Parce que le Lasso se décompose en $F=G+H$ avec $G$ lisse et $H=\lambda\|\theta\|_1$ dont l'opérateur proximal (seuillage doux) est calculable explicitement.</span></label>
+              <div class="qcm-explain">Correct : fiche 12, c'est exactement la condition qui rend les méthodes proximales efficaces ici : $H$ non lisse mais avec un opérateur proximal simple.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi la coordinate descent est-elle particulièrement adaptée au Lasso (fiche 14) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml2-5"><span class="otext">Parce qu'elle converge plus vite que GD sur n'importe quel problème convexe.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas une propriété générale, cela dépend fortement du problème.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-5"><span class="otext">Parce que le sous-problème 1D à chaque coordonnée a une solution explicite (seuillage doux), donc chaque mise à jour est peu coûteuse.</span></label>
+              <div class="qcm-explain">Correct : fiche 14, c'est exactement pour cela que <code>scikit-learn</code> utilise la coordinate descent en interne pour <code>Lasso</code>.</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-5"><span class="otext">Parce qu'elle ne nécessite aucune itération, la solution est obtenue en une seule passe.</span></label>
+              <div class="qcm-explain">Faux : la boucle sur les coordonnées est répétée plusieurs fois jusqu'à convergence (fiche 14).</div>
+              <label class="qcm-opt"><input type="radio" name="ml2-5"><span class="otext">Parce qu'elle est la seule méthode capable de gérer une pénalité non lisse.</span></label>
+              <div class="qcm-explain">Faux : le gradient proximal (fiche 12) gère lui aussi les pénalités non lisses.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 3 ================= -->
+      <section class="lecture" id="lecture-3">
+        <button class="lecture-head">
+          <span class="num">L3</span>
+          <span class="title">SVM &amp; noyaux (RKHS)</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s15">
+            <div class="tophead"><span class="num">15</span><h2>Marge maximale &amp; SVM à marge dure</h2></div>
+            <p>On revient à la classification, mais avec un nouveau point de vue <b>géométrique</b> : au lieu de minimiser une perte $0/1$ (fiche 1), on cherche l'hyperplan qui sépare les deux classes avec la plus grande marge possible. Convention : $y_i\in\{-1,+1\}$ (au lieu de $\{0,1\}$).</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Hyperplan séparateur &amp; marge</p>
+              <p>Un hyperplan $\{\mathbf x : \mathbf w^T\mathbf x+b=0\}$ sépare parfaitement les données si $y_i(\mathbf w^T\mathbf x_i+b)>0$ pour tout $i$. En normalisant $\mathbf w,b$ pour que les points les plus proches vérifient $|\mathbf w^T\mathbf x_i+b|=1$, la <b>marge</b> (distance de l'hyperplan au point le plus proche) vaut exactement $1/\|\mathbf w\|_2$.</p>
+              <p class="sense"><b>Sens :</b> maximiser la marge $1/\|\mathbf w\|_2$ revient à <b>minimiser $\|\mathbf w\|_2$</b> : c'est le principe fondateur du SVM.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Définition · SVM à marge dure (primal)</p>
+              <div class="formula">$$\min_{\mathbf w,b}\ \frac12\|\mathbf w\|_2^2 \quad\text{s.c.}\quad y_i(\mathbf w^T\mathbf x_i+b)\ge1,\ \ i=1,\dots,n$$</div>
+              <p class="sense"><b>Sens :</b> problème convexe (quadratique sous contraintes linéaires) qui n'a de solution que si les données sont <b>parfaitement séparables</b> (fiche 16 pour le cas général). Les points qui atteignent l'égalité $y_i(\mathbf w^T\mathbf x_i+b)=1$ sont les <b>vecteurs de support</b>.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Remarque · Seuls les vecteurs de support comptent</p>
+              <p>À la solution optimale, l'hyperplan (donc $\mathbf w$ et $b$) ne dépend que des points situés exactement sur la marge (les vecteurs de support) : retirer n'importe quel autre point du jeu d'entraînement, strictement à l'intérieur de sa classe, ne change <b>pas</b> la solution.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s16">
+            <div class="tophead"><span class="num">16</span><h2>Marge souple &amp; formulation duale</h2></div>
+            <p>En pratique, les données ne sont presque jamais parfaitement séparables. On autorise donc quelques violations de marge, contrôlées par des variables « ressort » $\xi_i\ge0$.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · SVM à marge souple (soft-margin)</p>
+              <div class="formula">$$\min_{\mathbf w,b,\mathbf{\xi}}\ \frac12\|\mathbf w\|_2^2 + C\sum_{i=1}^n\xi_i \quad\text{s.c.}\quad y_i(\mathbf w^T\mathbf x_i+b)\ge1-\xi_i,\ \ \xi_i\ge0$$</div>
+              <p class="sense"><b>Sens :</b> $C>0$ arbitre le compromis marge large / erreurs tolérées : $C$ grand $\Rightarrow$ peu de tolérance (proche de la marge dure) ; $C$ petit $\Rightarrow$ marge plus large, plus de points mal classés tolérés (davantage de biais, moins de variance).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition · Formulation duale</p>
+              <div class="formula">$$\max_{\mathbf{\alpha}}\ \sum_{i=1}^n\alpha_i - \frac12\sum_{i,j}\alpha_i\alpha_jy_iy_j\,\mathbf x_i^T\mathbf x_j \quad\text{s.c.}\quad 0\le\alpha_i\le C,\ \ \sum_i\alpha_iy_i=0$$</div>
+              <div class="formula">$$\mathbf w=\sum_i\alpha_iy_i\mathbf x_i \qquad f(\mathbf x)=\mathrm{sign}\!\left(\sum_i\alpha_iy_i\,\mathbf x_i^T\mathbf x+b\right)$$</div>
+              <p class="sense"><b>Sens :</b> par KKT, $\alpha_i>0$ uniquement pour les vecteurs de support : c'est ce qui explique la <b>sparsité</b> de la solution. Point capital pour la suite : le problème dual, et la fonction de décision, ne dépendent des données <b>que via des produits scalaires</b> $\mathbf x_i^T\mathbf x_j$ : c'est ce qui va permettre l'astuce du noyau (fiche 17).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s17">
+            <div class="tophead"><span class="num">17</span><h2>Astuce du noyau (kernel trick) &amp; RKHS</h2></div>
+            <p>Pour séparer des données qui ne sont pas linéairement séparables, une idée est de les envoyer dans un espace de plus grande dimension via $\phi(\mathbf x)$, où elles pourraient le devenir. Le <b>kernel trick</b> permet de le faire sans jamais calculer $\phi$ explicitement.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Noyau (kernel)</p>
+              <p>Une fonction symétrique $k:\mathcal X\times\mathcal X\to\mathbb R$ est un <b>noyau</b> si, pour tout $n$ et tout $\mathbf x_1,\dots,\mathbf x_n\in\mathcal X$, la matrice de Gram $[k(\mathbf x_i,\mathbf x_j)]_{i,j}$ est <b>symétrique semi-définie positive</b>. De façon équivalente, il existe un espace de Hilbert $\mathcal H$ et une <i>feature map</i> $\phi:\mathcal X\to\mathcal H$ tels que $k(\mathbf x,\mathbf x')=\langle\phi(\mathbf x),\phi(\mathbf x')\rangle_{\mathcal H}$.</p>
+              <p class="sense"><b>Sens :</b> il suffit de remplacer $\mathbf x_i^T\mathbf x_j$ par $k(\mathbf x_i,\mathbf x_j)$ dans la formulation duale (fiche 16) : $f(\mathbf x)=\mathrm{sign}\big(\sum_i\alpha_iy_i\,k(\mathbf x_i,\mathbf x)+b\big)$, sans jamais construire $\phi(\mathbf x)$, même quand $\mathcal H$ est de dimension infinie (cas du noyau gaussien).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · RKHS &amp; propriété reproduisante (Moore-Aronszajn)</p>
+              <p>À tout noyau $k$ est associé un unique espace de Hilbert à noyau reproduisant (RKHS) $\mathcal H_k$, dans lequel $k(\mathbf x,\cdot)\in\mathcal H_k$ pour tout $\mathbf x$, et qui vérifie la <b>propriété reproduisante</b> :</p>
+              <div class="formula">$$\langle f, k(\mathbf x,\cdot)\rangle_{\mathcal H_k} = f(\mathbf x) \qquad \forall f\in\mathcal H_k$$</div>
+              <p class="sense"><b>Sens :</b> évaluer $f$ en $\mathbf x$ revient à faire un produit scalaire avec $k(\mathbf x,\cdot)$ : c'est ce théorème (Moore-Aronszajn) qui garantit qu'à <b>tout</b> noyau semi-défini positif correspond bien un tel espace, sans avoir besoin de le construire à la main.</p>
+            </div>
+
+            <table class="cmp">
+              <tr><th>Noyau</th><th>Formule</th><th>Feature map $\phi$</th></tr>
+              <tr><td>Linéaire</td><td>$\mathbf x^T\mathbf x'$</td><td>$\phi(\mathbf x)=\mathbf x$ (dimension finie)</td></tr>
+              <tr><td>Polynomial (degré $d$)</td><td>$(\mathbf x^T\mathbf x'+c)^d$</td><td>monômes de degré $\le d$ (dimension finie)</td></tr>
+              <tr><td>Gaussien / RBF</td><td>$\exp(-\gamma\|\mathbf x-\mathbf x'\|_2^2)$</td><td>dimension <b>infinie</b> (fiche 18)</td></tr>
+            </table>
+          </article>
+
+          <article class="topic" id="s18">
+            <div class="tophead"><span class="num">18</span><h2>Construire des noyaux : règles de composition &amp; noyau gaussien</h2></div>
+            <p>Vérifier directement qu'une fonction est semi-définie positive est pénible. En pratique, on construit de nouveaux noyaux à partir de noyaux déjà connus, via des règles de composition.</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition · Règles de composition des noyaux</p>
+              <p>Si $k_1,k_2$ sont des noyaux, alors les fonctions suivantes en sont aussi :</p>
+              <table class="cmp">
+                <tr><th>Règle</th><th>Noyau obtenu</th></tr>
+                <tr><td>Mise à l'échelle</td><td>$\lambda\,k_1$, pour $\lambda>0$</td></tr>
+                <tr><td>Somme</td><td>$k_1+k_2$</td></tr>
+                <tr><td>Puissance</td><td>$k_1^n$, pour $n\in\mathbb N^\star$</td></tr>
+                <tr><td>Limite</td><td>$\displaystyle\lim_{n\to\infty}k_n$ si la suite converge simplement</td></tr>
+                <tr><td>Exponentielle</td><td>$\exp(k_1)$ (combine puissance + mise à l'échelle + somme + limite, via la série entière de $\exp$)</td></tr>
+                <tr><td>Fonctions</td><td>$f(\mathbf x)\,k_1(\mathbf x,\mathbf x')\,f(\mathbf x')$, pour toute fonction réelle $f$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> la règle « fonctions » se prouve en exhibant la feature map $\phi_2:=f\cdot\phi_1$ à partir de celle de $k_1$ ; la règle « exponentielle » s'obtient en appliquant successivement puissance, mise à l'échelle, somme (sur les termes de la série $\exp(u)=\sum_i u^i/i!$) puis limite.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Le noyau gaussien est bien un noyau</p>
+              <p>On décompose $\|\mathbf x-\mathbf x'\|_2^2 = \|\mathbf x\|_2^2 - 2\langle\mathbf x,\mathbf x'\rangle + \|\mathbf x'\|_2^2$, d'où :</p>
+              <div class="formula">$$k(\mathbf x,\mathbf x')=e^{-\|\mathbf x-\mathbf x'\|_2^2} = \underbrace{e^{-\|\mathbf x\|_2^2}}_{f(\mathbf x)}\ \cdot\ \underbrace{e^{2\langle\mathbf x,\mathbf x'\rangle}}_{\text{règle exponentielle}}\ \cdot\ \underbrace{e^{-\|\mathbf x'\|_2^2}}_{f(\mathbf x')}$$</div>
+              <p class="sense"><b>Sens :</b> $\langle\mathbf x,\mathbf x'\rangle$ est un noyau (linéaire) ; $2\langle\mathbf x,\mathbf x'\rangle$ aussi (mise à l'échelle) ; $e^{2\langle\mathbf x,\mathbf x'\rangle}$ aussi (règle exponentielle) ; et multiplier par $f(\mathbf x)=e^{-\|\mathbf x\|_2^2}$ de chaque côté reste un noyau (règle fonctions). D'où le noyau gaussien tout entier. C'est un noyau dont l'espace $\mathcal H_k$ associé est de dimension <b>infinie</b>, ce qui le rend extrêmement flexible.</p>
+            </div>
+          </article>
+
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Vérifier et utiliser le noyau gaussien</p>
+            <p class="exo-step">Étape 1 · Vérifier la positivité semi-définie numériquement</p>
+            <p>Implémentez <code>gaussian_kernel(X, gamma)</code> qui renvoie la matrice de Gram $[k(\mathbf x_i,\mathbf x_j)]$ pour un jeu de points $X$, et vérifiez que toutes ses valeurs propres sont $\ge0$ (à la précision numérique près) avec <code>np.linalg.eigvalsh</code>.</p>
+            <pre><code>import numpy as np
+
+def gaussian_kernel(X, gamma):
+    sq_dists = ((X[:, None, :] - X[None, :, :]) ** 2).sum(-1)
+    return np.exp(-gamma * sq_dists)
+
+K = gaussian_kernel(X, gamma=0.5)
+print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></pre>
+            <p class="exo-step">Étape 2 · Linéaire vs RBF sur des données non séparables</p>
+            <p>Générez un jeu de données non linéairement séparable (<code>sklearn.datasets.make_moons</code> ou <code>make_circles</code>), entraînez <code>SVC(kernel='linear')</code> et <code>SVC(kernel='rbf')</code>, et affichez la frontière de décision de chacun (par ex. via <code>DecisionBoundaryDisplay</code>) : constatez que seul le noyau RBF sépare correctement les deux classes. Identifiez les vecteurs de support (<code>model.support_vectors_</code>) et observez leur position par rapport à la frontière.</p>
+          </div>
+
+          <div class="qcm" id="qcm-3">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 3 (SVM &amp; noyaux)</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Dans un SVM (marge dure ou souple), la frontière de décision finale est déterminée par :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-1"><span class="otext">Tous les points d'entraînement, à poids égal.</span></label>
+              <div class="qcm-explain">Faux : les points loin de la marge (à l'intérieur de leur classe) ont $\alpha_i=0$ et ne participent pas (fiche 16).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-1"><span class="otext">Uniquement les features, indépendamment des labels.</span></label>
+              <div class="qcm-explain">Faux : les labels $y_i$ interviennent explicitement dans la formulation duale.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-1"><span class="otext">Les vecteurs de support uniquement, i.e. les points avec $\alpha_i>0$.</span></label>
+              <div class="qcm-explain">Correct : fiche 15-16, propriété de sparsité de la solution SVM.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-1"><span class="otext">Uniquement le choix du noyau, indépendamment des données.</span></label>
+              <div class="qcm-explain">Faux : le noyau définit la façon de comparer les points, mais la frontière dépend bien des données via les vecteurs de support.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Que permet concrètement l'astuce du noyau (kernel trick) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-2"><span class="otext">De rendre le problème d'optimisation non convexe pour mieux s'adapter aux données.</span></label>
+              <div class="qcm-explain">Faux : le problème dual reste convexe (quadratique), que l'on utilise un noyau ou non.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-2"><span class="otext">De calculer un produit scalaire dans un espace de plus grande dimension (potentiellement infinie) sans jamais construire explicitement la feature map $\phi$.</span></label>
+              <div class="qcm-explain">Correct : fiche 17, c'est exactement la définition du kernel trick.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-2"><span class="otext">De réduire le nombre de vecteurs de support nécessaires.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'objectif du kernel trick, qui porte sur le calcul du produit scalaire, pas sur la sparsité.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-2"><span class="otext">De transformer un problème de classification en un problème de régression.</span></label>
+              <div class="qcm-explain">Faux : le kernel trick s'applique aussi bien en classification (SVM) qu'en régression (kernel ridge), mais ne change pas la nature du problème.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q3</span>Que garantit précisément le théorème de Moore-Aronszajn ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-3"><span class="otext">Que tout noyau est nécessairement linéaire.</span></label>
+              <div class="qcm-explain">Faux : au contraire, le théorème s'applique aussi bien à des noyaux non linéaires comme le noyau gaussien.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-3"><span class="otext">Que la matrice de Gram d'un noyau est toujours inversible.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas ce qu'affirme le théorème (une matrice PSD n'est pas nécessairement inversible).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-3"><span class="otext">Qu'à tout noyau semi-défini positif est associé un unique RKHS, dans lequel il possède la propriété reproduisante.</span></label>
+              <div class="qcm-explain">Correct : fiche 17.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-3"><span class="otext">Qu'il simplifie automatiquement le calcul de la matrice de noyau pour de grands jeux de données.</span></label>
+              <div class="qcm-explain">Faux : le théorème est un résultat d'existence/unicité, pas un résultat de complexité algorithmique.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q4</span>Si $k_1$ est un noyau, pourquoi $k_2(\mathbf x,\mathbf x')=f(\mathbf x)k_1(\mathbf x,\mathbf x')f(\mathbf x')$ en est-il un aussi, pour toute fonction réelle $f$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-4"><span class="otext">Parce que $k_2(\mathbf x,\mathbf x')=\langle f(\mathbf x)\phi_1(\mathbf x),\, f(\mathbf x')\phi_1(\mathbf x')\rangle$ : c'est un produit scalaire pour la nouvelle feature map $\phi_2=f\cdot\phi_1$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la preuve de la règle « fonctions » (fiche 18).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-4"><span class="otext">Parce que $f$ doit nécessairement être elle-même un noyau.</span></label>
+              <div class="qcm-explain">Faux : $f$ est une fonction réelle quelconque, pas un noyau (elle n'a même pas deux arguments).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-4"><span class="otext">Parce que multiplier par une fonction ne change jamais la matrice de Gram.</span></label>
+              <div class="qcm-explain">Faux : la matrice de Gram change bien (chaque terme est réévalué par $f(\mathbf x_i)f(\mathbf x_j)$), mais elle reste PSD.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-4"><span class="otext">Ce n'est vrai que si $f$ est une fonction constante.</span></label>
+              <div class="qcm-explain">Faux : la règle est valable pour <b>toute</b> fonction réelle $f$, pas seulement les constantes.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q5</span>Dans le SVM à marge souple, diminuer l'hyperparamètre $C$ a pour effet :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-5"><span class="otext">De réduire strictement la marge et de tolérer moins d'erreurs.</span></label>
+              <div class="qcm-explain">Faux : c'est l'effet d'augmenter $C$, pas de le diminuer (fiche 16).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-5"><span class="otext">De rendre le problème non convexe.</span></label>
+              <div class="qcm-explain">Faux : le problème reste convexe quel que soit $C>0$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-5"><span class="otext">De n'avoir strictement aucun effet sur la solution.</span></label>
+              <div class="qcm-explain">Faux : $C$ est un hyperparamètre central du soft-margin SVM.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-5"><span class="otext">D'élargir la marge tolérée, au prix d'accepter davantage de violations (plus de biais, moins de variance).</span></label>
+              <div class="qcm-explain">Correct : fiche 16.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 4 ================= -->
+      <section class="lecture" id="lecture-4">
+        <button class="lecture-head">
+          <span class="num">L4</span>
+          <span class="title">Méthodes d'ensemble</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s19">
+            <div class="tophead"><span class="num">19</span><h2>Bagging &amp; Random Forest</h2></div>
+            <p>Plutôt que d'entraîner un seul modèle, on peut en combiner plusieurs pour réduire le risque. Le <b>bagging</b> (Bootstrap AGGregatING) attaque directement la <b>variance</b> (fiche 1).</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Bagging</p>
+              <p>On tire $B$ échantillons bootstrap $\mathcal D_n^{(1)},\dots,\mathcal D_n^{(B)}$ (tirage <b>avec remise</b> de taille $n$ dans $\mathcal D_n$), on entraîne un modèle $\hat g^{(b)}$ sur chacun, puis on agrège :</p>
+              <div class="formula">$$\hat g_{\mathrm{bag}}(\mathbf x)=\frac1B\sum_{b=1}^B\hat g^{(b)}(\mathbf x) \ \ (\text{régression}) \qquad \hat g_{\mathrm{bag}}(\mathbf x)=\underset{c}{\mathrm{vote\ majoritaire}}\ \hat g^{(b)}(\mathbf x) \ \ (\text{classification})$$</div>
+              <p class="sense"><b>Sens :</b> moyenner $B$ modèles <b>indépendants</b> de même variance $\sigma^2$ divise la variance par $B$ (variance d'une moyenne), <b>sans changer le biais</b>. Le bagging n'est donc utile que pour des modèles de base à <b>forte variance et faible biais</b> (ex. arbre profond, k-NN avec $k$ petit) : pour un modèle déjà biaisé (ex. régression linéaire simple), le bagging n'apporte presque rien.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Définition · Random Forest</p>
+              <p>Un Random Forest applique le bagging à des arbres de décision, avec un ingrédient supplémentaire : à <b>chaque split</b>, seul un sous-ensemble aléatoire des variables (typiquement $\sqrt d$ en classification, $d/3$ en régression) est considéré comme candidat.</p>
+              <p class="sense"><b>Sens :</b> le bagging seul ne suffit pas toujours à réduire beaucoup la variance si les arbres bootstrap restent très <b>corrélés</b> (ex. une variable très informative domine systématiquement le premier split de chaque arbre). Randomiser aussi les variables <b>décorrèle</b> les arbres entre eux, ce qui réduit encore la variance de la moyenne (la variance d'une moyenne de variables corrélées décroît moins vite que $1/B$).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Remarque · Erreur out-of-bag (OOB), gratuite</p>
+              <p>Un tirage bootstrap de taille $n$ laisse de côté, en moyenne, une fraction $(1-1/n)^n\to e^{-1}\approx36.8\%$ des observations. Chaque point $\mathbf x_i$ peut donc être prédit par les seuls arbres qui ne l'ont <b>pas</b> vu à l'entraînement : cela fournit une estimation du risque (l'erreur OOB) <b>sans avoir besoin d'un jeu de validation séparé</b>, à un coût de calcul quasi nul.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s20">
+            <div class="tophead"><span class="num">20</span><h2>Boosting : AdaBoost &amp; Gradient Boosting</h2></div>
+            <p>À l'opposé du bagging (parallèle, réduit la variance), le <b>boosting</b> construit les modèles <b>séquentiellement</b>, chacun corrigeant les erreurs du précédent : il attaque le <b>biais</b>.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · AdaBoost</p>
+              <p>À chaque itération $t$ : (1) entraîner un classifieur faible $h_t$ sur les données pondérées par $w^{(t)}$ ; (2) augmenter le poids des points mal classés, diminuer celui des points bien classés ; (3) pondérer $h_t$ dans le vote final selon sa précision. La prédiction finale est un <b>vote majoritaire pondéré</b> $\mathrm{sign}\big(\sum_t\beta_t h_t(\mathbf x)\big)$.</p>
+              <p class="sense"><b>Sens :</b> AdaBoost minimise implicitement la <b>perte exponentielle</b> $e^{-y f(\mathbf x)}$ par descente de gradient fonctionnelle, un cas particulier de ce que généralise le Gradient Boosting.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Définition · Gradient Boosting</p>
+              <p>Pour <b>n'importe quelle</b> perte différentiable $\ell$ : à chaque itération $t$, on entraîne un nouvel arbre $h_t$ à prédire le <b>gradient négatif</b> (pseudo-résidu) $-\partial\ell(y_i,f_{t-1}(\mathbf x_i))/\partial f_{t-1}(\mathbf x_i)$, puis on met à jour :</p>
+              <div class="formula">$$f_t(\mathbf x)=f_{t-1}(\mathbf x) + \nu\, h_t(\mathbf x)$$</div>
+              <p class="sense"><b>Sens :</b> $\nu\in(0,1]$ est le <b>taux d'apprentissage (shrinkage)</b> : il limite la contribution de chaque nouvel arbre. Un $\nu$ petit nécessite plus d'arbres (<code>n_estimators</code> plus grand) mais généralise en général mieux (moins de sur-apprentissage) qu'un $\nu$ proche de 1. Contrairement au bagging, les arbres de boosting sont volontairement <b>faibles</b> (peu profonds, parfois de simples « stumps » de profondeur 1).</p>
+            </div>
+
+            <table class="cmp">
+              <tr><th></th><th>Bagging / Random Forest</th><th>Boosting (AdaBoost, Gradient Boosting)</th></tr>
+              <tr><td>Construction des modèles</td><td>parallèle, indépendante</td><td>séquentielle, chacun corrige le précédent</td></tr>
+              <tr><td>Attaque principalement</td><td>la variance</td><td>le biais</td></tr>
+              <tr><td>Modèle de base typique</td><td>arbre profond (forte variance)</td><td>arbre peu profond / stump (fort biais)</td></tr>
+              <tr><td>Risque principal</td><td>peu de sur-apprentissage supplémentaire</td><td>peut sur-apprendre si trop d'itérations / $\nu$ trop grand</td></tr>
+            </table>
+          </article>
+
+          <article class="topic" id="s21">
+            <div class="tophead"><span class="num">21</span><h2>Stacking</h2></div>
+            <p>Bagging et boosting combinent des modèles de la <b>même famille</b> (souvent des arbres). Le stacking permet de combiner des modèles de familles <b>différentes</b> (ex. régression linéaire, SVM, forêt aléatoire) de façon optimale.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Stacking</p>
+              <p>On entraîne $K$ modèles de base (potentiellement hétérogènes) $\hat g_1,\dots,\hat g_K$, puis on entraîne un <b>méta-modèle</b> $\hat g_{\mathrm{meta}}$ qui prend en entrée les prédictions $\big(\hat g_1(\mathbf x),\dots,\hat g_K(\mathbf x)\big)$ des modèles de base et produit la prédiction finale.</p>
+              <p class="sense"><b>Sens :</b> pour éviter que le méta-modèle sur-apprenne sur les prédictions des modèles de base (qui seraient anormalement bonnes si évaluées sur leurs propres données d'entraînement), on entraîne le méta-modèle sur des prédictions <b>hors-échantillon</b>, obtenues par validation croisée (chaque $\hat g_k(\mathbf x_i)$ vient d'un modèle qui n'a pas vu $\mathbf x_i$ à l'entraînement).</p>
+            </div>
+          </article>
+
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Bagging fait main, puis Random Forest / Gradient Boosting</p>
+            <p class="exo-step">Étape 1 · Coder le bagging à la main</p>
+            <p>Sur un jeu de données jouet, entraînez un unique <code>DecisionTreeRegressor(max_depth=None)</code> (forte variance) et comparez sa variabilité, sur plusieurs ré-échantillonnages du jeu d'entraînement, à celle d'un bagging fait main de $B=100$ arbres (tirage bootstrap avec <code>np.random.choice(n, n, replace=True)</code> puis moyenne des prédictions).</p>
+            <pre><code>def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
+    rng = np.random.default_rng() if rng is None else rng
+    n = len(X_train)
+    preds = np.zeros((n_estimators, len(X_test)))
+    for b in range(n_estimators):
+        idx = rng.integers(0, n, size=n)  # tirage bootstrap
+        tree = DecisionTreeRegressor().fit(X_train[idx], y_train[idx])
+        preds[b] = tree.predict(X_test)
+    return preds.mean(axis=0), preds.var(axis=0)</code></pre>
+            <p class="exo-step">Étape 2 · Comparer à Random Forest et Gradient Boosting de scikit-learn</p>
+            <p>Comparez le risque test de votre bagging fait main à <code>RandomForestRegressor</code> (qui randomise aussi les variables, fiche 19) et à <code>GradientBoostingRegressor</code> (fiche 20) pour plusieurs valeurs de <code>learning_rate</code> et <code>n_estimators</code> : observez le compromis shrinkage/nombre d'arbres.</p>
+          </div>
+
+          <div class="qcm" id="qcm-4">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 4 (méthodes d'ensemble)</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Le bagging réduit principalement :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-1"><span class="otext">Le biais d'un modèle à fort biais.</span></label>
+              <div class="qcm-explain">Faux : le bagging ne change quasiment pas le biais (fiche 19).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-1"><span class="otext">La variance d'un modèle à forte variance (ex. arbre profond).</span></label>
+              <div class="qcm-explain">Correct : fiche 19, c'est le mécanisme central du bagging (moyenner réduit la variance).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-1"><span class="otext">Le temps d'entraînement, en le divisant systématiquement par $B$.</span></label>
+              <div class="qcm-explain">Faux : le bagging entraîne $B$ modèles, ce qui augmente le coût total (même si parallélisable).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-1"><span class="otext">Le nombre de variables du problème.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas l'objectif du bagging (à distinguer du Random Forest, fiche 19, qui lui randomise les variables à chaque split, mais dans un but différent : décorréler les arbres).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Dans un Random Forest, la « randomisation » vient de :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-2"><span class="otext">Uniquement le tirage bootstrap des observations.</span></label>
+              <div class="qcm-explain">Faux : c'est le mécanisme du bagging seul, incomplet pour un Random Forest.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-2"><span class="otext">À la fois le tirage bootstrap des observations ET un sous-ensemble aléatoire de variables à chaque split.</span></label>
+              <div class="qcm-explain">Correct : fiche 19, les deux sources combinées décorrèlent davantage les arbres qu'un simple bagging.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-2"><span class="otext">Uniquement le sous-ensemble aléatoire de variables à chaque split.</span></label>
+              <div class="qcm-explain">Faux : le tirage bootstrap des observations fait aussi partie du mécanisme.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-2"><span class="otext">Une initialisation aléatoire des poids de chaque arbre.</span></label>
+              <div class="qcm-explain">Faux : les arbres de décision n'ont pas de « poids » initialisés aléatoirement comme un réseau de neurones.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q3</span>Quelle est la différence fondamentale entre bagging et boosting ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-3"><span class="otext">Le bagging ne s'applique qu'en régression, le boosting qu'en classification.</span></label>
+              <div class="qcm-explain">Faux : les deux s'appliquent en régression comme en classification.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-3"><span class="otext">Le boosting utilise toujours des réseaux de neurones comme modèle de base.</span></label>
+              <div class="qcm-explain">Faux : le boosting utilise typiquement des arbres peu profonds, pas des réseaux de neurones.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-3"><span class="otext">Le bagging entraîne les modèles indépendamment (en parallèle) ; le boosting les entraîne séquentiellement, chacun corrigeant les erreurs du précédent.</span></label>
+              <div class="qcm-explain">Correct : fiche 20, tableau de comparaison.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-3"><span class="otext">Le bagging et le boosting sont deux noms différents pour exactement le même algorithme.</span></label>
+              <div class="qcm-explain">Faux : ce sont deux principes distincts (variance vs biais, parallèle vs séquentiel).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q4</span>Quelle est la principale différence entre AdaBoost et Gradient Boosting ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-4"><span class="otext">AdaBoost minimise implicitement la perte exponentielle, alors que Gradient Boosting s'applique à n'importe quelle perte différentiable.</span></label>
+              <div class="qcm-explain">Correct : fiche 20.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-4"><span class="otext">AdaBoost construit ses modèles en parallèle, Gradient Boosting séquentiellement.</span></label>
+              <div class="qcm-explain">Faux : les deux sont séquentiels.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-4"><span class="otext">Gradient Boosting ne fonctionne qu'avec des arbres de profondeur 1 (stumps).</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas une contrainte du Gradient Boosting (les stumps sont un choix fréquent, pas une obligation).</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-4"><span class="otext">AdaBoost ne peut traiter que des problèmes de régression.</span></label>
+              <div class="qcm-explain">Faux : AdaBoost a été conçu à l'origine pour la classification binaire.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q5</span>À quoi sert le taux d'apprentissage (shrinkage) $\nu$ en Gradient Boosting ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml4-5"><span class="otext">À amplifier la contribution des arbres les plus prédictifs.</span></label>
+              <div class="qcm-explain">Faux : $\nu$ s'applique uniformément à chaque nouvel arbre, ce n'est pas une pondération sélective.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-5"><span class="otext">À déterminer la profondeur des arbres.</span></label>
+              <div class="qcm-explain">Faux : la profondeur des arbres est un hyperparamètre distinct.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-5"><span class="otext">À accélérer systématiquement l'entraînement.</span></label>
+              <div class="qcm-explain">Faux : un $\nu$ petit ralentit la convergence (il faut plus d'arbres), ce n'est pas un gain de vitesse.</div>
+              <label class="qcm-opt"><input type="radio" name="ml4-5"><span class="otext">À limiter la contribution de chaque nouvel arbre, pour éviter le sur-apprentissage (au prix de plus d'itérations nécessaires).</span></label>
+              <div class="qcm-explain">Correct : fiche 20.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 5 ================= -->
+      <section class="lecture" id="lecture-5">
+        <button class="lecture-head">
+          <span class="num">L5</span>
+          <span class="title">Sélection de variables : mesures de dépendance</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s22">
+            <div class="tophead"><span class="num">22</span><h2>Corrélation de Pearson vs Information Mutuelle</h2></div>
+            <p>Pour sélectionner les variables les plus informatives avant même d'entraîner un modèle (fiche 6 pour une approche par compression), il faut mesurer la <b>dépendance</b> entre chaque variable $X^{(j)}$ et la cible $Y$. Le premier réflexe, la corrélation de Pearson, a une limite fondamentale.</p>
+
+            <div class="box box-warn">
+              <p class="box-label">⚠ Attention · La corrélation de Pearson ne capture que la dépendance <i>linéaire</i></p>
+              <p>Exemple classique : $X\sim\mathcal N(0,1)$ et $Y=X^2$. $X$ et $Y$ sont manifestement <b>fortement dépendantes</b> (connaître $X$ détermine $Y$ exactement), pourtant $\mathrm{Cov}(X,Y)=\mathbb E[X^3]-\mathbb E[X]\mathbb E[X^2]=0-0=0$ par symétrie : la corrélation de Pearson vaut <b>exactement 0</b>. Une sélection de variables basée uniquement sur Pearson écarterait à tort $X$.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Information mutuelle</p>
+              <div class="formula">$$I(X;Y) = D_{\mathrm{KL}}\big(\mathbb P_{XY}\,\|\,\mathbb P_X\otimes\mathbb P_Y\big) = \iint p_{XY}(x,y)\log\!\left(\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}\right)dx\,dy$$</div>
+              <p class="sense"><b>Sens :</b> $I(X;Y)$ mesure l'écart (au sens de Kullback-Leibler) entre la loi jointe $\mathbb P_{XY}$ et ce qu'elle serait si $X,Y$ étaient <b>indépendantes</b> ($\mathbb P_X\otimes\mathbb P_Y$). Contrairement à Pearson, $I(X;Y)$ capture <b>toute</b> forme de dépendance, linéaire ou non : $I(X;Y)=0 \iff X\perp\!\!\!\perp Y$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Remarque · Le prix à payer : l'estimation en pratique</p>
+              <p>Contrairement à la corrélation de Pearson (une simple moyenne empirique), calculer $I(X;Y)$ à partir de données nécessite d'<b>estimer des densités</b> $p_{XY},p_X,p_Y$, un problème statistiquement difficile qui se dégrade rapidement avec la dimension (fléau de la dimension). C'est ce qui motive une alternative fondée sur les noyaux, l'HSIC (fiche 23).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s23">
+            <div class="tophead"><span class="num">23</span><h2>HSIC (Hilbert-Schmidt Independence Criterion)</h2></div>
+            <p>L'HSIC reprend l'idée de mesurer un écart à l'indépendance, mais en s'appuyant sur les <b>noyaux et RKHS</b> (fiche 17) plutôt que sur une estimation de densité.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · HSIC</p>
+              <div class="formula">$$\mathrm{HSIC}(X,Y) = \mathbb E\big[k(X,X')l(Y,Y')\big] + \mathbb E\big[k(X,X')\big]\mathbb E\big[l(Y,Y')\big] - 2\,\mathbb E\big[k(X,X')l(Y,Y'')\big]$$</div>
+              <p>où $(X,Y),(X',Y')$ sont deux copies i.i.d. de $(X,Y)$ et $Y''$ une copie indépendante de $Y$. En pratique, on utilise l'estimateur empirique, calculable en une trace :</p>
+              <div class="formula">$$\widehat{\mathrm{HSIC}}(X,Y) = \frac{1}{n^2}\,\mathrm{Trace}(KHLH), \qquad [K]_{ij}=k(x_i,x_j),\ [L]_{ij}=l(y_i,y_j),\ [H]_{ij}=\delta_{ij}-\tfrac1n$$</div>
+              <p class="sense"><b>Sens :</b> $K,L$ sont les matrices de noyau (fiche 17) évaluées sur $X$ et $Y$ respectivement, et $H$ est la matrice de <b>centrage</b>. Pour des noyaux dits <i>caractéristiques</i> (le noyau gaussien en fait partie), $\mathrm{HSIC}(X,Y)=0 \iff X\perp\!\!\!\perp Y$, exactement comme l'information mutuelle.</p>
+            </div>
+
+            <table class="cmp">
+              <tr><th></th><th>Corrélation de Pearson</th><th>Information mutuelle</th><th>HSIC</th></tr>
+              <tr><td>Dépendance capturée</td><td>linéaire seulement</td><td>toute dépendance</td><td>toute dépendance (noyau caractéristique)</td></tr>
+              <tr><td>Nécessite une estimation de densité ?</td><td>non</td><td>oui (coûteux en grande dimension)</td><td>non (juste des matrices de noyau)</td></tr>
+              <tr><td>Coût de calcul</td><td>trivial</td><td>élevé en grande dimension</td><td>$O(n^2)$, matrices de Gram</td></tr>
+              <tr><td>Zéro $\iff$ indépendance ?</td><td>non (seulement décorrélation)</td><td>oui</td><td>oui (avec un noyau caractéristique)</td></tr>
+            </table>
+            <p class="sense"><b>Sens :</b> l'HSIC hérite du meilleur des deux mondes : la sensibilité de l'information mutuelle à toute forme de dépendance, sans son coût d'estimation de densité. C'est ce qui la rend particulièrement utile en sélection de variables à haute dimension.</p>
+          </article>
+
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Démasquer une dépendance non linéaire</p>
+            <p>Générez $X\sim\mathcal U(-\pi,\pi)$ et $Y=\sin(X)+\varepsilon$ (bruit léger) : $X$ et $Y$ sont clairement dépendantes, mais leur corrélation de Pearson doit être proche de 0 par symétrie. Calculez et comparez :</p>
+            <pre><code>from scipy.stats import pearsonr
+from sklearn.feature_selection import mutual_info_regression
+
+r, _ = pearsonr(X, Y)                       # doit être proche de 0
+mi = mutual_info_regression(X.reshape(-1, 1), Y)[0]  # doit être nettement > 0
+
+# HSIC fait main (noyaux gaussiens sur X et Y, cf. gaussian_kernel de la fiche 18)
+K, L = gaussian_kernel(X.reshape(-1, 1), gamma=0.5), gaussian_kernel(Y.reshape(-1, 1), gamma=0.5)
+n = len(X)
+H = np.eye(n) - np.ones((n, n)) / n
+hsic = np.trace(K @ H @ L @ H) / n**2        # doit aussi être nettement > 0
+
+print(f"Pearson r = {r:.3f} | Mutual info = {mi:.3f} | HSIC = {hsic:.4f}")</code></pre>
+            <p class="sense"><b>Attendu :</b> $r\approx0$ (Pearson « rate » la dépendance) alors que <code>mi</code> et <code>hsic</code> sont nettement positifs : les deux détectent correctement que $Y$ dépend de $X$, malgré une corrélation linéaire nulle.</p>
+          </div>
+
+          <div class="qcm" id="qcm-5">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 5 (sélection de variables)</h3>
+              <span class="qcm-meta">⏱ 7 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>$X\sim\mathcal N(0,1)$ et $Y=X^2$. Que peut-on dire de leur corrélation de Pearson ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-1"><span class="otext">Elle vaut 1, car $Y$ est une fonction déterministe de $X$.</span></label>
+              <div class="qcm-explain">Faux : une dépendance fonctionnelle exacte ne garantit pas une corrélation de Pearson égale à 1 si la relation est non linéaire.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-1"><span class="otext">Elle est négative.</span></label>
+              <div class="qcm-explain">Faux : elle est nulle, pas négative, par symétrie de $X$ autour de 0.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-1"><span class="otext">Elle vaut exactement 0, bien que $X$ et $Y$ soient fortement dépendantes.</span></label>
+              <div class="qcm-explain">Correct : fiche 22, l'exemple canonique des limites de Pearson.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-1"><span class="otext">Elle n'est pas définie dans ce cas.</span></label>
+              <div class="qcm-explain">Faux : la corrélation de Pearson est parfaitement bien définie ici (variances finies), elle vaut simplement 0.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>L'information mutuelle $I(X;Y)$ se définit comme :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-2"><span class="otext">La covariance normalisée entre $X$ et $Y$.</span></label>
+              <div class="qcm-explain">Faux : c'est la définition de la corrélation de Pearson, pas de l'information mutuelle.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-2"><span class="otext">La divergence de Kullback-Leibler entre la loi jointe $\mathbb P_{XY}$ et le produit des marginales $\mathbb P_X\otimes\mathbb P_Y$.</span></label>
+              <div class="qcm-explain">Correct : fiche 22.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-2"><span class="otext">La distance euclidienne entre les densités $p_X$ et $p_Y$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est ni une distance euclidienne, ni une comparaison directe de $p_X$ à $p_Y$ (mais de la loi jointe au produit des marginales).</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-2"><span class="otext">Toujours égale à la corrélation de Pearson au carré.</span></label>
+              <div class="qcm-explain">Faux : les deux quantités coïncident seulement dans des cas particuliers (ex. couple gaussien), pas en général.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>$I(X;Y)=0$ est équivalent à :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-3"><span class="otext">$X$ et $Y$ sont indépendantes.</span></label>
+              <div class="qcm-explain">Correct : fiche 22, contrairement à une corrélation de Pearson nulle qui n'implique <b>pas</b> l'indépendance.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-3"><span class="otext">$X$ et $Y$ sont seulement décorrélées linéairement.</span></label>
+              <div class="qcm-explain">Faux : c'est la lecture correcte d'une corrélation de Pearson nulle, pas de $I(X;Y)=0$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-3"><span class="otext">$X$ et $Y$ sont catégorielles.</span></label>
+              <div class="qcm-explain">Faux : la nature (continue/catégorielle) des variables n'a aucun rapport avec la valeur de $I(X;Y)$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-3"><span class="otext">$X$ et $Y$ ont la même loi marginale.</span></label>
+              <div class="qcm-explain">Faux : rien n'impose que $X$ et $Y$ suivent la même loi, même en cas d'indépendance.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Dans $\widehat{\mathrm{HSIC}}(X,Y) = \frac1{n^2}\mathrm{Trace}(KHLH)$, à quoi sert la matrice $H$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-4"><span class="otext">À normaliser les valeurs du noyau entre 0 et 1.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas le rôle de $H$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-4"><span class="otext">À rendre les matrices $K$ et $L$ symétriques.</span></label>
+              <div class="qcm-explain">Faux : $K$ et $L$ sont déjà symétriques par définition d'un noyau (fiche 17).</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-4"><span class="otext">À sélectionner uniquement la diagonale des matrices de noyau.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas ce que fait $H$ (l'opération de trace intervient séparément, après le centrage).</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-4"><span class="otext">À centrer les matrices de noyau ($H=I-\mathbf 1\mathbf 1^T/n$), condition nécessaire pour que l'estimateur mesure bien un écart à l'indépendance.</span></label>
+              <div class="qcm-explain">Correct : fiche 23.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Quel est l'avantage principal de l'HSIC par rapport à l'information mutuelle ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml5-5"><span class="otext">L'HSIC ne capture que les dépendances linéaires, ce qui la rend plus rapide.</span></label>
+              <div class="qcm-explain">Faux : l'HSIC capture aussi les dépendances non linéaires, comme l'information mutuelle (fiche 23).</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-5"><span class="otext">L'HSIC ne fonctionne qu'en classification, jamais en régression.</span></label>
+              <div class="qcm-explain">Faux : l'HSIC s'applique aussi bien à des cibles continues que discrètes.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-5"><span class="otext">L'HSIC évite l'estimation de densité (coûteuse en grande dimension) en travaillant directement avec des matrices de noyau.</span></label>
+              <div class="qcm-explain">Correct : fiche 23, c'est exactement l'avantage pratique mis en avant dans le cours.</div>
+              <label class="qcm-opt"><input type="radio" name="ml5-5"><span class="otext">L'HSIC est toujours égale à l'information mutuelle, ce n'est qu'une autre notation.</span></label>
+              <div class="qcm-explain">Faux : ce sont deux quantités différentes (sauf coïncidences particulières), qui partagent seulement la propriété « nulle ssi indépendance ».</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 6 ================= -->
+      <section class="lecture" id="lecture-6">
+        <button class="lecture-head">
+          <span class="num">L6</span>
+          <span class="title">Régression robuste</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s24">
+            <div class="tophead"><span class="num">24</span><h2>Moindres carrés pondérés (WLS) &amp; LAD</h2></div>
+            <p>La perte quadratique de l'OLS (fiche 1) <b>amplifie</b> l'effet des grandes erreurs (elle croît en carré) : un seul point aberrant (<i>outlier</i>) peut suffire à faire basculer l'estimateur. Une famille de pertes moins sensibles aux outliers permet de s'en prémunir.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Moindres carrés pondérés (WLS)</p>
+              <div class="formula">$$\hat\theta^{\mathrm{WLS}}=\arg\min_\theta\sum_{i=1}^nw_i(y_i-\mathbf x_i^T\theta)^2 = (X^TWX)^{-1}X^TWy, \qquad W=\mathrm{diag}(w_1,\dots,w_n)$$</div>
+              <p class="sense"><b>Sens :</b> généralise l'OLS ($w_i\equiv1$) en donnant un poids $w_i$ différent à chaque observation. Utile si l'on connaît a priori la fiabilité de chaque point (ex. $w_i=1/\sigma_i^2$ en cas de bruit hétéroscédastique) : c'est aussi la brique de base des méthodes robustes ci-dessous, où les poids serviront au contraire à <b>atténuer</b> l'effet des outliers.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Définition · LAD (Least Absolute Deviation)</p>
+              <div class="formula">$$\hat\theta^{\mathrm{LAD}}=\arg\min_\theta\sum_{i=1}^n|y_i-\mathbf x_i^T\theta|$$</div>
+              <p class="sense"><b>Sens :</b> remplace la perte quadratique par la perte $L^1$ (fiche 1) : une erreur deux fois plus grande ne pèse que deux fois plus (au lieu de quatre fois plus pour l'OLS), ce qui rend le LAD beaucoup <b>moins sensible aux outliers</b>. En contrepartie, la perte n'est pas différentiable en 0 et n'a <b>pas de solution explicite</b> (comme le Lasso, fiche 7).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Remarque · Réécrire le LAD comme un WLS (à poids inconnus)</p>
+              <p>En utilisant l'identité $|a|=a^2/|a|$, on peut réécrire chaque terme $|y_i-\mathbf x_i^T\theta| = w_i(y_i-\mathbf x_i^T\theta)^2$ avec $w_i=1/|y_i-\mathbf x_i^T\theta|$. Le problème LAD devient formellement un WLS... mais dont les poids $w_i$ dépendent de $\theta$, l'inconnue elle-même ! C'est ce paradoxe apparent que résout l'algorithme <b>IRLS</b> (fiche 25).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s25">
+            <div class="tophead"><span class="num">25</span><h2>M-estimation &amp; IRLS (Iteratively Reweighted Least Squares)</h2></div>
+            <p>OLS et LAD sont deux cas particuliers d'une famille plus générale, la M-estimation, qui se résout numériquement par un algorithme itératif unique : IRLS.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · M-estimation</p>
+              <div class="formula">$$\hat\theta^M=\arg\min_\theta\sum_{i=1}^n\rho(y_i-\mathbf x_i^T\theta), \qquad \psi:=\rho'$$</div>
+              <p class="sense"><b>Sens :</b> $\rho$ est une fonction de perte générale (pas nécessairement quadratique) ; $\psi=\rho'$ est appelée <b>fonction d'influence</b> : elle mesure combien une observation avec un résidu $r=y_i-\mathbf x_i^T\theta$ donné pèse dans la mise à jour de $\theta$.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition · Équivalence avec un WLS &amp; algorithme IRLS</p>
+              <p>La condition d'optimalité $\sum_i\psi(r_i)\mathbf x_i=0$ (avec $r_i=y_i-\mathbf x_i^T\theta$) est <b>identique</b> à la condition d'optimalité d'un WLS avec poids $w_i=\psi(r_i)/r_i$. On en déduit un algorithme itératif :</p>
+              <p>1. Partir d'un $\theta^{(0)}$ (ex. l'OLS). &nbsp; 2. Calculer les résidus $r_i=y_i-\mathbf x_i^T\theta^{(t)}$ et les poids $w_i=\psi(r_i)/r_i$. &nbsp; 3. Résoudre le WLS pondéré par ces poids pour obtenir $\theta^{(t+1)}$. &nbsp; 4. Répéter jusqu'à convergence.</p>
+              <table class="cmp">
+                <tr><th>Estimateur</th><th>$\rho(r)$</th><th>$\psi(r)=\rho'(r)$</th><th>Poids IRLS $w=\psi(r)/r$</th></tr>
+                <tr><td>OLS</td><td>$r^2/2$</td><td>$r$</td><td>$w=1$ (constant, retrouve l'OLS classique)</td></tr>
+                <tr><td>LAD</td><td>$|r|$</td><td>$\mathrm{sign}(r)$ (sous-gradient, fiche 12)</td><td>$w=1/|r|$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> l'OLS est le cas particulier où IRLS converge en <b>une seule itération</b> (poids constants, pas besoin de réévaluer). Le LAD, lui, <b>pondère de moins en moins</b> les points à grand résidu ($w_i=1/|r_i|\to0$ quand $|r_i|\to\infty$) : c'est exactement le mécanisme qui le rend robuste aux outliers.</p>
+            </div>
+          </article>
+
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · IRLS pour la régression LAD, face à un outlier</p>
+            <p>Générez un jeu de données linéaire simple (par ex. $y=2x+1+\varepsilon$), puis ajoutez <b>un seul</b> point aberrant très éloigné de la tendance. Comparez la droite ajustée par OLS à celle ajustée par IRLS (LAD).</p>
+            <pre><code>def irls_lad(X, y, n_iter=20, eps=1e-6):
+    theta = np.linalg.lstsq(X, y, rcond=None)[0]      # depart : OLS
+    for _ in range(n_iter):
+        r = y - X @ theta
+        w = 1.0 / np.maximum(np.abs(r), eps)            # poids LAD
+        W = np.diag(w)
+        theta = np.linalg.solve(X.T @ W @ X, X.T @ W @ y)  # WLS
+    return theta</code></pre>
+            <p class="sense"><b>Attendu :</b> la droite OLS est nettement « tirée » vers l'outlier (son résidu, mis au carré, pèse énormément dans la perte), alors que la droite IRLS/LAD reste proche de la tendance des points normaux : c'est la propriété de robustesse illustrée numériquement.</p>
+          </div>
+
+          <div class="qcm" id="qcm-6">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 6 (régression robuste)</h3>
+              <span class="qcm-meta">⏱ 7 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Pourquoi le LAD est-il plus robuste aux outliers que l'OLS ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-1"><span class="otext">Parce que le LAD ignore automatiquement les points les plus éloignés de la droite.</span></label>
+              <div class="qcm-explain">Faux : le LAD n'ignore aucun point, il les pondère tous, mais différemment de l'OLS.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-1"><span class="otext">Parce que le LAD a toujours une solution explicite, contrairement à l'OLS.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse : c'est l'OLS qui a une solution explicite (fiche 3), pas le LAD (fiche 24).</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-1"><span class="otext">Parce que sa perte $|r|$ croît linéairement avec le résidu, alors que la perte quadratique de l'OLS croît en $r^2$, amplifiant l'effet des grandes erreurs.</span></label>
+              <div class="qcm-explain">Correct : fiche 24.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-1"><span class="otext">Parce que le LAD utilise une pénalité $L^2$ supplémentaire.</span></label>
+              <div class="qcm-explain">Faux : le LAD ne comporte aucune pénalité de régularisation, c'est simplement un changement de fonction de perte.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Dans la M-estimation, la fonction $\psi=\rho'$ est appelée :<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-2"><span class="otext">Fonction de perte.</span></label>
+              <div class="qcm-explain">Faux : $\rho$ est la fonction de perte ; $\psi=\rho'$ en est la dérivée.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-2"><span class="otext">Fonction d'influence.</span></label>
+              <div class="qcm-explain">Correct : fiche 25.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-2"><span class="otext">Fonction de lien (comme en régression logistique).</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas la terminologie utilisée ici ; « fonction de lien » désigne autre chose (GLM).</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-2"><span class="otext">Fonction d'activation.</span></label>
+              <div class="qcm-explain">Faux : c'est un terme utilisé en réseaux de neurones, pas en M-estimation.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Pour l'OLS ($\rho(r)=r^2/2$), quel est le poids IRLS $w=\psi(r)/r$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-3"><span class="otext">$w=1$, constant : IRLS converge donc en une seule itération.</span></label>
+              <div class="qcm-explain">Correct : fiche 25, table de synthèse.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-3"><span class="otext">$w=1/|r|$.</span></label>
+              <div class="qcm-explain">Faux : c'est le poids du LAD, pas de l'OLS.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-3"><span class="otext">$w=r^2$.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas la bonne expression de $\psi(r)/r$ pour $\rho(r)=r^2/2$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-3"><span class="otext">$w=\mathrm{sign}(r)$.</span></label>
+              <div class="qcm-explain">Faux : $\mathrm{sign}(r)$ est $\psi(r)$ pour le LAD, pas le poids $w=\psi(r)/r$ de l'OLS.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Que fait, à chaque itération, l'algorithme IRLS ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-4"><span class="otext">Il ajoute une nouvelle observation au jeu de données.</span></label>
+              <div class="qcm-explain">Faux : IRLS ne modifie jamais les données, seulement les poids et l'estimation de $\theta$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-4"><span class="otext">Il change la fonction de perte $\rho$ à chaque itération.</span></label>
+              <div class="qcm-explain">Faux : $\rho$ (donc $\psi$) reste fixée tout au long de l'algorithme ; ce sont les poids <b>numériques</b> $w_i$ qui sont recalculés.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-4"><span class="otext">Il résout un OLS non pondéré, puis s'arrête.</span></label>
+              <div class="qcm-explain">Faux : IRLS répète l'étape de pondération jusqu'à convergence (sauf pour l'OLS, cas particulier à une seule itération).</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-4"><span class="otext">Il recalcule les poids $w_i=\psi(r_i)/r_i$ à partir des résidus courants, puis résout un WLS pour mettre à jour $\theta$, et répète jusqu'à convergence.</span></label>
+              <div class="qcm-explain">Correct : fiche 25.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Sur un jeu de données avec un unique point très aberrant, que doit-on observer en comparant les droites ajustées par OLS et par IRLS/LAD ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml6-5"><span class="otext">Les deux droites sont rigoureusement identiques.</span></label>
+              <div class="qcm-explain">Faux : c'est précisément la différence de sensibilité à l'outlier qui distingue les deux méthodes.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-5"><span class="otext">La droite OLS est nettement attirée vers l'outlier, alors que la droite IRLS/LAD reste proche de la tendance des points normaux.</span></label>
+              <div class="qcm-explain">Correct : c'est l'illustration pratique de la fiche 24-25.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-5"><span class="otext">La droite IRLS/LAD est nettement plus attirée vers l'outlier que l'OLS.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse ; l'IRLS/LAD est justement conçu pour être <b>moins</b> sensible à l'outlier.</div>
+              <label class="qcm-opt"><input type="radio" name="ml6-5"><span class="otext">Aucune des deux méthodes ne peut être appliquée en présence d'un outlier.</span></label>
+              <div class="qcm-explain">Faux : les deux méthodes restent applicables ; seule leur sensibilité au point aberrant diffère.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -638,7 +1547,12 @@ window.MathJax = {
         <div class="chain"><b>convexe + différentiable</b> → ∇F(θ*) = 0 ⇔ minimum global</div>
         <div class="chain"><b>convexe → O(1/t)</b> sous-linéaire &nbsp;·&nbsp; <b>μ-fort. convexe → O(ρ<sup>t</sup>)</b> linéaire, ρ = 1 − μ/L</div>
         <div class="chain"><b>gradient exact coûteux</b> → SGD → approximation non biaisée mais bruitée</div>
-        <p class="source-note">Mémo basé sur <i>LectureNotesML_Lecture1</i> (variantes de l'OLS) et <i>LectureNotesML_Lecture2</i> (optimisation pour le ML), S. Da Veiga, ENSAI 3A.</p>
+        <div class="chain"><b>marge = 1/‖w‖</b> → SVM · seuls les vecteurs de support (α &gt; 0) comptent</div>
+        <div class="chain"><b>k(x,x') = ⟨φ(x),φ(x')⟩</b> → kernel trick · jamais besoin de calculer φ explicitement</div>
+        <div class="chain"><b>bagging</b> → réduit la variance (parallèle) &nbsp;·&nbsp; <b>boosting</b> → réduit le biais (séquentiel)</div>
+        <div class="chain"><b>Pearson = 0</b> ⇏ indépendance &nbsp;·&nbsp; <b>info. mutuelle / HSIC = 0</b> ⟺ indépendance</div>
+        <div class="chain"><b>IRLS</b> → poids w = ψ(r)/r → OLS (w=1) et LAD (w=1/|r|) comme cas particuliers</div>
+        <p class="source-note">Mémo basé sur <i>LectureNotesML_Lecture1</i> (variantes de l'OLS) et <i>LectureNotesML_Lecture2</i> (optimisation pour le ML), S. Da Veiga, ENSAI 3A, enrichi à partir des QCM, sujets d'examen (2023-2026) et TP du cours pour les lectures 3 à 6 (SVM &amp; noyaux, méthodes d'ensemble, sélection de variables, régression robuste).</p>
       </div>
 
     </main>
@@ -775,6 +1689,57 @@ window.MathJax = {
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.style.scrollBehavior = 'auto';
   }
+
+  /* ---------- QCM : correction interactive ---------- */
+  document.querySelectorAll('.qcm').forEach(function(qcm){
+    var submitBtn = qcm.querySelector('.qcm-submit');
+    var resetBtn = qcm.querySelector('.qcm-reset');
+    var resultEl = qcm.querySelector('.qcm-result');
+    var questions = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+
+    submitBtn.addEventListener('click', function(){
+      var score = 0;
+      questions.forEach(function(q){
+        var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
+        var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
+        var checked = [];
+        opts.forEach(function(opt, idx){
+          if(opt.querySelector('input').checked) checked.push(idx);
+        });
+        checked.sort();
+        var isCorrect = checked.length === correct.length && checked.every(function(v, i){ return v === correct[i]; });
+        if(isCorrect) score++;
+        q.classList.add('graded');
+        q.classList.toggle('q-correct', isCorrect);
+        q.classList.toggle('q-incorrect', !isCorrect);
+        opts.forEach(function(opt, idx){
+          var input = opt.querySelector('input');
+          var isRight = correct.indexOf(idx) !== -1;
+          var wasChecked = input.checked;
+          opt.classList.toggle('opt-right', isRight);
+          opt.classList.toggle('opt-wrong-checked', wasChecked && !isRight);
+          input.disabled = true;
+        });
+      });
+      resultEl.textContent = 'Score : ' + score + ' / ' + questions.length;
+      submitBtn.disabled = true;
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      questions.forEach(function(q){
+        q.classList.remove('graded', 'q-correct', 'q-incorrect');
+        q.querySelectorAll('.qcm-opt').forEach(function(opt){
+          opt.classList.remove('opt-right', 'opt-wrong-checked');
+          var input = opt.querySelector('input');
+          input.checked = false;
+          input.disabled = false;
+        });
+      });
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    });
+  });
 })();
 </script>
 
