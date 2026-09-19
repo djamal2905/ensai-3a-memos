@@ -252,6 +252,8 @@ window.MathJax = {
   .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
   .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
   .qcm-result:empty{ display:none; }
+  .multi-badge{ display:inline-flex; align-items:center; gap:4px; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px 1px 6px; margin-left:8px; vertical-align:middle; }
+  .multi-badge svg{ width:12px; height:12px; flex-shrink:0; }
 
   /* ---------- footer / mnemonics ---------- */
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
@@ -784,6 +786,18 @@ def lasso_cd(X, y, lam, n_iter=100):
               <div class="qcm-explain">Faux : ce n'est ni son rôle, ni son champ de validité annoncé dans le cours.</div>
               <label class="qcm-opt"><input type="radio" name="ml1-7"><span class="otext">Une alternative à la régularisation Ridge.</span></label>
               <div class="qcm-explain">Faux : le $C_p$ est un critère d'évaluation du risque, pas une méthode de régularisation comme le Ridge.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0,2">
+              <p class="qtext"><span class="qnum">Q8</span>Parmi les affirmations suivantes sur Ridge et Lasso, lesquelles sont vraies ?<span class="multi-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>plusieurs réponses</span><span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="checkbox" name="ml1-8a"><span class="otext">Le Ridge a toujours une solution unique, pour tout $\lambda>0$.</span></label>
+              <div class="qcm-explain">Vrai : fiche 5, c'est explicitement souligné comme propriété du Ridge, contrairement au Lasso.</div>
+              <label class="qcm-opt"><input type="checkbox" name="ml1-8b"><span class="otext">Le Lasso a toujours une solution unique, comme le Ridge.</span></label>
+              <div class="qcm-explain">Faux : fiche 7, le Lasso n'est <b>pas toujours</b> unique (cas de colonnes identiques par exemple).</div>
+              <label class="qcm-opt"><input type="checkbox" name="ml1-8c"><span class="otext">Les deux redonnent l'estimateur OLS quand $\lambda\to0$.</span></label>
+              <div class="qcm-explain">Vrai : c'est un cas limite rappelé dans les deux fiches 5 et 7.</div>
+              <label class="qcm-opt"><input type="checkbox" name="ml1-8d"><span class="otext">Les deux mettent systématiquement certains coefficients exactement à zéro.</span></label>
+              <div class="qcm-explain">Faux : seul le Lasso peut annuler exactement un coefficient ; le Ridge ne le fait, génériquement, jamais (cf. exercice 2 de cette fiche).</div>
             </div>
 
             <div class="qcm-actions">

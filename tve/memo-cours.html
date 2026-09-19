@@ -217,7 +217,8 @@ window.MathJax = {
   .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
   .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
   .qcm-result:empty{ display:none; }
-  .multi-badge{ display:inline-block; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px; margin-left:8px; vertical-align:middle; }
+  .multi-badge{ display:inline-flex; align-items:center; gap:4px; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px 1px 6px; margin-left:8px; vertical-align:middle; }
+  .multi-badge svg{ width:12px; height:12px; flex-shrink:0; }
 
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
@@ -777,6 +778,18 @@ window.MathJax = {
               <div class="qcm-explain">Faux : le QQ-plot de Weibull donne lui aussi une pente reliée à $\gamma$ (pente $\approx-\gamma$, fiche 6) ; seul celui de Gumbel fait exception (la pente n'estime pas $\gamma$, qui vaut 0 par hypothèse).</div>
               <label class="qcm-opt"><input type="radio" name="t1-7"><span class="otext">Parce que le QQ-plot de Fréchet est valable même quand $\gamma<0$.</span></label>
               <div class="qcm-explain">Faux : le QQ-plot de Fréchet suppose au contraire $\gamma>0$ (queue lourde, $\bar F\in RV_{-1/\gamma}$) ; ce n'est pas ce qui justifie de commencer par lui en pratique.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0,2">
+              <p class="qtext"><span class="qnum">Q8</span>Parmi les affirmations suivantes sur les domaines d'attraction, lesquelles sont vraies ?<span class="multi-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>plusieurs réponses</span><span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="checkbox" name="t1-8a"><span class="otext">Le domaine de Weibull exige $x_F$ fini.</span></label>
+              <div class="qcm-explain">Vrai : fiche 5, c'est le critère qui élimine Weibull dès que $x_F=+\infty$ (cf. Q2 de ce QCM).</div>
+              <label class="qcm-opt"><input type="checkbox" name="t1-8b"><span class="otext">Le domaine de Fréchet exige $\gamma=0$.</span></label>
+              <div class="qcm-explain">Faux : le domaine de Fréchet correspond à $\gamma>0$, pas $\gamma=0$ (qui caractérise Gumbel).</div>
+              <label class="qcm-opt"><input type="checkbox" name="t1-8c"><span class="otext">Les domaines de Fréchet et de Gumbel peuvent tous deux avoir $x_F=+\infty$.</span></label>
+              <div class="qcm-explain">Vrai : c'est exactement le point de la Q2 de ce QCM : $x_F=+\infty$ élimine Weibull, mais ne tranche pas entre Fréchet et Gumbel.</div>
+              <label class="qcm-opt"><input type="checkbox" name="t1-8d"><span class="otext">Le domaine de Gumbel exige $\gamma<0$.</span></label>
+              <div class="qcm-explain">Faux : Gumbel correspond exactement à $\gamma=0$, pas $\gamma<0$ (qui caractérise Weibull).</div>
             </div>
 
             <div class="qcm-actions">

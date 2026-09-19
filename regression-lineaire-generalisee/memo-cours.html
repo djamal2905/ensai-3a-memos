@@ -212,6 +212,8 @@ window.MathJax = {
   .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
   .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
   .qcm-result:empty{ display:none; }
+  .multi-badge{ display:inline-flex; align-items:center; gap:4px; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px 1px 6px; margin-left:8px; vertical-align:middle; }
+  .multi-badge svg{ width:12px; height:12px; flex-shrink:0; }
 
   .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
   .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
@@ -673,6 +675,18 @@ window.MathJax = {
               <div class="qcm-explain">Faux : $\hat\eta^2$ (fiche 5) s'applique au croisement quantitatif × qualitatif, pas qualitatif × qualitatif.</div>
               <label class="qcm-opt"><input type="radio" name="q1-7"><span class="otext">Le $R^2$ ajusté.</span></label>
               <div class="qcm-explain">Faux : le $R^2$ ajusté (fiche 16) est un critère de qualité d'ajustement d'un modèle de régression, pas une mesure de lien entre deux variables qualitatives.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0,2">
+              <p class="qtext"><span class="qnum">Q8</span>Parmi les affirmations suivantes sur $\hat\rho$ et $\hat\eta^2$, lesquelles sont vraies ?<span class="multi-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>plusieurs réponses</span><span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="checkbox" name="q1-8a"><span class="otext">$\hat\rho$ ne mesure que le lien <b>linéaire</b> entre deux variables quantitatives.</span></label>
+              <div class="qcm-explain">Vrai : fiche 3, c'est exactement sa définition et sa limite (cf. Q1 de ce QCM).</div>
+              <label class="qcm-opt"><input type="checkbox" name="q1-8b"><span class="otext">$\hat\eta^2$ peut prendre des valeurs négatives.</span></label>
+              <div class="qcm-explain">Faux : $\hat\eta^2=S^2_{inter}/S^2_T$ (fiche 5) est un rapport de variances, toujours dans $[0,1]$.</div>
+              <label class="qcm-opt"><input type="checkbox" name="q1-8c"><span class="otext">$\hat\eta^2$ mesure la part de variance de $Y$ expliquée par l'appartenance aux groupes d'un facteur qualitatif.</span></label>
+              <div class="qcm-explain">Vrai : c'est exactement la définition de $\hat\eta^2$ (fiche 5, cf. Q2 de ce QCM).</div>
+              <label class="qcm-opt"><input type="checkbox" name="q1-8d"><span class="otext">$\hat\rho\approx0$ implique nécessairement l'indépendance entre $X$ et $Y$.</span></label>
+              <div class="qcm-explain">Faux : $\hat\rho\approx0$ n'exclut qu'un lien linéaire fort, pas un lien non linéaire (fiche 3, cf. Q1 de ce QCM).</div>
             </div>
 
             <div class="qcm-actions">
