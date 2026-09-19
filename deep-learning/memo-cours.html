@@ -1016,6 +1016,27 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Passe avant d'un petit MLP, à la main</p>
+            <p>Réseau à une couche cachée : entrée $\mathbf x=(2,1)$, $\mathbf W^{[1]}=\begin{pmatrix}1&1\\2&-1\end{pmatrix}$, $\mathbf b^{[1]}=(-1,0)$, activation ReLU pour la couche cachée ; $\mathbf W^{[2]}=(1,-1)$, $b^{[2]}=0.5$, activation sigmoïde en sortie (classification binaire).</p>
+            <p>(a) Calculez $\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}$ puis $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})$.<br>
+            (b) Calculez la pré-activation de sortie $z^{[2]}=\mathbf W^{[2]}\mathbf h+b^{[2]}$, puis $\hat y=\sigma(z^{[2]})$.<br>
+            (c) Comptez le nombre total de paramètres entraînables de ce réseau (fiche 3, exercice 2).</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Couche cachée</p>
+              <div class="formula">$$\mathbf z^{[1]} = \begin{pmatrix}1&1\\2&-1\end{pmatrix}\begin{pmatrix}2\\1\end{pmatrix}+\begin{pmatrix}-1\\0\end{pmatrix} = \begin{pmatrix}2+1\\4-1\end{pmatrix}+\begin{pmatrix}-1\\0\end{pmatrix} = \begin{pmatrix}2\\3\end{pmatrix}$$</div>
+              <p>Les deux coordonnées sont positives, donc $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})=(2,3)$ (ReLU n'a ici aucun effet).</p>
+              <p class="method-label">(b) Couche de sortie</p>
+              <div class="formula">$$z^{[2]} = 1\times2+(-1)\times3+0.5 = 2-3+0.5 = -0.5 \qquad\qquad \hat y=\sigma(-0.5)=\frac1{1+e^{0.5}}\approx0.3775$$</div>
+              <p class="method-label">(c) Compte de paramètres</p>
+              <p>Couche 1 : $\mathbf W^{[1]}$ ($2\times2=4$) $+\ \mathbf b^{[1]}$ ($2$) $=6$. Couche 2 : $\mathbf W^{[2]}$ ($1\times2=2$) $+\ b^{[2]}$ ($1$) $=3$. Total $=6+3=9$, cohérent avec la formule $\sum_l n_l(n_{l-1}+1)=2\times(2+1)+1\times(2+1)=6+3=9$ de la fiche 3.</p>
+              <p class="sense"><b>Sens :</b> ce calcul « à la main » est exactement ce que fait <code>model(x)</code> en interne dans PyTorch, couche par couche : le comprendre en détail permet de déboguer un réseau qui produit des valeurs inattendues (ex. toujours $\hat y\approx0.5$, ou toujours $0$ après une couche ReLU).</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-1">
             <div class="qcm-head">
               <h3>QCM de révision · Introduction &amp; MLP</h3>
@@ -1532,6 +1553,32 @@ for layer in layers:
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Calculer une convolution 2D à la main</p>
+            <p>Image d'entrée $4\times4$ (1 canal, sans padding, stride 1) :</p>
+            <div class="formula">$$I=\begin{pmatrix}1&2&3&0\\0&1&2&3\\3&0&1&2\\2&3&0&1\end{pmatrix} \qquad K=\begin{pmatrix}1&0&-1\\1&0&-1\\1&0&-1\end{pmatrix}$$</div>
+            <p>(a) Quelle est la taille de la carte de sortie (fiche 15, formule $\lfloor(W-K+2P)/S\rfloor+1$) ?<br>
+            (b) Calculez à la main la valeur de sortie en position $(0,0)$ (coin supérieur gauche), en faisant glisser $K$ sur le bloc $I[0{:}3,\,0{:}3]$.<br>
+            (c) Calculez de même les 3 autres valeurs de sortie (positions $(0,1)$, $(1,0)$, $(1,1)$).<br>
+            (d) Ce noyau $K$ répond fortement (en valeur absolue) à quel type de motif dans l'image ? (indice : comparez les colonnes de $K$)</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Taille de sortie</p>
+              <p>$\lfloor(4-3+0)/1\rfloor+1=2$ : la sortie est $2\times2$.</p>
+              <p class="method-label">(b) Position $(0,0)$</p>
+              <p>Bloc $I[0{:}3,0{:}3]=\begin{pmatrix}1&2&3\\0&1&2\\3&0&1\end{pmatrix}$. Produit terme à terme avec $K$ puis somme :</p>
+              <div class="formula">$$(1{\times}1{+}2{\times}0{+}3{\times}({-}1)) + (0{\times}1{+}1{\times}0{+}2{\times}({-}1)) + (3{\times}1{+}0{\times}0{+}1{\times}({-}1)) = (1{-}3)+({-}2)+(3{-}1) = -2-2+2 = -2$$</div>
+              <p class="method-label">(c) Les 3 autres positions</p>
+              <p>En répétant le même calcul pour chaque bloc $3\times3$ glissé d'une case :</p>
+              <div class="formula">$$\text{sortie} = \begin{pmatrix}-2&-2\\2&-2\end{pmatrix}$$</div>
+              <p class="method-label">(d) Motif détecté</p>
+              <p>La première colonne de $K$ vaut $+1$ et la dernière $-1$ (colonne centrale nulle) : ce noyau calcule, pour chaque fenêtre, la différence entre la somme de la colonne de gauche et celle de la colonne de droite. Une valeur de sortie de grande magnitude signale donc un <b>contraste vertical fort</b> (un bord/contour orienté verticalement), exactement comme les noyaux de détection de contours de la fiche 13.</p>
+              <p class="sense"><b>Sens :</b> c'est la même opération que <code>F.conv2d(I, K)</code> sous PyTorch (sans biais, sans padding) : refaire ce calcul à la main une fois suffit généralement à lever toute ambiguïté sur l'orientation du noyau (corrélation croisée, pas convolution mathématique au sens strict, fiche 12) ou sur les conventions d'indexation.</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-2">
             <div class="qcm-head">
               <h3>QCM de révision · CNN</h3>
@@ -1910,6 +1957,26 @@ bih, bhh = cell.bias_ih.detach().numpy(), cell.bias_hh.detach().numpy()
 h_manual = np.tanh(x_t.numpy() @ Wih.T + bih + h_prev.numpy() @ Whh.T + bhh)
 print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <p class="sense"><b>Sens :</b> pour aller plus loin, entraînez un <code>nn.RNN</code> et un <code>nn.LSTM</code> de même taille cachée sur une tâche « copie » jouet (prédire, après $T$ pas neutres, le tout premier symbole de la séquence) pour $T=5,20,50$ : observez à partir de quel $T$ le RNN vanille cesse d'apprendre (conformément à l'exercice 1), alors que le LSTM continue à converger (exercice 3).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Dérouler un RNN vanille sur 2 pas de temps, à la main</p>
+            <p>RNN vanille avec $\mathbf h_0=(0,0)$, $\mathbf W_{ih}=\begin{pmatrix}1&0\\0&1\end{pmatrix}$, $\mathbf W_{hh}=\begin{pmatrix}0.5&0\\0&0.5\end{pmatrix}$, biais nuls, activation $\tanh$. Séquence d'entrée : $\mathbf x_1=(1,0)$, $\mathbf x_2=(0,1)$.</p>
+            <p>(a) Calculez $\mathbf z_1=\mathbf W_{ih}\mathbf x_1+\mathbf W_{hh}\mathbf h_0$, puis $\mathbf h_1=\tanh(\mathbf z_1)$ (utilisez $\tanh(1)\approx0.7616$, $\tanh(0)=0$).<br>
+            (b) Calculez $\mathbf z_2=\mathbf W_{ih}\mathbf x_2+\mathbf W_{hh}\mathbf h_1$, puis $\mathbf h_2=\tanh(\mathbf z_2)$ (utilisez $\tanh(0.381)\approx0.363$, $\tanh(1)\approx0.7616$).<br>
+            (c) Ce réseau reçoit ensuite un troisième pas de temps « neutre » $\mathbf x_3=(0,0)$. Sans calculer $\mathbf h_3$ explicitement, expliquez qualitativement pourquoi $\mathbf h_1$ influence encore (un peu) $\mathbf h_3$, mais de moins en moins à mesure que la séquence s'allonge (fiche 22).</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Pas de temps 1</p>
+              <div class="formula">$$\mathbf z_1 = \begin{pmatrix}1&0\\0&1\end{pmatrix}\begin{pmatrix}1\\0\end{pmatrix} + \begin{pmatrix}0.5&0\\0&0.5\end{pmatrix}\begin{pmatrix}0\\0\end{pmatrix} = \begin{pmatrix}1\\0\end{pmatrix} \qquad \mathbf h_1=\tanh(\mathbf z_1)\approx(0.762,\ 0)$$</div>
+              <p class="method-label">(b) Pas de temps 2</p>
+              <div class="formula">$$\mathbf z_2 = \begin{pmatrix}1&0\\0&1\end{pmatrix}\begin{pmatrix}0\\1\end{pmatrix} + \begin{pmatrix}0.5&0\\0&0.5\end{pmatrix}\begin{pmatrix}0.762\\0\end{pmatrix} = \begin{pmatrix}0\\1\end{pmatrix}+\begin{pmatrix}0.381\\0\end{pmatrix} = \begin{pmatrix}0.381\\1\end{pmatrix} \qquad \mathbf h_2\approx(0.363,\ 0.762)$$</div>
+              <p class="method-label">(c) Influence décroissante de $\mathbf h_1$ sur $\mathbf h_3$</p>
+              <p>Par l'exercice 1 de cette fiche, $\frac{\partial\mathbf h_3}{\partial\mathbf h_1}=\mathrm{diag}(g'(\mathbf z_3))\mathbf W_{hh}\cdot\mathrm{diag}(g'(\mathbf z_2))\mathbf W_{hh}$ (produit de 2 facteurs, un par pas de temps traversé). Ici $\mathbf W_{hh}=0.5I$ et $|\tanh'|\le1$, donc chaque facteur a une norme $\le0.5$ : le produit est borné par $0.5^2=0.25$. $\mathbf h_1$ influence donc bien encore $\mathbf h_3$, mais avec un poids qui décroît <b>géométriquement</b> (facteur $\le0.5$ par pas de temps supplémentaire traversé), exactement le mécanisme démontré à l'exercice 1.</p>
+              <p class="sense"><b>Sens :</b> avec $\mathbf W_{hh}=0.5I$ ici, la décroissance est délibérément rapide pour rendre le calcul simple ; dans un RNN entraîné, $\mathbf W_{hh}$ peut avoir une norme plus proche de 1, ce qui ralentit (sans l'annuler) ce phénomène de disparition du gradient/de l'information au fil du temps.</p>
             </div>
           </details>
 
@@ -2336,6 +2403,27 @@ print(mu.grad)  # doit etre non nul (egal a 1 ici, cf. exercice 2)</code></pre>
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Calculer le terme $D_{\mathrm{KL}}$ de l'ELBO et un tirage reparamétrisé, à la main</p>
+            <p>Pour un VAE (fiche 30-31), l'encodeur produit, pour une observation $\mathbf x$ donnée, $\mu_\phi(\mathbf x)=1$ et $\sigma_\phi(\mathbf x)=2$ (dimension latente 1, pour simplifier).</p>
+            <p>(a) En utilisant la formule fermée de l'exercice 1 ($D_{\mathrm{KL}}=\frac12(\sigma^2+\mu^2-1-\log\sigma^2)$), calculez $D_{\mathrm{KL}}\big(q_\phi(z|\mathbf x)\,\|\,p(z)\big)$ (utilisez $\log4\approx1.386$).<br>
+            (b) On tire $\epsilon=0.5$. Calculez $z=\mu_\phi+\sigma_\phi\,\epsilon$ (astuce de reparamétrisation, fiche 31).<br>
+            (c) Si, pour cette même observation, l'encodeur produisait $\mu_\phi=0$, $\sigma_\phi=1$ au lieu de $(1,2)$, que vaudrait $D_{\mathrm{KL}}$ ? Que représente cette valeur particulière ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Terme $D_{\mathrm{KL}}$</p>
+              <div class="formula">$$D_{\mathrm{KL}} = \frac12\big(2^2+1^2-1-\log(2^2)\big) = \frac12(4+1-1-1.386) = \frac12(2.614) \approx 1.307$$</div>
+              <p class="method-label">(b) Tirage reparamétrisé</p>
+              <div class="formula">$$z = 1 + 2\times0.5 = 2$$</div>
+              <p class="method-label">(c) Cas particulier $\mu_\phi=0,\sigma_\phi=1$</p>
+              <div class="formula">$$D_{\mathrm{KL}} = \frac12(1+0-1-\log1) = \frac12(0) = 0$$</div>
+              <p>$D_{\mathrm{KL}}=0$ exactement quand $q_\phi(z|\mathbf x)=\mathcal N(0,1)=p(z)$ : l'encodeur produit alors <b>exactement</b> le prior, sans aucune information spécifique à $\mathbf x$ (cas dégénéré, à éviter en pratique : on veut que $q_\phi(z|\mathbf x)$ dépende réellement de $\mathbf x$).</p>
+              <p class="sense"><b>Sens :</b> $D_{\mathrm{KL}}$ agit comme un terme de <b>régularisation</b> dans l'ELBO (fiche 30) : plus $q_\phi(z|\mathbf x)$ s'éloigne du prior $\mathcal N(0,1)$ (comme en (a), avec $D_{\mathrm{KL}}\approx1.307>0$), plus il est pénalisé ; le cas (c) montre le seul point où cette pénalité disparaît entièrement.</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-4">
             <div class="qcm-head">
               <h3>QCM de révision · Modèles génératifs</h3>
@@ -2650,6 +2738,29 @@ causal_mask = torch.tril(torch.ones(n, n))
 out_masked, w_masked = attention(Q, K, V, mask=causal_mask)
 print(torch.allclose(w_masked.triu(1), torch.zeros_like(w_masked)))  # doit etre True</code></pre>
               <p class="sense"><b>Sens :</b> affichez <code>w_masked</code> sous forme de <i>heatmap</i> (matplotlib) : la partie triangulaire supérieure (le « futur », par rapport à chaque position de requête) doit apparaître exactement à zéro, conformément au masquage causal de la fiche 38.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 5 (type examen) · Calculer une attention scaled dot-product à la main</p>
+            <p>Une requête $\mathbf q=(1,0)$ (1 token) doit attendre 2 clés/valeurs : $\mathbf k_1=(1,0)$, $\mathbf v_1=(2,0)$ et $\mathbf k_2=(0,1)$, $\mathbf v_2=(0,3)$ ($d_k=2$).</p>
+            <p>(a) Calculez les scores bruts $\mathbf q\cdot\mathbf k_1$ et $\mathbf q\cdot\mathbf k_2$, puis les scores mis à l'échelle (division par $\sqrt{d_k}$, fiche 39, exercice 1).<br>
+            (b) Calculez les poids d'attention $\mathrm{softmax}$ des deux scores mis à l'échelle (utilisez $e^{0.707}\approx2.028$, $e^0=1$).<br>
+            (c) Calculez le vecteur de sortie $\sum_i(\text{poids}_i)\,\mathbf v_i$.<br>
+            (d) Sans refaire le calcul, dites qualitativement ce qui changerait si $\mathbf q=(0,1)$ au lieu de $(1,0)$ : vers quelle valeur $\mathbf v_i$ l'attention se concentrerait-elle majoritairement ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Scores</p>
+              <div class="formula">$$\mathbf q\cdot\mathbf k_1=1,\qquad \mathbf q\cdot\mathbf k_2=0 \qquad\Longrightarrow\qquad \frac{\mathbf q\cdot\mathbf k_1}{\sqrt2}\approx0.707,\quad \frac{\mathbf q\cdot\mathbf k_2}{\sqrt2}=0$$</div>
+              <p class="method-label">(b) Poids softmax</p>
+              <div class="formula">$$\mathrm{poids}_1=\frac{e^{0.707}}{e^{0.707}+e^0}\approx\frac{2.028}{3.028}\approx0.670 \qquad \mathrm{poids}_2\approx\frac{1}{3.028}\approx0.330$$</div>
+              <p class="method-label">(c) Sortie</p>
+              <div class="formula">$$\text{sortie} = 0.670\times(2,0) + 0.330\times(0,3) \approx (1.340,\ 0.991)$$</div>
+              <p class="method-label">(d) Avec $\mathbf q=(0,1)$</p>
+              <p>Dans ce cas $\mathbf q\cdot\mathbf k_1=0$ et $\mathbf q\cdot\mathbf k_2=1$ : les rôles s'inversent exactement, et l'attention se concentrerait cette fois majoritairement (environ 67%) sur $\mathbf v_2=(0,3)$ plutôt que sur $\mathbf v_1$.</p>
+              <p class="sense"><b>Sens :</b> cet exemple minimal illustre concrètement la fiche 39 : la requête $\mathbf q$ « choisit » de combiner les valeurs $\mathbf v_i$ en fonction de sa similarité (produit scalaire) avec chaque clé $\mathbf k_i$ ; ici $\mathbf q$ est plus proche de $\mathbf k_1$ (score $1$ contre $0$), donc $\mathbf v_1$ domine la sortie, mais $\mathbf v_2$ contribue quand même pour environ un tiers (le softmax ne fait jamais un choix strictement binaire, contrairement à un $\arg\max$).</p>
             </div>
           </details>
 
