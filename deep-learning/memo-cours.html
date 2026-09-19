@@ -343,6 +343,13 @@ window.MathJax = {
   .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
   .qcm-result:empty{ display:none; }
 
+  .box-practice{ background:var(--surface-2); border-color:var(--accent); }
+  .box-practice .box-label{ color:var(--accent-strong); }
+  .box-practice pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
+  .box-practice code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  .box-practice .exo-step{ font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--accent-strong); margin:10px 0 2px; }
+  .box-practice .exo-step:first-of-type{ margin-top:0; }
+
   .nn-interactive{ margin:14px 0; border:1px solid var(--border); border-radius:12px; background:var(--surface); padding:16px 18px 20px; }
   .nn-controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; flex-wrap:wrap; }
   .nn-btn{ font:600 .82rem "Source Sans 3",sans-serif; padding:8px 16px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
@@ -915,6 +922,28 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
           </article>
 
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Construire, initialiser et entraîner un MLP sous PyTorch</p>
+            <p class="exo-step">Étape 1 · Reconstruire le MLP du cheat sheet et vérifier le compte de paramètres</p>
+            <p>Recréez le réseau 4→5→5→3 de la fiche 3 avec <code>nn.Sequential</code>, imprimez le nombre total de paramètres et vérifiez qu'il vaut bien 73. Puis changez l'initialisation par défaut de PyTorch pour une initialisation <b>constante</b> (<code>nn.init.constant_(layer.weight, 0.5)</code>) sur une couche cachée : entraînez quelques itérations et vérifiez, en affichant les gradients, que tous les neurones de cette couche reçoivent bien un gradient <b>identique</b> (fiche 3, symétrie).</p>
+            <pre><code>import torch, torch.nn as nn
+
+model = nn.Sequential(
+    nn.Linear(4, 5), nn.ReLU(),
+    nn.Linear(5, 5), nn.ReLU(),
+    nn.Linear(5, 3),
+)
+print(sum(p.numel() for p in model.parameters()))  # -&gt; 73
+
+nn.init.constant_(model[0].weight, 0.5)
+nn.init.zeros_(model[0].bias)
+out = model(torch.randn(1, 4))
+out.sum().backward()
+print(model[0].weight.grad)  # toutes les lignes doivent etre identiques</code></pre>
+            <p class="exo-step">Étape 2 · Sous vs sur-apprentissage</p>
+            <p>Sur un jeu de classification jouet (ex. <code>sklearn.datasets.make_moons</code>), entraînez le même MLP avec une couche cachée de 2 neurones (sous-apprentissage attendu) puis de 500 neurones sans régularisation (sur-apprentissage attendu, fiche 9) : tracez les courbes de perte train/validation pour observer l'écart caractéristique de chaque régime.</p>
+          </div>
+
           <div class="qcm" id="qcm-1">
             <div class="qcm-head">
               <h3>QCM de révision · Introduction &amp; MLP</h3>
@@ -1351,6 +1380,24 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
           </article>
 
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Dimensions d'un CNN, à la main puis sous PyTorch</p>
+            <p class="exo-step">Étape 1 · Prédire les dimensions avant d'exécuter le code</p>
+            <p>Pour un CNN <code>Conv2d(3, 16, kernel_size=3, padding=1) → ReLU → MaxPool2d(2) → Conv2d(16, 32, kernel_size=3, padding=1) → ReLU → MaxPool2d(2)</code> appliqué à une image $28\times28\times3$, calculez <b>à la main</b> (fiche 15, formule $\lfloor(W-K+2P)/S\rfloor+1$) la taille spatiale et le nombre de canaux après chaque couche, puis vérifiez avec <code>torchsummary</code> ou en imprimant <code>x.shape</code> après chaque couche.</p>
+            <pre><code>import torch, torch.nn as nn
+
+layers = nn.Sequential(
+    nn.Conv2d(3, 16, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+    nn.Conv2d(16, 32, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+)
+x = torch.randn(1, 3, 28, 28)
+for layer in layers:
+    x = layer(x)
+    print(layer.__class__.__name__, tuple(x.shape))</code></pre>
+            <p class="exo-step">Étape 2 · Visualiser les filtres appris</p>
+            <p>Après quelques itérations d'entraînement sur un petit jeu d'images (ex. un sous-ensemble de MNIST/CIFAR-10), affichez les 16 filtres de la première couche de convolution (<code>model[0].weight.detach()</code>, un filtre par sous-graphique matplotlib) : comparez-les à ceux, non entraînés, de l'initialisation aléatoire.</p>
+          </div>
+
           <div class="qcm" id="qcm-2">
             <div class="qcm-head">
               <h3>QCM de révision · CNN</h3>
@@ -1658,6 +1705,24 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <p class="sense"><b>Sens :</b> ce n'est pas un problème pour les paramètres, mais c'en est un pour le <b>gradient</b>, qui est un produit de (très) nombreuses dérivées partielles : donc surtout pour les <b>RNN profonds</b>, où un sous-dépassement met le gradient à $0$ et un dépassement le met à $\pm\infty$.</p>
             </div>
           </article>
+
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Vanishing gradients : RNN vanille vs LSTM sur une tâche longue</p>
+            <p class="exo-step">Étape 1 · Retrouver la formule du RNN vanille à la main</p>
+            <p>Implémentez le forward pass d'une cellule RNN vanille (fiche 21) avec <code>numpy</code>, en copiant les poids d'un <code>nn.RNNCell</code> PyTorch (<code>cell.weight_ih</code>, <code>cell.weight_hh</code>, biais), et vérifiez que votre calcul à la main donne exactement le même $\mathbf h_t$ que <code>cell(x_t, h_prev)</code>, à la précision flottante près.</p>
+            <pre><code>import torch, torch.nn as nn, numpy as np
+
+cell = nn.RNNCell(input_size=3, hidden_size=4)
+x_t, h_prev = torch.randn(1, 3), torch.randn(1, 4)
+h_torch = cell(x_t, h_prev).detach().numpy()
+
+Wih, Whh = cell.weight_ih.detach().numpy(), cell.weight_hh.detach().numpy()
+bih, bhh = cell.bias_ih.detach().numpy(), cell.bias_hh.detach().numpy()
+h_manual = np.tanh(x_t.numpy() @ Wih.T + bih + h_prev.numpy() @ Whh.T + bhh)
+print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
+            <p class="exo-step">Étape 2 · Une tâche « copie » à longue portée</p>
+            <p>Créez une tâche jouet : prédire, après $T$ pas de temps « neutres », le tout premier symbole de la séquence (fiche 22 : plus $T$ est grand, plus le gradient doit remonter loin). Entraînez un <code>nn.RNN</code> et un <code>nn.LSTM</code> (fiche 23) de même taille cachée pour $T=5$, $20$, puis $50$ : observez à partir de quel $T$ le RNN vanille cesse d'apprendre (perte qui stagne), alors que le LSTM continue à converger.</p>
+          </div>
 
           <div class="qcm" id="qcm-3">
             <div class="qcm-head">
@@ -2007,6 +2072,23 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
           </article>
 
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Astuce de reparamétrisation &amp; VAE minimal</p>
+            <p class="exo-step">Étape 1 · Coder l'astuce de reparamétrisation (fiche 31)</p>
+            <p>Écrivez une fonction qui, à partir de $\mu_\phi(\mathbf x)$ et $\log\sigma_\phi^2(\mathbf x)$ (sorties de l'encodeur), tire $\mathbf z=\mu_\phi+\sigma_\phi\odot\mathbf\epsilon$ avec $\mathbf\epsilon\sim\mathcal N(\mathbf 0,\mathbf I)$, et vérifiez que <code>z.requires_grad</code> reste <code>True</code> et que <code>z.backward()</code> propage bien un gradient jusqu'à $\mu_\phi,\log\sigma_\phi^2$ (contrairement à un tirage direct <code>torch.normal(mu, sigma)</code>, qui coupe le graphe de calcul).</p>
+            <pre><code>def reparameterize(mu, logvar):
+    std = torch.exp(0.5 * logvar)
+    eps = torch.randn_like(std)
+    return mu + eps * std
+
+mu, logvar = torch.zeros(1, 2, requires_grad=True), torch.zeros(1, 2, requires_grad=True)
+z = reparameterize(mu, logvar)
+z.sum().backward()
+print(mu.grad)  # doit etre non nul</code></pre>
+            <p class="exo-step">Étape 2 · Entraîner un VAE minimal sur des données 2D jouets</p>
+            <p>Sur un mélange de deux gaussiennes 2D, entraînez un VAE minuscule (encodeur/décodeur à une couche cachée, espace latent de dimension 2, perte ELBO = reconstruction + $D_{\mathrm{KL}}$, fiche 30) et visualisez, côte à côte, l'espace latent appris et des échantillons générés depuis $\mathbf z\sim\mathcal N(\mathbf 0,\mathbf I)$ (fiche 29).</p>
+          </div>
+
           <div class="qcm" id="qcm-4">
             <div class="qcm-head">
               <h3>QCM de révision · Modèles génératifs</h3>
@@ -2247,6 +2329,27 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <p class="sense"><b>Sens :</b> exploite le contexte <b>avant ET après</b> chaque token ⟹ adapté à la <b>compréhension</b> (classification, extraction, question-réponse) : c'est l'analogue Transformer du RNN bidirectionnel de la fiche 25, et la raison pour laquelle BERT ne sait pas générer de texte librement.</p>
             </div>
           </article>
+
+          <div class="box box-practice">
+            <p class="box-label">🧪 Exercice pratique · Implémenter l'attention scaled dot-product à la main</p>
+            <p class="exo-step">Étape 1 · Coder la formule et vérifier contre PyTorch</p>
+            <p>Implémentez $\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\big(QK^T/\sqrt{d_k}\big)V$ (fiche 39) avec <code>torch</code>, sur des tenseurs $Q,K,V$ aléatoires, et vérifiez que votre résultat coïncide avec celui de <code>torch.nn.functional.scaled_dot_product_attention(Q, K, V)</code> (à la précision numérique près).</p>
+            <pre><code>import torch, torch.nn.functional as F, math
+
+def attention(Q, K, V, mask=None):
+    scores = Q @ K.transpose(-2, -1) / math.sqrt(Q.shape[-1])
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+    weights = F.softmax(scores, dim=-1)
+    return weights @ V, weights
+
+Q, K, V = torch.randn(1, 5, 8), torch.randn(1, 5, 8), torch.randn(1, 5, 8)
+out, w = attention(Q, K, V)
+out_ref = F.scaled_dot_product_attention(Q, K, V)
+print(torch.allclose(out, out_ref, atol=1e-5))  # doit etre True</code></pre>
+            <p class="exo-step">Étape 2 · Masquage causal &amp; visualisation</p>
+            <p>Ajoutez un masque causal triangulaire (fiche 38 : <code>torch.tril</code>) à votre fonction <code>attention</code>, et affichez la matrice des poids $\mathrm{softmax}(QK^T/\sqrt{d_k})$ sous forme de <i>heatmap</i> (matplotlib) avant et après masquage : vérifiez que la partie triangulaire supérieure (le « futur ») est bien mise à zéro par le masque.</p>
+          </div>
 
           <div class="qcm" id="qcm-5">
             <div class="qcm-head">
