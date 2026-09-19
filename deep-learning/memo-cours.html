@@ -343,12 +343,23 @@ window.MathJax = {
   .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
   .qcm-result:empty{ display:none; }
 
-  .box-practice{ background:var(--surface-2); border-color:var(--accent); }
-  .box-practice .box-label{ color:var(--accent-strong); }
-  .box-practice pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
-  .box-practice code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
-  .box-practice .exo-step{ font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--accent-strong); margin:10px 0 2px; }
-  .box-practice .exo-step:first-of-type{ margin-top:0; }
+  .box pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
+  .box code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+
+  details.solution{ margin:14px 0; }
+  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
+  details.solution summary::-webkit-details-marker{ display:none; }
+  details.solution summary::before{ content:"▶"; font-size:.7em; transition:transform .15s ease; }
+  details.solution[open] summary::before{ transform:rotate(90deg); }
+  details.solution[open] summary{ border-radius:8px 8px 0 0; }
+  details.solution > .box{ margin-top:0; border-radius:0 0 10px 10px; border-top:none; }
+  .method-label{ display:inline-block; font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--ex-label); background:var(--ex-bg); border:1px solid var(--ex-border); border-radius:6px; padding:2px 8px; margin:10px 0 6px; }
+  .method-label:first-child{ margin-top:0; }
+
+  .exo-scratch{ margin:10px 0; }
+  .exo-scratch label{ display:block; font:600 .76rem "JetBrains Mono",monospace; color:var(--muted); margin-bottom:4px; }
+  .exo-textarea{ width:100%; min-height:100px; resize:vertical; font:400 .84rem "JetBrains Mono",monospace; background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 12px; box-sizing:border-box; }
+  .exo-textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
 
   .nn-interactive{ margin:14px 0; border:1px solid var(--border); border-radius:12px; background:var(--surface); padding:16px 18px 20px; }
   .nn-controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; flex-wrap:wrap; }
@@ -922,11 +933,70 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Construire, initialiser et entraîner un MLP sous PyTorch</p>
-            <p class="exo-step">Étape 1 · Reconstruire le MLP du cheat sheet et vérifier le compte de paramètres</p>
-            <p>Recréez le réseau 4→5→5→3 de la fiche 3 avec <code>nn.Sequential</code>, imprimez le nombre total de paramètres et vérifiez qu'il vaut bien 73. Puis changez l'initialisation par défaut de PyTorch pour une initialisation <b>constante</b> (<code>nn.init.constant_(layer.weight, 0.5)</code>) sur une couche cachée : entraînez quelques itérations et vérifiez, en affichant les gradients, que tous les neurones de cette couche reçoivent bien un gradient <b>identique</b> (fiche 3, symétrie).</p>
-            <pre><code>import torch, torch.nn as nn
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Démontrer rigoureusement le problème de symétrie</p>
+            <p>Deux neurones $h_1,h_2$ d'une même couche cachée sont initialisés avec exactement les mêmes poids $\mathbf w_1^{(0)}=\mathbf w_2^{(0)}=\mathbf w^{(0)}$ et le même biais $b_1^{(0)}=b_2^{(0)}$, reçoivent la même entrée $\mathbf x$, et alimentent tous les deux (de façon symétrique) la suite du réseau. Montrez que, pour <b>n'importe quelle</b> fonction de perte $\mathcal L$ différentiable, $\frac{\partial\mathcal L}{\partial\mathbf w_1}=\frac{\partial\mathcal L}{\partial\mathbf w_2}$ à chaque étape $t$ de l'entraînement, et concluez par récurrence que $\mathbf w_1^{(t)}=\mathbf w_2^{(t)}$ pour tout $t\ge0$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Initialisation ($t=0$)</p>
+              <p>Par hypothèse, $\mathbf w_1^{(0)}=\mathbf w_2^{(0)}$.</p>
+              <p class="method-label">Hérédité</p>
+              <p>Supposons $\mathbf w_1^{(t)}=\mathbf w_2^{(t)}=:\mathbf w^{(t)}$ (et biais identiques) à l'étape $t$. Comme $h_1,h_2$ reçoivent la même entrée $\mathbf x$ et calculent la même fonction $g(\mathbf w^{(t)}\cdot\mathbf x+b^{(t)})$, ils produisent la même sortie $h_1=h_2$ ; et comme ils alimentent la suite du réseau de façon symétrique (même poids sortants par hypothèse de symétrie du problème), la fonction $\mathcal L$ dépend de $\mathbf w_1,\mathbf w_2$ de façon parfaitement symétrique. Par la règle de dérivation en chaîne, $\frac{\partial\mathcal L}{\partial\mathbf w_1}$ et $\frac{\partial\mathcal L}{\partial\mathbf w_2}$ s'expriment par la <b>même formule</b> (chaîne identique : sortie du réseau $\to\dots\to h_1$ pour l'un, $\to\dots\to h_2$ pour l'autre, avec des poids en aval identiques) évaluée aux <b>mêmes valeurs</b> ($\mathbf w_1^{(t)}=\mathbf w_2^{(t)}$, $h_1=h_2$) : donc $\frac{\partial\mathcal L}{\partial\mathbf w_1}=\frac{\partial\mathcal L}{\partial\mathbf w_2}$ en $t$.</p>
+              <p>La mise à jour de descente de gradient $\mathbf w_i^{(t+1)}=\mathbf w_i^{(t)}-\eta\frac{\partial\mathcal L}{\partial\mathbf w_i}$ donne alors $\mathbf w_1^{(t+1)}=\mathbf w_2^{(t+1)}$, ce qui referme la récurrence. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est la preuve complète de l'argument informel de la fiche « pourquoi initialiser aléatoirement » : la symétrie de l'initialisation se propage indéfiniment, quelle que soit la loss, l'architecture en aval, ou le nombre d'itérations.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Formule générale du nombre de paramètres d'un MLP</p>
+            <p>Pour un MLP à $L$ couches (denses) de largeurs $n_0$ (entrée), $n_1,\dots,n_L$ (couches cachées puis sortie), donnez la formule générale du nombre total de paramètres, puis appliquez-la au réseau 4→5→5→3 de la fiche 3 pour retrouver 73.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>La couche $l$ (pour $l=1,\dots,L$) est une application affine $\mathbb R^{n_{l-1}}\to\mathbb R^{n_l}$ : une matrice de poids $n_l\times n_{l-1}$ ($n_ln_{l-1}$ paramètres) et un vecteur de biais de taille $n_l$ ($n_l$ paramètres), soit $n_l(n_{l-1}+1)$ paramètres pour la couche $l$. En sommant sur toutes les couches :</p>
+              <div class="formula">$$\#\text{paramètres} = \sum_{l=1}^L n_l(n_{l-1}+1)$$</div>
+              <p>Pour $4\to5\to5\to3$ ($n_0=4,n_1=5,n_2=5,n_3=3$) : $5\times(4+1)+5\times(5+1)+3\times(5+1)=25+30+18=73$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> chaque terme de la somme est exactement une ligne du cheat sheet de la fiche 3 ; cette formule se généralise immédiatement aux CNN (fiche 12, en remplaçant $n_l(n_{l-1}+1)$ par le nombre de poids d'un filtre de convolution).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Rétropropagation à la main sur un réseau à 2 couches</p>
+            <p>Soit un réseau à une couche cachée $\mathbf h=g(\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]})$, $\hat y=\mathbf W^{[2]}\mathbf h+\mathbf b^{[2]}$ (sortie linéaire, régression), avec perte $\mathcal L=\frac12(\hat y-y)^2$ (scalaire, pour simplifier). En notant $\delta^{[2]}:=\frac{\partial\mathcal L}{\partial\hat y}$, exprimez $\frac{\partial\mathcal L}{\partial\mathbf W^{[2]}}$, $\frac{\partial\mathcal L}{\partial\mathbf W^{[1]}}$ et $\delta^{[1]}:=\frac{\partial\mathcal L}{\partial(\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]})}$ (le gradient <i>avant</i> l'activation de la couche cachée) en fonction de $\delta^{[2]}$, $\mathbf W^{[2]}$, $g'$ et $\mathbf h,\mathbf x$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Couche de sortie</p>
+              <div class="formula">$$\delta^{[2]} = \frac{\partial\mathcal L}{\partial\hat y} = \hat y-y \qquad\qquad \frac{\partial\mathcal L}{\partial\mathbf W^{[2]}} = \delta^{[2]}\,\mathbf h^T$$</div>
+              <p>(dérivée directe de $\mathcal L=\frac12(\hat y-y)^2$, puis règle de la chaîne via $\hat y=\mathbf W^{[2]}\mathbf h+\mathbf b^{[2]}$, linéaire en $\mathbf W^{[2]}$).</p>
+              <p class="method-label">Rétropropagation à travers l'activation</p>
+              <p>$\hat y$ dépend de $\mathbf h$ via $\mathbf W^{[2]}$, donc $\frac{\partial\mathcal L}{\partial\mathbf h}=(\mathbf W^{[2]})^T\delta^{[2]}$. Puis $\mathbf h=g(\mathbf z^{[1]})$ avec $\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}$, donc par la règle de la chaîne (produit terme à terme, $g$ agissant coordonnée par coordonnée) :</p>
+              <div class="formula">$$\delta^{[1]} = \frac{\partial\mathcal L}{\partial\mathbf z^{[1]}} = (\mathbf W^{[2]})^T\delta^{[2]} \odot g'(\mathbf z^{[1]})$$</div>
+              <p class="method-label">Couche cachée</p>
+              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[1]}} = \delta^{[1]}\,\mathbf x^T$$</div>
+              <p class="sense"><b>Sens :</b> c'est exactement le mécanisme de la fiche 6 : le gradient se propage de la sortie vers l'entrée, couche par couche, chaque $\delta^{[l]}$ se déduisant de $\delta^{[l+1]}$ via $(\mathbf W^{[l+1]})^T\delta^{[l+1]}\odot g'(\mathbf z^{[l]})$. C'est cette formule répétée qui explique le phénomène de gradient qui s'évanouit (fiche 22) si $|g'|<1$ systématiquement, couche après couche.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Vérifier le compte de paramètres et l'échelle d'initialisation</p>
+            <p>Recréez le réseau 4→5→5→3 de la fiche 3 avec <code>nn.Sequential</code>, vérifiez que <code>sum(p.numel() for p in model.parameters())</code> vaut bien 73, puis comparez l'écart-type empirique des poids d'une couche <code>nn.Linear(100, 100)</code> initialisée par défaut à celui obtenu avec <code>nn.init.kaiming_normal_</code> (fiche « pourquoi initialiser aléatoirement ») : ce dernier doit être proche de $\sqrt{2/100}$.</p>
+            <div class="exo-scratch">
+              <label for="exo-dl-1-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-dl-1-4" class="exo-textarea" spellcheck="false" placeholder="import torch, torch.nn as nn
+
+model = nn.Sequential(...)
+..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import torch, torch.nn as nn, math
 
 model = nn.Sequential(
     nn.Linear(4, 5), nn.ReLU(),
@@ -935,14 +1005,14 @@ model = nn.Sequential(
 )
 print(sum(p.numel() for p in model.parameters()))  # -&gt; 73
 
-nn.init.constant_(model[0].weight, 0.5)
-nn.init.zeros_(model[0].bias)
-out = model(torch.randn(1, 4))
-out.sum().backward()
-print(model[0].weight.grad)  # toutes les lignes doivent etre identiques</code></pre>
-            <p class="exo-step">Étape 2 · Sous vs sur-apprentissage</p>
-            <p>Sur un jeu de classification jouet (ex. <code>sklearn.datasets.make_moons</code>), entraînez le même MLP avec une couche cachée de 2 neurones (sous-apprentissage attendu) puis de 500 neurones sans régularisation (sur-apprentissage attendu, fiche 9) : tracez les courbes de perte train/validation pour observer l'écart caractéristique de chaque régime.</p>
-          </div>
+layer = nn.Linear(100, 100)
+print("std par defaut       :", layer.weight.std().item())
+nn.init.kaiming_normal_(layer.weight, nonlinearity='relu')
+print("std He/Kaiming        :", layer.weight.std().item())
+print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
+              <p class="sense"><b>Sens :</b> l'écart-type mesuré après <code>kaiming_normal_</code> doit être nettement plus proche de $\sqrt{2/100}\approx0.141$ (fiche « pourquoi initialiser aléatoirement ») que celui de l'initialisation par défaut de PyTorch (qui suit une règle voisine mais légèrement différente, uniforme et bornée par $1/\sqrt{n_{in}}$).</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-1">
             <div class="qcm-head">
@@ -1380,11 +1450,73 @@ print(model[0].weight.grad)  # toutes les lignes doivent etre identiques</code><
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Dimensions d'un CNN, à la main puis sous PyTorch</p>
-            <p class="exo-step">Étape 1 · Prédire les dimensions avant d'exécuter le code</p>
-            <p>Pour un CNN <code>Conv2d(3, 16, kernel_size=3, padding=1) → ReLU → MaxPool2d(2) → Conv2d(16, 32, kernel_size=3, padding=1) → ReLU → MaxPool2d(2)</code> appliqué à une image $28\times28\times3$, calculez <b>à la main</b> (fiche 15, formule $\lfloor(W-K+2P)/S\rfloor+1$) la taille spatiale et le nombre de canaux après chaque couche, puis vérifiez avec <code>torchsummary</code> ou en imprimant <code>x.shape</code> après chaque couche.</p>
-            <pre><code>import torch, torch.nn as nn
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Démontrer la formule de la taille de sortie d'une convolution</p>
+            <p>Une carte d'entrée de taille $W$ (1D pour simplifier) est bordée de $P$ zéros de chaque côté, puis parcourue par une fenêtre de taille $K$ avec un pas $S$. Montrez que le nombre de positions valides de la fenêtre (donc la taille de sortie) vaut $\lfloor(W-K+2P)/S\rfloor+1$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Après padding, la carte a une taille $W+2P$, avec des positions indexées $0,1,\dots,W+2P-1$. La fenêtre de taille $K$ démarrée en position $p$ occupe les indices $p,\dots,p+K-1$ : elle est valide tant que $p+K-1\le W+2P-1$, soit $p\le W+2P-K$. Les positions de départ valides, en partant de $p=0$ avec un pas $S$, sont $p=0,S,2S,\dots$ : le nombre de telles positions est le plus grand $m$ tel que $mS\le W+2P-K$, c'est-à-dire $m=\lfloor(W+2P-K)/S\rfloor$. Le nombre total de positions (en comptant $p=0$) est donc $m+1=\lfloor(W-K+2P)/S\rfloor+1$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est un simple problème de comptage (« combien de multiples de $S$ tiennent dans un intervalle de longueur $W+2P-K$ »), qui se généralise directement en 2D en appliquant la formule indépendamment à la hauteur et à la largeur (fiche 15).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Combien de paramètres économise une convolution par rapport à une couche dense ?</p>
+            <p>Comparez le nombre de paramètres d'une couche <code>Conv2d(C_in, C_out, kernel_size=K)</code> à celui d'une couche <code>nn.Linear</code> qui connecterait <b>tous</b> les pixels d'une image $H\times W\times C_{in}$ à une sortie de même taille $H\times W\times C_{out}$ (sans convolution, en « aplatissant » l'image). Application numérique : $H=W=224$, $C_{in}=3$, $C_{out}=64$, $K=3$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Couche convolutive</p>
+              <p>Chaque filtre a $C_{in}\times K\times K$ poids $+1$ biais, et il y a $C_{out}$ filtres (fiche 12) :</p>
+              <div class="formula">$$\#\text{param. conv} = C_{out}\times(C_{in}\times K\times K+1)$$</div>
+              <p class="method-label">Couche dense équivalente</p>
+              <p>Une couche dense entre $H\times W\times C_{in}$ entrées et $H\times W\times C_{out}$ sorties a, par la formule de l'exercice 2 de la fiche 3 (avec biais) :</p>
+              <div class="formula">$$\#\text{param. dense} = (H\times W\times C_{out})\times(H\times W\times C_{in}+1)$$</div>
+              <p class="method-label">Application numérique</p>
+              <p>Conv : $64\times(3\times3\times3+1)=64\times28=1\,792$ paramètres. Dense : $(224\times224\times64)\times(224\times224\times3+1)\approx3.2\times10^6\times1.5\times10^5\approx4.8\times10^{11}$ paramètres, soit environ <b>270 millions de fois plus</b>. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est le calcul exact qui justifie « pourquoi pas un MLP pour les images » (fiche 11) : le partage des poids (le même petit filtre balaie toute l'image) rend le nombre de paramètres d'une conv <b>indépendant</b> de $H,W$, contrairement à une couche dense où il explose avec la résolution de l'image.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Croissance du champ récepteur en empilant des convolutions</p>
+            <p>On empile $L$ couches de convolution 1D, chacune de taille de noyau $K$ (impaire) et de stride $1$, sans pooling. Montrez par récurrence que le champ récepteur (le nombre de pixels de l'entrée originale qui influencent un pixel donné en sortie de la couche $L$) vaut $1+L(K-1)$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Initialisation ($L=1$)</p>
+              <p>Un pixel de sortie de la première couche dépend exactement des $K$ pixels d'entrée sous son noyau : champ récepteur $=K=1+1\times(K-1)$. Vrai au rang $L=1$.</p>
+              <p class="method-label">Hérédité</p>
+              <p>Supposons qu'un pixel en sortie de la couche $L-1$ ait un champ récepteur de $r_{L-1}=1+(L-1)(K-1)$ pixels de l'entrée originale. Un pixel en sortie de la couche $L$ dépend de $K$ pixels <b>consécutifs</b> en sortie de la couche $L-1$ (son noyau), chacun de champ récepteur $r_{L-1}$, mais ces $K$ champs récepteurs se chevauchent presque entièrement (ils sont décalés d'au plus 1 pixel les uns par rapport aux autres, puisque stride $=1$) : le champ récepteur total s'étend donc de $r_{L-1}$ (le premier) à $r_{L-1}$ décalé de $K-1$ positions (le dernier), soit une largeur totale $r_{L-1}+(K-1)=1+(L-1)(K-1)+(K-1)=1+L(K-1)$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est la formule qui quantifie la fiche 19 : empiler des couches à petit noyau ($K=3$) agrandit le champ récepteur <b>linéairement</b> avec la profondeur, ce qui est le principal argument pour préférer plusieurs petites convolutions à une seule grande (moins de paramètres pour un champ récepteur équivalent, cf. exercice 2).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Prédire les dimensions d'un CNN avant de les vérifier</p>
+            <p>Pour <code>Conv2d(3,16,k=3,p=1) → ReLU → MaxPool2d(2) → Conv2d(16,32,k=3,p=1) → ReLU → MaxPool2d(2)</code> appliqué à une image $28\times28\times3$, calculez <b>à la main</b> (exercice 1) la taille spatiale et le nombre de canaux après chaque couche, notez vos prédictions, puis écrivez le code qui les vérifie.</p>
+            <div class="exo-scratch">
+              <label for="exo-dl-2-4">Vos prédictions de dimensions (brouillon) :</label>
+              <textarea id="exo-dl-2-4" class="exo-textarea" spellcheck="false" placeholder="Conv2d(3,16) -&gt; (?, ?, ?)
+MaxPool2d(2) -&gt; (?, ?, ?)
+..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <table class="cmp">
+                <tr><th>Couche</th><th>Formule</th><th>Sortie</th></tr>
+                <tr><td>Conv2d(3,16,k=3,p=1)</td><td>$\lfloor(28-3+2)/1\rfloor+1=28$</td><td>$28\times28\times16$</td></tr>
+                <tr><td>MaxPool2d(2)</td><td>$\lfloor(28-2)/2\rfloor+1=14$</td><td>$14\times14\times16$</td></tr>
+                <tr><td>Conv2d(16,32,k=3,p=1)</td><td>$\lfloor(14-3+2)/1\rfloor+1=14$</td><td>$14\times14\times32$</td></tr>
+                <tr><td>MaxPool2d(2)</td><td>$\lfloor(14-2)/2\rfloor+1=7$</td><td>$7\times7\times32$</td></tr>
+              </table>
+              <pre><code>import torch, torch.nn as nn
 
 layers = nn.Sequential(
     nn.Conv2d(3, 16, kernel_size=3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
@@ -1394,9 +1526,9 @@ x = torch.randn(1, 3, 28, 28)
 for layer in layers:
     x = layer(x)
     print(layer.__class__.__name__, tuple(x.shape))</code></pre>
-            <p class="exo-step">Étape 2 · Visualiser les filtres appris</p>
-            <p>Après quelques itérations d'entraînement sur un petit jeu d'images (ex. un sous-ensemble de MNIST/CIFAR-10), affichez les 16 filtres de la première couche de convolution (<code>model[0].weight.detach()</code>, un filtre par sous-graphique matplotlib) : comparez-les à ceux, non entraînés, de l'initialisation aléatoire.</p>
-          </div>
+              <p class="sense"><b>Sens :</b> la sortie finale doit être <code>(1, 32, 7, 7)</code>, exactement les valeurs de la table ci-dessus (avec la taille de batch en plus, ici 1).</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-2">
             <div class="qcm-head">
@@ -1706,11 +1838,66 @@ for layer in layers:
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Vanishing gradients : RNN vanille vs LSTM sur une tâche longue</p>
-            <p class="exo-step">Étape 1 · Retrouver la formule du RNN vanille à la main</p>
-            <p>Implémentez le forward pass d'une cellule RNN vanille (fiche 21) avec <code>numpy</code>, en copiant les poids d'un <code>nn.RNNCell</code> PyTorch (<code>cell.weight_ih</code>, <code>cell.weight_hh</code>, biais), et vérifiez que votre calcul à la main donne exactement le même $\mathbf h_t$ que <code>cell(x_t, h_prev)</code>, à la précision flottante près.</p>
-            <pre><code>import torch, torch.nn as nn, numpy as np
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Démontrer pourquoi le gradient d'un RNN vanille s'évanouit</p>
+            <p>Pour un RNN vanille $\mathbf h_t=g(\mathbf W_{hh}\mathbf h_{t-1}+\mathbf W_{ih}\mathbf x_t+\mathbf b)$, exprimez $\frac{\partial\mathbf h_t}{\partial\mathbf h_{t-1}}$, puis $\frac{\partial\mathbf h_T}{\partial\mathbf h_1}$ (règle de la chaîne sur $T-1$ pas de temps). En supposant $\|\mathrm{diag}(g'(\mathbf z_t))\,\mathbf W_{hh}\|\le\rho$ pour tout $t$, avec $\rho<1$ (par exemple $|g'|\le1$ pour $g=\tanh$, et $\mathbf W_{hh}$ de norme spectrale $<1$), majorez $\big\|\frac{\partial\mathbf h_T}{\partial\mathbf h_1}\big\|$ et concluez sur son comportement quand $T\to\infty$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Dérivée locale</p>
+              <p>En notant $\mathbf z_t=\mathbf W_{hh}\mathbf h_{t-1}+\mathbf W_{ih}\mathbf x_t+\mathbf b$ (donc $\mathbf h_t=g(\mathbf z_t)$), la règle de la chaîne donne :</p>
+              <div class="formula">$$\frac{\partial\mathbf h_t}{\partial\mathbf h_{t-1}} = \mathrm{diag}\big(g'(\mathbf z_t)\big)\,\mathbf W_{hh}$$</div>
+              <p class="method-label">Produit sur $T-1$ pas de temps</p>
+              <p>Par composition de la règle de la chaîne le long de la séquence $\mathbf h_1\to\mathbf h_2\to\dots\to\mathbf h_T$ :</p>
+              <div class="formula">$$\frac{\partial\mathbf h_T}{\partial\mathbf h_1} = \prod_{t=2}^{T}\frac{\partial\mathbf h_t}{\partial\mathbf h_{t-1}} = \prod_{t=2}^{T}\mathrm{diag}\big(g'(\mathbf z_t)\big)\,\mathbf W_{hh}$$</div>
+              <p class="method-label">Majoration</p>
+              <p>Par sous-multiplicativité de la norme d'opérateur, $\big\|\frac{\partial\mathbf h_T}{\partial\mathbf h_1}\big\|\le\prod_{t=2}^T\big\|\mathrm{diag}(g'(\mathbf z_t))\,\mathbf W_{hh}\big\|\le\rho^{T-1}$. Comme $\rho<1$, $\rho^{T-1}\to0$ <b>exponentiellement vite</b> quand $T\to\infty$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est la preuve complète de la fiche 22 : dès que le produit des facteurs locaux est systématiquement $<1$ (ce qui est le cas typique avec $\tanh$ ou sigmoïde), l'information de gradient venant de pas de temps lointains ($t\ll T$) devient numériquement négligeable après propagation sur de longues séquences, empêchant le RNN vanille d'apprendre des dépendances à longue portée.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Nombre de paramètres d'une cellule RNN vanille vs LSTM</p>
+            <p>Pour une entrée de taille $n_x$ et un état caché de taille $n_h$, donnez le nombre de paramètres d'une cellule RNN vanille (fiche 21), puis celui d'une cellule LSTM (fiche 23, qui combine 4 portes/candidats de même forme que la cellule RNN vanille : entrée, oubli, sortie, candidat).</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">RNN vanille</p>
+              <p>$\mathbf h_t=g(\mathbf W_{hh}\mathbf h_{t-1}+\mathbf W_{ih}\mathbf x_t+\mathbf b)$ : $\mathbf W_{hh}$ est $n_h\times n_h$, $\mathbf W_{ih}$ est $n_h\times n_x$, $\mathbf b$ est de taille $n_h$, soit $n_h(n_h+n_x+1)$ paramètres.</p>
+              <p class="method-label">LSTM</p>
+              <p>Chacune des 4 portes/candidats ($\mathbf i_t,\mathbf f_t,\mathbf o_t,\tilde{\mathbf c}_t$) a exactement la même forme qu'une cellule RNN vanille (une matrice $n_h\times n_h$, une matrice $n_h\times n_x$, un biais $n_h$), donc :</p>
+              <div class="formula">$$\#\text{param. LSTM} = 4\times n_h(n_h+n_x+1)$$</div>
+              <p class="sense"><b>Sens :</b> une cellule LSTM a donc exactement <b>4 fois plus</b> de paramètres qu'une cellule RNN vanille de même taille, ce qui explique en partie pourquoi elle est plus coûteuse à entraîner, mais toujours indépendant de la longueur de la séquence (comme le partage des poids d'un CNN, fiche 12).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Pourquoi le chemin de gradient du LSTM ne s'évanouit pas de la même façon</p>
+            <p>Dans un LSTM (fiche 23), l'état de cellule se met à jour par $\mathbf c_t=\mathbf f_t\odot\mathbf c_{t-1}+\mathbf i_t\odot\tilde{\mathbf c}_t$. En traitant $\mathbf f_t$ comme localement indépendant de $\mathbf c_{t-1}$ (chemin direct dominant), donnez $\frac{\partial\mathbf c_t}{\partial\mathbf c_{t-1}}$ puis $\frac{\partial\mathbf c_T}{\partial\mathbf c_1}$. Expliquez en quoi ce chemin diffère structurellement de celui de l'exercice 1, et pourquoi cela atténue le problème du gradient qui s'évanouit.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Comme $\odot$ est un produit terme à terme, $\frac{\partial\mathbf c_t}{\partial\mathbf c_{t-1}}=\mathrm{diag}(\mathbf f_t)$ (dérivée du terme $\mathbf f_t\odot\mathbf c_{t-1}$ par rapport à $\mathbf c_{t-1}$ ; le second terme $\mathbf i_t\odot\tilde{\mathbf c}_t$ ne dépend pas directement de $\mathbf c_{t-1}$ dans ce chemin). Par composition :</p>
+              <div class="formula">$$\frac{\partial\mathbf c_T}{\partial\mathbf c_1} = \prod_{t=2}^T\mathrm{diag}(\mathbf f_t)$$</div>
+              <p class="sense"><b>Sens :</b> contrairement à l'exercice 1, ce produit ne fait intervenir <b>aucune matrice de poids</b> $\mathbf W_{hh}$ répétée, seulement les portes d'oubli $\mathbf f_t\in(0,1)^{n_h}$ (sortie d'une sigmoïde). Si le réseau apprend à garder $\mathbf f_t\approx1$ sur les pas de temps pertinents (« laisser passer l'information »), le produit $\prod_t\mathbf f_t$ reste proche de 1 même pour $T$ grand, au lieu de décroître géométriquement comme au RNN vanille : c'est le mécanisme central qui permet au LSTM de propager un gradient sur de bien plus longues séquences (fiche 23).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Retrouver le forward pass d'une cellule RNN vanille à la main</p>
+            <p>En copiant les poids d'un <code>nn.RNNCell</code> PyTorch, calculez $\mathbf h_t=\tanh(\mathbf W_{ih}\mathbf x_t+\mathbf b_{ih}+\mathbf W_{hh}\mathbf h_{t-1}+\mathbf b_{hh})$ « à la main » avec <code>numpy</code> (exercice 1), et vérifiez qu'il coïncide avec la sortie de <code>cell(x_t, h_prev)</code>.</p>
+            <div class="exo-scratch">
+              <label for="exo-dl-3-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-dl-3-4" class="exo-textarea" spellcheck="false" placeholder="h_manual = np.tanh(...)"></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import torch, torch.nn as nn, numpy as np
 
 cell = nn.RNNCell(input_size=3, hidden_size=4)
 x_t, h_prev = torch.randn(1, 3), torch.randn(1, 4)
@@ -1720,9 +1907,9 @@ Wih, Whh = cell.weight_ih.detach().numpy(), cell.weight_hh.detach().numpy()
 bih, bhh = cell.bias_ih.detach().numpy(), cell.bias_hh.detach().numpy()
 h_manual = np.tanh(x_t.numpy() @ Wih.T + bih + h_prev.numpy() @ Whh.T + bhh)
 print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
-            <p class="exo-step">Étape 2 · Une tâche « copie » à longue portée</p>
-            <p>Créez une tâche jouet : prédire, après $T$ pas de temps « neutres », le tout premier symbole de la séquence (fiche 22 : plus $T$ est grand, plus le gradient doit remonter loin). Entraînez un <code>nn.RNN</code> et un <code>nn.LSTM</code> (fiche 23) de même taille cachée pour $T=5$, $20$, puis $50$ : observez à partir de quel $T$ le RNN vanille cesse d'apprendre (perte qui stagne), alors que le LSTM continue à converger.</p>
-          </div>
+              <p class="sense"><b>Sens :</b> pour aller plus loin, entraînez un <code>nn.RNN</code> et un <code>nn.LSTM</code> de même taille cachée sur une tâche « copie » jouet (prédire, après $T$ pas neutres, le tout premier symbole de la séquence) pour $T=5,20,50$ : observez à partir de quel $T$ le RNN vanille cesse d'apprendre (conformément à l'exercice 1), alors que le LSTM continue à converger (exercice 3).</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-3">
             <div class="qcm-head">
@@ -2072,11 +2259,69 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Astuce de reparamétrisation &amp; VAE minimal</p>
-            <p class="exo-step">Étape 1 · Coder l'astuce de reparamétrisation (fiche 31)</p>
-            <p>Écrivez une fonction qui, à partir de $\mu_\phi(\mathbf x)$ et $\log\sigma_\phi^2(\mathbf x)$ (sorties de l'encodeur), tire $\mathbf z=\mu_\phi+\sigma_\phi\odot\mathbf\epsilon$ avec $\mathbf\epsilon\sim\mathcal N(\mathbf 0,\mathbf I)$, et vérifiez que <code>z.requires_grad</code> reste <code>True</code> et que <code>z.backward()</code> propage bien un gradient jusqu'à $\mu_\phi,\log\sigma_\phi^2$ (contrairement à un tirage direct <code>torch.normal(mu, sigma)</code>, qui coupe le graphe de calcul).</p>
-            <pre><code>def reparameterize(mu, logvar):
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Forme close du terme $D_{\mathrm{KL}}$ de l'ELBO</p>
+            <p>Pour un VAE (fiche 30) avec $q_\phi(z|x)=\mathcal N(\mu,\sigma^2)$ (1D, pour simplifier) et prior $p(z)=\mathcal N(0,1)$, démontrez que :</p>
+            <div class="formula">$$D_{\mathrm{KL}}\big(\mathcal N(\mu,\sigma^2)\,\|\,\mathcal N(0,1)\big) = \frac12\big(\sigma^2+\mu^2-1-\log\sigma^2\big)$$</div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Par définition, $D_{\mathrm{KL}}(q\|p)=\mathbb E_{q}\big[\log q(z)-\log p(z)\big]$ avec $q(z)=\frac1{\sqrt{2\pi\sigma^2}}e^{-(z-\mu)^2/(2\sigma^2)}$ et $p(z)=\frac1{\sqrt{2\pi}}e^{-z^2/2}$ :</p>
+              <div class="formula">$$\log q(z)-\log p(z) = -\frac12\log\sigma^2 - \frac{(z-\mu)^2}{2\sigma^2} + \frac{z^2}{2}$$</div>
+              <p>En prenant l'espérance sous $q$ (où $z-\mu$ a variance $\sigma^2$, donc $\mathbb E_q[(z-\mu)^2]=\sigma^2$, et $\mathbb E_q[z^2]=\mathrm{Var}_q(z)+\mathbb E_q[z]^2=\sigma^2+\mu^2$) :</p>
+              <div class="formula">$$D_{\mathrm{KL}}(q\|p) = -\frac12\log\sigma^2 - \frac{\sigma^2}{2\sigma^2} + \frac{\sigma^2+\mu^2}{2} = \frac12\big(\sigma^2+\mu^2-1-\log\sigma^2\big) \qquad\blacksquare$$</div>
+              <p class="sense"><b>Sens :</b> cette formule fermée (généralisée coordonnée par coordonnée pour un espace latent de dimension $d>1$, en sommant) est ce qui rend l'ELBO du VAE calculable <b>exactement</b> sans aucune approximation Monte-Carlo pour le terme $D_{\mathrm{KL}}$ (fiche 30) ; seul le terme de reconstruction nécessite l'astuce de reparamétrisation (exercice 2) pour être optimisé par SGD.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Pourquoi l'astuce de reparamétrisation préserve le gradient</p>
+            <p>Comparez, du point de vue du calcul de gradient, $\mathbf z=\mu_\phi+\sigma_\phi\odot\mathbf{\epsilon}$ avec $\mathbf{\epsilon}\sim\mathcal N(\mathbf 0,\mathbf I)$ tiré <b>avant</b> tout calcul (fiche 31), à un tirage direct $\mathbf z\sim\mathcal N(\mu_\phi,\sigma_\phi^2)$. Donnez $\frac{\partial\mathbf z}{\partial\mu_\phi}$ et $\frac{\partial\mathbf z}{\partial\sigma_\phi}$ dans le premier cas, et expliquez pourquoi ces dérivées n'ont pas de sens dans le second cas.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Avec reparamétrisation</p>
+              <p>$\mathbf z=\mu_\phi+\sigma_\phi\odot\mathbf{\epsilon}$ est une fonction <b>déterministe et différentiable</b> de $\mu_\phi,\sigma_\phi$, une fois $\mathbf{\epsilon}$ fixé (tiré indépendamment de $\phi$) :</p>
+              <div class="formula">$$\frac{\partial\mathbf z}{\partial\mu_\phi} = \mathbf 1 \qquad\qquad \frac{\partial\mathbf z}{\partial\sigma_\phi} = \mathbf{\epsilon}$$</div>
+              <p>Ces deux dérivées existent, sont bien définies, et permettent à la rétropropagation (fiche 6) de traverser l'étape d'échantillonnage pour atteindre $\mu_\phi,\sigma_\phi$ (donc les paramètres de l'encodeur $\phi$ en amont).</p>
+              <p class="method-label">Sans reparamétrisation</p>
+              <p>Un tirage direct $\mathbf z\sim\mathcal N(\mu_\phi,\sigma_\phi^2)$ fait de $\mathbf z$ une variable aléatoire dont la loi (pas la valeur) dépend de $\mu_\phi,\sigma_\phi$ : il n'existe <b>aucune fonction déterministe</b> $\mathbf z=h(\mu_\phi,\sigma_\phi)$ dont on pourrait dériver, puisque $\mathbf z$ n'est justement pas défini comme une transformation déterministe de ces paramètres : c'est le tirage aléatoire <b>lui-même</b> qui « consomme » toute la dépendance en $\mu_\phi,\sigma_\phi$, sans laisser de chemin de gradient exploitable par la rétropropagation. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> la reparamétrisation ne change <b>pas</b> la loi de $\mathbf z$ (elle reste exactement $\mathcal N(\mu_\phi,\sigma_\phi^2)$ dans les deux cas), elle change uniquement <b>comment on l'obtient</b> : en isolant tout l'aléa dans $\mathbf{\epsilon}$ (indépendant de $\phi$), on rend le reste du calcul entièrement différentiable.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Discriminateur optimal du GAN, à $G$ fixé</p>
+            <p>Le GAN (fiche 32) optimise $\min_G\max_D V(D,G)=\mathbb E_{x\sim p_{\mathrm{data}}}[\log D(x)]+\mathbb E_{z\sim p_z}[\log(1-D(G(z)))]$. En notant $p_g$ la loi des données générées par $G$ (i.e. la loi de $G(z)$ pour $z\sim p_z$), montrez que pour $G$ <b>fixé</b>, le discriminateur optimal est $D^\star(x)=\dfrac{p_{\mathrm{data}}(x)}{p_{\mathrm{data}}(x)+p_g(x)}$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>En changeant de variable $x=G(z)$ dans le second terme (le pushforward de $p_z$ par $G$ est $p_g$ par définition), $V(D,G)$ se réécrit comme une intégrale unique sur $x$ :</p>
+              <div class="formula">$$V(D,G) = \int_x p_{\mathrm{data}}(x)\log D(x)\,dx + \int_x p_g(x)\log\big(1-D(x)\big)\,dx$$</div>
+              <p>Pour $G$ fixé, on peut maximiser <b>point par point</b> : pour chaque $x$, on cherche $y=D(x)\in(0,1)$ maximisant $f(y)=a\log y+b\log(1-y)$ avec $a=p_{\mathrm{data}}(x)$, $b=p_g(x)$. En annulant la dérivée :</p>
+              <div class="formula">$$f'(y) = \frac ay-\frac b{1-y}=0 \ \Longrightarrow\ a(1-y)=by \ \Longrightarrow\ y^\star=\frac{a}{a+b} = \frac{p_{\mathrm{data}}(x)}{p_{\mathrm{data}}(x)+p_g(x)} \qquad\blacksquare$$</div>
+              <p class="sense"><b>Sens :</b> c'est ce résultat qui permet de montrer (dans l'article original de Goodfellow et al.) que le jeu minimax du GAN, une fois le discriminateur optimal substitué, revient à minimiser (en $G$) une divergence de Jensen-Shannon entre $p_{\mathrm{data}}$ et $p_g$ : à l'équilibre théorique, $D^\star(x)=\frac12$ partout, le discriminateur ne pouvant plus distinguer vrai de généré.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Vérifier que la reparamétrisation laisse passer le gradient</p>
+            <p>Implémentez <code>reparameterize(mu, logvar)</code> (exercice 2) et vérifiez explicitement, en appelant <code>.backward()</code>, que <code>mu.grad</code> est non nul.</p>
+            <div class="exo-scratch">
+              <label for="exo-dl-4-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-dl-4-4" class="exo-textarea" spellcheck="false" placeholder="def reparameterize(mu, logvar):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import torch
+
+def reparameterize(mu, logvar):
     std = torch.exp(0.5 * logvar)
     eps = torch.randn_like(std)
     return mu + eps * std
@@ -2084,10 +2329,10 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
 mu, logvar = torch.zeros(1, 2, requires_grad=True), torch.zeros(1, 2, requires_grad=True)
 z = reparameterize(mu, logvar)
 z.sum().backward()
-print(mu.grad)  # doit etre non nul</code></pre>
-            <p class="exo-step">Étape 2 · Entraîner un VAE minimal sur des données 2D jouets</p>
-            <p>Sur un mélange de deux gaussiennes 2D, entraînez un VAE minuscule (encodeur/décodeur à une couche cachée, espace latent de dimension 2, perte ELBO = reconstruction + $D_{\mathrm{KL}}$, fiche 30) et visualisez, côte à côte, l'espace latent appris et des échantillons générés depuis $\mathbf z\sim\mathcal N(\mathbf 0,\mathbf I)$ (fiche 29).</p>
-          </div>
+print(mu.grad)  # doit etre non nul (egal a 1 ici, cf. exercice 2)</code></pre>
+              <p class="sense"><b>Sens :</b> comparez à <code>z2 = torch.normal(mu, std)</code> (tirage direct) : appeler <code>z2.sum().backward()</code> lève une erreur (ou ne propage aucun gradient vers <code>mu</code>), illustrant concrètement la différence démontrée à l'exercice 2.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-4">
             <div class="qcm-head">
@@ -2330,14 +2575,63 @@ print(mu.grad)  # doit etre non nul</code></pre>
             </div>
           </article>
 
-          <div class="box box-practice">
-            <p class="box-label">🧪 Exercice pratique · Implémenter l'attention scaled dot-product à la main</p>
-            <p class="exo-step">Étape 1 · Coder la formule et vérifier contre PyTorch</p>
-            <p>Implémentez $\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\big(QK^T/\sqrt{d_k}\big)V$ (fiche 39) avec <code>torch</code>, sur des tenseurs $Q,K,V$ aléatoires, et vérifiez que votre résultat coïncide avec celui de <code>torch.nn.functional.scaled_dot_product_attention(Q, K, V)</code> (à la précision numérique près).</p>
-            <pre><code>import torch, torch.nn.functional as F, math
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 · Justifier le facteur d'échelle $1/\sqrt{d_k}$</p>
+            <p>On suppose que les coordonnées de $\mathbf q$ et $\mathbf k$ (deux vecteurs de $\mathbb R^{d_k}$) sont i.i.d., centrées, de variance 1. Calculez $\mathrm{Var}(\mathbf q\cdot\mathbf k)$, et déduisez pourquoi diviser le score $\mathbf q\cdot\mathbf k$ par $\sqrt{d_k}$ (fiche 39) est nécessaire pour éviter que le softmax ne sature quand $d_k$ est grand.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>$\mathbf q\cdot\mathbf k=\sum_{j=1}^{d_k}q_jk_j$ est une somme de $d_k$ termes i.i.d. (par indépendance des coordonnées), chacun de moyenne $\mathbb E[q_jk_j]=\mathbb E[q_j]\mathbb E[k_j]=0$ et de variance $\mathrm{Var}(q_jk_j)=\mathbb E[q_j^2k_j^2]-0=\mathbb E[q_j^2]\mathbb E[k_j^2]=1$ (indépendance de $q_j,k_j$, chacun de variance 1 et moyenne 0). Par additivité de la variance pour des termes indépendants :</p>
+              <div class="formula">$$\mathrm{Var}(\mathbf q\cdot\mathbf k) = \sum_{j=1}^{d_k}\mathrm{Var}(q_jk_j) = d_k$$</div>
+              <p>L'écart-type du score brut croît donc en $\sqrt{d_k}$. En divisant par $\sqrt{d_k}$, $\mathrm{Var}(\mathbf q\cdot\mathbf k/\sqrt{d_k})=d_k/d_k=1$, indépendant de $d_k$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> sans ce facteur, pour $d_k$ grand, les scores $\mathbf q\cdot\mathbf k$ auraient une variance qui explose : le softmax (fiche 39) saturerait presque toujours vers un vecteur one-hot (une seule position avec un poids proche de 1, les autres écrasées à 0), ce qui rendrait ses gradients quasi nuls presque partout et bloquerait l'apprentissage.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Nombre de paramètres d'une couche de self-attention multi-têtes</p>
+            <p>Une couche de self-attention multi-têtes (fiche 40) de dimension de modèle $d_{\mathrm{model}}$ calcule $Q=XW_Q$, $K=XW_K$, $V=XW_V$ (chacune $d_{\mathrm{model}}\times d_{\mathrm{model}}$, réparties ensuite entre les $h$ têtes), puis recombine les têtes via une projection de sortie $W_O$ ($d_{\mathrm{model}}\times d_{\mathrm{model}}$). En ignorant les biais, donnez le nombre total de paramètres, et vérifiez qu'il est <b>indépendant</b> du nombre de têtes $h$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Les 4 matrices $W_Q,W_K,W_V,W_O$ sont chacune $d_{\mathrm{model}}\times d_{\mathrm{model}}$, soit $d_{\mathrm{model}}^2$ paramètres chacune :</p>
+              <div class="formula">$$\#\text{param.} = 4\,d_{\mathrm{model}}^2$$</div>
+              <p>Le nombre de têtes $h$ ne détermine que la façon dont ces $4d_{\mathrm{model}}^2$ paramètres sont <b>répartis</b> en $h$ sous-espaces de dimension $d_k=d_{\mathrm{model}}/h$ chacun (les têtes travaillent en parallèle sur des sous-espaces de même dimension totale $d_{\mathrm{model}}$) : le compte total ne dépend donc que de $d_{\mathrm{model}}$, pas de $h$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est une propriété importante en pratique : augmenter le nombre de têtes (à $d_{\mathrm{model}}$ fixé) n'augmente <b>pas</b> le coût en paramètres du modèle, seulement sa capacité à apprendre plusieurs types de relations différentes en parallèle (fiche 40).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · L'attention est équivariante par permutation</p>
+            <p>Soit $P$ une matrice de permutation des $n$ positions de la séquence. Montrez que $\mathrm{Attention}(PQ,PK,PV)=P\cdot\mathrm{Attention}(Q,K,V)$ (permuter l'ordre des tokens en entrée permute les sorties de la même façon), et expliquez en une phrase pourquoi cela impose d'ajouter un encodage de position (fiche 39-40) pour que le Transformer sache distinguer l'ordre des tokens.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Notons $S=QK^T/\sqrt{d_k}$. Avec les requêtes/clés permutées, le nouveau score est $S'=(PQ)(PK)^T/\sqrt{d_k}=P(QK^T)P^T/\sqrt{d_k}=PSP^T$ (car $(PK)^T=K^TP^T$). Le softmax de la fiche 39 s'applique ligne par ligne : la ligne $i$ de $S'$ contient les mêmes valeurs que la ligne $\pi^{-1}(i)$ de $S$, simplement réarrangées dans les colonnes selon la même permutation $\pi$ ; comme le softmax est invariant à une permutation simultanée de ses arguments (il ne fait que renormaliser), $\mathrm{softmax}(S')=P\,\mathrm{softmax}(S)\,P^T$. D'où :</p>
+              <div class="formula">$$\mathrm{Attention}(PQ,PK,PV) = \mathrm{softmax}(S')\,(PV) = P\,\mathrm{softmax}(S)\,\underbrace{P^TP}_{=I}\,V = P\cdot\mathrm{Attention}(Q,K,V) \qquad\blacksquare$$</div>
+              <p class="sense"><b>Sens :</b> sans information de position, permuter l'ordre des mots d'une phrase produirait donc exactement les mêmes sorties (juste réarrangées) : le mécanisme d'attention seul est <i>aveugle à l'ordre</i> des tokens, contrairement à un RNN (fiche 36) où l'ordre est implicite dans la récurrence. C'est précisément pour cela qu'un Transformer a besoin d'un encodage de position ajouté explicitement aux embeddings d'entrée.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Implémenter l'attention scaled dot-product et vérifier contre PyTorch</p>
+            <p>Implémentez $\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(QK^T/\sqrt{d_k})V$ (fiche 39), avec un masque causal optionnel (fiche 38, <code>torch.tril</code>), et vérifiez votre résultat contre <code>torch.nn.functional.scaled_dot_product_attention</code>.</p>
+            <div class="exo-scratch">
+              <label for="exo-dl-5-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-dl-5-4" class="exo-textarea" spellcheck="false" placeholder="def attention(Q, K, V, mask=None):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import torch, torch.nn.functional as F, math
 
 def attention(Q, K, V, mask=None):
-    scores = Q @ K.transpose(-2, -1) / math.sqrt(Q.shape[-1])
+    scores = Q @ K.transpose(-2, -1) / math.sqrt(Q.shape[-1])   # exercice 1
     if mask is not None:
         scores = scores.masked_fill(mask == 0, float('-inf'))
     weights = F.softmax(scores, dim=-1)
@@ -2346,10 +2640,16 @@ def attention(Q, K, V, mask=None):
 Q, K, V = torch.randn(1, 5, 8), torch.randn(1, 5, 8), torch.randn(1, 5, 8)
 out, w = attention(Q, K, V)
 out_ref = F.scaled_dot_product_attention(Q, K, V)
-print(torch.allclose(out, out_ref, atol=1e-5))  # doit etre True</code></pre>
-            <p class="exo-step">Étape 2 · Masquage causal &amp; visualisation</p>
-            <p>Ajoutez un masque causal triangulaire (fiche 38 : <code>torch.tril</code>) à votre fonction <code>attention</code>, et affichez la matrice des poids $\mathrm{softmax}(QK^T/\sqrt{d_k})$ sous forme de <i>heatmap</i> (matplotlib) avant et après masquage : vérifiez que la partie triangulaire supérieure (le « futur ») est bien mise à zéro par le masque.</p>
-          </div>
+print(torch.allclose(out, out_ref, atol=1e-5))  # doit etre True
+
+# masque causal (fiche 38)
+n = Q.shape[1]
+causal_mask = torch.tril(torch.ones(n, n))
+out_masked, w_masked = attention(Q, K, V, mask=causal_mask)
+print(torch.allclose(w_masked.triu(1), torch.zeros_like(w_masked)))  # doit etre True</code></pre>
+              <p class="sense"><b>Sens :</b> affichez <code>w_masked</code> sous forme de <i>heatmap</i> (matplotlib) : la partie triangulaire supérieure (le « futur », par rapport à chaque position de requête) doit apparaître exactement à zéro, conformément au masquage causal de la fiche 38.</p>
+            </div>
+          </details>
 
           <div class="qcm" id="qcm-5">
             <div class="qcm-head">
