@@ -724,6 +724,24 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               </ul>
               <p class="sense"><b>Sens :</b> retenir la logique, pas des règles rigides : chaque choix architectural (profondeur, largeur, activation) est une hypothèse qu'on <b>valide empiriquement</b>, jamais une certitude théorique : d'où l'importance du triplet train/validation/test (fiche 9).</p>
             </div>
+
+            <div class="box box-def">
+              <p class="box-label">En pratique · Pourquoi initialiser les poids aléatoirement (et jamais tous à la même valeur) ?</p>
+
+              <h4 class="sub">Le problème de symétrie</h4>
+              <p>Imaginons deux neurones $h_1,h_2$ d'une même couche cachée, initialisés avec <b>exactement les mêmes poids</b> $\mathbf w_1=\mathbf w_2$ (par exemple tous à 0, ou toute autre valeur identique) et le même biais. Recevant la <b>même entrée</b> $\mathbf x$, ils calculent alors <b>exactement la même sortie</b> : $h_1=h_2=g(\mathbf w_1\cdot\mathbf x+b)$. Lors de la rétropropagation, le gradient de la perte par rapport à $\mathbf w_1$ et par rapport à $\mathbf w_2$ est alors <i>lui aussi identique</i> (même formule, mêmes valeurs en entrée) : les deux neurones reçoivent la même mise à jour, donc restent égaux après l'étape de descente de gradient. Ce raisonnement se répète à <b>chaque</b> itération : deux neurones initialisés à l'identique restent des <b>clones parfaits pour toujours</b>, quel que soit le nombre d'itérations d'entraînement.</p>
+              <div class="formula">$$\mathbf w_1^{(0)}=\mathbf w_2^{(0)} \;\Longrightarrow\; \frac{\partial \mathcal L}{\partial \mathbf w_1}=\frac{\partial \mathcal L}{\partial \mathbf w_2} \;\Longrightarrow\; \mathbf w_1^{(t)}=\mathbf w_2^{(t)}\ \ \forall t$$</div>
+              <p class="sense"><b>Sens :</b> avec $K$ neurones initialisés identiquement dans une couche, le réseau se comporte comme s'il n'en avait <b>qu'un seul</b> (les $K-1$ autres sont des copies inutiles) : toute la capacité supplémentaire de la couche est gaspillée. Casser cette symétrie dès l'initialisation, en tirant des poids <b>aléatoires et différents</b> pour chaque neurone, est donc indispensable pour que les neurones d'une même couche <i>se spécialisent</i> (apprennent des combinaisons différentes des entrées). Le biais, lui, peut sans problème être initialisé à 0 : ce n'est <b>pas</b> la source du problème de symétrie (seuls des poids identiques entre neurones le sont).</p>
+
+              <h4 class="sub">« Aléatoire » ne suffit pas : il faut aussi la bonne échelle (variance)</h4>
+              <p>Une fois la symétrie cassée, encore faut-il choisir la bonne <b>amplitude</b> pour ces poids aléatoires. Des poids initiaux trop grands font <b>exploser</b> les pré-activations couche après couche (saturation des fonctions sigmoïde/tanh $\Rightarrow$ gradients qui s'évanouissent, fiche 10) ; des poids trop petits font au contraire <b>s'évanouir</b> le signal (et son gradient) à mesure qu'il traverse les couches d'un réseau profond. Les schémas d'initialisation standards choisissent donc la variance des poids en fonction du nombre d'entrées $n_{in}$ (et parfois de sorties $n_{out}$) de la couche, pour maintenir la variance des activations à peu près stable d'une couche à l'autre :</p>
+              <table class="cmp">
+                <tr><th>Schéma</th><th>Variance de $w_{ij}$</th><th>Pensé pour</th></tr>
+                <tr><td>Xavier / Glorot</td><td>$\dfrac{2}{n_{in}+n_{out}}$</td><td>activations symétriques (tanh, sigmoïde)</td></tr>
+                <tr><td>He / Kaiming</td><td>$\dfrac{2}{n_{in}}$</td><td>ReLU et variantes (la moitié des activations sont nulles)</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> c'est pour cela que <code>nn.Linear</code> de PyTorch initialise ses poids automatiquement selon une variante de ces règles (et non uniformément « au hasard ») : le choix de la variance d'initialisation n'est pas cosmétique, il conditionne directement la stabilité de l'entraînement dans les tout premiers pas de gradient, avant même que la descente de gradient n'ait eu le temps de corriger quoi que ce soit.</p>
+            </div>
           </article>
 
           <article class="topic" id="s4">
@@ -822,6 +840,34 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <p class="box-label">Définition · Adam (ADAptive Moment estimation)</p>
               <div class="formula">$$\mathbf v_k=\beta_2\mathbf v_{k-1}+(1-\beta_2)\mathbf g_k^2, \qquad \hat{\mathbf m}_k=\frac{\mathbf m_k}{1-\beta_1^k}, \ \ \hat{\mathbf v}_k=\frac{\mathbf v_k}{1-\beta_2^k}, \qquad \Delta\theta_k=-\eta\times\frac{\hat{\mathbf m}_k}{\sqrt{\hat{\mathbf v}_k}+\epsilon}$$</div>
               <p class="sense"><b>Sens :</b> $\mathbf v_k$ estime le 2<sup>e</sup> moment (variance) du gradient ; $\hat{\mathbf m}_k,\hat{\mathbf v}_k$ corrigent le biais dû à l'initialisation à 0. $\hat{\mathbf m}_k/\sqrt{\hat{\mathbf v}_k}$ ≈ un ratio signal/bruit, qui amortit les mises à jour extrêmes. Valeurs par défaut : $\eta=0.001$, $\beta_1=0.9$, $\beta_2=0.999$, $\epsilon=10^{-8}$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple numérique · Momentum lisse un gradient qui change de signe</p>
+              <p>On suit un seul paramètre $\theta$ (parti de $\theta_0=0$), avec un pas $\eta=0.1$, $\beta=0.9$, et une suite de gradients qui <b>oscille</b> autour d'une vraie pente moyenne $\approx+0.4$ (comme le ferait un gradient de mini-batch bruité) : $g_1,\dots,g_5 = 2.0,\,-1.5,\,1.8,\,-1.6,\,1.7$.</p>
+              <table class="cmp">
+                <tr><th>$k$</th><th>$g_k$</th><th>$m_k=0.9\,m_{k-1}+0.1\,g_k$</th><th>$\Delta\theta_k^{\text{mom.}}=-\eta\,m_k$</th><th>$\theta_k$ (Momentum)</th><th>$\theta_k$ (GD seul)</th></tr>
+                <tr><td>1</td><td>+2.00</td><td>0.2000</td><td>−0.0200</td><td>−0.0200</td><td>−0.2000</td></tr>
+                <tr><td>2</td><td>−1.50</td><td>0.0300</td><td>−0.0030</td><td>−0.0230</td><td>−0.0500</td></tr>
+                <tr><td>3</td><td>+1.80</td><td>0.2070</td><td>−0.0207</td><td>−0.0437</td><td>−0.2300</td></tr>
+                <tr><td>4</td><td>−1.60</td><td>0.0263</td><td>−0.0026</td><td>−0.0463</td><td>−0.0700</td></tr>
+                <tr><td>5</td><td>+1.70</td><td>0.1937</td><td>−0.0194</td><td>−0.0657</td><td>−0.2400</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> le GD seul (dernière colonne) <b>rebondit</b> à chaque changement de signe de $g_k$ : $\theta$ oscille entre $-0.05$ et $-0.24$ sans progrès net. $m_k$, lui, reste <b>toujours positif</b> (la moyenne mobile amortit les signes qui s'annulent partiellement), donc $\Delta\theta^{\text{mom.}}$ garde un signe cohérent à chaque étape et $\theta$ décroît <b>progressivement et sans à-coup</b> ($-0.02\to-0.07$), en suivant la tendance moyenne $+0.4$ plutôt que le bruit instantané.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple numérique · Adam équilibre le pas entre deux coordonnées très différentes</p>
+              <p>Fonction jouet $F(\theta_1,\theta_2)=5\theta_1^2+0.05\theta_2^2$, donc $\nabla F=(10\theta_1,\ 0.1\theta_2)$ : à $\theta_0=(1,1)$, le gradient sur $\theta_1$ est <b>100 fois plus grand</b> que sur $\theta_2$ ($g_1=10$ contre $g_2=0.1$), typique d'une perte très mal mise à l'échelle entre paramètres. On compare Adam ($\eta=0.1$, $\beta_1=0.9,\beta_2=0.999,\epsilon=10^{-8}$) à un GD classique ($\eta=0.05$) :</p>
+              <table class="cmp">
+                <tr><th>$k$</th><th>$g_1$</th><th>$g_2$</th><th>$\Delta\theta_1$ (Adam)</th><th>$\Delta\theta_2$ (Adam)</th><th>$\Delta\theta_1$ (GD)</th><th>$\Delta\theta_2$ (GD)</th></tr>
+                <tr><td>1</td><td>10.000</td><td>0.1000</td><td>−0.1000</td><td>−0.1000</td><td>−0.5000</td><td>−0.0050</td></tr>
+                <tr><td>2</td><td>9.000</td><td>0.0900</td><td>−0.0996</td><td>−0.0996</td><td>−0.4500</td><td>−0.0045</td></tr>
+                <tr><td>3</td><td>8.004</td><td>0.0800</td><td>−0.0988</td><td>−0.0988</td><td>−0.4002</td><td>−0.0040</td></tr>
+                <tr><td>4</td><td>7.016</td><td>0.0702</td><td>−0.0976</td><td>−0.0976</td><td>−0.3508</td><td>−0.0035</td></tr>
+                <tr><td>5</td><td>6.039</td><td>0.0604</td><td>−0.0960</td><td>−0.0960</td><td>−0.3020</td><td>−0.0030</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> avec le GD classique, $\Delta\theta_1$ et $\Delta\theta_2$ gardent le même rapport $100\times$ que les gradients bruts : $\theta_2$ progresse 100 fois trop lentement pour converger à un rythme comparable à $\theta_1$. Avec Adam, $\hat{\mathbf v}_k$ (moyenne du <b>carré</b> du gradient, propre à chaque coordonnée) divise chaque mise à jour par l'échelle typique de <b>sa propre</b> coordonnée : $\Delta\theta_1\approx\Delta\theta_2\approx-0.10$ malgré des gradients bruts 100 fois différents. C'est le sens exact de « estimation adaptative des moments » : Adam <b>renormalise chaque paramètre par son propre historique</b>, au lieu d'appliquer le même pas $\eta$ brut à toutes les coordonnées comme le ferait un GD classique.</p>
             </div>
           </article>
 
