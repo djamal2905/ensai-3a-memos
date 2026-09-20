@@ -1044,9 +1044,10 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · Passe avant d'un petit MLP, à la main</p>
-            <p>Réseau à une couche cachée : entrée $\mathbf x=(2,1)$, $\mathbf W^{[1]}=\begin{pmatrix}1&1\\2&-1\end{pmatrix}$, $\mathbf b^{[1]}=(-1,0)$, activation ReLU pour la couche cachée ; $\mathbf W^{[2]}=(1,-1)$, $b^{[2]}=0.5$, activation sigmoïde en sortie (classification binaire).</p>
+            <p><b>Contexte :</b> une banque évalue automatiquement une demande de prêt à partir de deux variables standardisées : $x_1$ = revenu mensuel, $x_2$ = ancienneté professionnelle. Le réseau (une couche cachée) combine ces deux variables en deux indicateurs internes : $h_1$ = « capacité de remboursement perçue » (combine positivement revenu et ancienneté) et $h_2$ = « signal de risque » (pèse surtout le revenu, avec un effet <i>négatif</i> de l'ancienneté, qui rassure). La sortie, une probabilité d'approbation $\hat y\in(0,1)$, augmente avec $h_1$ et diminue avec $h_2$ :</p>
+            <p>entrée $\mathbf x=(2,1)$ (client au revenu confortable, ancienneté modérée), $\mathbf W^{[1]}=\begin{pmatrix}1&1\\2&-1\end{pmatrix}$, $\mathbf b^{[1]}=(-1,0)$, activation ReLU pour la couche cachée ; $\mathbf W^{[2]}=(1,-1)$, $b^{[2]}=0.5$, activation sigmoïde en sortie (classification binaire : approuver ou non).</p>
             <p>(a) Calculez $\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}$ puis $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})$.<br>
-            (b) Calculez la pré-activation de sortie $z^{[2]}=\mathbf W^{[2]}\mathbf h+b^{[2]}$, puis $\hat y=\sigma(z^{[2]})$.<br>
+            (b) Calculez la pré-activation de sortie $z^{[2]}=\mathbf W^{[2]}\mathbf h+b^{[2]}$, puis $\hat y=\sigma(z^{[2]})$. Le prêt serait-il approuvé avec un seuil de décision à $0.5$ ?<br>
             (c) Comptez le nombre total de paramètres entraînables de ce réseau (fiche 3, exercice 2).</p>
           </div>
           <details class="solution">
@@ -1054,12 +1055,13 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <div class="box box-thm">
               <p class="method-label">(a) Couche cachée</p>
               <div class="formula">$$\mathbf z^{[1]} = \begin{pmatrix}1&1\\2&-1\end{pmatrix}\begin{pmatrix}2\\1\end{pmatrix}+\begin{pmatrix}-1\\0\end{pmatrix} = \begin{pmatrix}2+1\\4-1\end{pmatrix}+\begin{pmatrix}-1\\0\end{pmatrix} = \begin{pmatrix}2\\3\end{pmatrix}$$</div>
-              <p>Les deux coordonnées sont positives, donc $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})=(2,3)$ (ReLU n'a ici aucun effet).</p>
+              <p>Les deux coordonnées sont positives, donc $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})=(2,3)$ (ReLU n'a ici aucun effet) : la capacité de remboursement perçue ($h_1=2$) est élevée, mais le signal de risque ($h_2=3$) l'est encore plus.</p>
               <p class="method-label">(b) Couche de sortie</p>
               <div class="formula">$$z^{[2]} = 1\times2+(-1)\times3+0.5 = 2-3+0.5 = -0.5 \qquad\qquad \hat y=\sigma(-0.5)=\frac1{1+e^{0.5}}\approx0.3775$$</div>
+              <p>Avec $\hat y\approx0.3775<0.5$, le prêt serait <b>refusé</b> : malgré un revenu confortable, le poids du signal de risque ($W^{[2]}_2=-1$, appliqué à $h_2=3$) l'emporte ici sur la capacité de remboursement perçue ($h_1=2$).</p>
               <p class="method-label">(c) Compte de paramètres</p>
               <p>Couche 1 : $\mathbf W^{[1]}$ ($2\times2=4$) $+\ \mathbf b^{[1]}$ ($2$) $=6$. Couche 2 : $\mathbf W^{[2]}$ ($1\times2=2$) $+\ b^{[2]}$ ($1$) $=3$. Total $=6+3=9$, cohérent avec la formule $\sum_l n_l(n_{l-1}+1)=2\times(2+1)+1\times(2+1)=6+3=9$ de la fiche 3.</p>
-              <p class="sense"><b>Sens :</b> ce calcul « à la main » est exactement ce que fait <code>model(x)</code> en interne dans PyTorch, couche par couche : le comprendre en détail permet de déboguer un réseau qui produit des valeurs inattendues (ex. toujours $\hat y\approx0.5$, ou toujours $0$ après une couche ReLU).</p>
+              <p class="sense"><b>Sens :</b> ce calcul « à la main » est exactement ce que fait <code>model(x)</code> en interne dans PyTorch, couche par couche : le comprendre en détail permet de déboguer un réseau qui produit des valeurs inattendues (ex. toujours $\hat y\approx0.5$, ou toujours $0$ après une couche ReLU), ou ici de comprendre <i>pourquoi</i> un client au profil pourtant favorable se voit refuser un prêt : un modèle mal calibré peut sur-pondérer un indicateur de risque au détriment d'un indicateur positif.</p>
             </div>
           </details>
 
