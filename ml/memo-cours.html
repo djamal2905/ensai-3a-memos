@@ -671,7 +671,7 @@ def lasso_cd(X, y, lam, n_iter=100):
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · OLS, Ridge et Lasso sur un petit exemple numérique</p>
-            <p>On considère un problème de régression à deux variables explicatives <b>orthogonales</b> entre elles, telles que $Z^TZ=\begin{pmatrix}4&0\\0&1\end{pmatrix}$ et $Z^Ty=\begin{pmatrix}8\\2\end{pmatrix}$ (design déjà centré, sans intercept).</p>
+            <p><b>Contexte :</b> un site e-commerce a mené une campagne A/B <b>équilibrée et croisée</b> (plan d'expérience factoriel) pour mesurer l'effet de deux leviers marketing sur le supplément de panier moyen $y$ (en euros, centré) : $x_1$ = remise accordée (standardisée) et $x_2$ = envoi d'un email de relance (codé $\pm1$, standardisé). Comme le plan d'expérience a été construit pour croiser les deux facteurs à parts égales, les deux variables sont <b>orthogonales</b> par construction, ce qui donne $Z^TZ=\begin{pmatrix}4&0\\0&1\end{pmatrix}$ et $Z^Ty=\begin{pmatrix}8\\2\end{pmatrix}$ (design déjà centré, sans intercept).</p>
             <p>(a) Calculez l'estimateur OLS $\hat\theta$ (fiche 3).<br>
             (b) Calculez l'estimateur Ridge $\hat\theta_\lambda^{\mathrm{rdg}}$ pour $\lambda=1$ (fiche 5).<br>
             (c) $Z^TZ$ étant diagonale, la pénalité Lasso se découple coordonnée par coordonnée : montrez que $\hat\theta_{\lambda,k}^{\mathrm{Lasso}}=S_\lambda\big((Z^Ty)_k\big)/(Z^TZ)_{kk}$, puis calculez $\hat\theta_\lambda^{\mathrm{Lasso}}$ pour $\lambda=1$.<br>
@@ -693,7 +693,7 @@ def lasso_cd(X, y, lam, n_iter=100):
                 <tr><td>$\theta_1$ ($(Z^TZ)_{11}=4$)</td><td>2</td><td>1.6</td><td>1.75</td><td>80%</td><td>87.5%</td></tr>
                 <tr><td>$\theta_2$ ($(Z^TZ)_{22}=1$)</td><td>2</td><td>1</td><td>1</td><td>50%</td><td>50%</td></tr>
               </table>
-              <p class="sense"><b>Sens :</b> $\theta_2$, associé à la plus petite valeur diagonale de $Z^TZ$ (donc à la direction la moins « informative », la plus incertaine), est proportionnellement bien plus rétréci que $\theta_1$ par les <b>deux</b> méthodes. C'est la traduction numérique directe des formules de biais : pour un $\lambda$ fixé, la pénalisation pèse relativement plus sur les coordonnées à faible variance expliquée (petit $(Z^TZ)_{kk}$), exactement comme le prédit $\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]-\theta^\star=-\lambda(Z^TZ+\lambda I)^{-1}\theta^\star$ (fiche 5).</p>
+              <p class="sense"><b>Sens :</b> $\theta_2$ (l'effet de l'email de relance, sur la coordonnée à plus petite valeur diagonale de $Z^TZ$, donc la direction la moins « informative », la plus incertaine) est proportionnellement bien plus rétréci que $\theta_1$ (la remise) par les <b>deux</b> méthodes. C'est la traduction numérique directe des formules de biais : pour un $\lambda$ fixé, la pénalisation pèse relativement plus sur les coordonnées à faible variance expliquée (petit $(Z^TZ)_{kk}$), exactement comme le prédit $\mathbb E[\hat\theta_\lambda^{\mathrm{rdg}}]-\theta^\star=-\lambda(Z^TZ+\lambda I)^{-1}\theta^\star$ (fiche 5) : si le service marketing doit choisir quel levier garder d'après un budget de test limité, c'est l'effet remise ($\theta_1$) qui reste le plus fiable après régularisation.</p>
             </div>
           </details>
 
@@ -1026,7 +1026,7 @@ def nesterov(X, y, gamma, n_iter):
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · Trace à la main de la descente de gradient sur $F(\theta)=\theta^2$</p>
-            <p>On applique GD à $F(\theta)=\theta^2$ (donc $\theta^\star=0$), avec $\theta_0=10$ et un pas constant $\gamma$.</p>
+            <p><b>Contexte :</b> une plateforme de réservation ajuste automatiquement, jour après jour, un unique paramètre $\theta$ = l'écart (en euros) entre son prix affiché et le prix cible estimé par son moteur de tarification. Près de l'optimum, son coût interne (pénalité pour écart au prix cible) se comporte comme une fonction quadratique simple $F(\theta)=\theta^2$ (donc $\theta^\star=0$, prix exactement calé sur la cible), comme le montre le développement de Taylor à l'ordre 2 de n'importe quelle fonction de coût lisse strictement convexe (fiche 9). On applique GD à $F$, en partant d'un prix nettement trop élevé, $\theta_0=10$, avec un pas constant $\gamma$.</p>
             <p>(a) Pour $\gamma=0.1$, calculez $\theta_1,\theta_2,\theta_3$ à la main.<br>
             (b) Montrez que la suite vérifie la relation de récurrence exacte $\theta_{t+1}=(1-2\gamma)\theta_t$, et déduisez la condition sur $\gamma$ pour que $\theta_t\to\theta^\star=0$ quand $t\to\infty$.<br>
             (c) Calculez la constante de smoothness $L$ de $F$ (fiche 9), et vérifiez que la condition trouvée en (b) est cohérente avec le critère $\gamma\le2/L$ de la Proposition « petits pas ne peuvent pas nuire » (fiche 10).</p>
@@ -1321,7 +1321,7 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · Hyperplan séparateur par inspection géométrique</p>
-            <p>On dispose de 4 points en 2D : classe $+1$ : $(2,2)$ et $(2,0)$ ; classe $-1$ : $(0,0)$ et $(0,2)$.</p>
+            <p><b>Contexte :</b> une banque teste un détecteur de fraude sur les 4 tout premiers signalements de son historique, décrits par 2 variables standardisées : $x_1$ = montant de la transaction, $x_2$ = distance au dernier lieu de retrait connu. On dispose donc de 4 points en 2D : classe $+1$ (fraude) : $(2,2)$ et $(2,0)$ ; classe $-1$ (légitime) : $(0,0)$ et $(0,2)$.</p>
             <p>(a) Par symétrie du problème, proposez (sans résoudre le programme quadratique) l'hyperplan séparateur $\mathbf w,b$ de marge maximale (fiche 15).<br>
             (b) Vérifiez que votre solution satisfait $y_i(\mathbf w^T\mathbf x_i+b)\ge1$ pour les 4 points, avec égalité pour chacun d'eux.<br>
             (c) Calculez la marge $1/\|\mathbf w\|_2$.<br>
@@ -1593,7 +1593,7 @@ def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · Une itération d'AdaBoost, à la main</p>
-            <p>On dispose de 3 points, de poids initiaux uniformes $w^{(1)}=(1/3,1/3,1/3)$. Un premier classifieur faible $h_1$ se trompe sur exactement <b>1</b> des 3 points (le troisième).</p>
+            <p><b>Contexte :</b> un filtre anti-spam s'entraîne sur 3 emails d'un jeu de test, de poids initiaux uniformes $w^{(1)}=(1/3,1/3,1/3)$. Une première règle faible $h_1$ (par exemple « contient le mot gratuit ») se trompe sur exactement <b>1</b> des 3 emails (le troisième).</p>
             <p>(a) Calculez le taux d'erreur pondéré $\varepsilon_1=\sum_{i:\,y_i\neq h_1(\mathbf x_i)}w_i^{(1)}$.<br>
             (b) Calculez $\beta_1=\frac12\ln\frac{1-\varepsilon_1}{\varepsilon_1}$ (fiche 20, exercice 3).<br>
             (c) Les nouveaux poids non normalisés valent $w_i^{(2)}\propto w_i^{(1)}e^{-\beta_1}$ si $h_1(\mathbf x_i)=y_i$ (bien classé), $w_i^{(1)}e^{\beta_1}$ sinon. Calculez-les, puis normalisez-les pour qu'ils somment à 1.<br>
@@ -1612,8 +1612,8 @@ def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
               <p>Somme $\approx0.9428$. Après normalisation :</p>
               <div class="formula">$$w^{(2)} = (0.25,\ 0.25,\ 0.5)$$</div>
               <p class="method-label">(d) Commentaire</p>
-              <p>Le poids du point mal classé <b>double exactement</b> par rapport aux deux autres (0.5 contre 0.25 chacun) : il pèsera deux fois plus lourd dans le calcul du taux d'erreur pondéré du <b>prochain</b> classifieur faible $h_2$, qui sera donc incité à se concentrer sur ce point difficile. $\blacksquare$</p>
-              <p class="sense"><b>Sens :</b> c'est exactement le mécanisme séquentiel de la fiche 20 : chaque round redistribue le poids vers les erreurs du round précédent, ce qui force les classifieurs faibles successifs à se spécialiser sur les points encore mal expliqués.</p>
+              <p>Le poids de l'email mal classé <b>double exactement</b> par rapport aux deux autres (0.5 contre 0.25 chacun) : il pèsera deux fois plus lourd dans le calcul du taux d'erreur pondéré de la <b>prochaine</b> règle faible $h_2$, qui sera donc incitée à se concentrer sur cet email difficile à trancher. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est exactement le mécanisme séquentiel de la fiche 20 : chaque round redistribue le poids vers les erreurs du round précédent, ce qui force les règles faibles successives à se spécialiser sur les emails encore mal classés, par exemple ceux qui ressemblent à du spam par leur mise en forme mais pas par leur vocabulaire.</p>
             </div>
           </details>
 
@@ -1850,7 +1850,7 @@ print(f"Pearson r = {r:.4f}  |  HSIC = {h:.4f}")
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · Pearson et information mutuelle à partir d'une loi jointe discrète</p>
-            <p>Deux variables binaires $X,Y\in\{0,1\}$ suivent la loi jointe donnée par le tableau :</p>
+            <p><b>Contexte :</b> un opérateur télécom sélectionne, parmi des dizaines de variables candidates, celles à garder pour prédire le churn (résiliation). Il étudie le lien entre $X$ = « le client a contacté le support ce mois-ci » et $Y$ = « le client résilie le mois suivant » (les deux variables sont binaires, $X,Y\in\{0,1\}$), dont la loi jointe (estimée sur l'historique de la base client) est donnée par le tableau :</p>
             <table class="cmp">
               <tr><th>$P(X=x,Y=y)$</th><th>$y=0$</th><th>$y=1$</th></tr>
               <tr><td>$x=0$</td><td>0.4</td><td>0.1</td></tr>
@@ -1872,7 +1872,7 @@ print(f"Pearson r = {r:.4f}  |  HSIC = {h:.4f}")
               <p class="method-label">(c) Information mutuelle</p>
               <div class="formula">$$I(X;Y) = 2\times0.4\log_2\!\left(\frac{0.4}{0.25}\right) + 2\times0.1\log_2\!\left(\frac{0.1}{0.25}\right) \approx 0.8\times0.678 - 0.2\times1.322 \approx 0.278\ \text{bits}$$</div>
               <p class="method-label">(d) Indépendance ?</p>
-              <p>Non : $\rho(X,Y)=0.6\neq0$ <b>et</b> $I(X;Y)\approx0.278>0$ signalent tous deux une dépendance. Ici, contrairement à l'exemple $Y=X^2$ (exercice 1), la dépendance a une composante <b>linéaire</b> significative : les deux mesures s'accordent, ce qui n'est pas toujours le cas (fiche 22).</p>
+              <p>Non : $\rho(X,Y)=0.6\neq0$ <b>et</b> $I(X;Y)\approx0.278>0$ signalent tous deux une dépendance. Ici, contrairement à l'exemple $Y=X^2$ (exercice 1), la dépendance a une composante <b>linéaire</b> significative : les deux mesures s'accordent, ce qui n'est pas toujours le cas (fiche 22). Le service client peut donc raisonnablement garder « a contacté le support ce mois-ci » comme variable candidate pour prédire le churn.</p>
               <p class="sense"><b>Sens :</b> cet exemple complète l'exercice 1 : Pearson et information mutuelle ne sont <b>pas toujours en désaccord</b> ; ils coïncident dès que la dépendance a une composante linéaire suffisante. Le piège de Pearson n'apparaît que pour des dépendances <i>purement</i> non linéaires (symétriques, comme $Y=X^2$).</p>
             </div>
           </details>
@@ -2109,7 +2109,7 @@ def irls_lad(X, y, n_iter=20, eps=1e-6):
 
           <div class="box box-ex">
             <p class="box-label">Exercice 5 (type examen) · Deux itérations d'IRLS à la main, face à un outlier</p>
-            <p>Modèle sans intercept $y=\theta x$, avec 4 points $(x_i,y_i)$ : $(1,1),(2,2),(3,3)$ (alignés sur $y=x$) et $(4,20)$ (un outlier).</p>
+            <p><b>Contexte :</b> le service RH modélise le salaire mensuel $y$ (en centaines d'euros) en fonction de l'ancienneté $x$ (en années) par un modèle sans intercept $y=\theta x$, sur 4 employés $(x_i,y_i)$ : $(1,1),(2,2),(3,3)$ (bien alignés sur la grille salariale « normale » $y=x$) et $(4,20)$, une erreur de saisie en paie (un zéro de trop, $2000$€ au lieu de $400$€).</p>
             <p>(a) Calculez $\hat\theta^{\mathrm{OLS}}=\sum x_iy_i/\sum x_i^2$ (fiche 3), et commentez : est-il proche de la pente « normale » 1 ?<br>
             (b) Calculez les résidus $r_i=y_i-\hat\theta^{\mathrm{OLS}}x_i$ et les poids IRLS $w_i=1/|r_i|$ (fiche 25, exercice 3).<br>
             (c) Calculez $\theta_1=\sum w_ix_iy_i/\sum w_ix_i^2$ (une itération de WLS, fiche 24). Le résultat s'est-il rapproché de la pente « normale » 1 ?<br>
