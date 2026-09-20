@@ -969,46 +969,42 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
           </details>
 
           <div class="box box-ex">
-            <p class="box-label">Exercice 3 (bonus) · Rétropropagation à la main sur un réseau à 2 couches</p>
-            <p>Réseau à une couche cachée de $n_h$ neurones, entrée $\mathbf x\in\mathbb R^{n_x}$, sortie scalaire (régression) :</p>
-            <div class="formula">$$\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}\in\mathbb R^{n_h}, \qquad \mathbf h=g(\mathbf z^{[1]})\in\mathbb R^{n_h}, \qquad \hat y=\mathbf W^{[2]}\mathbf h+b^{[2]}\in\mathbb R$$</div>
-            <p>avec $\mathbf W^{[1]}\in\mathbb R^{n_h\times n_x}$, $\mathbf b^{[1]}\in\mathbb R^{n_h}$, $\mathbf W^{[2]}\in\mathbb R^{1\times n_h}$ (une seule ligne car la sortie est scalaire), $b^{[2]}\in\mathbb R$, et perte $\mathcal L=\frac12(\hat y-y)^2$.</p>
-            <p>(a) En notant $\delta^{[2]}:=\dfrac{\partial\mathcal L}{\partial\hat y}$ (un <b>scalaire</b>, puisque $\hat y\in\mathbb R$), calculez $\delta^{[2]}$ puis $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[2]}}$. Vérifiez que le résultat a bien la dimension $1\times n_h$, celle de $\mathbf W^{[2]}$.<br>
-            (b) Calculez $\dfrac{\partial\mathcal L}{\partial\mathbf h}\in\mathbb R^{n_h}$ (comment $\hat y$ dépend-il de $\mathbf h$ ?), puis, sachant que $\mathbf h=g(\mathbf z^{[1]})$ s'applique <b>coordonnée par coordonnée</b>, déduisez $\delta^{[1]}:=\dfrac{\partial\mathcal L}{\partial\mathbf z^{[1]}}\in\mathbb R^{n_h}$.<br>
-            (c) Calculez $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[1]}}$ <b>en fonction de $\delta^{[1]}$</b> (pas $\delta^{[2]}$ directement !) et $\mathbf x$. Vérifiez que le résultat a bien la dimension $n_h\times n_x$, celle de $\mathbf W^{[1]}$.</p>
+            <p class="box-label">Exercice 3 (bonus) · Rétropropagation à la main : le T-shirt, version régression</p>
+            <p><b>Contexte :</b> on reprend l'exemple du T-shirt (fiche 3), mais cette fois en <b>régression</b> : une marque veut prédire un score de succès commercial continu $\hat y$ (centré sur 0 : positif = bon signe, négatif = mauvais signe) pour un <b>nouveau</b> modèle de T-shirt, à partir de deux caractéristiques standardisées : $x_1$ = prix ($x_1=3$ signifie « 3 écarts-types plus cher que la moyenne du catalogue », donc un article plutôt haut de gamme) et $x_2$ = budget marketing engagé ($x_2=1$, légèrement au-dessus de la moyenne). La couche cachée a 2 neurones nommés comme en fiche 3 : $h_1$ = « accessibilité perçue » (affordability, devrait <b>diminuer</b> avec le prix) et $h_2$ = « notoriété » (awareness, devrait <b>augmenter</b> avec le marketing) :</p>
+            <div class="formula">$$\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}, \qquad \mathbf h=\mathrm{ReLU}(\mathbf z^{[1]}), \qquad \hat y=\mathbf W^{[2]}\mathbf h+b^{[2]}$$</div>
+            <p>avec $\mathbf x=(3,\ 1)$, $\mathbf W^{[1]}=\begin{pmatrix}-1&0\\0&2\end{pmatrix}$ (ligne 1 : affordability $\leftarrow-$prix ; ligne 2 : awareness $\leftarrow$ marketing), $\mathbf b^{[1]}=(2,\ {-1})$, $\mathbf W^{[2]}=(1,\ 1)$ (les deux concepts contribuent positivement au succès), $b^{[2]}=-0.5$. Une fois ce T-shirt commercialisé, son score de succès réellement observé est $y=2$ (il s'est mieux vendu que prévu). Perte $\mathcal L=\frac12(\hat y-y)^2$.</p>
+            <p>(a) En notant $\delta^{[2]}:=\dfrac{\partial\mathcal L}{\partial\hat y}$ (un <b>scalaire</b>, puisque $\hat y\in\mathbb R$), calculez $\mathbf z^{[1]},\mathbf h,\hat y,\mathcal L,\delta^{[2]}$, puis $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[2]}}$. Vérifiez la dimension $1\times2$.<br>
+            (b) Calculez $\dfrac{\partial\mathcal L}{\partial\mathbf h}\in\mathbb R^2$, puis $\delta^{[1]}:=\dfrac{\partial\mathcal L}{\partial\mathbf z^{[1]}}\in\mathbb R^2$ (attention à $g'(\mathbf z^{[1]})$ : une des deux coordonnées de $\mathbf z^{[1]}$ est-elle négative ?).<br>
+            (c) Calculez $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[1]}}$ <b>en fonction de $\delta^{[1]}$</b> (pas $\delta^{[2]}$ directement !). Vérifiez la dimension $2\times2$. Que signifie, <b>en termes du problème</b>, le fait que la ligne de $\partial\mathcal L/\partial\mathbf W^{[1]}$ associée à $h_1$ (affordability) soit nulle ?</p>
           </div>
           <details class="solution">
             <summary>Voir la correction très détaillée</summary>
             <div class="box box-thm">
-              <p class="method-label">(a) Couche de sortie</p>
+              <p class="method-label">(a) Passe avant, puis couche de sortie</p>
+              <div class="formula">$$\mathbf z^{[1]} = \begin{pmatrix}-1\times3+0\times1+2\\0\times3+2\times1-1\end{pmatrix}=\begin{pmatrix}-1\\1\end{pmatrix} \qquad \mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})=\begin{pmatrix}0\\1\end{pmatrix}$$</div>
+              <p>La première coordonnée de $\mathbf z^{[1]}$ (affordability) est <b>négative</b> : ce T-shirt est jugé trop cher, $h_1=0$ (ReLU l'annule). Seule la notoriété $h_2=1$ reste active.</p>
+              <div class="formula">$$\hat y = 1\times0+1\times1-0.5=0.5 \qquad \mathcal L=\frac12(0.5-2)^2=1.125$$</div>
               <p>$\mathcal L=\frac12(\hat y-y)^2$ est une fonction scalaire d'une variable scalaire $\hat y$, donc sa dérivée est elle-même un scalaire :</p>
-              <div class="formula">$$\delta^{[2]} = \frac{\partial\mathcal L}{\partial\hat y} = \hat y-y \qquad (\text{scalaire})$$</div>
-              <p>Puis $\hat y=\mathbf W^{[2]}\mathbf h+b^{[2]}=\sum_{k=1}^{n_h}W^{[2]}_{1k}\,h_k$ est <b>linéaire</b> en chaque coefficient $W^{[2]}_{1k}$ de $\mathbf W^{[2]}$, donc $\frac{\partial\hat y}{\partial W^{[2]}_{1k}}=h_k$. Par la règle de la chaîne, $\frac{\partial\mathcal L}{\partial W^{[2]}_{1k}}=\delta^{[2]}\,h_k$ pour chaque $k$, ce qui s'écrit sous forme matricielle :</p>
-              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[2]}} = \delta^{[2]}\,\mathbf h^T$$</div>
-              <p><b>Vérification des dimensions :</b> $\delta^{[2]}$ est un scalaire, $\mathbf h^T$ est $1\times n_h$ (transposée du vecteur colonne $\mathbf h\in\mathbb R^{n_h}$) : le produit $\delta^{[2]}\mathbf h^T$ est donc $1\times n_h$, exactement la forme de $\mathbf W^{[2]}$. ✓</p>
+              <div class="formula">$$\delta^{[2]} = \frac{\partial\mathcal L}{\partial\hat y} = \hat y-y = 0.5-2=-1.5 \qquad (\text{scalaire})$$</div>
+              <p>Puis $\hat y=\mathbf W^{[2]}\mathbf h+b^{[2]}=\sum_{k=1}^{2}W^{[2]}_{1k}\,h_k$ est <b>linéaire</b> en chaque coefficient $W^{[2]}_{1k}$, donc $\frac{\partial\hat y}{\partial W^{[2]}_{1k}}=h_k$. Par la règle de la chaîne, $\frac{\partial\mathcal L}{\partial W^{[2]}_{1k}}=\delta^{[2]}\,h_k$, ce qui s'écrit sous forme matricielle :</p>
+              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[2]}} = \delta^{[2]}\,\mathbf h^T = -1.5\times(0,\ 1) = (0,\ {-1.5})$$</div>
+              <p><b>Vérification des dimensions :</b> $\delta^{[2]}$ est un scalaire, $\mathbf h^T$ est $1\times2$ : le produit est $1\times2$, exactement la forme de $\mathbf W^{[2]}$. ✓ <b>Lecture :</b> augmenter le poids de « notoriété » ($W^{[2]}_{12}$) dans la formule de $\hat y$ aurait fait <i>monter</i> $\hat y$ (rapprocher de $y=2$) : c'est pour cela que le gradient y est négatif (la descente de gradient <i>soustrait</i> le gradient, donc ce coefficient va augmenter à l'itération suivante).</p>
 
-              <p class="method-label">(b) Rétropropagation à travers $\mathbf W^{[2]}$, puis à travers $g$</p>
-              <p><i>Étape b.1 : jusqu'à $\mathbf h$.</i> $\hat y=\mathbf W^{[2]}\mathbf h+b^{[2]}=\sum_k W^{[2]}_{1k}h_k$ est linéaire en chaque $h_k$, avec $\frac{\partial\hat y}{\partial h_k}=W^{[2]}_{1k}$. Donc $\frac{\partial\mathcal L}{\partial h_k}=\delta^{[2]}\,W^{[2]}_{1k}$ pour chaque $k$, soit sous forme vectorielle :</p>
-              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf h} = (\mathbf W^{[2]})^T\delta^{[2]} \qquad (n_h\times1 \text{ , car } (\mathbf W^{[2]})^T \text{ est } n_h\times1 \text{ et } \delta^{[2]} \text{ un scalaire})$$</div>
-              <p><i>Étape b.2 : de $\mathbf h$ à $\mathbf z^{[1]}$.</i> $\mathbf h=g(\mathbf z^{[1]})$ signifie $h_i=g(z^{[1]}_i)$ pour <b>chaque coordonnée $i$ séparément</b> ($g$ ne mélange jamais les coordonnées entre elles). Donc $\frac{\partial h_i}{\partial z^{[1]}_i}=g'(z^{[1]}_i)$, et par la règle de la chaîne, coordonnée par coordonnée :</p>
-              <div class="formula">$$\delta^{[1]}_i = \frac{\partial\mathcal L}{\partial z^{[1]}_i} = \frac{\partial\mathcal L}{\partial h_i}\times g'(z^{[1]}_i) \quad\Longrightarrow\quad \delta^{[1]} = \underbrace{(\mathbf W^{[2]})^T\delta^{[2]}}_{=\ \partial\mathcal L/\partial\mathbf h,\ \text{étape b.1}} \odot\ g'(\mathbf z^{[1]}) \ \in\mathbb R^{n_h}$$</div>
-              <p>($\odot$ = produit terme à terme ; <b>pas</b> un produit matriciel, car $g$ agit coordonnée par coordonnée, sans mélanger les $h_i$ entre eux).</p>
+              <p class="method-label">(b) Rétropropagation à travers $\mathbf W^{[2]}$, puis à travers ReLU</p>
+              <p><i>Étape b.1 : jusqu'à $\mathbf h$.</i> $\hat y=\sum_k W^{[2]}_{1k}h_k$ est linéaire en chaque $h_k$, avec $\frac{\partial\hat y}{\partial h_k}=W^{[2]}_{1k}$, donc $\frac{\partial\mathcal L}{\partial h_k}=\delta^{[2]}\,W^{[2]}_{1k}$ :</p>
+              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf h} = (\mathbf W^{[2]})^T\delta^{[2]} = \begin{pmatrix}1\\1\end{pmatrix}\times({-1.5}) = \begin{pmatrix}-1.5\\-1.5\end{pmatrix}$$</div>
+              <p><i>Étape b.2 : de $\mathbf h$ à $\mathbf z^{[1]}$.</i> $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})$ s'applique <b>coordonnée par coordonnée</b> ($g$ ne mélange jamais $h_1$ et $h_2$), donc $\delta^{[1]}_i=\frac{\partial\mathcal L}{\partial h_i}\times g'(z^{[1]}_i)$, avec $g'(z^{[1]}_1)=0$ (car $z^{[1]}_1=-1<0$, ReLU y est plate) et $g'(z^{[1]}_2)=1$ (car $z^{[1]}_2=1>0$) :</p>
+              <div class="formula">$$\delta^{[1]} = \underbrace{\begin{pmatrix}-1.5\\-1.5\end{pmatrix}}_{\partial\mathcal L/\partial\mathbf h,\ \text{étape b.1}} \odot\ \begin{pmatrix}0\\1\end{pmatrix} = \begin{pmatrix}0\\-1.5\end{pmatrix}$$</div>
+              <p>($\odot$ = produit terme à terme, <b>pas</b> un produit matriciel).</p>
 
               <p class="method-label">(c) Couche cachée</p>
-              <p>Même raisonnement qu'en (a), mais un cran plus loin : $\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}$, donc $z^{[1]}_i=\sum_jW^{[1]}_{ij}x_j+b^{[1]}_i$ est linéaire en chaque $W^{[1]}_{ij}$, avec $\frac{\partial z^{[1]}_i}{\partial W^{[1]}_{ij}}=x_j$. Par la chaîne, $\frac{\partial\mathcal L}{\partial W^{[1]}_{ij}}=\underbrace{\frac{\partial\mathcal L}{\partial z^{[1]}_i}}_{=\ \delta^{[1]}_i}\times x_j$ : <b>c'est $\delta^{[1]}$ qui intervient ici, pas $\delta^{[2]}$</b>, car on doit d'abord être passé par les étapes (b.1) et (b.2) pour l'obtenir. Sous forme matricielle :</p>
-              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[1]}} = \delta^{[1]}\,\mathbf x^T$$</div>
-              <p><b>Vérification des dimensions :</b> $\delta^{[1]}\in\mathbb R^{n_h}$ (vu comme colonne $n_h\times1$), $\mathbf x^T$ est $1\times n_x$ : le produit est $n_h\times n_x$, exactement la forme de $\mathbf W^{[1]}$. ✓ (À titre de comparaison, $\delta^{[2]}\mathbf x^T$ donnerait un scalaire fois $1\times n_x$ = $1\times n_x$ : cela ne correspond <b>même pas</b> à la forme de $\mathbf W^{[1]}$ dès que $n_h>1$, ce qui est un moyen rapide de repérer que $\delta^{[2]}\mathbf x^T$ ne peut pas être la bonne réponse.)</p>
+              <p>Même raisonnement qu'en (a), un cran plus loin : $\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}$, donc $z^{[1]}_i=\sum_jW^{[1]}_{ij}x_j+b^{[1]}_i$, avec $\frac{\partial z^{[1]}_i}{\partial W^{[1]}_{ij}}=x_j$. Par la chaîne, $\frac{\partial\mathcal L}{\partial W^{[1]}_{ij}}=\underbrace{\frac{\partial\mathcal L}{\partial z^{[1]}_i}}_{=\ \delta^{[1]}_i}\times x_j$ : <b>c'est $\delta^{[1]}$ qui intervient, pas $\delta^{[2]}$</b>, car il faut d'abord être passé par (b.1) et (b.2). Sous forme matricielle :</p>
+              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[1]}} = \delta^{[1]}\,\mathbf x^T = \begin{pmatrix}0\\-1.5\end{pmatrix}(3,\ 1) = \begin{pmatrix}0&0\\-4.5&-1.5\end{pmatrix}$$</div>
+              <p><b>Vérification des dimensions :</b> $\delta^{[1]}\in\mathbb R^2$ (colonne $2\times1$), $\mathbf x^T$ est $1\times2$ : le produit est $2\times2$, la forme de $\mathbf W^{[1]}$. ✓ (À titre de comparaison, $\delta^{[2]}\mathbf x^T=-1.5\times(3,1)=(-4.5,-1.5)$ ne serait qu'un vecteur $1\times2$ : cela ne correspond <b>même pas</b> à la forme $2\times2$ de $\mathbf W^{[1]}$, un moyen rapide de repérer que $\delta^{[2]}\mathbf x^T$ ne peut pas être la bonne réponse.)</p>
+              <p><b>Lecture « métier » de la ligne nulle :</b> la première ligne de $\partial\mathcal L/\partial\mathbf W^{[1]}$ (celle qui contrôle « affordability ») est <b>exactement nulle</b>. Ce n'est pas un hasard : $h_1=0$ a été « coupé » par ReLU (ce T-shirt a été jugé trop cher, fiche 4). Pour <i>cet</i> exemple précis, le réseau ne reçoit donc <b>aucune information</b> sur la façon d'ajuster la sensibilité au prix : cette pondération n'apprendra rien de ce produit-ci, seulement des futurs produits pour lesquels $h_1>0$. C'est une illustration concrète du problème de « neurone mort » évoqué en fiche 4.</p>
 
-              <p class="method-label">Exemple numérique complet (pour vérifier votre propre calcul terme à terme)</p>
-              <p>$n_x=n_h=2$, activation ReLU. $\mathbf x=(1,2)$, $\mathbf W^{[1]}=\begin{pmatrix}1&-1\\0&2\end{pmatrix}$, $\mathbf b^{[1]}=(0,1)$, $\mathbf W^{[2]}=(2,-1)$, $b^{[2]}=0$, cible $y=1$.</p>
-              <div class="formula">$$\mathbf z^{[1]}=\begin{pmatrix}1\times1-1\times2+0\\0\times1+2\times2+1\end{pmatrix}=\begin{pmatrix}-1\\5\end{pmatrix} \qquad \mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})=\begin{pmatrix}0\\5\end{pmatrix}$$</div>
-              <div class="formula">$$\hat y = 2\times0+(-1)\times5+0=-5 \qquad \delta^{[2]}=\hat y-y=-5-1=-6$$</div>
-              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[2]}} = \delta^{[2]}\mathbf h^T = -6\times(0,\ 5) = (0,\ -30)$$</div>
-              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf h} = (\mathbf W^{[2]})^T\delta^{[2]} = \begin{pmatrix}2\\-1\end{pmatrix}\times(-6) = \begin{pmatrix}-12\\6\end{pmatrix}$$</div>
-              <p>$g'(\mathbf z^{[1]})=(\mathbf 1_{z^{[1]}_1>0},\ \mathbf 1_{z^{[1]}_2>0})=(0,\ 1)$ car $z^{[1]}_1=-1<0$ (ReLU y est plate, dérivée nulle) et $z^{[1]}_2=5>0$ (dérivée 1) :</p>
-              <div class="formula">$$\delta^{[1]} = \begin{pmatrix}-12\\6\end{pmatrix}\odot\begin{pmatrix}0\\1\end{pmatrix} = \begin{pmatrix}0\\6\end{pmatrix}$$</div>
-              <div class="formula">$$\frac{\partial\mathcal L}{\partial\mathbf W^{[1]}} = \delta^{[1]}\mathbf x^T = \begin{pmatrix}0\\6\end{pmatrix}(1,\ 2) = \begin{pmatrix}0&0\\6&12\end{pmatrix}$$</div>
-              <p>Cette valeur a été vérifiée par différences finies ($\frac{\mathcal L(W+\epsilon)-\mathcal L(W-\epsilon)}{2\epsilon}$ sur chaque coefficient, $\epsilon=10^{-6}$) : le résultat numérique obtenu est identique, $\begin{pmatrix}0&0\\6&12\end{pmatrix}$, à $10^{-9}$ près. Si votre propre calcul à la main diverge de ce résultat, comparez-le <b>étape par étape</b> ((a), puis b.1, puis b.2, puis (c)) plutôt que seulement le résultat final, pour repérer précisément où l'écart apparaît.</p>
+              <p class="method-label">Vérification par différences finies</p>
+              <p>Ces valeurs ont été vérifiées numériquement (perturbation $\epsilon=10^{-6}$ de chaque coefficient, $\frac{\mathcal L(W+\epsilon)-\mathcal L(W-\epsilon)}{2\epsilon}$) : le résultat coïncide avec le calcul analytique à $10^{-9}$ près. Si votre propre calcul diverge, comparez-le <b>étape par étape</b> ((a), puis b.1, puis b.2, puis (c)) plutôt que seulement le résultat final, pour repérer précisément où l'écart apparaît.</p>
 
               <p class="sense"><b>Sens :</b> c'est exactement le mécanisme de la fiche 6 : le gradient se propage de la sortie vers l'entrée, couche par couche, chaque $\delta^{[l]}$ se déduisant de $\delta^{[l+1]}$ via $(\mathbf W^{[l+1]})^T\delta^{[l+1]}\odot g'(\mathbf z^{[l]})$ : <b>jamais</b> directement de $\delta^{[l+1]}$ à $\mathbf W^{[l]}$ sans repasser par $\mathbf W^{[l+1]}$ et $g'$. C'est cette formule répétée qui explique le phénomène de gradient qui s'évanouit (fiche 22) si $|g'|<1$ systématiquement, couche après couche.</p>
             </div>
@@ -1064,6 +1060,77 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <p class="method-label">(c) Compte de paramètres</p>
               <p>Couche 1 : $\mathbf W^{[1]}$ ($2\times2=4$) $+\ \mathbf b^{[1]}$ ($2$) $=6$. Couche 2 : $\mathbf W^{[2]}$ ($1\times2=2$) $+\ b^{[2]}$ ($1$) $=3$. Total $=6+3=9$, cohérent avec la formule $\sum_l n_l(n_{l-1}+1)=2\times(2+1)+1\times(2+1)=6+3=9$ de la fiche 3.</p>
               <p class="sense"><b>Sens :</b> ce calcul « à la main » est exactement ce que fait <code>model(x)</code> en interne dans PyTorch, couche par couche : le comprendre en détail permet de déboguer un réseau qui produit des valeurs inattendues (ex. toujours $\hat y\approx0.5$, ou toujours $0$ après une couche ReLU).</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 6 (type examen, synthèse) · Un trieur de fruits automatique : softmax, entropie croisée, mini-batch, momentum et Adam</p>
+            <p><b>Contexte :</b> une machine de tri sur un tapis roulant classe des fruits en 3 catégories : pomme (classe $c=0$), orange ($c=1$), banane ($c=2$), à partir de 2 mesures standardisées par capteur : $x_1$ = poids, $x_2$ = teinte renvoyée par un capteur optique (valeur continue, peut être négative après standardisation). Le réseau a une couche cachée de 2 neurones (ReLU) puis une couche de sortie à 3 neurones suivie d'un softmax, entraîné par entropie croisée :</p>
+            <div class="formula">$$\mathbf z^{[1]}=\mathbf W^{[1]}\mathbf x+\mathbf b^{[1]}, \quad \mathbf h=\mathrm{ReLU}(\mathbf z^{[1]}), \quad \mathbf z^{[2]}=\mathbf W^{[2]}\mathbf h+\mathbf b^{[2]}, \quad \mathbf p=\mathrm{softmax}(\mathbf z^{[2]}), \quad \mathcal L=-\log(p_c)$$</div>
+            <p>avec $\mathbf W^{[1]}=\begin{pmatrix}1&-1\\0&1\end{pmatrix}$, $\mathbf b^{[1]}=(0,-1)$, $\mathbf W^{[2]}=\begin{pmatrix}1&2\\0&1\\-1&1\end{pmatrix}$ (ligne 0 = score « pomme », ligne 1 = « orange », ligne 2 = « banane »), $\mathbf b^{[2]}=(0,0,0)$. Deux fruits arrivent dans le <b>même mini-batch</b> de taille 2 : le fruit A, $\mathbf x^{(A)}=(1,2)$, étiqueté pomme ($c_A=0$) ; le fruit B, $\mathbf x^{(B)}=(2,-1)$, étiqueté orange ($c_B=1$).</p>
+            <p>(a) Pour chaque fruit, calculez $\mathbf z^{[1]}$ puis $\mathbf h=\mathrm{ReLU}(\mathbf z^{[1]})$.<br>
+            (b) Calculez $\mathbf z^{[2]}$, puis $\mathbf p=\mathrm{softmax}(\mathbf z^{[2]})$, puis la perte $\mathcal L=-\log(p_c)$ pour chaque fruit. Le fruit B a une perte bien plus élevée que le fruit A : que cela signifie-t-il concrètement sur la confiance du modèle et sur son erreur ?<br>
+            (c) Montrez que $\dfrac{\partial\mathcal L}{\partial\mathbf z^{[2]}}=\mathbf p-\mathbf e_c$ (où $\mathbf e_c$ est le vecteur one-hot de la vraie classe $c$), en distinguant le cas $i=c$ du cas $i\neq c$. Calculez ce vecteur pour chacun des deux fruits.<br>
+            (d) Comme à l'exercice 3, déduisez $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[2]}}$, $\dfrac{\partial\mathcal L}{\partial\mathbf h}$, $\delta^{[1]}$, puis $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[1]}}$, pour chaque fruit séparément.<br>
+            (e) La perte du mini-batch est la <b>moyenne</b> des pertes individuelles, donc son gradient est la moyenne des gradients individuels. Calculez le gradient moyen sur le seul coefficient $W^{[2]}_{01}$ (le poids reliant $h_2$ au score « pomme »), et effectuez un pas de descente de gradient classique ($\eta=0.1$) sur ce coefficient.<br>
+            (f) L'entraînement se poursuit : sur les mini-batches suivants, le gradient moyen mesuré sur ce même coefficient $W^{[2]}_{01}$ vaut $g_1,\dots,g_5=-0.2119,\,-0.18,\,-0.20,\,-0.15,\,-0.19$ (le premier est celui de la question (e), les suivants viennent d'autres mini-batches). Appliquez Momentum puis Adam (formules et hyperparamètres de la fiche 8) à partir de $\theta_0=W^{[2]}_{01}=2$, et comparez l'amplitude des pas des deux méthodes.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction très détaillée</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Passe avant, couche cachée</p>
+              <div class="formula">$$\mathbf z^{[1]}_A=\begin{pmatrix}1&-1\\0&1\end{pmatrix}\begin{pmatrix}1\\2\end{pmatrix}+\begin{pmatrix}0\\-1\end{pmatrix}=\begin{pmatrix}-1\\1\end{pmatrix} \qquad \mathbf h_A=\mathrm{ReLU}(-1,1)=(0,\ 1)$$</div>
+              <div class="formula">$$\mathbf z^{[1]}_B=\begin{pmatrix}1&-1\\0&1\end{pmatrix}\begin{pmatrix}2\\-1\end{pmatrix}+\begin{pmatrix}0\\-1\end{pmatrix}=\begin{pmatrix}3\\-2\end{pmatrix} \qquad \mathbf h_B=\mathrm{ReLU}(3,-2)=(3,\ 0)$$</div>
+              <p>Pour A, c'est le premier neurone caché qui est « coupé » par ReLU ; pour B, c'est le second : les deux fruits activent des chemins différents dans le réseau.</p>
+
+              <p class="method-label">(b) Couche de sortie, softmax, perte</p>
+              <div class="formula">$$\mathbf z^{[2]}_A=\begin{pmatrix}1&2\\0&1\\-1&1\end{pmatrix}\begin{pmatrix}0\\1\end{pmatrix}=\begin{pmatrix}2\\1\\1\end{pmatrix} \qquad \mathbf p_A=\mathrm{softmax}(2,1,1)\approx(0.576,\ 0.212,\ 0.212)$$</div>
+              <div class="formula">$$\mathcal L_A=-\log(0.576)\approx0.551$$</div>
+              <div class="formula">$$\mathbf z^{[2]}_B=\begin{pmatrix}1&2\\0&1\\-1&1\end{pmatrix}\begin{pmatrix}3\\0\end{pmatrix}=\begin{pmatrix}3\\0\\-3\end{pmatrix} \qquad \mathbf p_B=\mathrm{softmax}(3,0,-3)\approx(0.950,\ 0.047,\ 0.002)$$</div>
+              <div class="formula">$$\mathcal L_B=-\log(0.047)\approx3.051$$</div>
+              <p><b>Lecture :</b> pour A, le modèle donne 57,6% à la bonne classe (pomme) : c'est correct mais peu confiant, d'où une perte modérée. Pour B, le modèle est au contraire <b>très confiant</b> (95%) mais sur la <b>mauvaise</b> classe (pomme, alors que la vraie étiquette est orange) : $-\log(\cdot)$ pénalise beaucoup plus fortement une erreur commise avec assurance qu'une hésitation, ce qui est exactement le comportement recherché d'une bonne fonction de perte (fiche 5).</p>
+
+              <p class="method-label">(c) Le raccourci $\partial\mathcal L/\partial\mathbf z^{[2]}=\mathbf p-\mathbf e_c$</p>
+              <p>$p_i=\dfrac{e^{z_i}}{\sum_k e^{z_k}}$, donc $\dfrac{\partial p_i}{\partial z_i}=p_i(1-p_i)$ et $\dfrac{\partial p_j}{\partial z_i}=-p_ip_j$ pour $j\neq i$ (dérivée classique du softmax). Avec $\mathcal L=-\log p_c$, $\dfrac{\partial\mathcal L}{\partial z_i}=-\dfrac1{p_c}\dfrac{\partial p_c}{\partial z_i}$. Deux cas :</p>
+              <div class="formula">$$i=c:\quad \frac{\partial\mathcal L}{\partial z_c}=-\frac1{p_c}\,p_c(1-p_c)=p_c-1 \qquad\qquad i\neq c:\quad \frac{\partial\mathcal L}{\partial z_i}=-\frac1{p_c}\,(-p_cp_i)=p_i$$</div>
+              <p>Dans les deux cas, la formule $\dfrac{\partial\mathcal L}{\partial z_i}=p_i-\mathbf 1_{i=c}$ est valable, soit sous forme vectorielle $\dfrac{\partial\mathcal L}{\partial\mathbf z^{[2]}}=\mathbf p-\mathbf e_c$ : un résultat remarquablement simple, qui évite de dériver séparément softmax puis $-\log$.</p>
+              <div class="formula">$$\delta^{[2]}_A=\mathbf p_A-(1,0,0)\approx(-0.424,\ 0.212,\ 0.212) \qquad \delta^{[2]}_B=\mathbf p_B-(0,1,0)\approx(0.950,\ -0.953,\ 0.002)$$</div>
+
+              <p class="method-label">(d) Rétropropagation (même mécanique qu'à l'exercice 3)</p>
+              <p>$\dfrac{\partial\mathcal L}{\partial\mathbf W^{[2]}}=\delta^{[2]}\mathbf h^T$ (dimension $3\times2$, celle de $\mathbf W^{[2]}$) :</p>
+              <div class="formula">$$\frac{\partial\mathcal L_A}{\partial\mathbf W^{[2]}}=\begin{pmatrix}-0.424\\0.212\\0.212\end{pmatrix}(0,\ 1)=\begin{pmatrix}0&-0.424\\0&0.212\\0&0.212\end{pmatrix} \qquad \frac{\partial\mathcal L_B}{\partial\mathbf W^{[2]}}=\begin{pmatrix}0.950\\-0.953\\0.002\end{pmatrix}(3,\ 0)=\begin{pmatrix}2.851&0\\-2.858&0\\0.007&0\end{pmatrix}$$</div>
+              <p>Puis $\dfrac{\partial\mathcal L}{\partial\mathbf h}=(\mathbf W^{[2]})^T\delta^{[2]}$, puis $\delta^{[1]}=\dfrac{\partial\mathcal L}{\partial\mathbf h}\odot g'(\mathbf z^{[1]})$ (coordonnée par coordonnée, comme en (b.2) de l'exercice 3) :</p>
+              <div class="formula">$$\frac{\partial\mathcal L_A}{\partial\mathbf h}\approx(-0.636,\ -0.424) \qquad g'(\mathbf z^{[1]}_A)=(0,1) \quad\Rightarrow\quad \delta^{[1]}_A\approx(0,\ -0.424)$$</div>
+              <div class="formula">$$\frac{\partial\mathcal L_B}{\partial\mathbf h}\approx(0.948,\ 0.950) \qquad g'(\mathbf z^{[1]}_B)=(1,0) \quad\Rightarrow\quad \delta^{[1]}_B\approx(0.948,\ 0)$$</div>
+              <p>Enfin $\dfrac{\partial\mathcal L}{\partial\mathbf W^{[1]}}=\delta^{[1]}\mathbf x^T$ (dimension $2\times2$, celle de $\mathbf W^{[1]}$) :</p>
+              <div class="formula">$$\frac{\partial\mathcal L_A}{\partial\mathbf W^{[1]}}\approx\begin{pmatrix}0&0\\-0.424&-0.848\end{pmatrix} \qquad \frac{\partial\mathcal L_B}{\partial\mathbf W^{[1]}}\approx\begin{pmatrix}1.896&-0.948\\0&0\end{pmatrix}$$</div>
+              <p>Ces quatre gradients ont été vérifiés par différences finies ($\epsilon=10^{-6}$, comme à l'exercice 3) : accord à $10^{-6}$ près.</p>
+
+              <p class="method-label">(e) Moyenne sur le mini-batch, puis un pas de GD</p>
+              <p>Le coefficient $W^{[2]}_{01}$ (indices ligne 0 = pomme, colonne 1 = $h_2$) vaut $-0.424$ pour A et $0$ pour B (car $h_2^{(B)}=0$, ce lien n'a « rien vu » du fruit B) :</p>
+              <div class="formula">$$g_{\text{batch}} = \frac{-0.424+0}{2} = -0.212 \qquad\qquad W^{[2]}_{01}\ \leftarrow\ 2 - 0.1\times(-0.212) = 2.0212$$</div>
+              <p><b>Sens :</b> ce coefficient augmente légèrement : intuitivement, sur le fruit A (une vraie pomme), le neurone $h_2$ (actif, $h_2=1$) « pousse » vers la mauvaise classe si son poids vers la sortie « pomme » n'est pas assez élevé ; le gradient descend donc ce poids pour renforcer la bonne prédiction, exactement le mécanisme de la fiche 6.</p>
+
+              <p class="method-label">(f) Momentum puis Adam sur $\theta=W^{[2]}_{01}$</p>
+              <p>Avec les formules de la fiche 8, $\eta=0.1$, $\beta=0.9$ pour Momentum, $\theta_0=2$ :</p>
+              <table class="cmp">
+                <tr><th>$k$</th><th>$g_k$</th><th>$m_k$</th><th>$\Delta\theta_k$</th><th>$\theta_k$</th></tr>
+                <tr><td>1</td><td>−0.2119</td><td>−0.0212</td><td>+0.0021</td><td>2.0021</td></tr>
+                <tr><td>2</td><td>−0.18</td><td>−0.0371</td><td>+0.0037</td><td>2.0058</td></tr>
+                <tr><td>3</td><td>−0.20</td><td>−0.0534</td><td>+0.0053</td><td>2.0112</td></tr>
+                <tr><td>4</td><td>−0.15</td><td>−0.0630</td><td>+0.0063</td><td>2.0175</td></tr>
+                <tr><td>5</td><td>−0.19</td><td>−0.0757</td><td>+0.0076</td><td>2.0250</td></tr>
+              </table>
+              <p>Puis Adam ($\beta_1=0.9,\beta_2=0.999,\epsilon=10^{-8}$), toujours $\theta_0=2$ :</p>
+              <table class="cmp">
+                <tr><th>$k$</th><th>$g_k$</th><th>$\hat m_k$</th><th>$\hat v_k$</th><th>$\Delta\theta_k$</th><th>$\theta_k$</th></tr>
+                <tr><td>1</td><td>−0.2119</td><td>−0.2119</td><td>0.0449</td><td>+0.1000</td><td>2.1000</td></tr>
+                <tr><td>2</td><td>−0.18</td><td>−0.1951</td><td>0.0386</td><td>+0.0992</td><td>2.1992</td></tr>
+                <tr><td>3</td><td>−0.20</td><td>−0.1969</td><td>0.0391</td><td>+0.0996</td><td>2.2988</td></tr>
+                <tr><td>4</td><td>−0.15</td><td>−0.1833</td><td>0.0349</td><td>+0.0980</td><td>2.3969</td></tr>
+                <tr><td>5</td><td>−0.19</td><td>−0.1849</td><td>0.0352</td><td>+0.0986</td><td>2.4955</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> les 5 gradients pointent tous dans le même sens (autour de $-0.19$), un cas <b>favorable</b>, sans changement de signe (contrairement à l'exemple oscillant de la fiche 8). Momentum, freiné par le facteur $(1-\beta)=0.1$ dans sa moyenne mobile, met plusieurs itérations à « monter en vitesse » et n'a déplacé $\theta$ que de $0.025$ après 5 pas. Adam, qui renormalise systématiquement par $\sqrt{\hat v_k}$ (proche de $|\hat m_k|$ ici, car les gradients sont peu bruités), prend presque immédiatement des pas proches de $\eta=0.1$ : $\theta$ a bougé de $0.50$ après 5 pas, <b>20 fois plus vite</b> que Momentum sur cette même séquence. C'est le compromis classique : Adam converge souvent plus vite sur un gradient stable, mais peut être plus sensible au bruit qu'un Momentum bien réglé sur un gradient qui change fréquemment de signe (fiche 8, premier exemple).</p>
             </div>
           </details>
 
