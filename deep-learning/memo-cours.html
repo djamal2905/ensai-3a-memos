@@ -1927,12 +1927,31 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             </div>
 
             <div class="box box-ex">
+              <p class="box-label">Exemple · À quel point la croissance linéaire est-elle vraiment trop lente ?</p>
+              <p>Mettons un chiffre sur ce problème. Avec des convolutions $3\times3$ ($K=3$, donc $K-1=2$), stride $1$, sans pooling, la fiche 12 (exercice 4) a montré que le champ récepteur après $L$ couches vaut $r_L=1+L(K-1)=1+2L$. Une photo réaliste fait $224\times224$ pixels (taille d'entrée standard d'AlexNet/ResNet, fiche 16). Combien de couches $3\times3$ faut-il empiler pour qu'un <b>seul</b> neurone de la dernière couche « voie » l'image entière, d'un bord à l'autre ?</p>
+              <div class="formula">$$1+2L \ge 224 \quad\Longleftrightarrow\quad L \ge \frac{223}{2} = 111.5 \quad\Longrightarrow\quad L=112 \text{ couches}$$</div>
+              <p class="sense"><b>Sens :</b> il faudrait empiler <b>112 couches</b> de convolution $3\times3$, rien que pour que le champ récepteur atteigne la largeur de l'image, avant même de penser à la profondeur nécessaire pour <i>apprendre</i> quoi que ce soit d'utile sur un contexte aussi large. C'est ce nombre, concrètement absurde pour un réseau qu'on veut entraîner efficacement, qui motive les solutions ci-dessous : on cherche à faire grandir le champ récepteur <b>beaucoup plus vite</b> que linéairement, sans pour autant faire exploser le nombre de paramètres (qui, lui, grandirait aussi si on agrandissait simplement chaque noyau).</p>
+            </div>
+
+            <div class="box box-ex">
               <p class="box-label">Exemples · Quatre solutions</p>
               <p><b>0. Agrandir le noyau</b> : efficace mais exige beaucoup plus de paramètres ($w\times h$).</p>
               <p><b>0.1 Noyau de rang faible</b> : $\mathbf K := \mathbf{UV}$ avec $\mathbf K\in\mathbb R^{w\times h}$, $\mathbf U\in\mathbb R^{w\times k}$, $\mathbf V\in\mathbb R^{k\times h}$, $k\lt\min(w,h)$ : peu de paramètres, mais les noyaux obtenus paraissent peu naturels.</p>
               <p><b>1. Noyau de Kronecker</b> : $\mathbf K := \mathbf U\otimes\mathbf V\otimes\mathbf W\cdots$, où $\mathbf A\otimes\begin{bmatrix}a&b\\c&d\end{bmatrix} := \begin{bmatrix}a\mathbf A & b\mathbf A\\ c\mathbf A & d\mathbf A\end{bmatrix}$ : structure multi-échelle, résultat nettement meilleur.</p>
-              <p><b>2. Convolution dilatée</b> (dilated / à trous) : on <b>écarte</b> les éléments du noyau d'un facteur de dilatation. En enchaînant des dilatations $1$, puis $2$, puis $4$… :</p>
+              <p><b>2. Convolution dilatée</b> (dilated / à trous) : on <b>écarte</b> les éléments du noyau d'un facteur de dilatation $d$ (le noyau garde $K$ coefficients, donc le même nombre de paramètres, mais ils sont espacés de $d$ pixels au lieu d'être contigus). En enchaînant des dilatations $1$, puis $2$, puis $4$… :</p>
               <p class="sense"><b>Sens :</b> croissance <b>exponentielle</b> du champ récepteur avec un nombre <b>linéaire</b> de paramètres : le meilleur rapport qualité/prix.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · La dilatation, chiffrée : 3 couches, mais un champ récepteur doublé</p>
+              <p>Comparons, sur exactement les <b>mêmes 3 couches</b> $3\times3$ ($K-1=2$, donc même nombre de paramètres dans les deux cas), un empilement classique (dilatation $d=1$ partout) et un empilement dilaté ($d=1,2,4$). La règle est la même qu'à la fiche 12, exercice 4, sauf qu'à chaque couche $l$ le champ récepteur ne grandit plus de $(K-1)$ mais de $d_l\times(K-1)$ :</p>
+              <table class="cmp">
+                <tr><th>Après la couche</th><th>Dilatations $1,1,1$ (classique)</th><th>Dilatations $1,2,4$ (à trous)</th></tr>
+                <tr><td>$L=1$</td><td>$r_1=1+1\times2=3$</td><td>$r_1=1+1\times2=3$</td></tr>
+                <tr><td>$L=2$</td><td>$r_2=3+1\times2=5$</td><td>$r_2=3+2\times2=7$</td></tr>
+                <tr><td>$L=3$</td><td>$r_3=5+1\times2=7$</td><td>$r_3=7+4\times2=15$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> avec exactement le même nombre de couches, le même $K=3$ et donc <b>exactement le même nombre de paramètres</b> (9 poids par couche dans les deux cas), la version dilatée atteint un champ récepteur de $15$ pixels contre $7$ pour la version classique : plus du double, gratuitement. En poursuivant la progression $1,2,4,8,16,\dots$ (chaque dilatation double la précédente), $r_L$ croît comme $2^L$ au lieu de $L$ : c'est exactement ce qui permettrait, contrairement à l'exemple précédent, de couvrir une image $224\times224$ en une poignée de couches plutôt qu'en 112.</p>
             </div>
 
             <div class="box box-def">
