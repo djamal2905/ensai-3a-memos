@@ -1881,18 +1881,20 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
 
           <article class="topic" id="s17">
             <div class="tophead"><span class="num">17</span><h2>Détection &amp; segmentation : R-CNN → YOLO → U-Net</h2></div>
-            <p>La classification donne <b>un</b> label par image. Détecter <i>où</i> se trouvent les objets, ou classer <i>chaque pixel</i>, demande des architectures dédiées.</p>
+            <p>La classification donne <b>un</b> label par image. Détecter <i>où</i> se trouvent les objets, ou classer <i>chaque pixel</i>, demande des architectures dédiées. Prenons une seule photo tout au long de cette fiche, pour comparer <b>concrètement</b> ce que chaque famille de méthode en fait : une photo de rue $1000\times700$, avec une voiture à gauche et un piéton à droite.</p>
 
             <div class="box box-ex">
               <p class="box-label">Exemple · R-CNN puis Fast R-CNN (détection par régions)</p>
-              <p><b>R-CNN</b> : (1) image d'entrée ; (2) extraction d'environ <b>2000 régions candidates</b> ; (3) chaque région est <b>redimensionnée</b> à une taille fixe et passée dans un CNN ; (4) classification. Les boîtes à forte probabilité de classe sont ensuite fusionnées. → très coûteux : 2000 passes CNN par image.</p>
-              <p><b>Fast R-CNN</b> : <b>une seule</b> passe du CNN sur l'image entière ; la carte d'activation de chaque région est <b>lue directement</b> dans la carte globale (RoI projection), puis une couche de <b>RoI pooling</b> ramène des régions de tailles variables à une <b>taille de sortie fixe</b>.</p>
+              <p><b>R-CNN</b> : (1) image d'entrée ; (2) extraction d'environ <b>2000 régions candidates</b> (un algorithme classique de recherche par similarité de couleur/texture propose 2000 rectangles susceptibles de contenir un objet, dont un autour de la voiture et un autour du piéton, mais aussi 1998 rectangles inutiles) ; (3) chaque région est <b>redimensionnée</b> à une taille fixe (ex. $224\times224$) et passée dans un CNN complet ; (4) classification. Les boîtes à forte probabilité de classe sont ensuite fusionnées. → très coûteux : <b>2000 passes CNN complètes</b> pour cette seule photo. Si un unique passage dans le CNN prend, disons, $5\,\text{ms}$, cela fait déjà $2000\times5\,\text{ms}=10$ secondes, rien que pour la partie CNN.</p>
+              <p><b>Fast R-CNN</b> : <b>une seule</b> passe du CNN sur l'image $1000\times700$ entière (donc $5\,\text{ms}$, pas $10$ secondes) ; la carte d'activation de chaque région (la voiture, le piéton, et les 1998 autres candidats) est <b>lue directement</b> dans cette unique carte globale (RoI projection, un simple recalcul de coordonnées, quasi gratuit), puis une couche de <b>RoI pooling</b> ramène des régions de tailles variables (le rectangle de la voiture n'a pas la même forme que celui du piéton) à une <b>taille de sortie fixe</b>, pour pouvoir toutes les faire passer dans les mêmes couches denses finales.</p>
+              <p class="sense"><b>Sens :</b> le gain ne vient <b>pas</b> d'un CNN plus rapide, mais du fait de ne calculer les cartes de caractéristiques <b>qu'une seule fois</b> pour toute l'image, puis de les réutiliser (relire, pas recalculer) pour chacune des 2000 régions : exactement l'esprit du partage de poids de la fiche 11, appliqué cette fois au partage de <i>calcul</i> entre régions qui se chevauchent.</p>
             </div>
 
             <div class="box box-ex">
               <p class="box-label">Exemple · YOLO (<i>You Only Look Once</i>)</p>
               <p>Une grille $S\times S$ est posée sur l'image ; le réseau prédit <b>en une seule passe</b> les boîtes englobantes + scores de confiance et une <b>carte de probabilités de classes</b>, fusionnées en détections finales. Architecture : 24 blocs convolutifs puis 2 blocs linéaires.</p>
-              <p class="sense"><b>Sens :</b> plus de phase de proposition de régions séparée ⟹ une passe unique, d'où la rapidité (détection temps réel).</p>
+              <p>Concrètement (valeurs de l'article original) : $S=7$ (grille $7\times7=49$ cellules), $B=2$ boîtes candidates par cellule, $C=20$ classes possibles. Sur notre photo, le <b>centre</b> du piéton tombe dans une cellule précise, disons la cellule $(3,4)$ (ligne 3, colonne 4) : c'est <b>cette cellule, et elle seule</b>, qui a la responsabilité de prédire la boîte englobante du piéton, même si le piéton déborde largement sur les cellules voisines. Chaque cellule prédit $B{=}2$ boîtes ($x,y,w,h,\text{confiance}$, soit $5$ nombres chacune) et $C{=}20$ probabilités de classe : la sortie du réseau entier est donc un unique tenseur $S\times S\times(B{\times}5+C) = 7\times7\times30$, produit en <b>une seule</b> passe avant, sans jamais extraire de région candidate séparément.</p>
+              <p class="sense"><b>Sens :</b> plus de phase de proposition de régions séparée (les 2000 passes de R-CNN, ou même la relecture région par région de Fast R-CNN) ⟹ une passe unique sur toute l'image, d'où la rapidité (détection temps réel). Le prix à payer : si <b>deux</b> objets ont leur centre dans la <b>même</b> cellule (ex. un piéton juste devant un panneau), YOLO peine à les distinguer, puisqu'une cellule ne peut proposer que $B=2$ boîtes.</p>
             </div>
 
             <div class="box box-def">
@@ -1900,6 +1902,27 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <p><b>FCN</b> (Fully Convolutional Network) : on remplace les couches denses par des couches convolutives ⟹ la sortie est une <b>carte spatiale</b> et non un label unique ; chaque pixel reçoit une classe. Des couches d'<b>upsampling</b> (déconvolutions) restaurent la résolution d'origine.</p>
               <p><b>U-Net</b> : architecture encodeur-décodeur symétrique. <i>Chemin contractant</i> : capture le contexte (convolutions + pooling). <i>Chemin expansif</i> : restaure la résolution (up-convolutions). <b>Skip connections</b> : les features haute résolution de l'encodeur sont <b>concaténées</b> à celles du décodeur.</p>
               <p class="sense"><b>Sens :</b> attention : contrairement à ResNet, les raccourcis de U-Net sont <b>concaténés</b>, pas additionnés. Très efficace en imagerie biomédicale (peu de données annotées).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Une carte de segmentation, pixel par pixel, et pourquoi « concaténer » change tout</p>
+              <p>Sur un minuscule extrait $4\times4$ de notre photo, centré sur le piéton, une segmentation sémantique ne renvoie <b>pas</b> une boîte englobante mais une classe <b>pour chaque pixel</b> : $0$ = fond (route, trottoir), $1$ = piéton.</p>
+              <div class="convgrid-gallery">
+                <div class="hl-0">
+                  <div class="convgrid-label">Carte de segmentation (sortie de FCN/U-Net)</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(4,30px);">
+                      <div class="convgrid-cell">0</div><div class="convgrid-cell">0</div><div class="convgrid-cell">0</div><div class="convgrid-cell">0</div>
+                      <div class="convgrid-cell">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">1</div><div class="convgrid-cell">0</div>
+                      <div class="convgrid-cell">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">1</div><div class="convgrid-cell">0</div>
+                      <div class="convgrid-cell">0</div><div class="convgrid-cell">0</div><div class="convgrid-cell">0</div><div class="convgrid-cell">0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p>Cette carte a exactement la <b>même résolution spatiale</b> $4\times4$ que l'image d'entrée : c'est tout l'enjeu du chemin expansif de U-Net (remonter en résolution après l'avoir perdue dans le chemin contractant), contrairement à YOLO ou R-CNN qui ne renvoient que quelques coordonnées de boîte.</p>
+              <p><b>Concaténer, concrètement :</b> supposons qu'au même niveau de résolution $4\times4$, l'encodeur ait produit une carte de features $4\times4\times8$ (8 canaux, capturant des détails fins comme le contour d'une jambe), et que le chemin expansif, après upsampling, produise à cette même résolution une carte $4\times4\times8$ (8 canaux, capturant du contexte plus global). Une connexion résiduelle à la ResNet (fiche 16) <b>additionnerait</b> ces deux cartes terme à terme, en restant à $4\times4\times8$. U-Net, lui, les <b>empile</b> le long de l'axe des canaux : $4\times4\times16$. Rien n'est perdu ni moyenné, les deux informations (détail fin, contexte global) restent <b>disponibles côte à côte</b> pour la couche suivante, qui apprendra elle-même comment les combiner.</p>
+              <p class="sense"><b>Sens :</b> ce doublement de canaux (au lieu d'une simple somme) explique pourquoi U-Net excelle en imagerie biomédicale : détecter le contour exact d'une tumeur sur une IRM demande de préserver le détail fin (bord précis) <b>et</b> le contexte large (où se trouve l'organe) simultanément, deux informations que l'addition de ResNet aurait mélangées, mais que la concaténation garde distinctes.</p>
             </div>
           </article>
 
@@ -1910,6 +1933,27 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <p class="box-label">Définition · Data augmentation</p>
               <p>Dupliquer et <b>transformer</b> les exemples d'entraînement : redimensionnement, translation (avec padding), rotation (avec padding), réflexion horizontale, ajout de bruit, changement d'intensité colorimétrique…</p>
               <p class="sense"><b>Sens :</b> le but est de faire <b>apprendre l'invariance</b> à ces transformations : c'est une forme de régularisation qui injecte une connaissance a priori sur les symétries du problème.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Une image devient 6 images, sans prendre une seule nouvelle photo</p>
+              <p><b>Contexte :</b> une équipe dispose de $1\,000$ photos de véhicules annotées (fiche 16) pour entraîner un classifieur voiture/vélo/camion, un jeu de données jugé trop petit. Pour chaque photo d'origine, on génère automatiquement 5 variantes : un miroir horizontal, une légère rotation de $+10°$, une rotation de $-10°$, un recadrage translaté vers la gauche, et un recadrage translaté vers la droite.</p>
+              <div class="formula">$$1\,000 \text{ photos} \times (1 \text{ originale} + 5 \text{ variantes}) = 6\,000 \text{ exemples vus à chaque époque}$$</div>
+              <p>Concrètement, sur un tout petit patch $1\times5$ extrait d'une de ces photos (une ligne de pixels), le miroir horizontal <b>inverse simplement l'ordre</b> des pixels :</p>
+              <div class="convvis-scroll">
+                <div class="convvis">
+                  <div class="convvis-row hl-2">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell active">5</div><div class="convvis-cell active">6</div><div class="convvis-cell active">4</div><div class="convvis-cell active">2</div><div class="convvis-cell active">9</div>
+                    </div>
+                    <div class="convvis-arrow">→ miroir →</div>
+                    <div class="convvis-cells">
+                      <div class="convvis-cell active">9</div><div class="convvis-cell active">2</div><div class="convvis-cell active">4</div><div class="convvis-cell active">6</div><div class="convvis-cell active">5</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="sense"><b>Sens :</b> ces $6\,000$ exemples ne sont évidemment <b>pas aussi informatifs</b> que $6\,000$ vraies photos indépendantes (une photo et son miroir restent très corrélées) : l'augmentation de données n'est pas une façon gratuite de multiplier l'information disponible. Ce qu'elle fait réellement, c'est forcer le réseau à produire la <b>même prédiction</b> pour une voiture et son miroir, pour une voiture légèrement tournée, etc. : elle « enseigne » au réseau, par l'exemple, des symétries qu'on connaît déjà être vraies du problème (une voiture reste une voiture quand on la photographie 10° de travers), plutôt que de les lui laisser découvrir seul à partir de zéro à partir de $1\,000$ photos seulement.</p>
             </div>
 
             <div class="box box-warn">
