@@ -1480,17 +1480,98 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
           <article class="topic" id="s14">
             <div class="tophead"><span class="num">14</span><h2>Pooling</h2></div>
 
+            <p>Prenons le temps de bien comprendre le pooling avant de le formaliser, car c'est une couche qu'on utilise sans presque jamais y réfléchir : concrètement, à quoi sert-elle, et que perd-on en l'utilisant ?</p>
+
             <div class="box box-def">
               <p class="box-label">Définition · Couche de pooling</p>
               <p>Agrégation <b>locale</b> : chaque région de la carte $\mathbf h^{[j-1]}$ est résumée par une seule statistique : <b>max</b> (le plus courant), <b>moyenne</b>, somme, sous-échantillonnage aléatoire, norme $L_2$…</p>
               <div class="formula">$$h^{[j]}_{a,b} = \max_{(k,l)\in \mathcal R_{a,b}} h^{[j-1]}_{k,l} \qquad\text{ou}\qquad h^{[j]}_{a,b} = \frac{1}{|\mathcal R_{a,b}|}\sum_{(k,l)\in\mathcal R_{a,b}} h^{[j-1]}_{k,l}$$</div>
-              <p class="sense"><b>Sens :</b> deux effets : <b>réduire</b> la taille de la représentation, et <b>augmenter l'invariance</b> aux petites translations. Aucun paramètre à apprendre.</p>
+              <p class="sense"><b>Sens :</b> deux effets : <b>réduire</b> la taille de la représentation, et <b>augmenter l'invariance</b> aux petites translations. Aucun paramètre à apprendre. Il n'y a <b>rien à optimiser</b> ici : contrairement à une couche de convolution, le pooling applique toujours la même règle fixe (« prends le max », « fais la moyenne »), ce qui explique pourquoi il n'apparaît jamais dans le compte de paramètres de la fiche 12, exercice 2.</p>
             </div>
 
             <div class="box box-ex">
-              <p class="box-label">Remarque · Max ou moyenne ?</p>
-              <p>Le <b>max</b> laisse <b>ressortir</b> les caractéristiques locales fortes ; la <b>moyenne</b> tend à les <b>noyer</b> en cherchant à résumer toute l'information.</p>
-              <p class="sense"><b>Sens :</b> analogie du <i>pixel art</i> : même à très basse résolution, les formes caractéristiques restent reconnaissables si l'on garde les traits saillants.</p>
+              <p class="box-label">Exemple · Max ou moyenne : ce que chacun garde et jette, avec de vrais nombres</p>
+              <p><b>Contexte :</b> on reprend la scène de la fiche 16 (photo d'un véhicule). Voici un petit extrait $4\times4$ de la carte d'activation produite par Conv1, à l'endroit où se trouve la jante d'une roue : les valeurs élevées signalent un bord net (le contour métallique de la jante), les valeurs faibles un fond uniforme (l'asphalte).</p>
+              <div class="formula">$$H=\begin{pmatrix}1&3&2&0\\4&9&1&2\\0&2&7&1\\1&0&2&3\end{pmatrix}$$</div>
+              <p>Un pooling $2\times2$, stride $2$ (donc <b>sans chevauchement</b>, fiche 15), découpe $H$ en 4 blocs disjoints. Comparons max et moyenne sur chacun :</p>
+              <div class="convgrid-gallery">
+                <div class="hl-0">
+                  <div class="convgrid-label">Bloc $(0,0)$ : la jante est ici</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(2,30px);">
+                      <div class="convgrid-cell active">1</div><div class="convgrid-cell active">3</div>
+                      <div class="convgrid-cell active">4</div><div class="convgrid-cell active">9</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">max 9 · moy 4.25</div>
+                  </div>
+                </div>
+                <div class="hl-1">
+                  <div class="convgrid-label">Bloc $(0,1)$ : fond uniforme</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(2,30px);">
+                      <div class="convgrid-cell active">2</div><div class="convgrid-cell active">0</div>
+                      <div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">max 2 · moy 1.25</div>
+                  </div>
+                </div>
+                <div class="hl-2">
+                  <div class="convgrid-label">Bloc $(1,0)$ : fond uniforme</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(2,30px);">
+                      <div class="convgrid-cell active">0</div><div class="convgrid-cell active">2</div>
+                      <div class="convgrid-cell active">1</div><div class="convgrid-cell active">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">max 2 · moy 0.75</div>
+                  </div>
+                </div>
+                <div class="hl-3">
+                  <div class="convgrid-label">Bloc $(1,1)$ : un autre bord net</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(2,30px);">
+                      <div class="convgrid-cell active">7</div><div class="convgrid-cell active">1</div>
+                      <div class="convgrid-cell active">2</div><div class="convgrid-cell active">3</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">max 7 · moy 3.25</div>
+                  </div>
+                </div>
+              </div>
+              <p>Sortie complète : $H_{\max}=\begin{pmatrix}9&2\\2&7\end{pmatrix}$ contre $H_{\text{moy}}=\begin{pmatrix}4.25&1.25\\0.75&3.25\end{pmatrix}$.</p>
+              <p class="sense"><b>Sens :</b> regardez le bloc $(0,0)$, celui qui contient le vrai bord de la jante (le $9$). Le max <b>préserve exactement</b> ce signal fort ($9$), alors que la moyenne le <b>noie</b> parmi ses 3 voisins plus faibles et ne renvoie que $4.25$, une valeur à peine plus élevée que le bloc voisin $(1,1)$ ($3.25$, qui contenait pourtant un bord bien moins net, le $7$). Or c'est justement la <b>présence</b> d'un bord net quelque part dans la zone qui doit déclencher la reconnaissance d'une jante, pas sa valeur moyenne : c'est pour cela que le max-pooling est presque toujours préféré en classification d'image. La moyenne garde son utilité ailleurs (elle est plus douce, moins sensible au bruit isolé), notamment en tout dernier étage d'un ResNet moderne (<i>global average pooling</i>).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · D'où vient concrètement l'invariance aux petites translations ?</p>
+              <p>Reprenons le bloc $(0,0)$ ci-dessus, $\begin{pmatrix}1&3\\4&9\end{pmatrix}$, où le bord de la jante active fortement la case en bas à droite ($9$). Imaginons que la photo ait été prise avec le véhicule décalé d'un pixel vers la gauche : le bord se retrouverait alors en bas à gauche du même bloc plutôt qu'en bas à droite, ce qui donnerait $\begin{pmatrix}3&1\\9&4\end{pmatrix}$ (les mêmes 4 valeurs, juste réarrangées à l'intérieur du bloc).</p>
+              <div class="convgrid-gallery">
+                <div class="hl-0">
+                  <div class="convgrid-label">Position d'origine</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(2,30px);">
+                      <div class="convgrid-cell">1</div><div class="convgrid-cell">3</div>
+                      <div class="convgrid-cell">4</div><div class="convgrid-cell active">9</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">max = 9</div>
+                  </div>
+                </div>
+                <div class="hl-0">
+                  <div class="convgrid-label">Véhicule décalé de 1 pixel</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(2,30px);">
+                      <div class="convgrid-cell">3</div><div class="convgrid-cell">1</div>
+                      <div class="convgrid-cell active">9</div><div class="convgrid-cell">4</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">max = 9</div>
+                  </div>
+                </div>
+              </div>
+              <p class="sense"><b>Sens :</b> le max-pooling renvoie <b>exactement la même sortie</b> ($9$) dans les deux cas, bien que le bord ait bougé : tant que le pixel le plus activé <b>reste dans le même bloc $2\times2$</b>, la sortie du pooling ne change pas du tout. C'est très exactement ce qu'on entend par « invariance aux petites translations » : le réseau n'a plus besoin d'apprendre séparément « jante décalée d'un pixel à gauche » et « jante décalée d'un pixel à droite » comme deux motifs différents. <b>Attention à la limite</b> : cette invariance n'est vraie que pour un décalage qui reste <i>à l'intérieur</i> du même bloc. Si le véhicule se décale de 3 pixels et que le bord de la jante change complètement de bloc de pooling, la sortie change bel et bien : le pooling apporte une invariance <b>locale et partielle</b>, pas une garantie universelle contre n'importe quelle translation.</p>
             </div>
           </article>
 
