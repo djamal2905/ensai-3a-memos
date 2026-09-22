@@ -26,6 +26,7 @@ window.MathJax = {
     --thm-bg:#fbeee6; --thm-border:#b5643f; --thm-label:#9a4d2c;
     --ex-bg:#eaf1fb; --ex-border:#3f6ea3; --ex-label:#2c5480;
     --warn-bg:#fdeceb; --warn-border:#c1483c; --warn-color:#9a2f24;
+    --violet-bg:#f2ecf9; --violet-border:#8459b0; --violet-color:#5c3a85;
     --code-ink:#e7e9ee; --code-bg:#1a2028; --code-border:#2b3340;
     --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
     --radius: 10px;
@@ -40,6 +41,7 @@ window.MathJax = {
       --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
       --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
       --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+      --violet-bg:#241a30; --violet-border:#8459b0; --violet-color:#c9a8e8;
       --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
       color-scheme: dark;
@@ -53,6 +55,7 @@ window.MathJax = {
     --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
     --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
     --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+    --violet-bg:#241a30; --violet-border:#8459b0; --violet-color:#c9a8e8;
     --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
     color-scheme: dark;
@@ -202,6 +205,26 @@ window.MathJax = {
   .cnnviz-outnode{ fill:var(--def-bg); stroke:var(--def-border); stroke-width:2; }
   .cnnviz-outlabel{ font:600 12px "Source Sans 3",sans-serif; fill:var(--ink); dominant-baseline:middle; }
   .cnnviz-stagelabel{ font:600 11px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; }
+
+  .hl-0{ --hl-bg:var(--def-bg); --hl-bd:var(--def-border); --hl-ink:var(--def-label); }
+  .hl-1{ --hl-bg:var(--thm-bg); --hl-bd:var(--thm-border); --hl-ink:var(--thm-label); }
+  .hl-2{ --hl-bg:var(--ex-bg); --hl-bd:var(--ex-border); --hl-ink:var(--ex-label); }
+  .hl-3{ --hl-bg:var(--warn-bg); --hl-bd:var(--warn-border); --hl-ink:var(--warn-color); }
+  .hl-4{ --hl-bg:var(--violet-bg); --hl-bd:var(--violet-border); --hl-ink:var(--violet-color); }
+  .convvis-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; padding-bottom:2px; }
+  .convvis{ display:flex; flex-direction:column; gap:8px; min-width:max-content; }
+  .convvis-row{ display:flex; align-items:center; gap:10px; }
+  .convvis-cells{ display:flex; gap:4px; }
+  .convvis-cell{ width:34px; height:34px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:6px; font:600 .8rem "JetBrains Mono",monospace; background:var(--surface); color:var(--ink-soft); }
+  .convvis-row .convvis-cell.active{ background:var(--hl-bg); border-color:var(--hl-bd); color:var(--hl-ink); font-weight:700; }
+  .convvis-arrow{ font-size:1rem; color:var(--muted); flex:none; }
+  .convvis-out{ flex:none; min-width:34px; height:34px; padding:0 9px; display:flex; align-items:center; justify-content:center; border-radius:6px; font:700 .8rem "JetBrains Mono",monospace; background:var(--hl-bg); border:1px solid var(--hl-bd); color:var(--hl-ink); white-space:nowrap; }
+  .convgrid-gallery{ display:flex; flex-wrap:wrap; gap:16px 22px; margin:14px 0; }
+  .convgrid-item{ display:flex; align-items:center; gap:10px; }
+  .convgrid{ display:grid; gap:3px; }
+  .convgrid-cell{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:5px; font:600 .76rem "JetBrains Mono",monospace; background:var(--surface); color:var(--ink-soft); }
+  .convgrid-item .convgrid-cell.active{ background:var(--hl-bg); border-color:var(--hl-bd); color:var(--hl-ink); font-weight:700; }
+  .convgrid-label{ font:700 .74rem "JetBrains Mono",monospace; color:var(--hl-ink); margin-bottom:4px; }
   marker#cnnArrow path{ fill:var(--muted); }
 
   .nnamed-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
@@ -1297,7 +1320,46 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <div class="box box-ex">
               <p class="box-label">Exemple · Convolution 1D pas à pas, sur un vecteur (calcul complet)</p>
               <p><b>Contexte :</b> un site e-commerce enregistre son nombre de visiteurs quotidiens sur une semaine, $\mathbf h=(10,\ 11,\ 12,\ 25,\ 13,\ 12,\ 11)$ (un pic suspect au jour 4). On lui applique un noyau détecteur de changement $\mathbf w=(1,\ 0,\ -1)$ ($N_w=3$) : chaque sortie compare le début et la fin de sa fenêtre.</p>
-              <p>Avec $N_h=7$ et $N_w=3$, la sortie a $N_h-N_w+1=5$ valeurs ($i=0,\dots,4$). Pour chaque $i$, la fenêtre est $(h_{i+1},h_{i+2},h_{i+3})$ :</p>
+              <p>Avec $N_h=7$ et $N_w=3$, la sortie a $N_h-N_w+1=5$ valeurs ($i=0,\dots,4$). Pour chaque $i$, la fenêtre est $(h_{i+1},h_{i+2},h_{i+3})$ : la couleur ci-dessous montre, pour chaque sortie, quelles 3 cases du vecteur ont servi à la calculer.</p>
+              <div class="convvis-scroll">
+                <div class="convvis">
+                  <div class="convvis-row hl-0">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell active">10</div><div class="convvis-cell active">11</div><div class="convvis-cell active">12</div><div class="convvis-cell">25</div><div class="convvis-cell">13</div><div class="convvis-cell">12</div><div class="convvis-cell">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=0 : −2</div>
+                  </div>
+                  <div class="convvis-row hl-1">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">10</div><div class="convvis-cell active">11</div><div class="convvis-cell active">12</div><div class="convvis-cell active">25</div><div class="convvis-cell">13</div><div class="convvis-cell">12</div><div class="convvis-cell">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=1 : −14</div>
+                  </div>
+                  <div class="convvis-row hl-2">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">10</div><div class="convvis-cell">11</div><div class="convvis-cell active">12</div><div class="convvis-cell active">25</div><div class="convvis-cell active">13</div><div class="convvis-cell">12</div><div class="convvis-cell">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=2 : −1</div>
+                  </div>
+                  <div class="convvis-row hl-3">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">10</div><div class="convvis-cell">11</div><div class="convvis-cell">12</div><div class="convvis-cell active">25</div><div class="convvis-cell active">13</div><div class="convvis-cell active">12</div><div class="convvis-cell">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=3 : 13</div>
+                  </div>
+                  <div class="convvis-row hl-4">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">10</div><div class="convvis-cell">11</div><div class="convvis-cell">12</div><div class="convvis-cell">25</div><div class="convvis-cell active">13</div><div class="convvis-cell active">12</div><div class="convvis-cell active">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=4 : 2</div>
+                  </div>
+                </div>
+              </div>
               <table class="cmp">
                 <tr><th>$i$</th><th>Fenêtre $(h_{i+1},h_{i+2},h_{i+3})$</th><th>Produit terme à terme avec $\mathbf w=(1,0,-1)$</th><th>Somme $=(\mathbf h*\mathbf w)_i$</th></tr>
                 <tr><td>0</td><td>$(10,\ 11,\ 12)$</td><td>$10\times1+11\times0+12\times({-}1)$</td><td>$10-12=-2$</td></tr>
@@ -1314,7 +1376,57 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <p class="box-label">Exemple · Convolution 2D pas à pas, sur une matrice (mini-image)</p>
               <p><b>Contexte :</b> avant de l'appliquer à une vraie photo, on teste un petit noyau détecteur de contour vertical sur un patch $3\times3$ en niveaux de gris (valeurs $0$ = noir à $9$ = blanc), avec un noyau $2\times2$ :</p>
               <div class="formula">$$I=\begin{pmatrix}8&8&1\\7&9&2\\8&8&0\end{pmatrix} \qquad K=\begin{pmatrix}1&-1\\1&-1\end{pmatrix}$$</div>
-              <p>Avec $I$ de taille $3\times3$ et $K$ de taille $2\times2$, la sortie fait $(3-2+1)\times(3-2+1)=2\times2$ (fiche 15). Pour chaque position $(i,j)\in\{0,1\}^2$, on extrait le bloc $2\times2$ de $I$ démarrant en $(i,j)$, on multiplie terme à terme par $K$, puis on somme :</p>
+              <p>Avec $I$ de taille $3\times3$ et $K$ de taille $2\times2$, la sortie fait $(3-2+1)\times(3-2+1)=2\times2$ (fiche 15). Pour chaque position $(i,j)\in\{0,1\}^2$, on extrait le bloc $2\times2$ de $I$ démarrant en $(i,j)$ : la couleur montre quelles 4 cases de $I$ sont utilisées pour chaque sortie.</p>
+              <div class="convgrid-gallery">
+                <div class="hl-0">
+                  <div class="convgrid-label">Sortie $(0,0)$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(3,30px);">
+                      <div class="convgrid-cell active">8</div><div class="convgrid-cell active">8</div><div class="convgrid-cell">1</div>
+                      <div class="convgrid-cell active">7</div><div class="convgrid-cell active">9</div><div class="convgrid-cell">2</div>
+                      <div class="convgrid-cell">8</div><div class="convgrid-cell">8</div><div class="convgrid-cell">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">−2</div>
+                  </div>
+                </div>
+                <div class="hl-1">
+                  <div class="convgrid-label">Sortie $(0,1)$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(3,30px);">
+                      <div class="convgrid-cell">8</div><div class="convgrid-cell active">8</div><div class="convgrid-cell active">1</div>
+                      <div class="convgrid-cell">7</div><div class="convgrid-cell active">9</div><div class="convgrid-cell active">2</div>
+                      <div class="convgrid-cell">8</div><div class="convgrid-cell">8</div><div class="convgrid-cell">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">14</div>
+                  </div>
+                </div>
+                <div class="hl-2">
+                  <div class="convgrid-label">Sortie $(1,0)$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(3,30px);">
+                      <div class="convgrid-cell">8</div><div class="convgrid-cell">8</div><div class="convgrid-cell">1</div>
+                      <div class="convgrid-cell active">7</div><div class="convgrid-cell active">9</div><div class="convgrid-cell">2</div>
+                      <div class="convgrid-cell active">8</div><div class="convgrid-cell active">8</div><div class="convgrid-cell">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">−2</div>
+                  </div>
+                </div>
+                <div class="hl-3">
+                  <div class="convgrid-label">Sortie $(1,1)$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(3,30px);">
+                      <div class="convgrid-cell">8</div><div class="convgrid-cell">8</div><div class="convgrid-cell">1</div>
+                      <div class="convgrid-cell">7</div><div class="convgrid-cell active">9</div><div class="convgrid-cell active">2</div>
+                      <div class="convgrid-cell">8</div><div class="convgrid-cell active">8</div><div class="convgrid-cell active">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">15</div>
+                  </div>
+                </div>
+              </div>
               <table class="cmp">
                 <tr><th>Position $(i,j)$</th><th>Bloc de $I$</th><th>Produit terme à terme avec $K$</th><th>Somme</th></tr>
                 <tr><td>$(0,0)$</td><td>$\begin{pmatrix}8&8\\7&9\end{pmatrix}$</td><td>$8{\times}1+8{\times}({-}1)+7{\times}1+9{\times}({-}1)$</td><td>$8-8+7-9=-2$</td></tr>
@@ -1689,6 +1801,39 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
           <details class="solution">
             <summary>Voir la correction</summary>
             <div class="box box-thm">
+              <p>Les 4 fenêtres glissantes sur $\mathbf h=(18,19,30,20,21,22)$ (communes aux deux noyaux, seul le calcul à l'intérieur change) :</p>
+              <div class="convvis-scroll">
+                <div class="convvis">
+                  <div class="convvis-row hl-0">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell active">18</div><div class="convvis-cell active">19</div><div class="convvis-cell active">30</div><div class="convvis-cell">20</div><div class="convvis-cell">21</div><div class="convvis-cell">22</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=0</div>
+                  </div>
+                  <div class="convvis-row hl-1">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">18</div><div class="convvis-cell active">19</div><div class="convvis-cell active">30</div><div class="convvis-cell active">20</div><div class="convvis-cell">21</div><div class="convvis-cell">22</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=1</div>
+                  </div>
+                  <div class="convvis-row hl-2">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">18</div><div class="convvis-cell">19</div><div class="convvis-cell active">30</div><div class="convvis-cell active">20</div><div class="convvis-cell active">21</div><div class="convvis-cell">22</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=2</div>
+                  </div>
+                  <div class="convvis-row hl-3">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">18</div><div class="convvis-cell">19</div><div class="convvis-cell">30</div><div class="convvis-cell active">20</div><div class="convvis-cell active">21</div><div class="convvis-cell active">22</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=3</div>
+                  </div>
+                </div>
+              </div>
               <p class="method-label">(a) Noyau moyenneur</p>
               <table class="cmp">
                 <tr><th>$i$</th><th>Fenêtre</th><th>Somme $\times\frac13$</th></tr>
@@ -1782,7 +1927,53 @@ for layer in layers:
               <p>Bloc $I[0{:}3,0{:}3]=\begin{pmatrix}1&2&3\\0&1&2\\3&0&1\end{pmatrix}$. Produit terme à terme avec $K$ puis somme :</p>
               <div class="formula">$$(1{\times}1{+}2{\times}0{+}3{\times}({-}1)) + (0{\times}1{+}1{\times}0{+}2{\times}({-}1)) + (3{\times}1{+}0{\times}0{+}1{\times}({-}1)) = (1{-}3)+({-}2)+(3{-}1) = -2-2+2 = -2$$</div>
               <p class="method-label">(c) Les 3 autres positions</p>
-              <p>En répétant le même calcul pour chaque bloc $3\times3$ glissé d'une case :</p>
+              <p>En répétant le même calcul pour chaque bloc $3\times3$ glissé d'une case : la couleur montre, pour chacune des 4 sorties, quelles 9 cases de $I$ ont été utilisées (elles se chevauchent largement d'une sortie à l'autre, puisque le noyau glisse d'une seule case à la fois).</p>
+              <div class="convgrid-gallery">
+                <div class="hl-0">
+                  <div class="convgrid-label">Sortie $(0,0)=-2$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(4,28px);">
+                      <div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div><div class="convgrid-cell active">3</div><div class="convgrid-cell">0</div>
+                      <div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div><div class="convgrid-cell">3</div>
+                      <div class="convgrid-cell active">3</div><div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell">2</div>
+                      <div class="convgrid-cell">2</div><div class="convgrid-cell">3</div><div class="convgrid-cell">0</div><div class="convgrid-cell">1</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="hl-1">
+                  <div class="convgrid-label">Sortie $(0,1)=-2$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(4,28px);">
+                      <div class="convgrid-cell">1</div><div class="convgrid-cell active">2</div><div class="convgrid-cell active">3</div><div class="convgrid-cell active">0</div>
+                      <div class="convgrid-cell">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div><div class="convgrid-cell active">3</div>
+                      <div class="convgrid-cell">3</div><div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div>
+                      <div class="convgrid-cell">2</div><div class="convgrid-cell">3</div><div class="convgrid-cell">0</div><div class="convgrid-cell">1</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="hl-2">
+                  <div class="convgrid-label">Sortie $(1,0)=2$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(4,28px);">
+                      <div class="convgrid-cell">1</div><div class="convgrid-cell">2</div><div class="convgrid-cell">3</div><div class="convgrid-cell">0</div>
+                      <div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div><div class="convgrid-cell">3</div>
+                      <div class="convgrid-cell active">3</div><div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell">2</div>
+                      <div class="convgrid-cell active">2</div><div class="convgrid-cell active">3</div><div class="convgrid-cell active">0</div><div class="convgrid-cell">1</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="hl-3">
+                  <div class="convgrid-label">Sortie $(1,1)=-2$</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(4,28px);">
+                      <div class="convgrid-cell">1</div><div class="convgrid-cell">2</div><div class="convgrid-cell">3</div><div class="convgrid-cell">0</div>
+                      <div class="convgrid-cell">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div><div class="convgrid-cell active">3</div>
+                      <div class="convgrid-cell">3</div><div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div><div class="convgrid-cell active">2</div>
+                      <div class="convgrid-cell">2</div><div class="convgrid-cell active">3</div><div class="convgrid-cell active">0</div><div class="convgrid-cell active">1</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="formula">$$\text{sortie} = \begin{pmatrix}-2&-2\\2&-2\end{pmatrix}$$</div>
               <p class="method-label">(d) Motif détecté</p>
               <p>La première colonne de $K$ vaut $+1$ et la dernière $-1$ (colonne centrale nulle) : ce noyau calcule, pour chaque fenêtre, la différence entre la somme de la colonne de gauche et celle de la colonne de droite. Une valeur de sortie de grande magnitude signale donc un <b>contraste vertical fort</b> (un bord/contour orienté verticalement), exactement comme les noyaux de détection de contours de la fiche 13 : sur une vraie image satellite, c'est précisément ce type de contraste qui trahit la limite entre deux parcelles voisines (cultures différentes, chemin, haie).</p>
