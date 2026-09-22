@@ -224,6 +224,7 @@ window.MathJax = {
   .convgrid{ display:grid; gap:3px; }
   .convgrid-cell{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:5px; font:600 .76rem "JetBrains Mono",monospace; background:var(--surface); color:var(--ink-soft); }
   .convgrid-item .convgrid-cell.active{ background:var(--hl-bg); border-color:var(--hl-bd); color:var(--hl-ink); font-weight:700; }
+  .convgrid-cell.pad{ opacity:.5; border-style:dashed; }
   .convgrid-label{ font:700 .74rem "JetBrains Mono",monospace; color:var(--hl-ink); margin-bottom:4px; }
   marker#cnnArrow path{ fill:var(--muted); }
 
@@ -1503,10 +1504,95 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <p class="sense"><b>Sens :</b> sans padding, empiler $k$ convolutions $3\times3$ rogne l'image de $2k$ pixels : un vrai problème pour les réseaux profonds.</p>
             </div>
 
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Ce qui se passe vraiment sur les bords, avec et sans padding</p>
+              <p><b>Contexte :</b> un patch $3\times3$ (valeurs de luminosité) $I=\begin{pmatrix}5&6&4\\7&8&6\\5&7&5\end{pmatrix}$, convolué par un noyau moyenneur $3\times3$ ($1/9$ partout, comme le flou de la fiche 13).</p>
+              <p><b>Sans padding :</b> le noyau $3\times3$ n'a qu'<b>une seule</b> position valide sur une image $3\times3$ (fiche 15) : le centre. La sortie est un unique nombre, la moyenne des 9 pixels :</p>
+              <div class="formula">$$\frac{5+6+4+7+8+6+5+7+5}{9} = \frac{53}{9} \approx 5.89$$</div>
+              <p><b>Avec padding $=1$ :</b> on entoure $I$ d'une bordure de zéros, pour obtenir un patch $5\times5$ :</p>
+              <div class="convgrid-gallery">
+                <div>
+                  <div class="convgrid-label">$I$ complété (padding = zéros en pointillés)</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(5,28px);">
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell">5</div><div class="convgrid-cell">6</div><div class="convgrid-cell">4</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell">7</div><div class="convgrid-cell">8</div><div class="convgrid-cell">6</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell">5</div><div class="convgrid-cell">7</div><div class="convgrid-cell">5</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p>Le noyau a maintenant $3\times3=9$ positions valides (fiche 15, formule) : la sortie fait $3\times3$, sa taille est <b>préservée</b>. Comparons deux positions extrêmes :</p>
+              <div class="convgrid-gallery">
+                <div class="hl-2">
+                  <div class="convgrid-label">Centre $(1,1)$ : que des vrais pixels</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(5,26px);">
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell active">5</div><div class="convgrid-cell active">6</div><div class="convgrid-cell active">4</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell active">7</div><div class="convgrid-cell active">8</div><div class="convgrid-cell active">6</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell active">5</div><div class="convgrid-cell active">7</div><div class="convgrid-cell active">5</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">5.89</div>
+                  </div>
+                </div>
+                <div class="hl-3">
+                  <div class="convgrid-label">Coin $(0,0)$ : 5 des 9 valeurs sont du padding</div>
+                  <div class="convgrid-item">
+                    <div class="convgrid" style="grid-template-columns:repeat(5,26px);">
+                      <div class="convgrid-cell active pad">0</div><div class="convgrid-cell active pad">0</div><div class="convgrid-cell active pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell active pad">0</div><div class="convgrid-cell active">5</div><div class="convgrid-cell active">6</div><div class="convgrid-cell">4</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell active pad">0</div><div class="convgrid-cell active">7</div><div class="convgrid-cell active">8</div><div class="convgrid-cell">6</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell">5</div><div class="convgrid-cell">7</div><div class="convgrid-cell">5</div><div class="convgrid-cell pad">0</div>
+                      <div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div><div class="convgrid-cell pad">0</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">2.89</div>
+                  </div>
+                </div>
+              </div>
+              <p class="sense"><b>Sens :</b> la sortie du centre ($5.89$) est <b>identique</b> à la sortie « sans padding » : sur cette position, le padding ne change rigoureusement rien, puisqu'aucun zéro n'entre dans le calcul. Mais la sortie du coin ($2.89$), elle, est calculée à partir de $5$ zéros fictifs sur $9$ valeurs : elle est artificiellement <b>tirée vers le bas</b> par rapport à ce qu'elle serait sur une vraie image plus grande. C'est le vrai prix du padding : il préserve la taille, mais les sorties près des bords sont légèrement biaisées, car une partie de leur fenêtre est « inventée ».</p>
+            </div>
+
             <div class="box box-def">
               <p class="box-label">Définition · Stride</p>
               <p>Le noyau <b>glisse</b> d'une position à l'autre. Le <b>stride</b> est le pas de ce glissement : il contrôle à la fois la <b>réduction</b> de largeur/hauteur et le <b>chevauchement</b> entre régions successives.</p>
               <p class="sense"><b>Sens :</b> un stride $\ge 2$ est une façon de sous-échantillonner sans couche de pooling.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Un stride trop grand peut faire rater l'information utile</p>
+              <p><b>Contexte :</b> on reprend le signal de visiteurs quotidiens de la fiche 12, $\mathbf h=(10,11,12,25,13,12,11)$, avec le même noyau détecteur de changement $\mathbf w=(1,0,-1)$. Avec un stride $S=1$, on avait calculé les 5 sorties $(-2,-14,-1,13,2)$ (fiche 12) : les valeurs $-14$ et $13$, qui encadrent le pic du jour 4, étaient les deux signaux forts. Que se passe-t-il avec un stride $S=2$ (une fenêtre sur deux) ?</p>
+              <div class="convvis-scroll">
+                <div class="convvis">
+                  <div class="convvis-row hl-0">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell active">10</div><div class="convvis-cell active">11</div><div class="convvis-cell active">12</div><div class="convvis-cell">25</div><div class="convvis-cell">13</div><div class="convvis-cell">12</div><div class="convvis-cell">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=0 : −2</div>
+                  </div>
+                  <div class="convvis-row hl-2">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">10</div><div class="convvis-cell">11</div><div class="convvis-cell active">12</div><div class="convvis-cell active">25</div><div class="convvis-cell active">13</div><div class="convvis-cell">12</div><div class="convvis-cell">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=2 : −1</div>
+                  </div>
+                  <div class="convvis-row hl-4">
+                    <div class="convvis-cells">
+                      <div class="convvis-cell">10</div><div class="convvis-cell">11</div><div class="convvis-cell">12</div><div class="convvis-cell">25</div><div class="convvis-cell active">13</div><div class="convvis-cell active">12</div><div class="convvis-cell active">11</div>
+                    </div>
+                    <div class="convvis-arrow">→</div>
+                    <div class="convvis-out">i=4 : 2</div>
+                  </div>
+                </div>
+              </div>
+              <p class="sense"><b>Sens :</b> avec $S=2$, seules les fenêtres $i=0,2,4$ sont calculées : les fenêtres $i=1$ ($-14$) et $i=3$ ($13$), qui sont <b>précisément celles</b> qui signalaient les deux bords de l'anomalie, ne sont <b>jamais évaluées</b>. Toutes les sorties restantes sont petites ($-2,-1,2$) : avec ce stride, le détecteur d'anomalie devient <b>aveugle</b> au pic du jour 4. C'est le compromis du stride (comme celui du pooling, fiche 14) : gagner en vitesse et en compression, au risque de manquer un motif localisé si son échelle est plus fine que le pas choisi.</p>
             </div>
 
             <div class="box box-def">
@@ -1646,6 +1732,23 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               </svg>
             </div>
             <p class="sense"><b>Sens :</b> à chaque bloc [Conv+ReLU → Pooling], les cartes de caractéristiques rétrécissent en largeur/hauteur (pooling) mais gagnent en profondeur (davantage de filtres, donc de canaux) : on échange de la résolution spatiale contre des motifs de plus en plus abstraits, jusqu'à ce qu'un vecteur aplati (flatten) puisse être classé par les couches denses finales.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Que calcule concrètement chaque couche, sur une vraie photo ?</p>
+              <p><b>Contexte :</b> une caméra embarquée de voiture autonome a déjà détecté et recadré un véhicule (fiche 17) : on obtient un patch RGB $64\times64\times3$, à classer en <b>voiture</b>, <b>vélo</b> ou <b>camion</b> (les 3 classes de la figure ci-dessus). On fait passer ce patch dans l'architecture de la figure : <code>Conv(3→16,k=3,p=1)+ReLU → Pool(2) → Conv(16→32,k=3,p=1)+ReLU → Pool(2) → Flatten → Dense(64) → Softmax(3)</code>.</p>
+              <table class="cmp">
+                <tr><th>Couche</th><th>Forme de sortie</th><th>Rôle concret, sur <i>cette</i> photo</th></tr>
+                <tr><td>Entrée</td><td>$64\times64\times3$</td><td>Les pixels bruts R, G, B du véhicule recadré.</td></tr>
+                <tr><td>Conv1 (16 filtres $3\times3$) + ReLU</td><td>$64\times64\times16$</td><td>Chacun des 16 filtres répond à un motif <b>très local</b> : un contour de carrosserie, la transition asphalte/pneu, un reflet de pare-brise... 16 cartes, une par motif détecté, à chaque position de l'image.</td></tr>
+                <tr><td>Pooling $2\times2$</td><td>$32\times32\times16$</td><td>Ne garde que la réponse la plus forte de chaque petite zone $2\times2$ : le réseau devient insensible à un décalage de 1-2 pixels du véhicule dans le patch (fiche 14).</td></tr>
+                <tr><td>Conv2 (32 filtres $3\times3$) + ReLU</td><td>$32\times32\times32$</td><td>Combine les motifs locaux de la couche 1 en motifs plus complexes : un <b>arc de roue</b>, un <b>rectangle de pare-brise</b>, une <b>benne plate</b> de camion... Le champ récepteur (fiche 19) est maintenant assez large pour voir ces formes entières.</td></tr>
+                <tr><td>Pooling $2\times2$</td><td>$16\times16\times32$</td><td>Même logique : ne garde que les motifs les plus marqués, réduit encore la résolution spatiale.</td></tr>
+                <tr><td>Flatten</td><td>$8192$</td><td>Met à plat la grille $16\times16\times32$ de motifs détectés (« il y a un arc de roue vers le coin bas-gauche, un rectangle de pare-brise en haut... ») en un seul vecteur, lisible par une couche dense.</td></tr>
+                <tr><td>Dense (64)</td><td>$64$</td><td>Combine <b>tous</b> les motifs détectés (roues, vitres, benne...) en 64 signaux de plus haut niveau, chacun une combinaison pondérée apprise de plusieurs motifs.</td></tr>
+                <tr><td>Softmax (3)</td><td>$3$ probabilités</td><td>Traduit ces 64 signaux en 3 probabilités qui somment à 1 : par exemple $(0.05,\ 0.02,\ 0.93)$ pour voiture / vélo / camion, si les motifs « benne plate » et « grandes roues » dominent.</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> personne n'a dit au réseau de chercher des « arcs de roue » ou des « rectangles de pare-brise » : ces motifs intermédiaires émergent automatiquement de l'entraînement par descente de gradient (fiche 6), exactement comme l'idée clé de la fiche 13 le laissait présager. C'est cette hiérarchie (pixels → contours → parties → objet) qui rend le calcul robuste : même si le véhicule est légèrement décalé, tourné ou dans une ombre, les motifs de haut niveau (« il y a une benne plate quelque part ») restent détectés.</p>
+            </div>
 
             <div class="box box-def">
               <p class="box-label">Définition · Architecture typique</p>
