@@ -2412,6 +2412,17 @@ for layer in layers:
               <div class="formula">$$\mathbf h^{(t)} = \tanh\big(\mathbf W_{xh}\mathbf x^{(t)} + \mathbf b_{xh} + \mathbf W_{hh}\mathbf h^{(t-1)} + \mathbf b_{hh}\big), \qquad \mathbf h^{(0)}=\mathbf 0$$</div>
               <p class="sense"><b>Sens :</b> les <b>mêmes</b> matrices $\mathbf W_{xh}$ (entrée → état) et $\mathbf W_{hh}$ (état → état) sont réutilisées à <b>chaque</b> pas de temps. Vue « repliée » (folded) : une simple boucle $\mathbf h^{(t-1)}\to\tanh\to\mathbf h^{(t)}$ avec $\mathbf x^{(t)}$ en entrée.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Faire tourner la formule à la main, pas à pas</p>
+              <p>Prenons le cas le plus simple possible pour bien voir le mécanisme : un état caché <b>scalaire</b> ($\mathbf h_t\in\mathbb R$, un seul neurone récurrent), sur une séquence de 2 mots déjà encodés en nombres, $x_1=-1$ (le mot « <i>not</i> ») et $x_2=+1$ (le mot « <i>good</i> »). Poids <b>illustratifs</b> (pas appris ici, juste choisis pour l'exemple) : $W_{xh}=1$, $W_{hh}=0.5$, tous les biais nuls, $h_0=0$.</p>
+              <p><b>Pas 1</b> ($t=1$) : on combine $x_1$ avec l'état de départ $h_0=0$ (« on ne sait encore rien ») :</p>
+              <div class="formula">$$h_1 = \tanh(W_{xh}\,x_1 + W_{hh}\,h_0) = \tanh(1\times({-}1) + 0.5\times0) = \tanh({-}1) \approx -0.762$$</div>
+              <p><b>Pas 2</b> ($t=2$) : on combine le <b>nouveau</b> mot $x_2$ avec l'état $h_1$ qui vient d'être calculé, <b>en réutilisant les mêmes poids</b> $W_{xh},W_{hh}$ qu'au pas 1 :</p>
+              <div class="formula">$$h_2 = \tanh(W_{xh}\,x_2 + W_{hh}\,h_1) = \tanh\big(1\times1 + 0.5\times({-}0.762)\big) = \tanh(0.619) \approx 0.551$$</div>
+              <p>Si l'on ajoute une couche de sortie $\hat y_2=\sigma(W_{hy}h_2)$ avec $W_{hy}=2$ (toujours illustratif) : $\hat y_2=\sigma(2\times0.551)=\sigma(1.101)\approx0.750$.</p>
+              <p class="sense"><b>Sens :</b> $h_2$ n'est <b>pas</b> juste une fonction de $x_2$ : il porte la trace de $x_1$ à travers $h_1$, qui a contribué négativement ($0.5\times({-}0.762)=-0.381$) et a donc légèrement <b>atténué</b> l'effet du mot positif $x_2$ dans $h_2$, sans l'annuler. C'est exactement le rôle de l'état caché : un <b>résumé compressé et mis à jour</b> de tout ce qui a été lu jusqu'ici, où chaque nouveau mot vient nuancer, plutôt qu'effacer, ce qui précède. Remarquez aussi que $W_{xh}$ et $W_{hh}$ sont <b>identiques</b> aux deux pas de temps : c'est le partage de paramètres de la définition ci-dessus, en action.</p>
+            </div>
           </article>
 
           <article class="topic" id="s22">
@@ -2422,6 +2433,17 @@ for layer in layers:
               <p>Par la règle de la chaîne, le gradient traversant $T$ pas de temps est un <b>produit</b> de nombreuses dérivées partielles :</p>
               <p>• dérivées <b>petites</b> ($\lt 1$ en module) ⟹ le produit tend vers $0$ : <b>vanishing gradients</b> (les dépendances longues ne sont plus apprises) ;<br>
               • dérivées <b>grandes</b> ($\gt 1$) ⟹ le produit diverge : <b>exploding gradients</b> (mises à jour aberrantes, <code>NaN</code>).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · À quel point « un peu moins de 1 » devient catastrophique</p>
+              <p>Ce n'est pas juste une histoire de signe : mettons un chiffre sur <b>l'ampleur</b> du phénomène. Supposons que la dérivée partielle $\partial\mathbf h_t/\partial\mathbf h_{t-1}$ vaille, à chaque pas de temps, une valeur constante $\rho$ (une approximation simplificatrice, mais éclairante). Le facteur qui multiplie le gradient après $T$ pas de temps est alors $\rho^T$ :</p>
+              <table class="cmp">
+                <tr><th>$\rho$ (dérivée par pas)</th><th>$\rho^{10}$ (après 10 pas)</th><th>$\rho^{20}$ (après 20 pas)</th></tr>
+                <tr><td>$0.5$ (légèrement $<1$)</td><td>$0.000977$ (perdu 99,9 %)</td><td>$0.00000095$ (quasi nul)</td></tr>
+                <tr><td>$1.5$ (légèrement $>1$)</td><td>$57.7$</td><td>$3\,325$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> une dérivée à peine inférieure à $1$ ($\rho=0.5$, un cas tout à fait ordinaire pour un $\tanh$ pas totalement saturé) suffit à rendre le gradient <b>totalement invisible</b> au bout d'une vingtaine de pas de temps seulement : le réseau ne reçoit alors <b>aucun</b> signal d'apprentissage pour corriger ses poids en fonction d'un mot lu 20 pas plus tôt, même si ce mot était décisif (ex. « ne » tout au début d'une phrase, qui inverse le sens de tout ce qui suit). Symétriquement, $\rho=1.5$ fait <b>exploser</b> le gradient d'un facteur $3\,325$ sur la même fenêtre : une seule mise à jour de descente de gradient peut alors envoyer les poids n'importe où, produisant des <code>NaN</code>. C'est ce calcul, et non une simple intuition, qui explique pourquoi un RNN vanille peine dès que les dépendances dépassent quelques dizaines de pas : c'est précisément le problème que le LSTM (fiche 23) a été conçu pour résoudre.</p>
             </div>
 
             <div class="box box-thm">
@@ -2462,6 +2484,18 @@ for layer in layers:
               <div class="formula">$$\mathbf c_t = \mathbf f_t\odot\mathbf c_{t-1} + \mathbf i_t\odot\tilde{\mathbf c}_t \qquad\qquad \mathbf h_t = \mathbf o_t\odot\tanh(\mathbf c_t)$$</div>
               <p>« Oublier $\mathbf c_{t-1}$ si nécessaire, ajouter $\tilde{\mathbf c}_t$ si pertinent. » L'état caché $\mathbf h$ est une version <b>filtrée</b> de la mémoire $\mathbf c$ par la porte de sortie.</p>
               <p class="sense"><b>Sens :</b> la mémoire se propage de façon quasi-<b>additive</b>, avec un produit terme à terme ($\odot$) et non un produit <b>matriciel</b> répété : si $\mathbf f_t\approx\mathbf 1$, le gradient traverse le temps presque sans atténuation : c'est là que le <i>vanishing gradient</i> est atténué.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Reprenons le calcul de la fiche 22, mais avec une porte d'oubli</p>
+              <p>La fiche 22 a montré qu'une dérivée constante $\rho=0.5$ à chaque pas (un RNN vanille typique) réduit le signal à $0.5^{20}\approx0.00000095$ après 20 pas : quasiment rien. Comparons avec une cellule LSTM dont la porte d'oubli $f_t$ a <b>appris</b> à rester proche de $1$, disons $f_t\approx0.95$ (elle a détecté que l'information en cours doit être conservée longtemps, ex. le sujet d'une phrase avant son verbe, bien plus loin). En l'absence de nouvelle entrée marquante ($i_t\approx0$), la récurrence $\mathbf c_t=\mathbf f_t\odot\mathbf c_{t-1}$ se comporte comme une simple puissance de $f_t$ :</p>
+              <table class="cmp">
+                <tr><th>Mécanisme</th><th>Facteur par pas</th><th>Ce qui reste après 20 pas</th></tr>
+                <tr><td>RNN vanille (fiche 22)</td><td>$\rho=0.5$</td><td>$0.5^{20}\approx0.00000095$ (disparu)</td></tr>
+                <tr><td>LSTM, porte d'oubli $f_t=0.95$</td><td>$0.95$</td><td>$0.95^{20}\approx0.358$ (36 % conservé)</td></tr>
+                <tr><td>LSTM, porte d'oubli $f_t=0.99$</td><td>$0.99$</td><td>$0.99^{20}\approx0.818$ (82 % conservé)</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> la différence n'est pas cosmétique, elle est <b>qualitative</b> : avec $\rho=0.5$, l'information d'il y a 20 pas est mathématiquement indiscernable de zéro pour l'algorithme d'apprentissage. Avec $f_t=0.95$, plus du tiers du signal original est encore là. La porte d'oubli n'est pas fixée à $0.95$ par hasard : elle est <b>apprise</b>, précisément pour prendre une valeur proche de $1$ sur les informations que la tâche exige de retenir longtemps, et proche de $0$ sur celles qui deviennent obsolètes (ex. le genre d'un sujet, dès que la phrase suivante change de sujet). C'est tout le sens de la fiche 23 : transformer une atténuation <b>subie</b> et incontrôlable ($\tanh'$, fiche 22) en une atténuation <b>choisie et apprise</b> par le réseau lui-même.</p>
             </div>
           </article>
 
