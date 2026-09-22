@@ -1290,8 +1290,40 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <div class="box box-def">
               <p class="box-label">Définition · Opération de convolution (1D et 2D)</p>
               <div class="formula">$$(\mathbf h*\mathbf w)_i := \sum_{k=1}^{N_w} h_{i+k}\,w_k \qquad\qquad (\mathbf H*\mathbf W)_{i,j} := \sum_{k=1}^{M_w}\sum_{l=1}^{N_w} H_{i+k,\,j+l}\,W_{k,l}$$</div>
-              <p>$\mathbf h\in\mathbb R^{N_h}$ (resp. $\mathbf H\in\mathbb R^{M_h\times N_h}$) = entrée/sortie de la couche précédente, $\mathbf w$ (resp. $\mathbf W$) = noyau, c'est-à-dire les <b>paramètres</b> de la couche.</p>
+              <p>$\mathbf h\in\mathbb R^{N_h}$ (resp. $\mathbf H\in\mathbb R^{M_h\times N_h}$) = entrée/sortie de la couche précédente, $\mathbf w$ (resp. $\mathbf W$) = noyau, c'est-à-dire les <b>paramètres</b> de la couche. <b>Convention d'indexation :</b> la sortie est numérotée à partir de $i=0$ (comme en pratique dans NumPy/PyTorch) : la toute première fenêtre, $i=0$, couvre $h_1,\dots,h_{N_w}$ (car $(\mathbf h*\mathbf w)_0=\sum_{k=1}^{N_w}h_{0+k}w_k=h_1w_1+\dots+h_{N_w}w_{N_w}$). Puis $i=1$ couvre $h_2,\dots,h_{N_w+1}$ (la fenêtre a glissé d'un cran), et ainsi de suite. Les deux exemples ci-dessous détaillent ce calcul, d'abord sur un vecteur puis sur une matrice.</p>
               <p class="sense"><b>Sens :</b> en toute rigueur ce n'est pas la convolution mathématique (les indices ne sont pas retournés) mais une <b>corrélation croisée</b> ; elle coïncide avec la convolution usuelle à un retournement d'indices près. L'usage a gardé le nom.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Convolution 1D pas à pas, sur un vecteur (calcul complet)</p>
+              <p><b>Contexte :</b> un site e-commerce enregistre son nombre de visiteurs quotidiens sur une semaine, $\mathbf h=(10,\ 11,\ 12,\ 25,\ 13,\ 12,\ 11)$ (un pic suspect au jour 4). On lui applique un noyau détecteur de changement $\mathbf w=(1,\ 0,\ -1)$ ($N_w=3$) : chaque sortie compare le début et la fin de sa fenêtre.</p>
+              <p>Avec $N_h=7$ et $N_w=3$, la sortie a $N_h-N_w+1=5$ valeurs ($i=0,\dots,4$). Pour chaque $i$, la fenêtre est $(h_{i+1},h_{i+2},h_{i+3})$ :</p>
+              <table class="cmp">
+                <tr><th>$i$</th><th>Fenêtre $(h_{i+1},h_{i+2},h_{i+3})$</th><th>Produit terme à terme avec $\mathbf w=(1,0,-1)$</th><th>Somme $=(\mathbf h*\mathbf w)_i$</th></tr>
+                <tr><td>0</td><td>$(10,\ 11,\ 12)$</td><td>$10\times1+11\times0+12\times({-}1)$</td><td>$10-12=-2$</td></tr>
+                <tr><td>1</td><td>$(11,\ 12,\ 25)$</td><td>$11\times1+12\times0+25\times({-}1)$</td><td>$11-25=-14$</td></tr>
+                <tr><td>2</td><td>$(12,\ 25,\ 13)$</td><td>$12\times1+25\times0+13\times({-}1)$</td><td>$12-13=-1$</td></tr>
+                <tr><td>3</td><td>$(25,\ 13,\ 12)$</td><td>$25\times1+13\times0+12\times({-}1)$</td><td>$25-12=13$</td></tr>
+                <tr><td>4</td><td>$(13,\ 12,\ 11)$</td><td>$13\times1+12\times0+11\times({-}1)$</td><td>$13-11=2$</td></tr>
+              </table>
+              <p>Sortie : $\mathbf h*\mathbf w=(-2,\ -14,\ -1,\ 13,\ 2)$.</p>
+              <p class="sense"><b>Sens :</b> puisque $w_2=0$, ce noyau calcule juste $h_{i+1}-h_{i+3}$ : « valeur au début de la fenêtre moins valeur à la fin ». Les sorties $i=0,2,4$ (fenêtres <i>avant</i> ou <i>après</i> le pic, dans une zone stable) restent petites en valeur absolue. Les sorties $i=1$ ($-14$, la fenêtre <i>monte</i> fortement vers le pic) et $i=3$ ($+13$, la fenêtre <i>redescend</i> fortement après le pic) sont, elles, de grande magnitude : ce noyau 1D repère exactement les deux bords temporels de l'anomalie, comme un noyau 2D de détection de contours (fiche 13) repère les bords spatiaux d'un objet dans une image.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Convolution 2D pas à pas, sur une matrice (mini-image)</p>
+              <p><b>Contexte :</b> avant de l'appliquer à une vraie photo, on teste un petit noyau détecteur de contour vertical sur un patch $3\times3$ en niveaux de gris (valeurs $0$ = noir à $9$ = blanc), avec un noyau $2\times2$ :</p>
+              <div class="formula">$$I=\begin{pmatrix}8&8&1\\7&9&2\\8&8&0\end{pmatrix} \qquad K=\begin{pmatrix}1&-1\\1&-1\end{pmatrix}$$</div>
+              <p>Avec $I$ de taille $3\times3$ et $K$ de taille $2\times2$, la sortie fait $(3-2+1)\times(3-2+1)=2\times2$ (fiche 15). Pour chaque position $(i,j)\in\{0,1\}^2$, on extrait le bloc $2\times2$ de $I$ démarrant en $(i,j)$, on multiplie terme à terme par $K$, puis on somme :</p>
+              <table class="cmp">
+                <tr><th>Position $(i,j)$</th><th>Bloc de $I$</th><th>Produit terme à terme avec $K$</th><th>Somme</th></tr>
+                <tr><td>$(0,0)$</td><td>$\begin{pmatrix}8&8\\7&9\end{pmatrix}$</td><td>$8{\times}1+8{\times}({-}1)+7{\times}1+9{\times}({-}1)$</td><td>$8-8+7-9=-2$</td></tr>
+                <tr><td>$(0,1)$</td><td>$\begin{pmatrix}8&1\\9&2\end{pmatrix}$</td><td>$8{\times}1+1{\times}({-}1)+9{\times}1+2{\times}({-}1)$</td><td>$8-1+9-2=14$</td></tr>
+                <tr><td>$(1,0)$</td><td>$\begin{pmatrix}7&9\\8&8\end{pmatrix}$</td><td>$7{\times}1+9{\times}({-}1)+8{\times}1+8{\times}({-}1)$</td><td>$7-9+8-8=-2$</td></tr>
+                <tr><td>$(1,1)$</td><td>$\begin{pmatrix}9&2\\8&0\end{pmatrix}$</td><td>$9{\times}1+2{\times}({-}1)+8{\times}1+0{\times}({-}1)$</td><td>$9-2+8+0=15$</td></tr>
+              </table>
+              <p>Sortie : $I*K=\begin{pmatrix}-2&14\\-2&15\end{pmatrix}$.</p>
+              <p class="sense"><b>Sens :</b> $K$ calcule « colonne de gauche moins colonne de droite » de chaque bloc. La 3<sup>e</sup> colonne de $I$ (valeurs $1,2,0$) est nettement plus sombre que les deux premières (valeurs $\ge7$) : c'est une frontière verticale entre une zone claire et une zone sombre, autour de la colonne d'indice 2. Les blocs $(0,1)$ et $(1,1)$, qui <b>chevauchent</b> cette frontière, donnent une réponse forte ($14$ et $15$) ; les blocs $(0,0)$ et $(1,0)$, entièrement dans la zone claire, donnent une réponse faible ($-2$ chacun) : la carte de sortie localise exactement où se trouve le contour. C'est très exactement ce mécanisme, avec un noyau $3\times3$, que l'exercice 6 vous fera reproduire sur un exemple un peu plus grand.</p>
             </div>
 
             <div class="box box-def">
@@ -1640,7 +1672,44 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
           </details>
 
           <div class="box box-ex">
-            <p class="box-label">Exercice 3 (bonus) · Croissance du champ récepteur en empilant des convolutions</p>
+            <p class="box-label">Exercice 3 · Convolution 1D à la main : lisser ou détecter, un capteur de température</p>
+            <p><b>Contexte :</b> un capteur IoT relève la température (en °C) d'une chambre froide toutes les heures pendant 6 heures : $\mathbf h=(18,\ 19,\ 30,\ 20,\ 21,\ 22)$. La valeur $30$ au 3<sup>e</sup> relevé est suspecte : panne du capteur, ou vraie alerte de température ? On dispose de deux noyaux $N_w=3$ pour analyser ce signal : un noyau <b>moyenneur</b> $\mathbf w_{\text{moy}}=(1/3,\ 1/3,\ 1/3)$ (lissage, comme le flou de la fiche 13 mais en 1D) et le noyau <b>détecteur de changement</b> $\mathbf w_{\text{det}}=(1,\ 0,\ -1)$ de l'exemple ci-dessus (fiche 12).</p>
+            <p>(a) Calculez $\mathbf h*\mathbf w_{\text{moy}}$ (les 4 valeurs de sortie), en détaillant chaque somme comme dans l'exemple de la fiche 12.<br>
+            (b) Calculez $\mathbf h*\mathbf w_{\text{det}}$ (les 4 valeurs de sortie).<br>
+            (c) Comparez l'amplitude des valeurs obtenues en (a) et en (b) autour du relevé suspect. Lequel des deux noyaux <b>localise</b> le plus nettement l'anomalie ? Lequel, au contraire, <b>l'atténue</b> (« l'étale » sur plusieurs sorties) ?<br>
+            (d) Un système d'alerte automatique doit déclencher une notification dès qu'un relevé s'écarte fortement de ses voisins. Lequel des deux noyaux choisiriez-vous pour <b>construire le signal d'alerte</b> ? Et si l'objectif était plutôt de <b>réduire le bruit</b> du capteur avant de l'afficher sur un tableau de bord, lequel choisiriez-vous ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Noyau moyenneur</p>
+              <table class="cmp">
+                <tr><th>$i$</th><th>Fenêtre</th><th>Somme $\times\frac13$</th></tr>
+                <tr><td>0</td><td>$(18,19,30)$</td><td>$67/3\approx22.33$</td></tr>
+                <tr><td>1</td><td>$(19,30,20)$</td><td>$69/3=23$</td></tr>
+                <tr><td>2</td><td>$(30,20,21)$</td><td>$71/3\approx23.67$</td></tr>
+                <tr><td>3</td><td>$(20,21,22)$</td><td>$63/3=21$</td></tr>
+              </table>
+              <p>$\mathbf h*\mathbf w_{\text{moy}}\approx(22.33,\ 23,\ 23.67,\ 21)$.</p>
+              <p class="method-label">(b) Noyau détecteur de changement</p>
+              <table class="cmp">
+                <tr><th>$i$</th><th>Fenêtre</th><th>$h_{i+1}-h_{i+3}$</th></tr>
+                <tr><td>0</td><td>$(18,19,30)$</td><td>$18-30=-12$</td></tr>
+                <tr><td>1</td><td>$(19,30,20)$</td><td>$19-20=-1$</td></tr>
+                <tr><td>2</td><td>$(30,20,21)$</td><td>$30-21=9$</td></tr>
+                <tr><td>3</td><td>$(20,21,22)$</td><td>$20-22=-2$</td></tr>
+              </table>
+              <p>$\mathbf h*\mathbf w_{\text{det}}=(-12,\ -1,\ 9,\ -2)$.</p>
+              <p class="method-label">(c) Comparaison</p>
+              <p>Avec le noyau moyenneur, les 4 sorties restent proches les unes des autres ($21$ à $23.67$, un écart de moins de $3$°C) : le pic à $30$°C se <b>dilue</b> sur 3 sorties consécutives ($i=0,1,2$), sans qu'aucune ne se détache franchement. Avec le noyau détecteur, au contraire, les sorties $i=0$ ($-12$) et $i=2$ ($+9$) se détachent nettement de $i=1,3$ (proches de $0$) : elles <b>encadrent précisément</b> la position de l'anomalie (comme les bords temporels de l'exemple de la fiche 12).</p>
+              <p class="method-label">(d) Quel noyau pour quel usage ?</p>
+              <p>Pour une <b>alerte</b> (détecter qu'il se passe quelque chose d'anormal, et <i>où</i>), le noyau détecteur de changement est nettement préférable : ses sorties de grande magnitude ($-12$, $9$) sont faciles à seuiller automatiquement (ex. « alerte si $|(\mathbf h*\mathbf w_{\text{det}})_i|>5$ »), alors que le noyau moyenneur ne produit aucune sortie franchement différente des autres. Pour <b>réduire le bruit</b> avant affichage, c'est l'inverse : le noyau moyenneur lisse les fluctuations mineures (utile si le capteur a un bruit de mesure de $\pm1$°C non significatif), au prix, précisément, de <b>diluer</b> les vrais pics.</p>
+              <p class="sense"><b>Sens :</b> c'est exactement pour cette raison qu'un CNN apprend <b>plusieurs noyaux en parallèle</b> dans une même couche (fiche 13) : certains se spécialisent dans la détection de motifs/changements locaux, d'autres dans le lissage, et le réseau apprend automatiquement lequel est utile pour la tâche, sans qu'on ait besoin de choisir à l'avance comme dans cet exercice.</p>
+            </div>
+          </details>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (bonus) · Croissance du champ récepteur en empilant des convolutions</p>
             <p>On empile $L$ couches de convolution 1D, chacune de taille de noyau $K$ (impaire) et de stride $1$, sans pooling. Montrez par récurrence que le champ récepteur (le nombre de pixels de l'entrée originale qui influencent un pixel donné en sortie de la couche $L$) vaut $1+L(K-1)$.</p>
           </div>
           <details class="solution">
@@ -1655,7 +1724,7 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
           </details>
 
           <div class="box box-ex">
-            <p class="box-label">Exercice 4 (code) · Prédire les dimensions d'un CNN avant de les vérifier</p>
+            <p class="box-label">Exercice 5 (code) · Prédire les dimensions d'un CNN avant de les vérifier</p>
             <p>Pour <code>Conv2d(3,16,k=3,p=1) → ReLU → MaxPool2d(2) → Conv2d(16,32,k=3,p=1) → ReLU → MaxPool2d(2)</code> appliqué à une image $28\times28\times3$, calculez <b>à la main</b> (exercice 1) la taille spatiale et le nombre de canaux après chaque couche, notez vos prédictions, puis écrivez le code qui les vérifie.</p>
             <div class="exo-scratch">
               <label for="exo-dl-2-4">Vos prédictions de dimensions (brouillon) :</label>
@@ -1689,8 +1758,8 @@ for layer in layers:
           </details>
 
           <div class="box box-ex">
-            <p class="box-label">Exercice 5 (type examen) · Calculer une convolution 2D à la main</p>
-            <p>Image d'entrée $4\times4$ (1 canal, sans padding, stride 1) :</p>
+            <p class="box-label">Exercice 6 (type examen) · Calculer une convolution 2D à la main</p>
+            <p><b>Contexte :</b> une start-up d'agritech détecte les bordures de parcelles agricoles à partir d'images satellite. Avant de traiter des images entières, elle teste son noyau de détection de contour vertical sur un petit patch $4\times4$ extrait d'une image en niveaux de gris (1 canal, sans padding, stride 1) :</p>
             <div class="formula">$$I=\begin{pmatrix}1&2&3&0\\0&1&2&3\\3&0&1&2\\2&3&0&1\end{pmatrix} \qquad K=\begin{pmatrix}1&0&-1\\1&0&-1\\1&0&-1\end{pmatrix}$$</div>
             <p>(a) Quelle est la taille de la carte de sortie (fiche 15, formule $\lfloor(W-K+2P)/S\rfloor+1$) ?<br>
             (b) Calculez à la main la valeur de sortie en position $(0,0)$ (coin supérieur gauche), en faisant glisser $K$ sur le bloc $I[0{:}3,\,0{:}3]$.<br>
@@ -1709,7 +1778,7 @@ for layer in layers:
               <p>En répétant le même calcul pour chaque bloc $3\times3$ glissé d'une case :</p>
               <div class="formula">$$\text{sortie} = \begin{pmatrix}-2&-2\\2&-2\end{pmatrix}$$</div>
               <p class="method-label">(d) Motif détecté</p>
-              <p>La première colonne de $K$ vaut $+1$ et la dernière $-1$ (colonne centrale nulle) : ce noyau calcule, pour chaque fenêtre, la différence entre la somme de la colonne de gauche et celle de la colonne de droite. Une valeur de sortie de grande magnitude signale donc un <b>contraste vertical fort</b> (un bord/contour orienté verticalement), exactement comme les noyaux de détection de contours de la fiche 13.</p>
+              <p>La première colonne de $K$ vaut $+1$ et la dernière $-1$ (colonne centrale nulle) : ce noyau calcule, pour chaque fenêtre, la différence entre la somme de la colonne de gauche et celle de la colonne de droite. Une valeur de sortie de grande magnitude signale donc un <b>contraste vertical fort</b> (un bord/contour orienté verticalement), exactement comme les noyaux de détection de contours de la fiche 13 : sur une vraie image satellite, c'est précisément ce type de contraste qui trahit la limite entre deux parcelles voisines (cultures différentes, chemin, haie).</p>
               <p class="sense"><b>Sens :</b> c'est la même opération que <code>F.conv2d(I, K)</code> sous PyTorch (sans biais, sans padding) : refaire ce calcul à la main une fois suffit généralement à lever toute ambiguïté sur l'orientation du noyau (corrélation croisée, pas convolution mathématique au sens strict, fiche 12) ou sur les conventions d'indexation.</p>
             </div>
           </details>
