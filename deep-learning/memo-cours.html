@@ -1345,9 +1345,16 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <p>Beaucoup de noyaux classiques de traitement d'images existent depuis longtemps ; ils donnent l'intuition de ce qu'une couche convolutive peut calculer.</p>
 
             <div class="box box-ex">
-              <p class="box-label">Exemples · Cinq noyaux $3\times 3$ usuels</p>
+              <p class="box-label">Exemples · Cinq noyaux $3\times 3$ usuels, et le problème réel que chacun résout</p>
               <div class="formula">$$\underbrace{\begin{bmatrix}0&0&0\\0&1&0\\0&0&0\end{bmatrix}}_{\text{identité}} \quad \underbrace{\begin{bmatrix}-1&-1&-1\\-1&8&-1\\-1&-1&-1\end{bmatrix}}_{\text{détection de contours}} \quad \underbrace{\begin{bmatrix}0&-1&0\\-1&5&-1\\0&-1&0\end{bmatrix}}_{\text{sharpening}} \quad \underbrace{\tfrac19\begin{bmatrix}1&1&1\\1&1&1\\1&1&1\end{bmatrix}}_{\text{flou uniforme}} \quad \underbrace{\tfrac1{16}\begin{bmatrix}1&2&1\\2&4&2\\1&2&1\end{bmatrix}}_{\text{flou gaussien}}$$</div>
-              <p class="sense"><b>Sens :</b> la somme des coefficients vaut $0$ pour un détecteur de contours (il annule les zones constantes) et $1$ pour un flou ou l'identité (il préserve la luminosité moyenne).</p>
+              <p><b>Identité</b> : avant de brancher un vrai CNN, une équipe teste son pipeline de prétraitement (chargement, redimensionnement, normalisation) sur une image jouet en y insérant temporairement une couche « identité » : si l'image ressort inchangée, le pipeline ne corrompt rien en amont.</p>
+              <p><b>Détection de contours</b> : une application de scan de documents sur smartphone (type CamScanner) doit repérer automatiquement les 4 bords d'une feuille de papier photographiée à main levée sur une table, pour la recadrer et la redresser avant de l'envoyer à l'OCR.</p>
+              <p><b>Sharpening</b> : une application de retouche photo grand public propose un bouton « netteté » qui accentue les contours d'une photo prise en basse lumière (donc naturellement un peu floue), pour la rendre plus lisible.</p>
+              <p><b>Flou uniforme</b> : un logiciel de visioconférence floute l'arrière-plan de l'utilisateur en temps réel, pour préserver la confidentialité de son domicile ou de son bureau sans faire appel à un fond vert.</p>
+              <p><b>Flou gaussien</b> : Google Street View floute automatiquement les visages et les plaques d'immatriculation détectés dans ses photos de rue, pour respecter le RGPD.</p>
+              <p>Vérifions numériquement ce dernier cas : un petit patch $3\times3$ centré sur un chiffre net d'une plaque d'immatriculation, $P=\begin{pmatrix}2&3&2\\3&9&3\\2&3&2\end{pmatrix}$ (un pixel très clair, $9$, entouré de pixels plus sombres). La convolution en position centrale (seule sortie possible ici, patch et noyau de même taille) donne :</p>
+              <div class="formula">$$\frac1{16}\big[(1{\times}2{+}2{\times}3{+}1{\times}2)+(2{\times}3{+}4{\times}9{+}2{\times}3)+(1{\times}2{+}2{\times}3{+}1{\times}2)\big] = \frac{10+48+10}{16} = \frac{68}{16} = 4.25$$</div>
+              <p class="sense"><b>Sens :</b> la valeur centrale, initialement très contrastée ($9$, bien au-dessus de son voisinage $\approx2$-$3$), tombe à $4.25$ après flou gaussien : le contraste net qui rendait le chiffre lisible est <b>dilué</b>. C'est exactement le principe utilisé (associé à un détecteur de plaques en amont) pour anonymiser automatiquement des millions de photos de rue. Plus généralement, la somme des coefficients vaut $0$ pour un détecteur de contours (il annule les zones constantes) et $1$ pour un flou ou l'identité (il préserve la luminosité moyenne).</p>
             </div>
 
             <div class="box box-thm">
