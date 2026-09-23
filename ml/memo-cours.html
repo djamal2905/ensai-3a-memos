@@ -837,6 +837,14 @@ def lasso_cd(X, y, lam, n_iter=100):
               <p class="sense"><b>Sens :</b> si $F$ est deux fois dérivable, ces trois notions se lisent sur la Hessienne : $\nabla^2F\succeq0$ (convexe), $\nabla^2F\succeq\mu I$ (fort. convexe), $\nabla^2F\preceq LI$ ($L$-smooth).</p>
             </div>
 
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $L$, $\mu$ et $\kappa$ sur un cas où on peut vraiment les calculer</p>
+              <p>Reprenons la campagne A/B de la fiche 3, exercice 5 (lecture 1) : $Z^TZ=\begin{pmatrix}4&0\\0&1\end{pmatrix}$. Pour la régression $F(\theta)=\frac1n\|y-Z\theta\|_2^2$, en dérivant deux fois on obtient $\nabla^2F(\theta)=\frac2nZ^TZ$ ; prenons $n=2$ pour obtenir des nombres ronds, si bien que $\nabla^2F(\theta)=Z^TZ=\begin{pmatrix}4&0\\0&1\end{pmatrix}$ (constant, ne dépend pas de $\theta$ : $F$ est une simple quadratique).</p>
+              <p>Cette matrice est déjà diagonale : ses <b>valeurs propres se lisent directement</b> sur la diagonale, $4$ et $1$. D'après la caractérisation par la Hessienne ci-dessus :</p>
+              <div class="formula">$$L = \lambda_{\max}\big(\nabla^2F\big) = 4 \qquad\qquad \mu = \lambda_{\min}\big(\nabla^2F\big) = 1 \qquad\qquad \kappa = \frac L\mu = 4$$</div>
+              <p class="sense"><b>Sens :</b> $L=4$ correspond à la direction $\theta_1$ (l'effet remise) : c'est la direction où $F$ « se courbe le plus vite », celle où un pas de GD trop grand est le plus dangereux. $\mu=1$ correspond à $\theta_2$ (l'effet email) : la direction la plus « plate », celle qui limite la vitesse de convergence globale (fiche 10). Le critère « petits pas ne peuvent pas nuire » (fiche 10, exercice 2) impose ici concrètement $\gamma\le2/L=0.5$ : avec $\gamma=0.5$ pile, GD est à la limite de la stabilité sur la direction $\theta_1$, mais converge encore relativement lentement sur $\theta_2$. C'est exactement ce déséquilibre entre les deux directions, quantifié par $\kappa=4$, que la fiche 10 va maintenant chiffrer en nombre d'itérations.</p>
+            </div>
+
             <div class="box box-thm">
               <p class="box-label">Proposition · Caractérisation du minimum</p>
               <div class="formula">$$F \text{ convexe et différentiable} \quad\Longrightarrow\quad \nabla F(\theta^\star)=0 \iff \theta^\star \text{ minimiseur global}$$</div>
@@ -858,6 +866,17 @@ def lasso_cd(X, y, lam, n_iter=100):
               <div class="formula">$$\mu\text{-fort. convexe},\ \gamma=\frac1L:\quad F(\theta_t)-F(\theta^\star)\le\left(1-\frac{\mu}{L}\right)^t\|\theta_0-\theta^\star\|^2 \Rightarrow\ O(\rho^t)\ \text{linéaire}$$</div>
               <p class="sense"><b>Sens :</b> le <b>conditionnement</b> $\kappa=L/\mu$ pilote la difficulté : plus $\kappa$ est grand, plus GD converge lentement, même en régime linéaire.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Ce que $\kappa$ change vraiment, en nombre d'itérations</p>
+              <p>Combien d'itérations de GD ($\gamma=1/L$) faut-il pour atteindre une précision $F(\theta_t)-F(\theta^\star)\le10^{-6}\times\|\theta_0-\theta^\star\|^2$, à partir de $(1-\mu/L)^t\le10^{-6}$ ? Comparons notre campagne A/B bien conditionnée ($\kappa=4$, fiche 9) à un cas plus réaliste où les variables n'auraient <b>pas</b> été standardisées avant l'entraînement (une pratique décrite comme indispensable en fiche 5, mais parfois oubliée), donnant par exemple $\kappa=10\,000$ :</p>
+              <table class="cmp">
+                <tr><th>$\kappa$</th><th>Taux $\rho=1-1/\kappa$ par itération</th><th>Itérations pour $\rho^t\le10^{-6}$</th></tr>
+                <tr><td>$4$ (campagne A/B, fiche 9)</td><td>$0.75$</td><td>$t\approx49$</td></tr>
+                <tr><td>$10\,000$ (variables non standardisées)</td><td>$0.9999$</td><td>$t\approx138\,149$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> passer de $\kappa=4$ à $\kappa=10\,000$ (un facteur $2\,500$ sur le conditionnement) multiplie le nombre d'itérations nécessaires par un facteur du <b>même ordre de grandeur</b> ($\approx2\,900$), conformément au régime $O(\kappa\log(1/\varepsilon))$ : le nombre d'itérations croît <b>proportionnellement</b> à $\kappa$. C'est le calcul concret qui justifie, dans une consigne de cours ou un TP, la phrase en apparence anodine « pensez à standardiser vos variables avant d'entraîner un modèle par GD » (fiche 5) : sans cela, un problème par ailleurs facile peut demander près de 3 000 fois plus d'itérations pour la même précision.</p>
+            </div>
           </article>
 
           <article class="topic" id="s11">
@@ -869,10 +888,26 @@ def lasso_cd(X, y, lam, n_iter=100):
               <p class="sense"><b>Sens :</b> ajoute une "inertie" entre deux suites couplées. Fait passer la convergence de $O(1/t)$ à $O(1/t^2)$, et de $(1-1/\kappa)$ à $(1-1/\sqrt\kappa)$ en fort convexe.</p>
             </div>
 
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Le gain de Nesterov, sur le cas mal conditionné de la fiche 10</p>
+              <p>Reprenons le cas $\kappa=10\,000$ (variables non standardisées, fiche 10) : GD classique demandait $\approx138\,149$ itérations pour atteindre $\rho^t\le10^{-6}$. Avec Nesterov, le taux devient $\rho_{\text{Nesterov}}=1-1/\sqrt\kappa=1-1/100=0.99$ au lieu de $\rho_{\text{GD}}=1-1/\kappa=0.9999$ :</p>
+              <table class="cmp">
+                <tr><th>Méthode</th><th>Taux $\rho$</th><th>Itérations pour $\rho^t\le10^{-6}$</th></tr>
+                <tr><td>GD classique</td><td>$0.9999$</td><td>$\approx138\,149$</td></tr>
+                <tr><td>GD + Nesterov</td><td>$0.99$</td><td>$\approx1\,375$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> un gain d'un facteur $\approx100$, exactement $\sqrt\kappa=\sqrt{10\,000}=100$ comme l'annonce la formule $(1-1/\kappa)\to(1-1/\sqrt\kappa)$. Sur le cas bien conditionné de la fiche 9 ($\kappa=4$), le même calcul donnerait $49$ itérations pour GD contre $20$ pour Nesterov : un gain bien plus modeste ($\times2.4$), car $\sqrt4=2$ est proche de $4$. <b>Retenir :</b> l'accélération de Nesterov apporte d'autant plus qu'elle est utile, c'est-à-dire d'autant plus que le problème est mal conditionné.</p>
+            </div>
+
             <div class="box box-def">
               <p class="box-label">Définition · Méthode de Newton &amp; BFGS</p>
               <div class="formula">$$\theta_t=\theta_{t-1}-\left[\nabla^2F(\theta_{t-1})\right]^{-1}\nabla F(\theta_{t-1})$$</div>
               <p class="sense"><b>Sens :</b> utilise la Hessienne, convergence <b>quadratique localement</b> mais coût $O(d^3)$ par itération. BFGS (quasi-Newton) approxime l'inverse de la Hessienne pour $O(d^2)$, bon compromis pratique quand $d\lesssim1000$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Pourquoi $O(d^3)$ interdit Newton sur un gros modèle</p>
+              <p>Un modèle de régression avec $d=1\,000$ variables explicatives (des interactions et des indicatrices, par exemple) : inverser la Hessienne $\mathbf{1000}\times\mathbf{1000}$ à <b>chaque itération</b> coûte $O(d^3)=1\,000^3=10^9$ opérations, contre $O(d^2)=1\,000^2=10^6$ pour BFGS (mille fois moins) et $O(d)=1\,000$ pour une simple itération de GD (un million de fois moins que Newton). Pour $d=100\,000$ (du texte encodé en <i>bag-of-words</i>, par exemple), $d^3=10^{15}$ devient <b>totalement</b> hors de portée, alors que $d^2=10^{10}$ pour BFGS reste, lui, déjà problématique : c'est dans ce régime que la simplicité de GD/SGD (fiche 13) redevient imbattable, malgré sa convergence plus lente itération par itération.</p>
             </div>
           </article>
 
@@ -909,6 +944,17 @@ def lasso_cd(X, y, lam, n_iter=100):
               <div class="formula">$$g_m(\theta)=\frac1m\sum_{l=1}^m \nabla F_{\xi_l}(\theta), \quad \xi_l \sim \mathcal U\{1,\dots,n\} \ \text{i.i.d.}$$</div>
               <div class="formula">$$\theta_t=\theta_{t-1}-\gamma_t\,g_m(\theta_{t-1})$$</div>
               <p class="sense"><b>Sens :</b> approximation Monte-Carlo non biaisée du gradient exact. $m=1$ = SGD "pur", $m>1$ = mini-batch. $m\uparrow$ réduit la variance mais augmente le coût par itération.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Pourquoi SGD gagne, même en faisant beaucoup plus d'itérations</p>
+              <p>Un opérateur télécom entraîne un modèle de churn (comme à l'exercice 5 de la fiche 22) sur $n=1\,000\,000$ clients. Une itération de GD exact coûte $O(n)=1\,000\,000$ évaluations de $\nabla F_i$ ; une itération de mini-batch SGD avec $m=32$ n'en coûte que $32$, soit $31\,250$ fois moins <b>par itération</b>.</p>
+              <table class="cmp">
+                <tr><th>Méthode</th><th>Coût par itération</th><th>Itérations (illustratif)</th><th>Coût total (illustratif)</th></tr>
+                <tr><td>GD exact</td><td>$1\,000\,000$</td><td>$50$ (fiche 10, cas bien conditionné)</td><td>$50\,000\,000$</td></tr>
+                <tr><td>SGD, $m=32$</td><td>$32$</td><td>$5\,000$ (bruit du gradient : convergence moins régulière, donc plus d'itérations)</td><td>$160\,000$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> même en tolérant $100$ fois plus d'itérations pour compenser le bruit du gradient (chiffre volontairement illustratif : le nombre réel dépend fortement du problème), SGD reste ici environ $300$ fois moins coûteux au total. C'est ce déséquilibre, presque toujours favorable à SGD dès que $n$ dépasse quelques milliers d'exemples, qui explique pourquoi <b>tous</b> les grands modèles (deep learning y compris, fiche 7 du mémo DL) s'entraînent par variantes de SGD, et jamais par GD exact.</p>
             </div>
 
             <div class="box box-warn">
