@@ -203,6 +203,24 @@ window.MathJax = {
   .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
   .cmp td:first-child, .cmp th:first-child{ text-align:left; }
 
+  .scatterviz-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
+  .scatterviz{ display:block; min-width:340px; }
+  .scatterviz-grid{ stroke:var(--border); stroke-width:1; }
+  .scatterviz-axis{ stroke:var(--ink-soft); stroke-width:1.4; }
+  .scatterviz-axislabel{ font:600 11px "JetBrains Mono",monospace; fill:var(--muted); }
+  .scatterviz-ticklabel{ font:600 10px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; }
+  .scatterviz-margin{ fill:var(--def-bg); opacity:.55; }
+  .scatterviz-hplane{ stroke:var(--def-border); stroke-width:2.5; }
+  .scatterviz-hplus{ stroke:var(--warn-border); stroke-width:1.6; stroke-dasharray:6 4; }
+  .scatterviz-hminus{ stroke:var(--ex-border); stroke-width:1.6; stroke-dasharray:6 4; }
+  .scatterviz-pt-pos{ fill:var(--warn-border); stroke:var(--surface); stroke-width:2; }
+  .scatterviz-pt-neg{ fill:var(--ex-border); stroke:var(--surface); stroke-width:2; }
+  .scatterviz-svring{ fill:none; stroke:var(--def-border); stroke-width:1.6; stroke-dasharray:2 2; }
+  .scatterviz-ptlabel{ font:700 10px "JetBrains Mono",monospace; fill:var(--ink); }
+  .scatterviz-legend{ display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; font-size:.78rem; color:var(--ink-soft); }
+  .scatterviz-legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .scatterviz-legend i{ width:11px; height:11px; border-radius:50%; display:inline-block; flex:none; }
+
   .box pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
   .box code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
 
@@ -1297,10 +1315,74 @@ def nesterov(X, y, gamma, n_iter):
             <div class="tophead"><span class="num">17</span><h2>Astuce du noyau (kernel trick) &amp; RKHS</h2></div>
             <p>Pour séparer des données qui ne sont pas linéairement séparables, une idée est de les envoyer dans un espace de plus grande dimension via $\phi(\mathbf x)$, où elles pourraient le devenir. Le <b>kernel trick</b> permet de le faire sans jamais calculer $\phi$ explicitement.</p>
 
+            <div class="box box-ex">
+              <p class="box-label">Illustration · Pourquoi a-t-on besoin d'un noyau ? Un cas où aucune droite ne sépare rien</p>
+              <p>Voici un jeu de données à 2 classes où <b>aucun</b> hyperplan (aucune droite, en 2D) ne peut séparer correctement les deux couleurs : la classe $-1$ (bleu) forme un petit nuage central, la classe $+1$ (rouge) l'entoure en couronne.</p>
+              <div class="scatterviz-scroll">
+                <svg class="scatterviz" viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="scatterviz-pt-pos" cx="239.3" cy="127.8" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="236.1" cy="92.5" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="203.7" cy="78.2" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="174.1" cy="58.7" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="142.7" cy="75.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="109.0" cy="86.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="102.2" cy="120.9" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="89.8" cy="154.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="112.8" cy="181.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="131.1" cy="211.5" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="166.5" cy="210.3" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="201.6" cy="215.0" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="222.8" cy="186.6" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="248.4" cy="162.0" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="189.8" cy="140.0" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="191.9" cy="121.6" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="173.4" cy="120.5" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="155.7" cy="115.2" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="151.4" cy="133.2" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="143.1" cy="149.8" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="160.1" cy="157.1" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="175.0" cy="168.2" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="185.2" cy="152.7" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="170" cy="140" r="5"/>
+                </svg>
+              </div>
+              <div class="scatterviz-legend">
+                <span><i style="background:var(--warn-border)"></i> classe $+1$ (couronne extérieure)</span>
+                <span><i style="background:var(--ex-border)"></i> classe $-1$ (nuage central)</span>
+              </div>
+              <p class="sense"><b>Sens :</b> aucune droite ne peut isoler le nuage bleu de la couronne rouge, quelle que soit son orientation. Mais si l'on ajoute une variable $u=\|\mathbf x\|_2^2=x_1^2+x_2^2$ (la distance au centre, au carré), les points bleus (proches du centre) ont un petit $u$ et les points rouges (loin du centre) ont un grand $u$ : dans l'espace $(x_1,x_2,u)$, un simple plan horizontal $u=\text{seuil}$ les sépare parfaitement. C'est exactement le principe de $\phi$ : transformer un problème non linéaire en un problème <b>linéaire</b>, dans un espace mieux choisi.</p>
+            </div>
+
             <div class="box box-def">
               <p class="box-label">Définition · Noyau (kernel)</p>
               <p>Une fonction symétrique $k:\mathcal X\times\mathcal X\to\mathbb R$ est un <b>noyau</b> si, pour tout $n$ et tout $\mathbf x_1,\dots,\mathbf x_n\in\mathcal X$, la matrice de Gram $[k(\mathbf x_i,\mathbf x_j)]_{i,j}$ est <b>symétrique semi-définie positive</b>. De façon équivalente, il existe un espace de Hilbert $\mathcal H$ et une <i>feature map</i> $\phi:\mathcal X\to\mathcal H$ tels que $k(\mathbf x,\mathbf x')=\langle\phi(\mathbf x),\phi(\mathbf x')\rangle_{\mathcal H}$.</p>
               <p class="sense"><b>Sens :</b> il suffit de remplacer $\mathbf x_i^T\mathbf x_j$ par $k(\mathbf x_i,\mathbf x_j)$ dans la formulation duale (fiche 16) : $f(\mathbf x)=\mathrm{sign}\big(\sum_i\alpha_iy_i\,k(\mathbf x_i,\mathbf x)+b\big)$, sans jamais construire $\phi(\mathbf x)$, même quand $\mathcal H$ est de dimension infinie (cas du noyau gaussien).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple complet · De $\phi$ à $k$, calcul « long » contre calcul « court », avec de vrais nombres</p>
+              <p>Reprenons le noyau polynomial de degré 2 sur $\mathcal X=\mathbb R^2$, $k(\mathbf x,\mathbf x')=(\mathbf x^T\mathbf x')^2$, avec $\mathbf x=(2,1)$ et $\mathbf x'=(1,3)$.</p>
+              <p><b>Chemin long (par $\phi$) :</b> on a vu (fiche 18, exercice 1) que $k(\mathbf x,\mathbf x')=\langle\phi(\mathbf x),\phi(\mathbf x')\rangle$ pour $\phi(x_1,x_2)=(x_1^2,\ \sqrt2\,x_1x_2,\ x_2^2)\in\mathbb R^3$. Il faut d'abord <b>construire</b> les deux vecteurs $\phi(\mathbf x)$ et $\phi(\mathbf x')$ (3 coordonnées chacun), <b>puis</b> faire leur produit scalaire (3 multiplications, 2 additions) :</p>
+              <div class="formula">$$\phi(\mathbf x)=(4,\ 2\sqrt2,\ 1) \qquad \phi(\mathbf x')=(1,\ 3\sqrt2,\ 9)$$</div>
+              <div class="formula">$$\langle\phi(\mathbf x),\phi(\mathbf x')\rangle = 4\times1 + 2\sqrt2\times3\sqrt2 + 1\times9 = 4+12+9 = 25$$</div>
+              <p><b>Chemin court (par $k$ directement) :</b> on calcule $\mathbf x^T\mathbf x'$ dans l'espace <b>d'origine</b> (2 coordonnées, donc 2 multiplications, 1 addition), puis on met au carré :</p>
+              <div class="formula">$$k(\mathbf x,\mathbf x') = (\mathbf x^T\mathbf x')^2 = (2\times1+1\times3)^2 = 5^2 = 25$$</div>
+              <p class="sense"><b>Sens :</b> les <b>deux chemins donnent exactement le même nombre</b>, $25$, mais le second est nettement plus court : pas besoin de construire $\phi(\mathbf x)\in\mathbb R^3$ pour l'obtenir. Ici le gain est modeste (3 dimensions contre 2), mais il devient <b>vertigineux</b> pour le noyau gaussien (fiche 18) : sa feature map $\phi$ vit dans un espace de dimension <b>infinie</b>, qu'il est tout simplement <b>impossible</b> de construire explicitement, alors que $k(\mathbf x,\mathbf x')=e^{-\gamma\|\mathbf x-\mathbf x'\|_2^2}$ reste un unique nombre, calculable en une ligne. C'est <b>tout</b> le kernel trick, résumé sur un seul exemple : ne jamais calculer $\phi$, toujours calculer $k$ à la place.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Pourquoi la forme duale ($\mathbf X\mathbf X^T$), pas la forme primale ($\mathbf X^T\mathbf X$) : l'exemple qui débloque tout</p>
+              <p>Le SVM (fiche 16) a une forme duale <b>parce que</b> sa dérivation par Lagrangien la fait naturellement apparaître (fiche 18, exercice 3). Mais on peut se demander : la régression Ridge (fiche 5), $\hat\theta=(\mathbf X^T\mathbf X+\lambda\mathbf I_d)^{-1}\mathbf X^Ty$, a-t-elle, elle aussi, une version « duale » qui ne ferait apparaître que des produits scalaires $\mathbf x_i^T\mathbf x_j$ ? Oui : c'est <b>exactement</b> la Kernel Ridge Regression (fiche 28). Vérifions-le sur un exemple à la main, avec $n=2$ observations, $d=2$ variables : $\mathbf X=\begin{pmatrix}1&2\\3&1\end{pmatrix}$ (ligne $i$ = observation $i$), $y=(5,7)$, $\lambda=1$.</p>
+              <p class="method-label">Version « primale » habituelle : $\mathbf X^T\mathbf X$ (taille $d\times d=2\times2$)</p>
+              <div class="formula">$$\mathbf X^T\mathbf X=\begin{pmatrix}1&3\\2&1\end{pmatrix}\begin{pmatrix}1&2\\3&1\end{pmatrix}=\begin{pmatrix}10&5\\5&5\end{pmatrix} \qquad \mathbf X^Ty=\begin{pmatrix}26\\17\end{pmatrix}$$</div>
+              <div class="formula">$$\hat\theta=(\mathbf X^T\mathbf X+\mathbf I_2)^{-1}\mathbf X^Ty=\begin{pmatrix}11&5\\5&6\end{pmatrix}^{-1}\begin{pmatrix}26\\17\end{pmatrix}\approx\begin{pmatrix}1.732\\1.390\end{pmatrix}$$</div>
+              <p class="method-label">Version « duale » : $\mathbf K=\mathbf X\mathbf X^T$ (taille $n\times n=2\times2$, ici la même taille par coïncidence car $n=d=2$)</p>
+              <div class="formula">$$\mathbf K=\mathbf X\mathbf X^T=\begin{pmatrix}1&2\\3&1\end{pmatrix}\begin{pmatrix}1&3\\2&1\end{pmatrix}=\begin{pmatrix}5&5\\5&10\end{pmatrix} \qquad \hat\alpha=(\mathbf K+\mathbf I_2)^{-1}y=\begin{pmatrix}6&5\\5&11\end{pmatrix}^{-1}\begin{pmatrix}5\\7\end{pmatrix}\approx\begin{pmatrix}0.488\\0.415\end{pmatrix}$$</div>
+              <p>Vérifions qu'ils sont bien liés par $\hat\theta=\mathbf X^T\hat\alpha$ :</p>
+              <div class="formula">$$\mathbf X^T\hat\alpha=\begin{pmatrix}1&3\\2&1\end{pmatrix}\begin{pmatrix}0.488\\0.415\end{pmatrix}=\begin{pmatrix}0.488+1.244\\0.976+0.415\end{pmatrix}=\begin{pmatrix}1.732\\1.390\end{pmatrix} = \hat\theta \quad\checkmark$$</div>
+              <p>Et pour un nouveau point $\mathbf x^\star=(2,2)$, les deux formes de prédiction coïncident aussi :</p>
+              <div class="formula">$$f_{\text{primal}}(\mathbf x^\star)=(\mathbf x^\star)^T\hat\theta \approx 6.244 \qquad\qquad f_{\text{dual}}(\mathbf x^\star)=\sum_{i=1}^2\hat\alpha_i\,(\mathbf x^\star{}^T\mathbf x_i) = 0.488\times6+0.415\times8 \approx 6.244 \quad\checkmark$$</div>
+              <p class="sense"><b>Sens :</b> les deux méthodes donnent <b>rigoureusement la même prédiction</b> (démonstration générale en fiche 28, exercice 3). Mais regardez <b>où</b> $\mathbf X$ intervient dans chaque formule : la version primale a besoin de $\mathbf X^T\mathbf X$, une matrice construite à partir des <b>colonnes</b> (les variables) ; elle exige de connaître $\phi(\mathbf x)$ explicitement dès qu'on veut une version non linéaire. La version duale, elle, n'a besoin que de $\mathbf X\mathbf X^T=\mathbf K$, une matrice construite à partir des <b>produits scalaires entre exemples</b> $\mathbf x_i^T\mathbf x_j$ : et un produit scalaire, on peut toujours le remplacer par $k(\mathbf x_i,\mathbf x_j)$ (l'exemple $\phi\to k$ ci-dessus), <b>même</b> pour un $\phi$ de dimension infinie. C'est <b>précisément pour ça</b> que le kernel trick s'applique à la forme duale ($\mathbf X\mathbf X^T$) et jamais à la forme primale ($\mathbf X^T\mathbf X$) : c'est la seule des deux qui ne demande jamais de « voir » les variables une par une, seulement leurs produits scalaires deux à deux.</p>
             </div>
 
             <div class="box box-thm">
@@ -1311,11 +1393,22 @@ def nesterov(X, y, gamma, n_iter):
             </div>
 
             <table class="cmp">
-              <tr><th>Noyau</th><th>Formule</th><th>Feature map $\phi$</th></tr>
-              <tr><td>Linéaire</td><td>$\mathbf x^T\mathbf x'$</td><td>$\phi(\mathbf x)=\mathbf x$ (dimension finie)</td></tr>
-              <tr><td>Polynomial (degré $d$)</td><td>$(\mathbf x^T\mathbf x'+c)^d$</td><td>monômes de degré $\le d$ (dimension finie)</td></tr>
-              <tr><td>Gaussien / RBF</td><td>$\exp(-\gamma\|\mathbf x-\mathbf x'\|_2^2)$</td><td>dimension <b>infinie</b> (fiche 18)</td></tr>
+              <tr><th>Noyau</th><th>Formule</th><th>Feature map $\phi$</th><th>Disponible en Python</th></tr>
+              <tr><td>Linéaire (vanilla)</td><td>$\mathbf x^T\mathbf x'$</td><td>$\phi(\mathbf x)=\mathbf x$ (dim. finie)</td><td><code>scikit-learn</code> (<code>kernel='linear'</code>)</td></tr>
+              <tr><td>Polynomial (degré $p$)</td><td>$(a+\mathbf x^T\mathbf x')^p$</td><td>monômes de degré $\le p$ (dim. finie)</td><td><code>scikit-learn</code> (<code>'poly'</code>)</td></tr>
+              <tr><td>Sigmoïde / tanh</td><td>$\tanh(a+\mathbf x^T\mathbf x')$</td><td>n'existe pas toujours : <b>pas semi-défini positif</b> en général</td><td><code>scikit-learn</code> (<code>'sigmoid'</code>), historique, à utiliser avec prudence</td></tr>
+              <tr><td>Gaussien / RBF</td><td>$\exp(-\gamma\|\mathbf x-\mathbf x'\|_2^2)$</td><td>dimension <b>infinie</b> (fiche 18)</td><td><code>scikit-learn</code> (<code>'rbf'</code>, par défaut)</td></tr>
+              <tr><td>Laplacien</td><td>$\exp(-\gamma\|\mathbf x-\mathbf x'\|_2)$</td><td>dimension infinie</td><td><b>pas</b> dans <code>scikit-learn</code> ; package R <code>kernlab</code></td></tr>
+              <tr><td>Spline</td><td>produit de termes cubiques par coordonnée</td><td>dimension finie, liée à la fiche 27</td><td><b>pas</b> dans <code>scikit-learn</code> ; <code>kernlab</code></td></tr>
+              <tr><td>Matérn / Sobolev</td><td>Bessel modifiée, paramètre $\nu$</td><td>dimension infinie</td><td><b>pas</b> pour SVM ; voir encadré ci-dessous</td></tr>
             </table>
+
+            <div class="box box-ex">
+              <p class="box-label">Où trouver les noyaux « manquants » de scikit-learn ? Du côté bayésien : les processus gaussiens</p>
+              <p>Les noyaux Laplacien, spline ou Matérn ne sont <b>pas</b> implémentés pour <code>SVC</code>/<code>SVR</code> dans <code>scikit-learn</code>. Mais ils réapparaissent dans une <b>autre</b> famille de méthodes à noyau : les <b>processus gaussiens</b> (Gaussian Processes), une approche <b>bayésienne</b> de la régression/classification (qui met une loi a priori directement sur les fonctions $f$, via un noyau utilisé comme fonction de covariance). Le sous-module <code>sklearn.gaussian_process.kernels</code> propose <b>directement</b> <code>Matern</code> (avec le paramètre $\nu$ réglable), <code>RBF</code>, <code>RationalQuadratic</code>, etc., et surtout la possibilité d'utiliser un <b>hyperparamètre par variable</b> (noyau anisotrope, fiche 18 « bonnes pratiques »), ce que <code>SVC</code>/<code>SVR</code> ne permettent pas.</p>
+              <div class="formula">$$\texttt{from sklearn.gaussian\_process.kernels import Matern} \qquad \texttt{GaussianProcessRegressor(kernel=Matern(nu=1.5, length\_scale=[1.,2.]))}$$</div>
+              <p class="sense"><b>Sens :</b> le lien avec ce mémo : un processus gaussien, comme la KRR (fiche 28), fait ses prédictions via une matrice de Gram $\mathbf K$ et une inversion $(\mathbf K+\sigma^2\mathbf I)^{-1}$ ; la différence est que l'approche bayésienne fournit <b>en plus</b>, gratuitement, une incertitude autour de chaque prédiction (l'écart-type de la loi a posteriori), ce que KRR ou SVM ne donnent pas nativement. Les processus gaussiens sortent du cadre de ce cours, mais retenez au moins où chercher un noyau Matérn utilisable en pratique.</p>
+            </div>
           </article>
 
           <article class="topic" id="s18">
@@ -1456,7 +1549,47 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
               <div class="formula">$$\frac{1}{\|\mathbf w\|_2} = \frac1{\sqrt{1^2+0^2}} = 1$$</div>
               <p class="method-label">(d) Nombre de vecteurs de support</p>
               <p>Les <b>4</b> points sont des vecteurs de support ici (tous à contrainte active), alors que $d+1=3$ suffiraient génériquement à déterminer une marge en dimension 2. C'est parce que cette configuration est <b>parfaitement symétrique</b> (un cas dégénéré) : en position générique (points tirés au hasard), on aurait typiquement observé exactement 3 vecteurs de support ; ici la symétrie du problème fait qu'un point supplémentaire se retrouve, par coïncidence géométrique, exactement sur la marge.</p>
-              <p class="sense"><b>Sens :</b> cet exercice illustre concrètement la fiche 15 : la solution du SVM à marge dure ne dépend que d'un petit sous-ensemble de points (ici, dans ce cas très symétrique, tous les points), jamais de leur nombre total.</p>
+              <p class="method-label">Illustration graphique</p>
+              <div class="scatterviz-scroll">
+                <svg class="scatterviz" viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
+                  <rect class="scatterviz-margin" x="86.7" y="10" width="186.6" height="255"/>
+                  <line class="scatterviz-grid" x1="40" y1="213.3" x2="320" y2="213.3"/>
+                  <line class="scatterviz-grid" x1="40" y1="120" x2="320" y2="120"/>
+                  <line class="scatterviz-grid" x1="40" y1="26.7" x2="320" y2="26.7"/>
+                  <line class="scatterviz-hminus" x1="86.7" y1="10" x2="86.7" y2="265"/>
+                  <line class="scatterviz-hplane" x1="180" y1="10" x2="180" y2="265"/>
+                  <line class="scatterviz-hplus" x1="273.3" y1="10" x2="273.3" y2="265"/>
+                  <line class="scatterviz-axis" x1="40" y1="265" x2="320" y2="265"/>
+                  <line class="scatterviz-axis" x1="40" y1="10" x2="40" y2="265"/>
+                  <text class="scatterviz-ticklabel" x="86.7" y="280">0</text>
+                  <text class="scatterviz-ticklabel" x="180" y="280">1</text>
+                  <text class="scatterviz-ticklabel" x="273.3" y="280">2</text>
+                  <text class="scatterviz-ticklabel" x="28" y="217">0</text>
+                  <text class="scatterviz-ticklabel" x="28" y="124">1</text>
+                  <text class="scatterviz-ticklabel" x="28" y="31">2</text>
+                  <text class="scatterviz-axislabel" x="150" y="296">x₁ (montant standardisé)</text>
+                  <text class="scatterviz-axislabel" x="-155" y="14" transform="rotate(-90)">x₂ (distance standardisée)</text>
+                  <circle class="scatterviz-svring" cx="273.3" cy="26.7" r="13"/>
+                  <circle class="scatterviz-svring" cx="273.3" cy="213.3" r="13"/>
+                  <circle class="scatterviz-svring" cx="86.7" cy="213.3" r="13"/>
+                  <circle class="scatterviz-svring" cx="86.7" cy="26.7" r="13"/>
+                  <circle class="scatterviz-pt-pos" cx="273.3" cy="26.7" r="7"/>
+                  <text class="scatterviz-ptlabel" x="283" y="23">(2,2) +1</text>
+                  <circle class="scatterviz-pt-pos" cx="273.3" cy="213.3" r="7"/>
+                  <text class="scatterviz-ptlabel" x="283" y="217">(2,0) +1</text>
+                  <circle class="scatterviz-pt-neg" cx="86.7" cy="213.3" r="7"/>
+                  <text class="scatterviz-ptlabel" x="30" y="235">(0,0) −1</text>
+                  <circle class="scatterviz-pt-neg" cx="86.7" cy="26.7" r="7"/>
+                  <text class="scatterviz-ptlabel" x="30" y="18">(0,2) −1</text>
+                </svg>
+              </div>
+              <div class="scatterviz-legend">
+                <span><i style="background:var(--warn-border)"></i> classe $+1$ (fraude)</span>
+                <span><i style="background:var(--ex-border)"></i> classe $-1$ (légitime)</span>
+                <span><i style="background:var(--def-border);border-radius:2px"></i> hyperplan $x_1=1$ (marge max.)</span>
+                <span>┅ rouge : $H^+$ ($x_1=2$) &nbsp; ┅ bleu : $H^-$ ($x_1=0$) &nbsp; ○ pointillé vert : vecteur de support</span>
+              </div>
+              <p class="sense"><b>Sens :</b> cet exercice illustre concrètement la fiche 15 : la solution du SVM à marge dure ne dépend que d'un petit sous-ensemble de points (ici, dans ce cas très symétrique, tous les points), jamais de leur nombre total. La bande verte est la <b>marge</b> : aucun point n'est strictement à l'intérieur, les 4 se trouvent exactement sur ses bords $H^+$ ou $H^-$, d'où le fait qu'ils soient <b>tous</b> vecteurs de support.</p>
             </div>
           </details>
 
