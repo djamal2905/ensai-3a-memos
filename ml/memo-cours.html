@@ -1458,6 +1458,21 @@ def nesterov(X, y, gamma, n_iter):
               <p class="sense"><b>Sens :</b> le lien avec ce mémo : un processus gaussien, comme la KRR (fiche 28), fait ses prédictions via une matrice de Gram $\mathbf K$ et une inversion $(\mathbf K+\sigma^2\mathbf I)^{-1}$ ; la différence est que l'approche bayésienne fournit <b>en plus</b>, gratuitement, une incertitude autour de chaque prédiction (l'écart-type de la loi a posteriori), ce que KRR ou SVM ne donnent pas nativement. Les processus gaussiens sortent du cadre de ce cours, mais retenez au moins où chercher un noyau Matérn utilisable en pratique.</p>
             </div>
 
+            <div class="box box-thm">
+              <p class="box-label">Zoom · Le noyau de Matérn, celui qui mérite vraiment une explication à part</p>
+              <p>Sa formule est nettement plus intimidante que les autres, ce qui explique qu'on s'y attarde : elle fait intervenir la fonction Gamma $\Gamma$ et une fonction de Bessel modifiée $K_\nu$ :</p>
+              <div class="formula">$$k_\nu(\mathbf x,\mathbf x')=\frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}\,\|\mathbf x-\mathbf x'\|_2}{\theta}\right)^{\!\nu} K_\nu\!\left(\frac{\sqrt{2\nu}\,\|\mathbf x-\mathbf x'\|_2}{\theta}\right)$$</div>
+              <p>Heureusement, pour les deux valeurs de $\nu$ utilisées en pratique, cette expression se simplifie radicalement (plus de $\Gamma$, plus de $K_\nu$), en notant $d:=\|\mathbf x-\mathbf x'\|_2$ :</p>
+              <div class="formula">$$\nu=\tfrac32 : \quad k(\mathbf x,\mathbf x')=\left(1+\frac{\sqrt3\,d}\theta\right)\exp\!\left(-\frac{\sqrt3\,d}\theta\right) \qquad\qquad \nu=\tfrac52 : \quad k(\mathbf x,\mathbf x')=\left(1+\frac{\sqrt5\,d}\theta+\frac{5d^2}{3\theta^2}\right)\exp\!\left(-\frac{\sqrt5\,d}\theta\right)$$</div>
+              <p class="method-label">Ce que $\nu$ contrôle vraiment : la <b>régularité</b> (smoothness)</p>
+              <p>Le paramètre $\nu>0$ fixe le nombre de fois où les fonctions du RKHS associé (fiche 28) sont dérivables : $\nu=1/2$ donne des fonctions seulement <b>continues</b> (non dérivables, très irrégulières, c'est exactement le noyau <b>exponentiel/Laplacien</b> du tableau ci-dessus, $k(d)=e^{-d/\theta}$) ; $\nu=3/2$ donne des fonctions dérivables une fois ; $\nu=5/2$, deux fois ; et quand $\nu\to\infty$, on retrouve <b>exactement</b> le noyau gaussien/RBF (fiche 17), infiniment dérivable. Calculons $k(d,\theta{=}1)$ pour $d=1$ à ces différentes valeurs de $\nu$, pour le voir sur des nombres :</p>
+              <table class="cmp">
+                <tr><th>$\nu$</th><th>$1/2$ (exponentiel)</th><th>$3/2$</th><th>$5/2$</th><th>$10$</th><th>$\to\infty$ (RBF)</th></tr>
+                <tr><td>$k(d{=}1,\theta{=}1)$</td><td>$0.368$</td><td>$0.483$</td><td>$0.524$</td><td>$0.584$</td><td>$0.607$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> la valeur du noyau augmente <b>progressivement et régulièrement</b> avec $\nu$, vers la limite du RBF ($e^{-1/2}\approx0.607$) : Matérn n'est pas « un noyau de plus » dans la liste, c'est toute une <b>famille</b> qui contient le noyau exponentiel et le noyau gaussien comme deux cas extrêmes, et permet de choisir <b>continûment</b> entre les deux. En pratique, cela compte énormément : le RBF suppose implicitement que le phénomène modélisé est <b>infiniment lisse</b>, une hypothèse rarement réaliste (relief d'un terrain, cours de bourse, mesures physiques bruitées). Les praticiens des processus gaussiens (encadré ci-dessus) utilisent donc très souvent $\nu=3/2$ ou $\nu=5/2$ par défaut : assez de régularité pour bien généraliser, sans l'hypothèse extrême (et souvent fausse) d'une fonction infiniment dérivable.</p>
+            </div>
+
             <div class="box box-ex">
               <p class="box-label">Retour sur l'illustration du départ · Ce que le noyau gaussien a réellement trouvé</p>
               <p>Entraînons un SVM à noyau gaussien sur le jeu de données de l'introduction de cette fiche (le nuage bleu entouré de la couronne rouge). Voici la frontière de décision <b>effectivement trouvée</b> (en vert), et les deux régions de prédiction qu'elle délimite :</p>
