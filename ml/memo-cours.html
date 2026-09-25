@@ -1457,6 +1457,56 @@ def nesterov(X, y, gamma, n_iter):
               <div class="formula">$$\texttt{from sklearn.gaussian\_process.kernels import Matern} \qquad \texttt{GaussianProcessRegressor(kernel=Matern(nu=1.5, length\_scale=[1.,2.]))}$$</div>
               <p class="sense"><b>Sens :</b> le lien avec ce mémo : un processus gaussien, comme la KRR (fiche 28), fait ses prédictions via une matrice de Gram $\mathbf K$ et une inversion $(\mathbf K+\sigma^2\mathbf I)^{-1}$ ; la différence est que l'approche bayésienne fournit <b>en plus</b>, gratuitement, une incertitude autour de chaque prédiction (l'écart-type de la loi a posteriori), ce que KRR ou SVM ne donnent pas nativement. Les processus gaussiens sortent du cadre de ce cours, mais retenez au moins où chercher un noyau Matérn utilisable en pratique.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Retour sur l'illustration du départ · Ce que le noyau gaussien a réellement trouvé</p>
+              <p>Entraînons un SVM à noyau gaussien sur le jeu de données de l'introduction de cette fiche (le nuage bleu entouré de la couronne rouge). Voici la frontière de décision <b>effectivement trouvée</b> (en vert), et les deux régions de prédiction qu'elle délimite :</p>
+              <div class="scatterviz-scroll">
+                <svg class="scatterviz" viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="170" cy="140" r="130" fill="var(--warn-bg)"/>
+                  <circle cx="170" cy="140" r="49.5" fill="var(--ex-bg)"/>
+                  <circle cx="170" cy="140" r="49.5" fill="none" stroke="var(--def-border)" stroke-width="2.5" stroke-dasharray="7 4"/>
+                  <circle class="scatterviz-pt-pos" cx="239.3" cy="127.8" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="236.1" cy="92.5" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="203.7" cy="78.2" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="174.1" cy="58.7" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="142.7" cy="75.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="109.0" cy="86.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="102.2" cy="120.9" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="89.8" cy="154.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="112.8" cy="181.1" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="131.1" cy="211.5" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="166.5" cy="210.3" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="201.6" cy="215.0" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="222.8" cy="186.6" r="5"/>
+                  <circle class="scatterviz-pt-pos" cx="248.4" cy="162.0" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="189.8" cy="140.0" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="191.9" cy="121.6" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="173.4" cy="120.5" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="155.7" cy="115.2" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="151.4" cy="133.2" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="143.1" cy="149.8" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="160.1" cy="157.1" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="175.0" cy="168.2" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="185.2" cy="152.7" r="5"/>
+                  <circle class="scatterviz-pt-neg" cx="170" cy="140" r="5"/>
+                </svg>
+              </div>
+              <div class="scatterviz-legend">
+                <span>┄ vert : frontière de décision $f(\mathbf x)=0$</span>
+                <span><i style="background:var(--ex-bg);border:1px solid var(--ex-border)"></i> région prédite $-1$</span>
+                <span><i style="background:var(--warn-bg);border:1px solid var(--warn-border)"></i> région prédite $+1$</span>
+              </div>
+              <p class="sense"><b>Sens :</b> la frontière n'est <b>plus une droite</b> (ce qu'un SVM linéaire, fiche 15, aurait été forcé de tracer, avec un taux d'erreur élevé quel que soit son placement) mais une courbe fermée qui épouse exactement la forme des données. C'est la <b>même</b> formule de décision $f(\mathbf x)=\sum_i\alpha_iy_ik(\mathbf x_i,\mathbf x)+b$ qu'un SVM linéaire (fiche 16), seul $k$ a changé (linéaire $\to$ gaussien) : c'est tout le pouvoir du kernel trick, il n'y a <b>littéralement rien d'autre</b> à modifier dans l'algorithme.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Classer un nouveau point, une fois le SVM entraîné</p>
+              <p>Un SVM (noyau polynomial $k(\mathbf x,\mathbf x')=(\mathbf x^T\mathbf x')^2$, comme dans l'exemple $\phi\to k$ plus haut) a été entraîné, et n'a retenu que <b>2 vecteurs de support</b> (tous les autres points ont $\alpha_i=0$, fiche 16) : $\mathbf x_1=(1,1)$, $y_1=+1$, $\alpha_1=0.5$ ; $\mathbf x_2=(-1,0.5)$, $y_2=-1$, $\alpha_2=0.3$ ; biais $b=-0.1$. Un nouveau point $\mathbf x^\star=(1.5,0.8)$ arrive : quelle est sa classe ?</p>
+              <div class="formula">$$k(\mathbf x_1,\mathbf x^\star)=(1\times1.5+1\times0.8)^2=2.3^2=5.29 \qquad k(\mathbf x_2,\mathbf x^\star)=(-1\times1.5+0.5\times0.8)^2=({-}1.1)^2=1.21$$</div>
+              <div class="formula">$$f(\mathbf x^\star) = \alpha_1y_1\,k(\mathbf x_1,\mathbf x^\star) + \alpha_2y_2\,k(\mathbf x_2,\mathbf x^\star) + b = 0.5{\times}5.29 - 0.3{\times}1.21 - 0.1 = 2.645-0.363-0.1 = 2.182$$</div>
+              <p class="sense"><b>Sens :</b> $f(\mathbf x^\star)=2.182>0$, donc $\hat y=\mathrm{sign}(f(\mathbf x^\star))=+1$. Remarquez ce qui n'a <b>pas</b> été utilisé : ni $\phi(\mathbf x)$, ni les données d'entraînement autres que les 2 vecteurs de support, ni le nombre total de points vus à l'entraînement (qui pourrait être $n=10\,000$, le coût de prédiction ne dépendrait toujours que de ces 2 termes). C'est la conjonction exacte des deux propriétés vues dans cette fiche et la fiche 16 : la <b>sparsité</b> (seuls les $\alpha_i>0$ comptent) et le <b>kernel trick</b> (jamais besoin de $\phi$), appliquées ensemble au moment de la prédiction.</p>
+            </div>
           </article>
 
           <article class="topic" id="s18">
@@ -1780,6 +1830,30 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
               <div class="qcm-explain">Faux : c'est l'inverse (Ridge : régression, fiche 5 ; SVM : classification, fiche 15).</div>
               <label class="qcm-opt"><input type="radio" name="ml3-9"><span class="otext">La perte charnière est non convexe, contrairement à la perte quadratique.</span></label>
               <div class="qcm-explain">Faux : la perte charnière est convexe (fiche 16), simplement non dérivable en un point, contrairement à la perte quadratique qui est dérivable partout.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q10</span>Pourquoi le kernel trick s'applique-t-il à la forme duale de Ridge (via $\mathbf X\mathbf X^T$) et jamais à sa forme primale habituelle (via $\mathbf X^T\mathbf X$) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-10"><span class="otext">Parce que $\mathbf X^T\mathbf X$ n'est jamais inversible, contrairement à $\mathbf X\mathbf X^T$.</span></label>
+              <div class="qcm-explain">Faux : rien ne garantit que l'une soit inversible et pas l'autre en général ; ce n'est pas l'argument (fiche 17).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-10"><span class="otext">Parce que $\mathbf X^T\mathbf X$ donne toujours de moins bonnes prédictions que $\mathbf X\mathbf X^T$.</span></label>
+              <div class="qcm-explain">Faux : les deux formes donnent rigoureusement la <b>même</b> prédiction (fiche 17, fiche 28 exercice 3) ; ce n'est pas une question de qualité de prédiction.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-10"><span class="otext">Parce que $\mathbf X^T\mathbf X$ se construit à partir des colonnes (les variables), donc exige de connaître $\phi(\mathbf x)$ explicitement ; $\mathbf X\mathbf X^T=\mathbf K$ ne fait intervenir que des produits scalaires entre exemples $\mathbf x_i^T\mathbf x_j$, remplaçables par $k(\mathbf x_i,\mathbf x_j)$ sans jamais construire $\phi$.</span></label>
+              <div class="qcm-explain">Correct : fiche 17, c'est exactement l'argument développé sur l'exemple numérique $n=d=2$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-10"><span class="otext">Ce n'est vrai que lorsque $n=d$.</span></label>
+              <div class="qcm-explain">Faux : l'argument ne dépend ni de $n$ ni de $d$, il tient dès que $\mathbf X\mathbf X^T$ peut être remplacée par une matrice de noyau $\mathbf K$ quelconque (fiche 17).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q11</span>Sur l'exemple $\phi\to k$ (noyau polynomial, fiche 17), pourquoi calculer $k(\mathbf x,\mathbf x')$ directement est-il préférable à passer par $\phi(\mathbf x)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-11"><span class="otext">Parce que les deux calculs donnent des résultats différents, et seul $k$ est correct.</span></label>
+              <div class="qcm-explain">Faux : les deux donnent exactement le même nombre ($25$ dans l'exemple) ; $k$ n'est pas « plus correct », juste plus rapide à calculer.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-11"><span class="otext">Parce que $\phi(\mathbf x)$ exige de construire un vecteur (potentiellement de très grande, voire de dimension infinie) avant de faire le produit scalaire, alors que $k(\mathbf x,\mathbf x')$ donne le même résultat en un seul calcul dans l'espace d'origine.</span></label>
+              <div class="qcm-explain">Correct : fiche 17, c'est exactement l'argument du « chemin long contre chemin court », qui devient impossible à contourner pour un noyau gaussien (feature map de dimension infinie).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-11"><span class="otext">Parce que $\phi(\mathbf x)$ n'existe pas pour le noyau polynomial.</span></label>
+              <div class="qcm-explain">Faux : $\phi$ existe bel et bien pour le noyau polynomial (elle est explicitement construite, fiche 18, exercice 1) ; le problème est seulement son coût de calcul.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-11"><span class="otext">Ce n'est un avantage que pour les tout petits jeux de données.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, l'avantage grandit avec la dimension de $\phi(\mathbf x)$, donc devient d'autant plus décisif sur de gros noyaux comme le gaussien (fiche 17).</div>
             </div>
 
             <div class="qcm-actions">
