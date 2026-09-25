@@ -385,13 +385,22 @@ window.MathJax = {
           <li><a href="#s25"><span class="toc-num">25</span>M-estimation &amp; IRLS</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>Lecture 7 : Régression non-paramétrique &amp; RKHS</p>
+        <ol>
+          <li><a href="#s26"><span class="toc-num">26</span>k-NN &amp; Nadaraya-Watson</a></li>
+          <li><a href="#s27"><span class="toc-num">27</span>Splines</a></li>
+          <li><a href="#s28"><span class="toc-num">28</span>RKHS &amp; Kernel Ridge Regression</a></li>
+          <li><a href="#s29"><span class="toc-num">29</span>Mercer, feature maps &amp; noyaux avancés</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
-        <h1>De l'ERM au SVM, en passant par les ensembles et la robustesse</h1>
-        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation, et régresser en présence d'outliers.</p>
+        <h1>De l'ERM au SVM et aux RKHS, en passant par les ensembles et la robustesse</h1>
+        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (classification Bayes/LDA/logistique, SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation, régresser en présence d'outliers, et enfin régresser sans hypothèse paramétrique (k-NN, Nadaraya-Watson, splines, RKHS).</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : LectureNotesML (S. Da Veiga), QCM, sujets d'examen et TP ENSAI 3A</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>25 fiches</b></span>
@@ -489,7 +498,7 @@ window.MathJax = {
             <div class="box box-thm">
               <p class="box-label">Proposition · Équations normales</p>
               <div class="formula">$$Z^TZ\,\hat\theta_n=Z^TY \qquad\Longrightarrow\qquad \hat\theta_n=(Z^TZ)^{-1}Z^TY \ \ \text{si } \ker(Z)=\{0\}$$</div>
-              <p class="sense"><b>Sens :</b> si $Z^TZ$ (matrice de Gram) n'est pas inversible, par ex. $n<d+1$ ou colonnes corrélées, l'OLS existe toujours mais n'est plus unique.</p>
+              <p class="sense"><b>Sens :</b> si $Z^TZ$ (matrice de Gram) n'est pas inversible, par ex. $n \lt d+1$ ou colonnes corrélées, l'OLS existe toujours mais n'est plus unique.</p>
             </div>
 
             <div class="box box-def">
@@ -519,7 +528,7 @@ window.MathJax = {
 
           <article class="topic" id="s5">
             <div class="tophead"><span class="num">5</span><h2>Régularisation Ridge</h2></div>
-            <p>Ajoute une pénalité $L^2$ pour stabiliser l'OLS : matrice mal conditionnée, $n<d$, ou coefficients qui explosent avec la complexité du modèle.</p>
+            <p>Ajoute une pénalité $L^2$ pour stabiliser l'OLS : matrice mal conditionnée, $n \lt d$, ou coefficients qui explosent avec la complexité du modèle.</p>
 
             <div class="box box-def">
               <p class="box-label">Définition · Ridge</p>
@@ -2379,6 +2388,331 @@ def irls_lad(X, y, n_iter=20, eps=1e-6):
               <div class="qcm-explain">Faux : des choix différents de $\rho$ (OLS, LAD, Huber…) donnent des estimateurs différents, avec des propriétés de robustesse différentes.</div>
               <label class="qcm-opt"><input type="radio" name="ml6-7"><span class="otext">Que l'algorithme IRLS n'est jamais nécessaire.</span></label>
               <div class="qcm-explain">Faux : c'est l'inverse, IRLS est l'algorithme standard pour résoudre le problème dès que $\rho\neq r^2/2$ (fiche 25).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 7 ================= -->
+      <section class="lecture" id="lecture-7">
+        <button class="lecture-head">
+          <span class="num">L7</span>
+          <span class="title">Régression non-paramétrique &amp; RKHS</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s26">
+            <div class="tophead"><span class="num">26</span><h2>Régression locale : k-NN, Nadaraya-Watson &amp; lisseurs linéaires</h2></div>
+            <p>Retour à la <b>régression</b> (fiche 1), avec une question différente de tout ce qui précède : jusqu'ici, $\hat f(\mathbf x)=\beta_0+\mathbf x^T\beta$ ou une variante pénalisée (Ridge, Lasso) supposait une forme <b>globale</b> précise. Et si on ne supposait <b>rien</b> sur la forme de $f_0(\mathbf x)=\mathbb E[Y\mid\mathbf X=\mathbf x]$, et qu'on l'estimait juste en regardant les points d'entraînement <b>proches</b> de $\mathbf x$ ?</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · k plus proches voisins (k-NN) pour la régression</p>
+              <div class="formula">$$\hat f(\mathbf x) = \frac1k\sum_{i\in\mathcal N_k(\mathbf x)} y_i = \frac1k\sum_{i=1}^n w_i(\mathbf x)\,y_i, \qquad w_i(\mathbf x)=\begin{cases}1 & \text{si } \mathbf x_i \text{ est parmi les } k \text{ plus proches de } \mathbf x\\0 & \text{sinon}\end{cases}$$</div>
+              <p class="sense"><b>Sens :</b> on moyenne simplement les $y_i$ des $k$ voisins les plus proches (au sens de la distance euclidienne, donc <b>toujours standardiser</b> les variables au préalable, comme pour un noyau isotrope, fiche 18). Petit $k$ : estimateur très irrégulier (« wiggly »), colle au bruit. Grand $k$ : estimateur presque constant. C'est un compromis biais-variance explicite, piloté par $k$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Prix immobilier au m², à la main</p>
+              <p><b>Contexte :</b> une agence dispose de 5 transactions récentes (surface en m², prix en k€) : $(30,150),(45,210),(50,225),(70,310),(90,400)$. Un bien de $x_0=55\,\text{m}^2$ arrive sur le marché : quel prix prédire, avec $k=3$ ?</p>
+              <p>Distances à $x_0=55$ : $|55-30|=25$, $|55-45|=10$, $|55-50|=5$, $|55-70|=15$, $|55-90|=35$. Les 3 plus proches sont donc $50$ (distance $5$), $45$ (distance $10$) et $70$ (distance $15$), de prix $225$, $210$ et $310$ :</p>
+              <div class="formula">$$\hat f(55) = \frac{225+210+310}{3} = \frac{745}{3} \approx 248.3\text{ k€}$$</div>
+              <p class="sense"><b>Sens :</b> remarquez que le bien à $30\text{m}^2$ (le moins cher) et celui à $90\text{m}^2$ (le plus cher) sont <b>tous deux ignorés</b>, alors qu'ils encadrent pourtant $x_0=55$ d'assez loin : k-NN ne regarde que la <b>proximité</b>, jamais la position relative (avant/après). C'est précisément ce qui produit les « marches d'escalier » caractéristiques de k-NN quand on fait varier $x_0$ continûment.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Lissage à noyau &amp; estimateur de Nadaraya-Watson</p>
+              <p>Plutôt que de couper brutalement entre « voisin » (poids $1/k$) et « non-voisin » (poids $0$), on lisse la transition avec une fonction <b>noyau</b> $K$ (le mot « noyau » est ici pris au sens <i>lissage</i>, pas au sens noyau de Mercer des fiches 17-18, même s'ils partagent l'esprit « mesurer une similarité ») :</p>
+              <div class="formula">$$\hat f(\mathbf x) = \sum_{i=1}^n w_i(\mathbf x)\,y_i, \qquad w_i(\mathbf x) = \frac{K\big(\|\mathbf x-\mathbf x_i\|_2/h\big)}{\sum_{j=1}^n K\big(\|\mathbf x-\mathbf x_j\|_2/h\big)}$$</div>
+              <p>où $h>0$ est la <b>fenêtre</b> (bandwidth) : un hyperparamètre qui contrôle, comme $k$ pour k-NN, le compromis biais-variance. Deux noyaux usuels : le noyau <b>gaussien</b> $K(t)=\frac1{\sqrt{2\pi}}e^{-t^2/2}$, et le noyau <b>d'Epanechnikov</b> $K(t)=\frac34(1-t^2)\mathbb 1_{|t|\le1}$ (à support compact : les points trop éloignés reçoivent un poids exactement nul, pas juste petit).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Le même prix immobilier, lissé plutôt que compté</p>
+              <p>Reprenons les 5 transactions, $x_0=55$, avec un noyau d'Epanechnikov et une fenêtre $h=20$. Pour chaque point, $t_i=(x_0-x_i)/h$ :</p>
+              <table class="cmp">
+                <tr><th>$x_i$</th><th>$y_i$</th><th>$t_i=(55-x_i)/20$</th><th>$K(t_i)=\frac34(1-t_i^2)$</th></tr>
+                <tr><td>30</td><td>150</td><td>$1.25$</td><td>$0$ ($|t_i|>1$)</td></tr>
+                <tr><td>45</td><td>210</td><td>$0.5$</td><td>$0.75\times0.75=0.5625$</td></tr>
+                <tr><td>50</td><td>225</td><td>$0.25$</td><td>$0.75\times0.9375=0.7031$</td></tr>
+                <tr><td>70</td><td>310</td><td>$-0.75$</td><td>$0.75\times0.4375=0.3281$</td></tr>
+                <tr><td>90</td><td>400</td><td>$-1.75$</td><td>$0$ ($|t_i|>1$)</td></tr>
+              </table>
+              <div class="formula">$$\hat f(55) = \frac{0.5625\times210 + 0.7031\times225 + 0.3281\times310}{0.5625+0.7031+0.3281} = \frac{378.05}{1.594} \approx 237.2\text{ k€}$$</div>
+              <p class="sense"><b>Sens :</b> même résultat qualitatif que k-NN (les deux points extrêmes sont ignorés, car hors de la fenêtre $h=20$), mais une valeur légèrement <b>différente</b> ($237.2$ contre $248.3$ k€) : Nadaraya-Watson pondère le point à $70\text{m}^2$ (le plus éloigné des trois retenus, poids $0.328$) <b>moins</b> que les points à $45$ et $50\text{m}^2$ (poids $0.56$ et $0.70$), alors que k-NN les traitait à parts parfaitement égales ($1/3$ chacun). C'est exactement le raffinement apporté par le noyau : une pondération <b>continue</b> de la proximité, pas un simple seuil binaire.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le fléau de la dimension (curse of dimensionality)</p>
+              <p>Si $f_0$ est Lipschitz, le risque de ces estimateurs locaux se comporte comme $R(\hat f)\lesssim n^{-2/(2+d)}$. En dimension $d=1$, il faut $n$ de l'ordre de quelques dizaines pour une précision correcte ; en dimension $d=20$, le même niveau de précision demanderait un $n$ <b>astronomiquement</b> plus grand (l'exposant $2/(2+d)\to0$ quand $d$ augmente, donc la vitesse de convergence s'effondre) : avec beaucoup de variables, il n'y a presque jamais de vrai « voisin proche ». C'est la limite fondamentale des méthodes purement locales.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition · Un lisseur linéaire</p>
+              <p>k-NN et Nadaraya-Watson s'écrivent tous deux $\hat{\mathbf f}=\mathbf S\mathbf y$ pour une matrice $\mathbf S$ (ne dépendant que des $\mathbf x_i$, pas des $y_i$) : ce sont des <b>lisseurs linéaires</b>, une famille qui inclut aussi les splines et la Kernel Ridge Regression (fiches 27-28).</p>
+              <p class="sense"><b>Sens :</b> « linéaire » ici veut dire linéaire <b>en $\mathbf y$</b> (la prédiction est une combinaison linéaire des $y_i$ observés), pas que $\hat f$ soit une fonction linéaire de $\mathbf x$ : $\hat f$ peut être arbitrairement tordue, comme les exemples ci-dessus le montrent.</p>
+            </div>
+          </article>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 1 (type examen) · Comparer k-NN et Nadaraya-Watson sur un nouveau point</p>
+            <p>Toujours avec les 5 transactions de la fiche 26, $(30,150),(45,210),(50,225),(70,310),(90,400)$, on s'intéresse maintenant à un bien de $x_0=80\,\text{m}^2$.</p>
+            <p>(a) Calculez la prédiction k-NN avec $k=2$.<br>
+            (b) Calculez la prédiction Nadaraya-Watson avec le noyau d'Epanechnikov et $h=20$.<br>
+            (c) Comparez les deux résultats. Le point à $90\text{m}^2$ contribue-t-il de la même façon dans les deux méthodes ?</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) k-NN, $k=2$</p>
+              <p>Distances à $80$ : $|80-30|=50$, $|80-45|=35$, $|80-50|=30$, $|80-70|=10$, $|80-90|=10$. Les 2 plus proches sont à égalité : $70$ et $90$ (distance $10$ chacun), de prix $310$ et $400$ :</p>
+              <div class="formula">$$\hat f_{k\text{-NN}}(80) = \frac{310+400}{2} = 355\text{ k€}$$</div>
+              <p class="method-label">(b) Nadaraya-Watson, Epanechnikov, $h=20$</p>
+              <p>$t_i=(80-x_i)/20$ : pour $30$, $t=2.5$ ($K=0$) ; pour $45$, $t=1.75$ ($K=0$) ; pour $50$, $t=1.5$ ($K=0$) ; pour $70$, $t=0.5$ ($K=0.75\times0.75=0.5625$) ; pour $90$, $t=-0.5$ ($K=0.5625$ aussi, par symétrie de $K$) :</p>
+              <div class="formula">$$\hat f_{\text{NW}}(80) = \frac{0.5625\times310+0.5625\times400}{0.5625+0.5625} = \frac{310+400}{2} = 355\text{ k€}$$</div>
+              <p class="method-label">(c) Comparaison</p>
+              <p>Les deux méthodes donnent <b>exactement</b> le même résultat ici ($355$ k€), et pour la même raison : $70$ et $90$ sont à distance <b>égale</b> ($10$) de $x_0=80$, donc reçoivent le même poids dans les deux méthodes ($1/2$ chacun pour k-NN, $0.5625$ chacun pour Nadaraya-Watson, ce qui revient au même après normalisation puisque les poids sont égaux). $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> ce n'est <b>pas</b> une coïncidence générale : dès que deux points sont à distance strictement différente de $x_0$ (comme à $x_0=55$, exemple de la fiche 26), les deux méthodes divergent, car Nadaraya-Watson pondère continûment selon la distance exacte alors que k-NN ne regarde que le <b>rang</b> de proximité. Ce cas particulier ($x_0=80$, exactement entre deux points symétriques) est le seul type de configuration où elles coïncident.</p>
+            </div>
+          </details>
+
+          <article class="topic" id="s27">
+            <div class="tophead"><span class="num">27</span><h2>Splines : base tronquée, splines naturelles &amp; splines de lissage</h2></div>
+            <p>k-NN et Nadaraya-Watson (fiche 26) construisent $\hat f$ <b>localement</b>, point par point. Les splines adoptent le point de vue inverse : construire $\hat f$ <b>globalement</b>, comme une fonction polynomiale par morceaux, recollée avec soin aux jointures.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Spline d'ordre $k$</p>
+              <p>Une spline d'ordre $k$ est une fonction polynomiale par morceaux de degré $k$, dont les dérivées jusqu'à l'ordre $k-1$ sont <b>continues</b> aux points de jointure (les <b>nœuds</b>, notés $t_1 \lt \dots \lt t_p$). Une base naturelle, dite <b>base tronquée</b> :</p>
+              <div class="formula">$$g_1(x)=1,\ g_2(x)=x,\ \dots,\ g_{k+1}(x)=x^k, \qquad g_{k+1+j}(x)=(x-t_j)_+^k,\ j=1,\dots,p$$</div>
+              <p class="sense"><b>Sens :</b> $(x-t_j)_+^k$ vaut $0$ avant le nœud $t_j$ et $(x-t_j)^k$ après : elle permet à la fonction de « changer de comportement » à partir de $t_j$, tout en restant $k-1$ fois continûment dérivable en ce point (c'est le rôle de l'exposant $k$, pas $0$ ou $1$).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Base tronquée, ordre $k=1$ (spline linéaire), un seul nœud</p>
+              <p>Un seul nœud $t_1=5$, coefficients $\beta_1=2$ (constante), $\beta_2=0.5$ (pente), $\beta_3=-0.3$ (changement de pente au nœud) :</p>
+              <div class="formula">$$\hat f(x) = \beta_1 + \beta_2\,x + \beta_3\,(x-5)_+$$</div>
+              <p>Pour $x=3$ (avant le nœud) : $(x-5)_+=0$, donc $\hat f(3)=2+0.5\times3=3.5$. Pour $x=8$ (après le nœud) : $(x-5)_+=3$, donc $\hat f(8)=2+0.5\times8-0.3\times3=2+4-0.9=5.1$. Et juste <b>au</b> nœud, $x=5$ : $\hat f(5)=2+0.5\times5=4.5$ des deux côtés (continuité).</p>
+              <p class="sense"><b>Sens :</b> la pente vaut $\beta_2=0.5$ avant le nœud, et $\beta_2+\beta_3=0.5-0.3=0.2$ après : $\beta_3$ n'est <b>pas</b> la pente après le nœud, c'est le <b>changement</b> de pente. La fonction reste continue en $x=5$ (les deux formules donnent $4.5$) mais change d'inclinaison, exactement le comportement « polynôme par morceaux recollé » voulu.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Ajustement, splines naturelles &amp; splines de lissage</p>
+              <p>Une fois la base $g_1,\dots,g_{p+k+1}$ fixée, $\hat f(x)=\sum_j\beta_jg_j(x)$ est <b>linéaire en $\beta$</b> : les coefficients optimaux s'obtiennent par moindres carrés ordinaires (fiche 3) sur la matrice de design $\mathbf G$ (les $g_j$ évaluées aux $x_i$), $\hat\beta=(\mathbf G^T\mathbf G)^{-1}\mathbf G^Ty$. Les <b>splines naturelles</b> ajoutent une contrainte de linéarité au-delà du premier et du dernier nœud (moins de degrés de liberté, un comportement plus stable en bord de domaine, là où les données sont rares). Les <b>splines de lissage</b> vont plus loin : les nœuds sont pris <b>en tous les $x_i$</b>, et le risque de surapprentissage est contrôlé par une pénalité sur la rugosité :</p>
+              <div class="formula">$$\min_{f}\ \sum_{i=1}^n\big(y_i-f(x_i)\big)^2 + \lambda\int_0^1\big(f''(x)\big)^2\,dx$$</div>
+              <p class="sense"><b>Sens :</b> $\lambda\to0$ : interpolation quasi parfaite des données (rugueux, surapprentissage). $\lambda\to\infty$ : $f''\to0$ partout, donc $\hat f$ tend vers une droite (sous-apprentissage). Remarquable : ce problème est posé sur un espace de fonctions de dimension <b>infinie</b>, et pourtant sa solution optimale est <b>exactement</b> une spline naturelle cubique de dimension finie : c'est un premier exemple de <b>théorème du représentant</b>, que la fiche 28 énonce dans un cadre beaucoup plus général.</p>
+            </div>
+          </article>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 2 · Retrouver la continuité au nœud à partir de la base tronquée</p>
+            <p>Pour une spline linéaire ($k=1$) à un seul nœud $t_1$, $\hat f(x)=\beta_1+\beta_2x+\beta_3(x-t_1)_+$, montrez directement (sans passer par un exemple numérique) que $\hat f$ est continue en $x=t_1$, quelles que soient les valeurs de $\beta_1,\beta_2,\beta_3$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p>Pour $x \lt t_1$ : $(x-t_1)_+=0$, donc $\hat f(x)=\beta_1+\beta_2x$, et par continuité de cette expression, $\lim_{x\to t_1^-}\hat f(x)=\beta_1+\beta_2t_1$. Pour $x\ge t_1$ : $(x-t_1)_+=x-t_1$, donc $\hat f(x)=\beta_1+\beta_2x+\beta_3(x-t_1)$, et en $x=t_1$ exactement, $(x-t_1)=0$, donc $\hat f(t_1)=\beta_1+\beta_2t_1+\beta_3\times0=\beta_1+\beta_2t_1$. Les deux limites coïncident : $\hat f$ est continue en $t_1$, quels que soient $\beta_1,\beta_2,\beta_3$ (en particulier $\beta_3$, qui ne contrôle que la pente après le nœud, jamais la continuité). $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est exactement pourquoi la base tronquée $(x-t_j)_+^k$ (et pas, par exemple, une simple indicatrice $\mathbb 1_{x>t_j}$) est le bon choix : elle garantit la continuité <b>par construction</b>, sans avoir à imposer de contrainte supplémentaire sur les $\beta_j$ lors de l'ajustement par moindres carrés.</p>
+            </div>
+          </details>
+
+          <article class="topic" id="s28">
+            <div class="tophead"><span class="num">28</span><h2>Espaces de Hilbert à noyau reproduisant (RKHS) &amp; Kernel Ridge Regression</h2></div>
+            <p>Les fiches 17-18 ont introduit les noyaux côté SVM, comme un raccourci de calcul. Formalisons maintenant <b>pourquoi</b> ce raccourci fonctionne, avec les espaces de Hilbert à noyau reproduisant (RKHS), qui unifient noyaux, splines de lissage et régularisation.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Noyau reproduisant &amp; RKHS</p>
+              <p>Soit $\mathcal H$ un espace de Hilbert de fonctions $\mathcal X\to\mathbb R$. Pour $\mathbf x\in\mathcal X$, la <b>fonctionnelle d'évaluation</b> $L_{\mathbf x}:h\mapsto h(\mathbf x)$ est linéaire. $\mathcal H$ est un <b>RKHS</b> si $L_{\mathbf x}$ est <b>continue</b> (bornée) pour tout $\mathbf x$. Par le théorème de représentation de Riesz, il existe alors, pour chaque $\mathbf x$, une unique fonction $k_{\mathbf x}\in\mathcal H$ telle que $L_{\mathbf x}(h)=\langle h,k_{\mathbf x}\rangle_{\mathcal H}=h(\mathbf x)$ : c'est la <b>propriété reproduisante</b>. On pose $k(\mathbf x,\mathbf x'):=\langle k_{\mathbf x},k_{\mathbf x'}\rangle_{\mathcal H}$, le <b>noyau reproduisant</b> de $\mathcal H$.</p>
+              <p class="sense"><b>Sens :</b> c'est la réciproque exacte de la fiche 17 : là-bas, on partait d'un noyau $k$ pour construire (informellement) un RKHS $\mathcal H_k$ ; ici, on part d'un RKHS $\mathcal H$ pour en extraire son noyau. Le théorème de correspondance (ci-dessous) affirme que les deux constructions sont, en fait, une seule et même chose.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · Correspondance RKHS ↔ noyau (renforce Moore-Aronszajn, fiche 17)</p>
+              <p>À tout RKHS correspond un <b>unique</b> noyau semi-défini positif avec la propriété reproduisante, et réciproquement, à tout noyau $k$ symétrique semi-défini positif correspond un <b>unique</b> RKHS $\mathcal H_k$ dont $k$ est le noyau reproduisant.</p>
+              <p class="sense"><b>Sens :</b> spécifier un noyau ou spécifier un RKHS, c'est <b>exactement</b> la même information. C'est ce théorème qui rend le kernel trick légitime : le noyau gaussien n'est pas juste une formule pratique, il correspond bel et bien à un unique espace de fonctions $\mathcal H_k$ (de dimension infinie), qu'on n'a jamais besoin de construire explicitement.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · Théorème du représentant (cas général)</p>
+              <p>Soit $k$ un noyau, $\mathcal H_k$ son RKHS, $(\mathbf x_i,y_i)_{i=1,\dots,n}$ un échantillon, $l$ une fonction de perte quelconque, $\lambda>0$, et $J$ une fonction <b>strictement croissante</b>. Alors toute solution $f^\star$ du problème :</p>
+              <div class="formula">$$\min_{f\in\mathcal H_k}\ \sum_{i=1}^n l\big(y_i,f(\mathbf x_i)\big) + \lambda\,J\big(\|f\|_{\mathcal H_k}\big)$$</div>
+              <p>admet une représentation de la forme $f^\star(\mathbf x)=\sum_{i=1}^n\alpha_i\,k(\mathbf x,\mathbf x_i)$, pour certains coefficients $\alpha_1,\dots,\alpha_n\in\mathbb R$.</p>
+              <p class="sense"><b>Sens :</b> un problème de minimisation posé sur un espace de fonctions de dimension <b>infinie</b> $\mathcal H_k$ admet <b>toujours</b> une solution qui ne dépend que de $n$ coefficients réels : c'est ce théorème (dont la spline de lissage, fiche 27, était un cas particulier) qui transforme systématiquement un problème infini-dimensionnel en un problème de taille $n$, quel que soit le noyau et quelle que soit la perte.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Kernel Ridge Regression (KRR)</p>
+              <p>Application directe du théorème du représentant à la perte quadratique et $J(\|f\|_{\mathcal H_k})=\|f\|_{\mathcal H_k}^2$. En notant $\mathbf K$ la matrice de Gram ($K_{ij}=k(\mathbf x_i,\mathbf x_j)$), $\|f\|_{\mathcal H_k}^2=\alpha^T\mathbf K\alpha$ et $(f(\mathbf x_1),\dots,f(\mathbf x_n))=\mathbf K\alpha$ (propriété reproduisante) : le problème devient un problème en $\alpha\in\mathbb R^n$ :</p>
+              <div class="formula">$$\min_\alpha\ \|y-\mathbf K\alpha\|_2^2+\lambda\,\alpha^T\mathbf K\alpha \qquad\Longrightarrow\qquad \hat\alpha=(\mathbf K+\lambda \mathbf I)^{-1}y, \qquad \hat f(\mathbf x)=\sum_i\hat\alpha_i\,k(\mathbf x,\mathbf x_i)$$</div>
+              <p class="sense"><b>Sens :</b> comparez à Ridge (fiche 5), $\hat\theta=(\mathbf X^T\mathbf X+\lambda\mathbf I)^{-1}\mathbf X^Ty$ : même structure, avec $\mathbf X^T\mathbf X$ remplacé par $\mathbf K$. Avec le noyau <b>linéaire</b> $k(\mathbf x,\mathbf x')=\mathbf x^T\mathbf x'$ (donc $\mathbf K=\mathbf X\mathbf X^T$), on peut montrer que KRR redonne <b>exactement</b> la régression Ridge classique : KRR est une authentique généralisation, pas une méthode différente.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Kernel Ridge Regression à la main, 2 points</p>
+              <p>Deux observations $(\mathbf x_1,y_1)=(0,1)$, $(\mathbf x_2,y_2)=(2,3)$, noyau gaussien $k(x,x')=e^{-(x-x')^2/2}$, $\lambda=1$.</p>
+              <div class="formula">$$\mathbf K = \begin{pmatrix}k(0,0) & k(0,2)\\k(2,0) & k(2,2)\end{pmatrix} = \begin{pmatrix}1 & e^{-2}\\e^{-2} & 1\end{pmatrix} \approx \begin{pmatrix}1 & 0.1353\\0.1353 & 1\end{pmatrix}$$</div>
+              <p>$\mathbf K+\lambda\mathbf I=\begin{pmatrix}2 & 0.1353\\0.1353 & 2\end{pmatrix}$, de la forme $\begin{pmatrix}p&q\\q&p\end{pmatrix}$ dont l'inverse est $\frac1{p^2-q^2}\begin{pmatrix}p&-q\\-q&p\end{pmatrix}$, avec $p^2-q^2=4-0.0183=3.9817$ :</p>
+              <div class="formula">$$\hat\alpha = \frac1{3.9817}\begin{pmatrix}2&-0.1353\\-0.1353&2\end{pmatrix}\begin{pmatrix}1\\3\end{pmatrix} = \frac1{3.9817}\begin{pmatrix}2-0.406\\-0.135+6\end{pmatrix} \approx \begin{pmatrix}0.400\\1.473\end{pmatrix}$$</div>
+              <p>Prédiction en $x^\star=1$ (à mi-chemin) : $k(1,0)=k(1,2)=e^{-0.5}\approx0.6065$ :</p>
+              <div class="formula">$$\hat f(1) = 0.6065\times(0.400+1.473) = 0.6065\times1.873 \approx 1.136$$</div>
+              <p class="sense"><b>Sens :</b> $\hat f(1)\approx1.136$ est proche de la moyenne simple de $y_1=1$ et $y_2=3$ (qui vaudrait $2$), mais pas exactement dessus : le noyau gaussien et la régularisation $\lambda=1$ « tirent » légèrement la prédiction vers le bas. Notez que $\hat\alpha_1<\hat\alpha_2$ alors que les deux points jouent un rôle symétrique dans le noyau : c'est parce que $y_2=3>y_1=1$, et un $\lambda$ plus petit rapprocherait $\hat f$ d'une interpolation exacte des deux points.</p>
+            </div>
+          </article>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 3 (bonus) · Retrouver Ridge comme cas particulier de KRR</p>
+            <p>Avec le noyau linéaire $k(\mathbf x,\mathbf x')=\mathbf x^T\mathbf x'$ sur $\mathbb R^d$, montrez que $\mathbf K=\mathbf X\mathbf X^T$ (la matrice de Gram $n\times n$, à distinguer de $\mathbf X^T\mathbf X$, $d\times d$), puis que la prédiction $\hat f(\mathbf x)=\sum_i\hat\alpha_ik(\mathbf x,\mathbf x_i)$ de KRR coïncide avec celle de Ridge (fiche 5), $\hat f(\mathbf x)=\mathbf x^T\hat\theta_\lambda^{\mathrm{rdg}}$. Indice : reliez $\hat\theta$ et $\hat\alpha$ via $\hat\theta=\mathbf X^T\hat\alpha$, et utilisez l'identité matricielle $\mathbf X^T(\mathbf X\mathbf X^T+\lambda\mathbf I_n)=(\mathbf X^T\mathbf X+\lambda\mathbf I_d)\mathbf X^T$.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Gram matrix</p>
+              <p>$K_{ij}=k(\mathbf x_i,\mathbf x_j)=\mathbf x_i^T\mathbf x_j$ est exactement le coefficient $(i,j)$ de $\mathbf X\mathbf X^T$ : $\mathbf K=\mathbf X\mathbf X^T$. $\blacksquare$</p>
+              <p class="method-label">Équivalence des prédictions</p>
+              <p>KRR donne $\hat\alpha=(\mathbf X\mathbf X^T+\lambda\mathbf I_n)^{-1}y$ et $\hat f(\mathbf x)=\mathbf x^T\mathbf X^T\hat\alpha$ (car $\sum_i\hat\alpha_ik(\mathbf x,\mathbf x_i)=\sum_i\hat\alpha_i\mathbf x^T\mathbf x_i=\mathbf x^T\sum_i\hat\alpha_i\mathbf x_i=\mathbf x^T\mathbf X^T\hat\alpha$). Posons $\hat\theta:=\mathbf X^T\hat\alpha=\mathbf X^T(\mathbf X\mathbf X^T+\lambda\mathbf I_n)^{-1}y$. En utilisant l'indice fourni, $\mathbf X^T(\mathbf X\mathbf X^T+\lambda\mathbf I_n)=(\mathbf X^T\mathbf X+\lambda\mathbf I_d)\mathbf X^T$, donc $\mathbf X^T(\mathbf X\mathbf X^T+\lambda\mathbf I_n)^{-1}=(\mathbf X^T\mathbf X+\lambda\mathbf I_d)^{-1}\mathbf X^T$ (en multipliant à gauche par $(\mathbf X^T\mathbf X+\lambda\mathbf I_d)^{-1}$ et à droite par $(\mathbf X\mathbf X^T+\lambda\mathbf I_n)^{-1}$). D'où :</p>
+              <div class="formula">$$\hat\theta = (\mathbf X^T\mathbf X+\lambda\mathbf I_d)^{-1}\mathbf X^Ty = \hat\theta_\lambda^{\mathrm{rdg}}$$</div>
+              <p>exactement l'estimateur Ridge de la fiche 5, et $\hat f(\mathbf x)=\mathbf x^T\hat\theta=\mathbf x^T\hat\theta_\lambda^{\mathrm{rdg}}$. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> ceci confirme, par le calcul et pas seulement par analogie, que Ridge <b>est</b> un cas particulier de KRR (noyau linéaire). C'est un résultat rassurant : toute la théorie du RKHS ne remplace pas ce qu'on savait déjà faire en dimension finie, elle le <b>généralise</b> strictement à des noyaux non linéaires.</p>
+            </div>
+          </details>
+
+          <article class="topic" id="s29">
+            <div class="tophead"><span class="num">29</span><h2>Théorème de Mercer, feature maps &amp; noyaux avancés</h2></div>
+            <p>Pour clore ce tour des méthodes à noyau, deux derniers outils : un résultat qui explicite le lien entre noyau et feature map en général, et deux nouvelles règles de construction de noyaux (en plus de celles de la fiche 18).</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · Mercer</p>
+              <p>Pour $k$ un noyau (sous des conditions techniques d'intégrabilité), il existe une base orthonormée $(e_j)_{j\ge1}$ et des valeurs propres $\lambda_j\ge0$ telles que :</p>
+              <div class="formula">$$k(\mathbf x,\mathbf x') = \sum_{j=1}^\infty \lambda_j\,e_j(\mathbf x)\,e_j(\mathbf x')$$</div>
+              <p class="sense"><b>Sens :</b> c'est l'analogue, pour un noyau (un objet de dimension potentiellement infinie), de la diagonalisation d'une matrice symétrique semi-définie positive ($\mathbf A=\sum_j\lambda_j\mathbf v_j\mathbf v_j^T$). Elle fournit une feature map explicite $\phi(\mathbf x)=(\sqrt{\lambda_j}\,e_j(\mathbf x))_{j\ge1}\in\ell^2$ : on retrouve bien $k(\mathbf x,\mathbf x')=\langle\phi(\mathbf x),\phi(\mathbf x')\rangle_{\ell^2}$ (fiche 17).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition · Deux règles de construction supplémentaires (complètent la fiche 18)</p>
+              <p><b>Tensorisation</b> : si $k_1,\dots,k_d$ sont des noyaux sur $\mathbb R$, alors $k(\mathbf x,\mathbf x'):=\prod_{l=1}^dk_l(x^{(l)},x'^{(l)})$ est un noyau sur $\mathbb R^d$. <b>Noyau additif</b> : $k(\mathbf x,\mathbf x'):=\sum_{l=1}^d a_l\,k_l(x^{(l)},x'^{(l)})$ (pour $a_l\ge0$) en est un aussi (cas particulier de la règle « somme » de la fiche 18, appliquée coordonnée par coordonnée).</p>
+              <p class="sense"><b>Sens :</b> ces deux règles permettent de construire un noyau sur $\mathbb R^d$ à partir de $d$ noyaux 1D, un par variable : utile quand on veut, par exemple, un noyau gaussien pour le prix (fiche 26) et un noyau différent, plus adapté, pour une variable catégorielle encodée numériquement. Tensoriser <b>multiplie</b> les similarités (il faut être proche sur <b>toutes</b> les variables à la fois) ; additionner les <b>somme</b> (être proche sur une seule variable peut suffire à contribuer).</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le prix à payer : $O(n^3)$</p>
+              <p>Résoudre $\hat\alpha=(\mathbf K+\lambda\mathbf I)^{-1}y$ (KRR, fiche 28) ou le dual du SVM à noyau (fiche 16) demande de manipuler une matrice $n\times n$ : coût typique $O(n^3)$ pour l'inversion. Avec $n=10\,000$, c'est déjà $10^{12}$ opérations : les méthodes à noyau « brutes » deviennent vite hors de portée en <i>big data</i>, contrairement à GD/SGD (fiches 9-13) dont le coût par itération ne dépend pas de $n$ de cette façon. Des approximations ($O(n)$ dans certains cas) existent mais sortent du cadre de ce cours.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Remarque · Au-delà de la régression et de la classification</p>
+              <p>Le kernel trick (fiche 17) ne se limite pas au supervisé : <b>Kernel PCA</b> (une PCA non linéaire, en remplaçant les produits scalaires par $k(\mathbf x_i,\mathbf x_j)$) et <b>Kernel k-means</b> (un k-means dans l'espace $\mathcal H_k$) existent aussi, avec exactement le même principe.</p>
+            </div>
+          </article>
+
+          <div class="box box-ex">
+            <p class="box-label">Exercice 4 (code) · Implémenter et vérifier la Kernel Ridge Regression</p>
+            <p>Implémentez une fonction <code>krr_fit(X, y, gamma, lam)</code> qui calcule $\hat\alpha=(\mathbf K+\lambda\mathbf I)^{-1}y$ pour un noyau gaussien de paramètre <code>gamma</code>, puis une fonction <code>krr_predict(X, alpha, X_new, gamma)</code> qui calcule $\hat f(\mathbf x)=\sum_i\hat\alpha_ik(\mathbf x,\mathbf x_i)$. Vérifiez vos résultats sur l'exemple à 2 points de la fiche 28.</p>
+            <div class="exo-scratch">
+              <label for="exo-ml-7-4">Votre code (brouillon, non exécuté) :</label>
+              <textarea id="exo-ml-7-4" class="exo-textarea" spellcheck="false" placeholder="import numpy as np
+
+def krr_fit(X, y, gamma, lam):
+    ..."></textarea>
+            </div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <pre><code>import numpy as np
+
+def gaussian_kernel_matrix(X1, X2, gamma):
+    sq = ((X1[:, None] - X2[None, :]) ** 2)
+    return np.exp(-gamma * sq)
+
+def krr_fit(X, y, gamma, lam):
+    K = gaussian_kernel_matrix(X, X, gamma)
+    alpha = np.linalg.solve(K + lam * np.eye(len(X)), y)
+    return alpha
+
+def krr_predict(X, alpha, X_new, gamma):
+    K_new = gaussian_kernel_matrix(X_new, X, gamma)
+    return K_new @ alpha
+
+X = np.array([0.0, 2.0])
+y = np.array([1.0, 3.0])
+alpha = krr_fit(X, y, gamma=0.5, lam=1.0)
+print(alpha)                                    # -&gt; [0.400, 1.473]
+print(krr_predict(X, alpha, np.array([1.0]), gamma=0.5))  # -&gt; [1.136]</code></pre>
+              <p class="sense"><b>Sens :</b> notez le paramétrage $k(x,x')=\exp(-\gamma(x-x')^2)$ avec $\gamma=1/2$, identique à $k(x,x')=\exp(-(x-x')^2/2)$ de la fiche 28 (attention, ce $\gamma$ n'a <b>aucun</b> rapport avec le pas de GD des fiches 9-13, ni avec la marge du SVM, fiche 15 : trois notations malheureusement identiques dans la littérature).</p>
+            </div>
+          </details>
+
+          <div class="qcm" id="qcm-7">
+            <div class="qcm-head">
+              <h3>QCM de révision · Lecture 7 (régression non-paramétrique &amp; RKHS)</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Pourquoi faut-il standardiser les variables avant d'utiliser k-NN ou Nadaraya-Watson (fiche 26) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml7-1"><span class="otext">Ce n'est jamais nécessaire, ces méthodes sont invariantes par changement d'échelle.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, ces méthodes sont très sensibles à l'échelle des variables.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-1"><span class="otext">Uniquement pour accélérer le calcul des distances.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas une question de vitesse mais de correction du résultat.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-1"><span class="otext">Parce que ces méthodes reposent sur une distance euclidienne, et qu'une variable à grande échelle numérique dominerait artificiellement le calcul de proximité, indépendamment de son vrai pouvoir prédictif.</span></label>
+              <div class="qcm-explain">Correct : fiche 26, exactement le même argument que pour les noyaux isotropes en SVM (fiche 18).</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-1"><span class="otext">Parce que sans standardisation, $k$-NN cesse d'être un lisseur linéaire.</span></label>
+              <div class="qcm-explain">Faux : $\hat f=\mathbf S\mathbf y$ reste vrai (fiche 26), que les données soient standardisées ou non ; le problème est ailleurs (la pertinence des distances calculées).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Quelle est la différence essentielle entre k-NN et Nadaraya-Watson pour la régression (fiche 26) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml7-2"><span class="otext">k-NN est un lisseur linéaire, Nadaraya-Watson ne l'est pas.</span></label>
+              <div class="qcm-explain">Faux : les deux sont des lisseurs linéaires, $\hat f=\mathbf S\mathbf y$ (fiche 26).</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-2"><span class="otext">k-NN pondère à parts égales ($1/k$) les $k$ voisins les plus proches et ignore totalement les autres ; Nadaraya-Watson pondère tous les points par une fonction continue et décroissante de la distance.</span></label>
+              <div class="qcm-explain">Correct : fiche 26, exactement la distinction illustrée par l'exemple numérique.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-2"><span class="otext">Nadaraya-Watson ne fonctionne qu'en classification, k-NN qu'en régression.</span></label>
+              <div class="qcm-explain">Faux : les deux sont présentés ici en régression, et les deux existent aussi en classification.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-2"><span class="otext">k-NN nécessite un noyau, Nadaraya-Watson non.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, Nadaraya-Watson repose sur un noyau de lissage $K$, pas k-NN.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Dans une base tronquée de spline, $g_{k+1+j}(x)=(x-t_j)_+^k$, à quoi sert précisément l'exposant $k$ et la partie positive $(\cdot)_+$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml7-3"><span class="otext">À garantir que la fonction reste continue (et ses $k-1$ premières dérivées aussi) au nœud $t_j$, tout en permettant un changement de comportement après $t_j$.</span></label>
+              <div class="qcm-explain">Correct : fiche 27, exercice 2, c'est exactement ce qui est démontré pour $k=1$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-3"><span class="otext">À rendre la fonction discontinue au nœud, pour capturer un saut brutal.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, la base tronquée garantit la continuité, pas la discontinuité.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-3"><span class="otext">À réduire le nombre de nœuds nécessaires.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas son rôle ; le nombre de nœuds est un choix indépendant.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-3"><span class="otext">Uniquement à normaliser l'échelle de la fonction.</span></label>
+              <div class="qcm-explain">Faux : la base tronquée ne normalise rien, elle structure la continuité aux nœuds.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Que dit précisément le théorème du représentant (fiche 28) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml7-4"><span class="otext">Que tout noyau admet une feature map de dimension finie.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas ce qu'affirme ce théorème (et c'est d'ailleurs faux en général, ex. noyau gaussien, fiche 17).</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-4"><span class="otext">Que la solution d'un ERM régularisé dans un RKHS est toujours nulle en dehors des points d'entraînement.</span></label>
+              <div class="qcm-explain">Faux : la solution $f^\star(\mathbf x)=\sum_i\alpha_ik(\mathbf x,\mathbf x_i)$ peut être évaluée (et n'est généralement pas nulle) en tout point $\mathbf x$, entraînement ou non.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-4"><span class="otext">Que le nombre de nœuds d'une spline de lissage doit toujours être égal à $n$.</span></label>
+              <div class="qcm-explain">Faux : c'est vrai spécifiquement pour les splines de lissage (fiche 27, un cas particulier), pas une conséquence générale du théorème du représentant.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-4"><span class="otext">Que la solution d'un problème de minimisation posé sur tout un RKHS $\mathcal H_k$ (dimension potentiellement infinie) s'écrit toujours comme une combinaison linéaire de $k(\cdot,\mathbf x_i)$, pour les $n$ points d'entraînement seulement.</span></label>
+              <div class="qcm-explain">Correct : fiche 28, c'est exactement l'énoncé du théorème, qui transforme un problème infini-dimensionnel en un problème à $n$ coefficients.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi la Kernel Ridge Regression avec un noyau linéaire redonne-t-elle exactement la régression Ridge classique (fiche 28, exercice 3) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml7-5"><span class="otext">Ce n'est vrai qu'approximativement, pas exactement.</span></label>
+              <div class="qcm-explain">Faux : l'égalité est exacte, démontrée algébriquement (fiche 28, exercice 3).</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-5"><span class="otext">Parce que $\lambda=0$ dans ce cas particulier.</span></label>
+              <div class="qcm-explain">Faux : l'équivalence est vraie pour n'importe quel $\lambda>0$, pas seulement $\lambda=0$.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-5"><span class="otext">Parce qu'avec $k(\mathbf x,\mathbf x')=\mathbf x^T\mathbf x'$, la matrice de Gram $\mathbf K=\mathbf X\mathbf X^T$, et l'identité $\mathbf X^T(\mathbf X\mathbf X^T+\lambda\mathbf I_n)^{-1}=(\mathbf X^T\mathbf X+\lambda\mathbf I_d)^{-1}\mathbf X^T$ relie exactement les deux estimateurs.</span></label>
+              <div class="qcm-explain">Correct : fiche 28, exercice 3, c'est exactement la démonstration.</div>
+              <label class="qcm-opt"><input type="radio" name="ml7-5"><span class="otext">Ce n'est vrai que si $n=d$.</span></label>
+              <div class="qcm-explain">Faux : l'équivalence ne dépend ni de $n$ ni de $d$ (fiche 28, exercice 3).</div>
             </div>
 
             <div class="qcm-actions">
