@@ -357,7 +357,7 @@ window.MathJax = {
       <div class="toc-lecture">
         <p>Lecture 3 : SVM &amp; noyaux</p>
         <ol>
-          <li><a href="#s15"><span class="toc-num">15</span>Marge maximale &amp; SVM à marge dure</a></li>
+          <li><a href="#s15"><span class="toc-num">15</span>Rappel classification, Bayes, LDA &amp; marge maximale</a></li>
           <li><a href="#s16"><span class="toc-num">16</span>Marge souple &amp; dual</a></li>
           <li><a href="#s17"><span class="toc-num">17</span>Astuce du noyau &amp; RKHS</a></li>
           <li><a href="#s18"><span class="toc-num">18</span>Construire des noyaux</a></li>
@@ -1202,8 +1202,41 @@ def nesterov(X, y, gamma, n_iter):
         <div class="lecture-body">
 
           <article class="topic" id="s15">
-            <div class="tophead"><span class="num">15</span><h2>Marge maximale &amp; SVM à marge dure</h2></div>
-            <p>On revient à la classification, mais avec un nouveau point de vue <b>géométrique</b> : au lieu de minimiser une perte $0/1$ (fiche 1), on cherche l'hyperplan qui sépare les deux classes avec la plus grande marge possible. Convention : $y_i\in\{-1,+1\}$ (au lieu de $\{0,1\}$).</p>
+            <div class="tophead"><span class="num">15</span><h2>Rappel classification (Bayes, LDA, régression logistique) &amp; marge maximale</h2></div>
+            <p>Avant d'aborder le SVM à proprement parler, reprenons depuis le début ce que veut dire « classer », avec le formalisme du risque (fiche 1) appliqué à la classification.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Risque, perte 0-1 et classifieur de Bayes</p>
+              <p>Pour une classification binaire $Y\in\{0,1\}$, un classifieur $h:\mathbb R^d\to\{0,1\}$ passe presque toujours par une <b>fonction de décision</b> $f$ telle que $h(\mathbf x)=\mathbb 1_{f(\mathbf x)>0}$. Avec la <b>perte 0-1</b>, $l(y,y')=\mathbb 1_{y\neq y'}$, le risque $R(h)=\mathbb E[l(Y,h(\mathbf X))]$ est minimisé par le <b>classifieur de Bayes</b> :</p>
+              <div class="formula">$$h^\star(\mathbf x) = \begin{cases}1 & \eta(\mathbf x)>\frac12\\0 & \text{sinon}\end{cases} \qquad\text{où}\quad \eta(\mathbf x):=\mathbb P(Y=1\mid\mathbf X=\mathbf x)$$</div>
+              <p class="sense"><b>Sens :</b> $h^\star$ est le <b>meilleur classifieur possible</b>, mais il dépend de la loi jointe $\mathbb P_{XY}$, inconnue en pratique : on ne dispose que d'un échantillon. Toute la classification consiste donc à approcher $h^\star$, soit en modélisant $\eta(\mathbf x)$ (approche <b>plug-in</b>, ci-dessous), soit sans jamais l'estimer explicitement (approche <b>géométrique</b> du SVM, plus loin dans cette fiche).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Remarque · LDA (analyse discriminante linéaire), un premier classifieur plug-in</p>
+              <p>Vu en 2<sup>e</sup> année : on suppose que, <b>conditionnellement à chaque classe</b>, les features suivent une loi normale de <b>même</b> matrice de covariance, $\mathbf X\mid Y{=}k\sim\mathcal N(\mu_k,\Sigma)$. Le théorème de Bayes donne alors $\eta_{\text{LDA}}(\mathbf x)$, et la frontière $\eta_{\text{LDA}}(\mathbf x)=\frac12$ se réécrit (après simplification des termes quadratiques, qui s'annulent car $\Sigma$ est <b>commune</b> aux deux classes) comme l'équation d'un <b>hyperplan</b> :</p>
+              <div class="formula">$$\mathbf x^T\Sigma^{-1}(\mu_1-\mu_0) - \frac12\mu_1^T\Sigma^{-1}\mu_1 + \frac12\mu_0^T\Sigma^{-1}\mu_0 + \log\frac{\pi_1}{\pi_0} = 0$$</div>
+              <p>Exemple numérique le plus simple possible : $\Sigma=\mathbf I_2$, $\pi_1=\pi_0$ (donc $\log(\pi_1/\pi_0)=0$), $\mu_1=(1,1)$, $\mu_0=(-1,-1)$. Alors $\mu_1-\mu_0=(2,2)$, et $\mu_1^T\mu_1=\mu_0^T\mu_0=2$ (les deux termes quadratiques s'annulent) : la frontière devient $\mathbf x^T(2,2)=0$, soit $x_1+x_2=0$.</p>
+              <p class="sense"><b>Sens :</b> $x_1+x_2=0$ est exactement la <b>médiatrice</b> du segment $[\mu_0,\mu_1]$ : quand les deux classes ont même covariance et même probabilité a priori, LDA classe simplement chaque point du côté du centre de classe $\mu_0$ ou $\mu_1$ le plus proche. (Avec des covariances <b>différentes</b> par classe, les termes quadratiques ne s'annulent plus : c'est l'analyse discriminante <b>quadratique</b>, QDA, à la frontière courbe.)</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Règle plug-in, fonction logit &amp; régression logistique</p>
+              <p>Plutôt que de supposer une forme précise pour $\mathbb P_{XY}$ (comme LDA), on peut directement modéliser $\eta(\mathbf x)$ par une <b>forme paramétrique</b>. Poser $\hat\eta(\mathbf x)=\beta_0+\mathbf x^T\beta$ ne garantit pas des valeurs dans $[0,1]$ : on compose donc par la fonction <b>logit</b>, $\mathrm{logit}(a)=\log\!\big(a/(1-a)\big)$ :</p>
+              <div class="formula">$$\mathrm{logit}\big(\hat\eta(\mathbf x)\big) = \beta_0+\mathbf x^T\beta \qquad\Longleftrightarrow\qquad \hat\eta(\mathbf x) = \sigma(\beta_0+\mathbf x^T\beta) = \frac{\exp(\beta_0+\mathbf x^T\beta)}{1+\exp(\beta_0+\mathbf x^T\beta)}$$</div>
+              <p>La perte 0-1 n'étant ni continue ni dérivable, on la remplace par la <b>perte d'entropie croisée</b> $l_{\text{CE}}(y,\hat\eta(\mathbf x))=-\mathbb 1_{y=0}\log(1-\hat\eta(\mathbf x))-\mathbb 1_{y=1}\log(\hat\eta(\mathbf x))$, ce qui donne le problème de <b>régression logistique</b> :</p>
+              <div class="formula">$$\min_{\beta_0,\beta}\ \frac1n\sum_{i=1}^n\Big[\log\big(1+\exp(\beta_0+\mathbf x_i^T\beta)\big) - y_i(\beta_0+\mathbf x_i^T\beta)\Big]$$</div>
+              <p class="sense"><b>Sens :</b> contrairement à l'OLS (fiche 3), il n'existe <b>pas de solution explicite</b> : ce problème est convexe (donc résoluble par GD/SGD, fiches 9-13) mais sans formule fermée. On peut aussi lui ajouter une pénalité $L^1$ ou $L^2$ (fiches 5-7) en haute dimension.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Décision d'un modèle déjà entraîné, sur une transaction suspecte</p>
+              <p>Reprenons le contexte de détection de fraude de l'exercice 5 de cette fiche : $x_1$ = montant de la transaction (standardisé), $x_2$ = distance au dernier retrait (standardisée). Une banque a déjà entraîné un modèle de régression logistique, de coefficients $\beta_0=-1$, $\beta_1=0.8$, $\beta_2=0.5$ (poids illustratifs). Une nouvelle transaction arrive avec $\mathbf x=(2,1)$ :</p>
+              <div class="formula">$$\beta_0+\mathbf x^T\beta = -1+0.8\times2+0.5\times1 = 1.1 \qquad\qquad \hat\eta(\mathbf x)=\sigma(1.1)=\frac1{1+e^{-1.1}}\approx0.750$$</div>
+              <p class="sense"><b>Sens :</b> $\hat\eta(\mathbf x)\approx0.750>\frac12$ : la règle plug-in (fiche 15, classifieur de Bayes appliqué à $\hat\eta$) classe cette transaction comme <b>frauduleuse</b>, avec une confiance de 75 %. Remarquez que $\beta_0+\mathbf x^T\beta=0$ est, comme pour LDA, l'équation d'un <b>hyperplan</b> : la régression logistique produit elle aussi une frontière de décision <b>linéaire</b>, exactement comme LDA, mais obtenue par minimisation directe de l'entropie croisée plutôt que par une hypothèse gaussienne. Le SVM, dans le reste de cette fiche, propose une <b>troisième</b> façon d'obtenir une frontière linéaire, cette fois purement géométrique.</p>
+            </div>
+
+            <p>Convention pour la suite : $y_i\in\{-1,+1\}$ (au lieu de $\{0,1\}$).</p>
 
             <div class="box box-def">
               <p class="box-label">Définition · Hyperplan séparateur &amp; marge</p>
@@ -1228,7 +1261,17 @@ def nesterov(X, y, gamma, n_iter):
             <p>En pratique, les données ne sont presque jamais parfaitement séparables. On autorise donc quelques violations de marge, contrôlées par des variables « ressort » $\xi_i\ge0$.</p>
 
             <div class="box box-def">
+              <p class="box-label">Définition · Perte charnière (hinge loss) et SVM comme ERM régularisé</p>
+              <p>Avant d'en arriver aux variables ressort, il est plus éclairant de repartir de l'angle du risque empirique (fiche 15). Un classifieur linéaire s'écrit $h(\mathbf x)=\mathrm{sign}(f(\mathbf x))$ avec $f(\mathbf x)=\mathbf w^T\mathbf x+b$, encodage $y\in\{-1,+1\}$. La <b>perte charnière</b> (hinge loss) pénalise un point selon sa marge signée $yf(\mathbf x)$ :</p>
+              <div class="formula">$$l_{\text{hinge}}(y,f(\mathbf x)) = \max\big(0,\ 1-yf(\mathbf x)\big) = \big[1-yf(\mathbf x)\big]_+$$</div>
+              <p>On veut à la fois maximiser la marge ($\min\|\mathbf w\|_2^2$) et minimiser les erreurs. Cela s'écrit comme un unique objectif :</p>
+              <div class="formula">$$\min_{\mathbf w,b}\ \frac12\|\mathbf w\|_2^2 + \frac{C}n\sum_{i=1}^n\big[1-y_if(\mathbf x_i)\big]_+$$</div>
+              <p class="sense"><b>Sens :</b> avec $\lambda=1/(2C)$, ceci se réécrit $\min_{\mathbf w,b}\ \frac1n\sum_i[1-y_if(\mathbf x_i)]_++\lambda\|\mathbf w\|_2^2$ : <b>exactement la même structure que la régression Ridge</b> (fiche 5), une perte empirique plus une pénalité $L^2$, sauf que la perte quadratique de Ridge est ici remplacée par la perte charnière, adaptée à la classification. Contrairement à la perte 0-1, la perte charnière est convexe (mais non dérivable en $yf(\mathbf x)=1$, fiche 12) : c'est ce qui rend le problème traitable numériquement.</p>
+            </div>
+
+            <div class="box box-def">
               <p class="box-label">Définition · SVM à marge souple (soft-margin)</p>
+              <p>Le problème ci-dessus se reformule de façon équivalente (et c'est la forme historiquement utilisée par les solveurs) en introduisant une variable ressort $\xi_i:=[1-y_if(\mathbf x_i)]_+\ge0$ par point :</p>
               <div class="formula">$$\min_{\mathbf w,b,\mathbf{\xi}}\ \frac12\|\mathbf w\|_2^2 + C\sum_{i=1}^n\xi_i \quad\text{s.c.}\quad y_i(\mathbf w^T\mathbf x_i+b)\ge1-\xi_i,\ \ \xi_i\ge0$$</div>
               <p class="sense"><b>Sens :</b> $C>0$ arbitre le compromis marge large / erreurs tolérées : $C$ grand $\Rightarrow$ peu de tolérance (proche de la marge dure) ; $C$ petit $\Rightarrow$ marge plus large, plus de points mal classés tolérés (davantage de biais, moins de variance).</p>
             </div>
@@ -1290,6 +1333,19 @@ def nesterov(X, y, gamma, n_iter):
               <p>On décompose $\|\mathbf x-\mathbf x'\|_2^2 = \|\mathbf x\|_2^2 - 2\langle\mathbf x,\mathbf x'\rangle + \|\mathbf x'\|_2^2$, d'où :</p>
               <div class="formula">$$k(\mathbf x,\mathbf x')=e^{-\|\mathbf x-\mathbf x'\|_2^2} = \underbrace{e^{-\|\mathbf x\|_2^2}}_{f(\mathbf x)}\ \cdot\ \underbrace{e^{2\langle\mathbf x,\mathbf x'\rangle}}_{\text{règle exponentielle}}\ \cdot\ \underbrace{e^{-\|\mathbf x'\|_2^2}}_{f(\mathbf x')}$$</div>
               <p class="sense"><b>Sens :</b> $\langle\mathbf x,\mathbf x'\rangle$ est un noyau (linéaire) ; $2\langle\mathbf x,\mathbf x'\rangle$ aussi (mise à l'échelle) ; $e^{2\langle\mathbf x,\mathbf x'\rangle}$ aussi (règle exponentielle) ; et multiplier par $f(\mathbf x)=e^{-\|\mathbf x\|_2^2}$ de chaque côté reste un noyau (règle fonctions). D'où le noyau gaussien tout entier. C'est un noyau dont l'espace $\mathcal H_k$ associé est de dimension <b>infinie</b>, ce qui le rend extrêmement flexible.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pourquoi il faut normaliser les features avant un noyau isotrope</p>
+              <p>Le noyau gaussien (comme le noyau Laplacien ou de Matérn) n'a qu'un <b>seul</b> hyperparamètre $\gamma$ (ou $\theta$), commun à toutes les coordonnées de $\mathbf x-\mathbf x'$ : on parle de noyau <b>isotrope</b>. Si une variable est mesurée en kilomètres et une autre en centimes d'euro, la distance $\|\mathbf x-\mathbf x'\|_2^2$ sera presque entièrement dominée par celle de plus grande échelle numérique, quelle que soit son pouvoir prédictif réel. D'où la règle : <b>toujours standardiser les variables</b> avant un SVM à noyau isotrope (comme pour GD, fiche 10, mais pour une raison différente : ici c'est la géométrie du noyau qui est en jeu, pas la vitesse de convergence).</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Extension au multi-classe (OVR/OVA et OVO)</p>
+              <p>Le SVM (comme la régression logistique) est nativement <b>binaire</b>. Pour $M>2$ classes, deux stratégies standards :</p>
+              <p><b>One-vs-Rest (OVR / OVA)</b> : on entraîne $M$ classifieurs binaires, chacun séparant une classe de « toutes les autres ». Prédiction : $h(\mathbf x)=\arg\max_{m=1,\dots,M} f_m(\mathbf x)$ (la classe dont le classifieur est le plus confiant). $M$ classifieurs à entraîner, chacun sur l'ensemble complet des données.</p>
+              <p><b>One-vs-One (OVO)</b> : on entraîne un classifieur par <b>paire</b> de classes, soit $M(M-1)/2$ classifieurs, chacun sur un sous-ensemble plus petit (seulement les données des 2 classes concernées). Prédiction : chaque classifieur « vote » pour l'une des deux classes de sa paire, et la classe avec le plus de votes gagne.</p>
+              <p class="sense"><b>Sens :</b> pour $M=10$ classes, OVR entraîne $10$ classifieurs sur $n$ exemples chacun, OVO en entraîne $10\times9/2=45$ mais sur des sous-ensembles bien plus petits (seulement les exemples des 2 classes concernées) : OVO multiplie le nombre de modèles à entraîner, mais chacun est bien plus rapide à ajuster. <code>scikit-learn</code> utilise OVR par défaut pour la régression logistique, et OVO par défaut pour SVM.</p>
             </div>
           </article>
 
@@ -1395,6 +1451,32 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 6 (type examen) · LDA, priors déséquilibrés et régression logistique, un test de dépistage</p>
+            <p><b>Contexte :</b> un laboratoire teste un biomarqueur $x$ (standardisé) pour dépister une maladie rare. Chez les patients sains ($Y=0$, proportion $\pi_0=0.7$), le biomarqueur suit $\mathcal N(\mu_0,\sigma^2)$ avec $\mu_0=-1$ ; chez les patients malades ($Y=1$, proportion $\pi_1=0.3$), $\mathcal N(\mu_1,\sigma^2)$ avec $\mu_1=1$ ; même variance $\sigma^2=1$ dans les deux groupes (hypothèse LDA, fiche 15).</p>
+            <p>(a) En appliquant la formule de la frontière LDA (fiche 15) en dimension 1, calculez le seuil $x^\star$ au-delà duquel un patient est classé malade. Remarquez que $\mu_1^2=\mu_0^2$ : que devient alors la formule ?<br>
+            (b) Un patient arrive avec $x=0.3$. Classez-le selon ce seuil $x^\star$.<br>
+            (c) Si l'on avait ignoré les prévalences ($\pi_0=\pi_1=0.5$), montrez que le seuil serait $x=0$ au lieu de $x^\star$. Ce patient à $x=0.3$ aurait-il été classé différemment ? Commentez.<br>
+            (d) On admet que, sous l'hypothèse gaussienne de LDA, la régression logistique implicite a pour coefficients $\beta_1=(\mu_1-\mu_0)/\sigma^2$ et $\beta_0=-(\mu_1^2-\mu_0^2)/(2\sigma^2)+\log(\pi_1/\pi_0)$. Calculez $\hat\eta(0.3)=\sigma(\beta_0+\beta_1x)$ pour le patient de (b), et vérifiez que la décision coïncide avec celle de LDA.</p>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">(a) Seuil LDA</p>
+              <p>En dimension 1, la frontière $\eta_{\text{LDA}}(x)=\frac12$ (fiche 15) s'écrit $x(\mu_1-\mu_0)/\sigma^2 - (\mu_1^2-\mu_0^2)/(2\sigma^2) + \log(\pi_1/\pi_0) = 0$. Ici $\mu_1^2-\mu_0^2=1^2-({-}1)^2=0$ : le terme quadratique s'annule (les deux moyennes sont symétriques autour de 0), et il ne reste que :</p>
+              <div class="formula">$$x^\star\times\frac{\mu_1-\mu_0}{\sigma^2} + \log\frac{\pi_1}{\pi_0} = 0 \quad\Longrightarrow\quad x^\star = -\frac{\log(\pi_1/\pi_0)}{(\mu_1-\mu_0)/\sigma^2} = -\frac{\log(0.3/0.7)}{2} \approx \frac{0.847}{2} \approx 0.424$$</div>
+              <p class="method-label">(b) Classification du patient</p>
+              <p>$x=0.3 < x^\star\approx0.424$ : le patient est classé <b>sain</b> ($\hat h(\mathbf x)=0$).</p>
+              <p class="method-label">(c) Sans correction de prévalence</p>
+              <p>Avec $\pi_0=\pi_1$, $\log(\pi_1/\pi_0)=\log(1)=0$, donc le seuil devient $x=0$ (le simple milieu entre $\mu_0=-1$ et $\mu_1=1$). Avec ce seuil naïf, $x=0.3>0$ aurait été classé <b>malade</b> : à l'inverse de la décision correcte en (b). $\blacksquare$</p>
+              <p class="method-label">(d) Régression logistique implicite</p>
+              <div class="formula">$$\beta_1 = \frac{1-({-}1)}1 = 2 \qquad \beta_0 = -\frac{1-1}{2} + \log\frac{0.3}{0.7} \approx -0.847$$</div>
+              <div class="formula">$$\hat\eta(0.3) = \sigma(-0.847+2\times0.3) = \sigma(-0.247) \approx 0.438 < \frac12$$</div>
+              <p>$\hat\eta(0.3)\approx0.438<0.5$ : la règle plug-in classe également ce patient comme <b>sain</b>, en accord avec LDA. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> ce n'est pas une coïncidence : sous l'hypothèse gaussienne à covariance commune de LDA, la frontière de décision logistique <b>coïncide exactement</b> avec celle de LDA (on vérifie d'ailleurs que $\hat\eta(x^\star)=\sigma(0)=0.5$ pile au seuil). La vraie leçon de cet exercice est ailleurs : ignorer que la maladie est <b>rare</b> ($\pi_1=0.3\neq0.5$) aurait fait basculer la décision pour ce patient précis (question (c)) : c'est une erreur fréquente et dangereuse en pratique (screening médical, détection de fraude, fiche 15) de calibrer un seuil de décision sans tenir compte du déséquilibre des classes.</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-3">
             <div class="qcm-head">
               <h3>QCM de révision · Lecture 3 (SVM &amp; noyaux)</h3>
@@ -1484,6 +1566,30 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
               <div class="qcm-explain">Correct : fiche 17-18, c'est justement ce qui rend le noyau gaussien si flexible : son espace $\mathcal H_k$ associé est de dimension infinie.</div>
               <label class="qcm-opt"><input type="radio" name="ml3-7"><span class="otext">Aucun des trois n'a de dimension infinie.</span></label>
               <div class="qcm-explain">Faux : le noyau gaussien en a bien une (voir la bonne réponse).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q8</span>En LDA (fiche 15), pourquoi les deux classes doivent-elles partager la <b>même</b> matrice de covariance $\Sigma$ pour obtenir une frontière linéaire ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-8"><span class="otext">Ce n'est pas nécessaire : LDA produit toujours une frontière linéaire, quelle que soit la covariance de chaque classe.</span></label>
+              <div class="qcm-explain">Faux : avec des covariances différentes par classe, les termes quadratiques ne s'annulent plus et la frontière devient courbe (QDA, fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-8"><span class="otext">Parce que les termes quadratiques en $\mathbf x^T\Sigma^{-1}\mathbf x$ issus de chaque classe sont alors identiques et s'annulent dans la différence des deux log-vraisemblances, ne laissant que des termes linéaires en $\mathbf x$.</span></label>
+              <div class="qcm-explain">Correct : fiche 15, c'est exactement le mécanisme d'annulation qui produit l'équation d'hyperplan.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-8"><span class="otext">Parce que $\Sigma$ n'intervient de toute façon jamais dans la frontière de décision.</span></label>
+              <div class="qcm-explain">Faux : $\Sigma^{-1}$ apparaît explicitement dans la formule de la frontière (fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-8"><span class="otext">Parce que sans cette hypothèse, le classifieur de Bayes n'existerait pas.</span></label>
+              <div class="qcm-explain">Faux : le classifieur de Bayes (fiche 15) existe indépendamment de toute hypothèse gaussienne ; c'est LDA, un cas particulier plug-in, qui a besoin de cette hypothèse pour rester linéaire.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q9</span>La perte charnière (hinge loss, fiche 16) et la perte quadratique de Ridge (fiche 5) jouent un rôle analogue dans deux problèmes d'ERM régularisé structurellement identiques. Quelle est la différence essentielle entre les deux formulations ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="ml3-9"><span class="otext">Seule la fonction de perte change (charnière pour la classification SVM, quadratique pour la régression Ridge) ; la pénalité $L^2$ sur $\mathbf w$ et la structure ERM + régularisation sont, elles, identiques.</span></label>
+              <div class="qcm-explain">Correct : fiche 16, c'est exactement l'analogie mise en évidence entre $\min\frac1n\sum_i[1-y_if(\mathbf x_i)]_++\lambda\|\mathbf w\|_2^2$ et le Ridge.</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-9"><span class="otext">Le SVM n'utilise aucune régularisation, contrairement à Ridge.</span></label>
+              <div class="qcm-explain">Faux : le terme $\frac12\|\mathbf w\|_2^2$ (ou $\lambda\|\mathbf w\|_2^2$) est une régularisation $L^2$, exactement comme dans Ridge (fiche 16).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-9"><span class="otext">Ridge est un problème de classification, le SVM un problème de régression.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse (Ridge : régression, fiche 5 ; SVM : classification, fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="ml3-9"><span class="otext">La perte charnière est non convexe, contrairement à la perte quadratique.</span></label>
+              <div class="qcm-explain">Faux : la perte charnière est convexe (fiche 16), simplement non dérivable en un point, contrairement à la perte quadratique qui est dérivable partout.</div>
             </div>
 
             <div class="qcm-actions">
