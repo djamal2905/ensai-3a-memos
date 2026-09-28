@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plans d'expérience : Mémo de cours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script>
+(function(){
+  function loadScript(src, onerror, onload){
+    var s = document.createElement('script');
+    s.src = src; s.async = true; s.id = 'mathjax-script';
+    if(onerror) s.onerror = onerror;
+    if(onload) s.onload = onload;
+    document.head.appendChild(s);
+  }
+  function showMathWarning(){
+    var b = document.createElement('div');
+    b.textContent = 'Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
+    b.style.cssText = 'position:sticky;top:0;z-index:90;background:#c1483c;color:#fff;font:600 .78rem "Source Sans 3",sans-serif;padding:9px 14px;text-align:center;';
+    document.body.insertBefore(b, document.body.firstChild);
+  }
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js', function(){
+    loadScript('https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js', showMathWarning);
+  });
+})();
+</script>
+<style>
+  :root{
+    --ink:#1c2230; --ink-soft:#454c5a; --muted:#5c6b72;
+    --paper:#f1f3ef; --surface:#ffffff; --surface-2:#e8ebe5; --border:#d7dcd3;
+    --accent:#2f6f6a; --accent-strong:#1f504c; --accent-soft:#e3f0ee; --accent-ink:#173f3c;
+    --def-bg:#edf6ee; --def-border:#4c8a5c; --def-label:#2c6b3d;
+    --thm-bg:#fbeee6; --thm-border:#b5643f; --thm-label:#9a4d2c;
+    --ex-bg:#eaf1fb; --ex-border:#3f6ea3; --ex-label:#2c5480;
+    --warn-bg:#fdeceb; --warn-border:#c1483c; --warn-color:#9a2f24;
+    --code-ink:#e7e9ee; --code-bg:#1a2028; --code-border:#2b3340;
+    --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
+    --radius: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+      --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+      --accent:#7cc7bf; --accent-strong:#b3e3dd; --accent-soft:#16302d; --accent-ink:#cdeee9;
+      --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+      --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+      --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+      --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+      --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+    --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+    --accent:#7cc7bf; --accent-strong:#b3e3dd; --accent-soft:#16302d; --accent-ink:#cdeee9;
+    --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+    --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+    --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+    --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+    --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; text-wrap:balance; color:var(--ink); margin:0; }
+  code, .mono{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  a{ color:var(--accent-strong); }
+  p{ margin:.5em 0; color:var(--ink-soft); max-width:68ch; }
+
+  #progress{ position:fixed; top:0; left:0; height:3px; width:0%; background:var(--accent); z-index:80; transition:width .1s linear; }
+
+  header.topbar{
+    position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{ max-width:1280px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:14px; }
+  .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
+  .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-14{ width:14px; height:14px; flex-shrink:0; }
+  .icon-16{ width:16px; height:16px; flex-shrink:0; }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
+    cursor:pointer; font-size:1rem;
+  }
+  .icon-btn:hover{ background:var(--surface-2); }
+  .icon-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .search-wrap{ position:relative; flex:0 1 260px; }
+  .search-wrap input{
+    width:100%; padding:8px 12px 8px 32px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); font:500 .88rem "Source Sans 3", sans-serif;
+  }
+  .search-wrap svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none; }
+  #searchCount{ font:500 .72rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  #navToggle{ display:none; }
+
+  .layout{ max-width:1280px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:250px minmax(0,1fr); gap:36px; align-items:start; }
+  aside.toc{ position:sticky; top:64px; max-height:calc(100vh - 84px); overflow-y:auto; padding:18px 4px 40px 0; font-size:.85rem; }
+  aside.toc h2{ font:600 .7rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:10px; }
+  .toc-lecture{ margin-bottom:18px; }
+  .toc-lecture > p{ font:700 .78rem "Source Sans 3",sans-serif; color:var(--ink); margin:0 0 6px; }
+  .toc-lecture ol{ list-style:none; margin:0; padding:0; border-left:2px solid var(--border); }
+  .toc-lecture li a{ display:block; padding:5px 0 5px 12px; color:var(--muted); text-decoration:none; border-left:2px solid transparent; margin-left:-2px; font-weight:500; }
+  .toc-lecture li a:hover{ color:var(--ink); }
+  .toc-lecture li a.active{ color:var(--accent-strong); border-left-color:var(--accent); background:var(--accent-soft); border-radius:0 6px 6px 0; }
+  .toc-num{ display:inline-block; width:1.4em; color:var(--muted); font:600 .78em "JetBrains Mono",monospace; }
+
+  main{ min-width:0; padding-bottom:70px; }
+
+  .hero{ padding:34px 0 22px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+  .hero .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .hero h1{ font-size:clamp(1.7rem, 1.2rem + 2vw, 2.5rem); margin:.3em 0 .2em; }
+  .hero p{ max-width:62ch; color:var(--muted); font-size:.98rem; }
+  .hero .meta{ display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; font:500 .78rem "JetBrains Mono",monospace; color:var(--muted); }
+  .hero .meta span{ display:flex; align-items:center; gap:6px; }
+  .hero .meta b{ color:var(--ink-soft); font-weight:600; }
+
+  section.lecture{ margin-bottom:10px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
+  section.lecture + section.lecture{ margin-top:24px; }
+  .lecture-head{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; border:0; background:var(--surface-2); padding:16px 22px; cursor:pointer; font-family:"Fraunces", serif; }
+  .lecture-head .num{ font:700 1rem "JetBrains Mono",monospace; color:var(--accent); }
+  .lecture-head .title{ flex:1; font-size:1.15rem; font-weight:600; color:var(--ink); }
+  .lecture-head .chev{ transition:transform .2s ease; color:var(--muted); }
+  .lecture.collapsed .lecture-head .chev{ transform:rotate(-90deg); }
+  .lecture-body{ padding:8px 22px 6px; }
+  .lecture.collapsed .lecture-body{ display:none; }
+
+  article.topic{ padding:26px 0; border-top:1px dashed var(--border); scroll-margin-top:76px; }
+  article.topic:first-child{ border-top:0; }
+  article.topic .tophead{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  article.topic .tophead .num{ font:700 .95rem "JetBrains Mono",monospace; color:var(--accent); }
+  article.topic h2{ font-size:1.32rem; }
+  article.topic > p:first-of-type{ margin-top:10px; }
+
+  .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:14px 0; }
+  .box-label{ display:flex; align-items:center; gap:8px; font:700 .76rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px; }
+  .box p{ margin:.35em 0; font-size:.94rem; }
+  .box-def{ background:var(--def-bg); border-color:var(--def-border); } .box-def .box-label{ color:var(--def-label); }
+  .box-thm{ background:var(--thm-bg); border-color:var(--thm-border); } .box-thm .box-label{ color:var(--thm-label); }
+  .box-ex{ background:var(--ex-bg); border-color:var(--ex-border); } .box-ex .box-label{ color:var(--ex-label); }
+  .box-warn{ background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-color); }
+  .box-warn .box-label{ color:var(--warn-color); }
+  .box-warn p{ color:var(--warn-color); font-weight:600; }
+
+  .formula{ position:relative; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin:10px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .formula mjx-container{ margin:0 !important; }
+  .formula.is-scrollable::after{ content:""; position:absolute; top:1px; right:1px; bottom:1px; width:26px; border-radius:0 7px 7px 0; background:linear-gradient(to right, transparent, var(--surface-2) 75%); pointer-events:none; }
+  .formula.is-scrollable::before{ content:"⟷"; position:absolute; top:3px; right:6px; font-size:.7rem; color:var(--muted); pointer-events:none; }
+  p.sense{ font-size:.86rem; color:var(--accent-ink); max-width:none; background:var(--accent-soft); border-radius:8px; padding:7px 10px 7px 26px; margin:8px 0 0; position:relative; }
+  p.sense b{ color:var(--accent-strong); }
+  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); position:absolute; left:9px; top:7px; }
+
+  details.solution{ margin:14px 0; }
+  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
+  details.solution summary::-webkit-details-marker{ display:none; }
+  details.solution summary::before{ content:"▶"; font-size:.7em; transition:transform .15s ease; }
+  details.solution[open] summary::before{ transform:rotate(90deg); }
+  details.solution[open] summary{ border-radius:8px 8px 0 0; }
+  details.solution > .box{ margin-top:0; border-radius:0 0 10px 10px; border-top:none; }
+  .method-label{ display:inline-block; font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--ex-label); background:var(--ex-bg); border:1px solid var(--ex-border); border-radius:6px; padding:2px 8px; margin:10px 0 6px; }
+  .method-label:first-child{ margin-top:0; }
+
+  table.cmp{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.83rem; }
+  .cmp th, .cmp td{ padding:6px 10px; border:1px solid var(--border); text-align:center; color:var(--ink-soft); }
+  .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
+  .cmp td:first-child, .cmp th:first-child{ text-align:left; }
+
+  .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
+  .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .qcm-head h3{ font-size:1.05rem; margin:0; }
+  .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; }
+  .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; }
+  .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
+  .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
+  .qcm-opt:hover{ background:var(--surface-2); }
+  .qcm-opt input{ margin-top:3px; flex-shrink:0; accent-color:var(--accent); }
+  .qcm-opt .otext{ font-size:.89rem; color:var(--ink-soft); }
+  .qcm-explain{ display:none; font-size:.82rem; color:var(--muted); margin:2px 0 0 34px; padding:4px 0 4px 10px; border-left:2px solid var(--border); }
+  .qcm-q.graded .qcm-explain{ display:block; }
+  .qcm-q.graded .qcm-opt{ cursor:default; }
+  .qcm-q.graded .qcm-opt.opt-right{ background:var(--def-bg); border-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-right .qcm-explain{ border-left-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked{ background:var(--warn-bg); border-color:var(--warn-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked .qcm-explain{ border-left-color:var(--warn-border); }
+  .qcm-q .q-badge{ display:none; font:700 .72rem "JetBrains Mono",monospace; padding:2px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+  .qcm-q.graded .q-badge{ display:inline-block; }
+  .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
+  .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
+  .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
+  .qcm-btn.ghost:hover{ background:var(--accent-soft); }
+  .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
+  .qcm-result:empty{ display:none; }
+  .multi-badge{ display:inline-flex; align-items:center; gap:4px; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px 1px 6px; margin-left:8px; vertical-align:middle; }
+  .multi-badge svg{ width:12px; height:12px; flex-shrink:0; }
+
+  .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
+  .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
+  .chain{ font:600 .95rem "JetBrains Mono",monospace; padding:8px 0; border-top:1px solid var(--code-border); color:#dfe3ea; }
+  .chain:first-of-type{ border-top:0; }
+  .chain b{ color:var(--accent-strong); }
+  .source-note{ max-width:none; margin-top:16px; padding-top:14px; border-top:1px solid var(--code-border); font-size:.8rem; color:#98a2b3; }
+
+  #toTop{ position:fixed; right:20px; bottom:20px; z-index:70; width:42px; height:42px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; }
+  #toTop.show{ opacity:1; pointer-events:auto; }
+  #toTop:hover{ transform:translateY(-2px); }
+
+  .dim{ opacity:.28; filter:grayscale(.4); }
+  mark{ background:var(--accent); color:#fff; border-radius:2px; padding:0 1px; }
+
+  #mobileOverlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:55; }
+
+  @media (max-width: 880px){
+    .layout{ grid-template-columns:1fr; padding:0 16px; }
+    aside.toc{ position:fixed; top:0; left:0; height:100vh; width:280px; max-height:none; background:var(--surface); border-right:1px solid var(--border); z-index:65; padding:70px 16px 20px; transform:translateX(-100%); transition:transform .25s ease; }
+    aside.toc.open{ transform:translateX(0); }
+    #navToggle{ display:inline-flex; }
+    .search-wrap{ flex:1 1 auto; }
+    .hero{ padding:24px 0 18px; }
+    .lecture-body{ padding:8px 14px 4px; }
+    .lecture-head{ padding:14px 16px; }
+    .box{ padding:12px 12px; }
+    .formula{ padding:9px 10px; font-size:.9em; }
+  }
+
+  @media (max-width: 420px){
+    .formula{ font-size:.8em; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="progress"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button id="navToggle" class="icon-btn" aria-label="Ouvrir le sommaire">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="brand">
+        <span class="eyebrow">ENSAI · 3A</span>
+        <span class="name">Plans d'expérience</span>
+      </div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Filtrer : Yates, résolution, D-optimal…" aria-label="Filtrer le mémo" />
+      </div>
+      <span id="searchCount"></span>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+    </div>
+  </header>
+
+  <div id="mobileOverlay" hidden></div>
+
+  <div class="layout">
+
+    <aside class="toc" id="toc">
+      <h2>Sommaire</h2>
+      <div class="toc-lecture">
+        <p>1 : Introduction à la planification</p>
+        <ol>
+          <li><a href="#s1"><span class="toc-num">1</span>Pourquoi planifier ses expériences</a></li>
+          <li><a href="#s2"><span class="toc-num">2</span>Réponse, facteur, niveau, domaine</a></li>
+          <li><a href="#s3"><span class="toc-num">3</span>Quatre stratégies pour un même problème</a></li>
+          <li><a href="#s4"><span class="toc-num">4</span>Codage des facteurs</a></li>
+          <li><a href="#s5"><span class="toc-num">5</span>Exercice : deux stratégies pour une droite</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>2 : Outils mathématiques</p>
+        <ol>
+          <li><a href="#s6"><span class="toc-num">6</span>Matrice d'information</a></li>
+          <li><a href="#s7"><span class="toc-num">7</span>Vecteurs aléatoires</a></li>
+          <li><a href="#s8"><span class="toc-num">8</span>Moindres carrés et variance de prédiction</a></li>
+          <li><a href="#s9"><span class="toc-num">9</span>Analyse de la variance et tests</a></li>
+          <li><a href="#s10"><span class="toc-num">10</span>Répétitions : erreur pure et manque d'ajustement</a></li>
+          <li><a href="#s11"><span class="toc-num">11</span>Exercice : expériences répétées</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>3 : Plans factoriels complets (ordre un)</p>
+        <ol>
+          <li><a href="#s12"><span class="toc-num">12</span>Modèle d'ordre un et orthogonalité</a></li>
+          <li><a href="#s13"><span class="toc-num">13</span>Factoriels à 2 et 3 facteurs, ordre de Yates</a></li>
+          <li><a href="#s14"><span class="toc-num">14</span>Cas général et isovariance</a></li>
+          <li><a href="#s15"><span class="toc-num">15</span>Exercice : collage par presse hydraulique</a></li>
+          <li><a href="#s16"><span class="toc-num">16</span>Exercice : ajouter des points au centre</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>4 : Fractions régulières (ordre un)</p>
+        <ol>
+          <li><a href="#s17"><span class="toc-num">17</span>Diviser le plan complet par deux</a></li>
+          <li><a href="#s18"><span class="toc-num">18</span>Produit d'Hadamard et générateur</a></li>
+          <li><a href="#s19"><span class="toc-num">19</span>Résolution d'une fraction</a></li>
+          <li><a href="#s20"><span class="toc-num">20</span>Plusieurs générateurs, contrastes de définition</a></li>
+          <li><a href="#s21"><span class="toc-num">21</span>Exercices : analyser une fraction</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>5 : Optimalité des plans</p>
+        <ol>
+          <li><a href="#s22"><span class="toc-num">22</span>Comparer deux plans</a></li>
+          <li><a href="#s23"><span class="toc-num">23</span>A-optimalité</a></li>
+          <li><a href="#s24"><span class="toc-num">24</span>D-optimalité</a></li>
+          <li><a href="#s25"><span class="toc-num">25</span>Critère Φq, E-optimalité, optimalité universelle</a></li>
+          <li><a href="#s26"><span class="toc-num">26</span>Exercices : optimalité</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>6 : Modèles à effets d'interactions</p>
+        <ol>
+          <li><a href="#s27"><span class="toc-num">27</span>Effet d'interaction et modèle</a></li>
+          <li><a href="#s28"><span class="toc-num">28</span>Factoriels complets et résolution V</a></li>
+          <li><a href="#s29"><span class="toc-num">29</span>Généralisations</a></li>
+          <li><a href="#s30"><span class="toc-num">30</span>Exercices : interactions</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>7 : Surfaces de réponse</p>
+        <ol>
+          <li><a href="#s31"><span class="toc-num">31</span>Modèle d'ordre deux</a></li>
+          <li><a href="#s32"><span class="toc-num">32</span>Plans composites centrés</a></li>
+          <li><a href="#s33"><span class="toc-num">33</span>Choisir α et n₀</a></li>
+          <li><a href="#s34"><span class="toc-num">34</span>Box-Behnken et plans hybrides</a></li>
+          <li><a href="#s35"><span class="toc-num">35</span>Exercices : surfaces de réponse</a></li>
+        </ol>
+      </div>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <span class="eyebrow">Mémo de cours</span>
+        <h1>Obtenir un maximum d'information en un minimum d'expériences</h1>
+        <p>Synthèse complète du cours : vocabulaire et codage, outils du modèle linéaire, plans factoriels complets, fractions régulières, critères d'optimalité, modèles à interactions et surfaces de réponse. Chaque chapitre se termine par un QCM corrigé, et tous les exercices du polycopié sont corrigés pas à pas avec les valeurs numériques.</p>
+        <div class="meta">
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : W. Tinsson, Plans d'expérience, ENSAI 3A, 2026-2027</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>35 fiches</b> · 7 QCM</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
+        </div>
+      </div>
+
+      <section class="lecture" id="lecture-1">
+        <button class="lecture-head">
+          <span class="num">1</span>
+          <span class="title">Introduction à la planification expérimentale</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s1">
+            <div class="tophead"><span class="num">1</span><h2>Pourquoi planifier ses expériences</h2></div>
+            <p>Beaucoup de procédés (réglage d'un moteur, pilotage d'une machine-outil, proportions d'un mélange chimique, conditions de culture) dépendent de nombreuses variables qu'on ne sait pas régler à l'intuition. Seules des expériences permettent de modéliser le phénomène, mais des expériences faites sans méthode mènent souvent à une impasse : modèle impossible à ajuster, résultats incohérents ou de mauvaise qualité.</p>
+            <div class="box box-def">
+              <p class="box-label">Idée centrale · Méthode des plans d'expérience</p>
+              <p>Choisir <b>à l'avance</b>, de façon rigoureuse, les expériences à réaliser pour :</p>
+              <div class="formula">$$\text{obtenir un maximum d'information en un minimum d'expériences}$$</div>
+              <p>On fait varier <b>simultanément</b> tous les facteurs contrôlés, au lieu de les bouger un par un.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Pourquoi c'est un enjeu industriel</p>
+              <p>Si une expérience coûte 500 euros, passer de 27 essais à 9 essais fait économiser $18\times500=9\,000$ euros, pour une qualité d'estimation comparable, voire meilleure, si les 9 essais sont bien choisis (fiche 3).</p>
+              <p class="sense"><b>Sens :</b> en industrie, réduire le nombre d'essais, c'est gagner du temps et de l'argent. Le plan d'expérience sert à le faire <b>sans perdre d'information</b>.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s2">
+            <div class="tophead"><span class="num">2</span><h2>Réponse, facteur, niveau, domaine</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définitions · Le vocabulaire de base</p>
+              <p><b>Réponse</b> : la grandeur numérique mesurée à chaque expérience (une seule réponse à la fois dans ce cours).</p>
+              <p><b>Facteur</b> : une variable <b>contrôlable</b> susceptible d'influer sur la réponse. La différence avec une simple variable explicative : un facteur doit pouvoir être modifié sans difficulté par l'expérimentateur.</p>
+              <p><b>Facteur quantitatif</b> (pression, température, durée) ou <b>qualitatif</b> (couleur, matériau). Un facteur qualitatif peut être codé numériquement (par exemple 0 et 1).</p>
+              <p><b>Niveaux</b> : les valeurs (ou modalités) prises par un facteur au cours des expériences.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition · Domaine expérimental</p>
+              <p>Avec $m$ facteurs, une expérience est un point $x\in\mathbb R^m$. Si le facteur $i$ varie dans sa plage $[a_i,b_i]$ (niveau bas $a_i$, niveau haut $b_i$), le domaine expérimental le plus simple est le pavé obtenu en croisant les plages :</p>
+              <div class="formula">$$\mathcal E=[a_1,b_1]\times[a_2,b_2]\times\cdots\times[a_m,b_m]$$</div>
+              <p>On utilise parfois un domaine <b>sphérique</b> : le plus petit disque (ou boule) qui contient le pavé.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Température et pression</p>
+              <p>Température entre 60 et 80 °C, pression entre 1 et 2 bar : le domaine est le rectangle $[60,80]\times[1,2]$ et ses 4 coins sont les expériences les plus « extrêmes ». Le domaine sphérique associé est le cercle qui passe par ces 4 coins.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s3">
+            <div class="tophead"><span class="num">3</span><h2>Quatre stratégies pour un même problème</h2></div>
+            <p><b>Situation du cours.</b> Une colle industrielle a tendance à se solidifier. Trois additifs sont injectés par trois vannes réglables à 3 niveaux (Faible, Moyen, Fort). On mesure la fluidité. Le modèle additif envisagé a $1+3\times2=7$ paramètres, donc il faut <b>au moins 7 expériences</b>, soit au moins 3 500 euros à 500 euros l'essai.</p>
+            <table class="cmp">
+              <tr><th>Stratégie</th><th>Essais</th><th>Coût</th><th>Verdict</th></tr>
+              <tr><td>1. Toutes les expériences</td><td>$3^3=27$</td><td>13 500 €</td><td>Sûr mais souvent impossible (trop cher)</td></tr>
+              <tr><td>2. Un facteur à la fois</td><td>9</td><td>4 500 €</td><td>Pauvre en information, déséquilibré</td></tr>
+              <tr><td>3. Sous-ensemble choisi au hasard</td><td>9</td><td>4 500 €</td><td>Risque de ne pas pouvoir estimer le modèle</td></tr>
+              <tr><td>4. Plan d'expérience (fraction régulière)</td><td>9</td><td>4 500 €</td><td>Optimal : orthogonal</td></tr>
+            </table>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Les trois défauts de la méthode « un facteur à la fois »</p>
+              <p>1. On fait varier les facteurs un par un, donc on <b>masque les interactions</b> entre facteurs.<br>
+              2. Le niveau auquel on bloque les autres facteurs (« Moyen » ici) est arbitraire et influence les résultats.<br>
+              3. Le plan est <b>déséquilibré</b> : le niveau « Moyen » est sur-représenté.</p>
+            </div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Un sous-ensemble « équilibré » peut quand même échouer</p>
+              <p>Le cours montre 9 essais où chaque niveau apparaît 3 fois par facteur, et pourtant le modèle n'est pas estimable : les facteurs 1 et 2 changent de niveau <b>en même temps</b>. Ils sont « liés » artificiellement, et on ne peut plus séparer leurs effets.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition · Orthogonalité (version intuitive)</p>
+              <p>Le bon plan de 9 essais est équilibré pour les niveaux (chaque niveau utilisé 3 fois par facteur) <b>et</b> pour les couples de niveaux (chaque couple de niveaux testé une fois pour chaque couple de facteurs). Cette propriété s'appelle l'<b>orthogonalité</b>. Sa définition mathématique est donnée fiche 12.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s4">
+            <div class="tophead"><span class="num">4</span><h2>Codage des facteurs</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition 01 · Facteur codé</p>
+              <p>Un facteur à valeurs $x^*\in[a,b]$ est ramené à l'intervalle $[-1,+1]$ par la transformation affine :</p>
+              <div class="formula">$$x=\frac{2x^*-(a+b)}{b-a}$$</div>
+              <p>Ainsi $a\mapsto-1$, $b\mapsto+1$ et le milieu $\frac{a+b}2\mapsto0$. Variante vers $[-\Delta,+\Delta]$ : $x=\Delta\,\frac{2x^*-(a+b)}{b-a}$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Pourquoi coder systématiquement</p>
+              <p>1. Tous les domaines cubiques deviennent le même domaine de référence $[-1,+1]^m$, donc les plans se construisent une fois pour toutes.<br>
+              2. Les calculs se simplifient avec les niveaux $-1,+1$ (ou $-1,0,+1$).<br>
+              3. Les effets deviennent <b>comparables</b> entre facteurs, puisqu'ils varient tous dans $[-1,+1]$.<br>
+              4. Les variables codées sont <b>sans unité</b>.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Température entre 20 et 30 °C</p>
+              <p>$x=\frac{2x^*-50}{10}=\frac{x^*-25}{5}$. Donc $20\mapsto-1$, $22\mapsto-0{,}6$, $25\mapsto0$, $28\mapsto+0{,}6$, $30\mapsto+1$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s5">
+            <div class="tophead"><span class="num">5</span><h2>Exercice : deux stratégies pour une droite</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (chapitre 1, exercice 1)</p>
+              <p>On modélise le rendement d'une réaction chimique en fonction de la température, entre 20 et 30 °C, par $y_i=\beta_0+\beta_1x_i+\varepsilon_i$ ($x_i$ codé). Le budget permet $n=4$ essais. Deux stratégies :</p>
+              <table class="cmp">
+                <tr><th></th><th>Exp 1</th><th>Exp 2</th><th>Exp 3</th><th>Exp 4</th></tr>
+                <tr><td>Stratégie 1</td><td>22 °C</td><td>28 °C</td><td>29 °C</td><td>30 °C</td></tr>
+                <tr><td>Stratégie 2</td><td>20 °C</td><td>24 °C</td><td>26 °C</td><td>30 °C</td></tr>
+              </table>
+              <p>1) Proposer un codage. 2) Quelle stratégie est la meilleure ? Justifier de deux façons. 3) Existe-t-il une stratégie optimale en 4 essais ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Codage</p>
+                <p>$x=(x^*-25)/5$. Stratégie 1 : $x=(-0{,}6;\ 0{,}6;\ 0{,}8;\ 1)$. Stratégie 2 : $x=(-1;\ -0{,}2;\ 0{,}2;\ 1)$.</p>
+                <p class="method-label">2) Première justification : variance des estimateurs</p>
+                <p>On sait que $\mathbb V(\hat\beta)=\sigma^2(X^\top X)^{-1}$ (fiche 8). Avec $X=[\mathbb 1\mid x]$ :</p>
+                <div class="formula">$$X_1^\top X_1=\begin{pmatrix}4&1{,}8\\1{,}8&2{,}36\end{pmatrix},\quad (X_1^\top X_1)^{-1}\approx\begin{pmatrix}0{,}381&-0{,}290\\-0{,}290&0{,}645\end{pmatrix}$$</div>
+                <div class="formula">$$X_2^\top X_2=\begin{pmatrix}4&0\\0&2{,}08\end{pmatrix},\quad (X_2^\top X_2)^{-1}\approx\begin{pmatrix}0{,}250&0\\0&0{,}481\end{pmatrix}$$</div>
+                <p>Donc $\mathbb V(\hat\beta_0)$ vaut $0{,}381\sigma^2$ contre $0{,}250\sigma^2$, et $\mathbb V(\hat\beta_1)$ vaut $0{,}645\sigma^2$ contre $0{,}481\sigma^2$. <b>La stratégie 2 est meilleure sur les deux paramètres</b>, et en plus ses estimateurs sont non corrélés (terme hors diagonale nul).</p>
+                <p class="method-label">2) Deuxième justification : qualité des prédictions</p>
+                <p>Avec $g(x)^\top=(1,x)$, la variance de prédiction $\mathrm{Var}(\hat Y(x))=\sigma^2g(x)^\top(X^\top X)^{-1}g(x)$ donne :</p>
+                <div class="formula">$$S_1:\ \sigma^2(0{,}381-0{,}581x+0{,}645x^2)\qquad S_2:\ \sigma^2(0{,}250+0{,}481x^2)$$</div>
+                <p>En moyenne sur $[-1,1]$ : $\frac12\int_{-1}^1\mathrm{Var}(\hat Y(x))\,dx\approx0{,}596\sigma^2$ pour $S_1$ contre $0{,}410\sigma^2$ pour $S_2$. Au pire point, $1{,}61\sigma^2$ (en $x=-1$) contre $0{,}73\sigma^2$. La stratégie 2 prédit mieux presque partout, surtout à gauche du domaine que $S_1$ explore mal.</p>
+                <p class="method-label">3) Stratégie optimale</p>
+                <p>Pour la droite, $\mathbb V(\hat\beta_0)=\frac{\sigma^2}{n}\big(1+\frac{\bar x^2}{\sigma_x^2}\big)$ et $\mathbb V(\hat\beta_1)=\frac{\sigma^2}{n\sigma_x^2}$, avec $\sigma_x^2=\frac1n\sum(x_i-\bar x)^2$. On veut donc $\bar x=0$ et $\sigma_x^2$ maximal sous la contrainte $x_i\in[-1,1]$. La solution : <b>deux essais à $-1$ et deux essais à $+1$</b> (20 °C deux fois, 30 °C deux fois).</p>
+                <div class="formula">$$X^\top X=4I_2,\qquad \mathbb V(\hat\beta_0)=\mathbb V(\hat\beta_1)=\frac{\sigma^2}4,\qquad \mathrm{Var}(\hat Y(x))=\frac{\sigma^2}4(1+x^2)$$</div>
+                <p class="sense"><b>Sens :</b> pour une droite, il faut mettre les essais <b>aux extrémités</b> du domaine, en nombre égal. La variance moyenne de prédiction tombe à $\sigma^2/3\approx0{,}333\sigma^2$. Attention : ce plan ne permet pas de détecter une courbure (on ne mesure rien au milieu), ce qui motive les points centraux (fiche 16).</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-1">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 1</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé. « Recommencer » propose une autre série.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Qu'est-ce qui distingue un facteur d'une simple variable explicative ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur est toujours quantitatif.</span></label>
+              <div class="qcm-explain">Faux : un facteur peut être qualitatif (couleur, matériau), il suffit de le coder (fiche 2).</div>
+              <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur doit pouvoir être modifié sans difficulté par l'expérimentateur.</span></label>
+              <div class="qcm-explain">Correct : c'est la définition du cours. On ne subit pas un facteur, on le règle.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur a forcément un effet sur la réponse.</span></label>
+              <div class="qcm-explain">Faux : un facteur est <b>susceptible</b> d'influer. Montrer qu'il n'a pas d'effet est justement un résultat possible (fiche 15, la quantité de colle).</div>
+              <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur prend exactement deux niveaux.</span></label>
+              <div class="qcm-explain">Faux : dans l'exemple de la colle, chaque vanne a trois niveaux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Un facteur varie entre 40 et 80. Quelle est la valeur codée de 50 ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p1-2"><span class="otext">$0{,}25$</span></label>
+              <div class="qcm-explain">Faux : c'est la position de 50 dans $[40,80]$ mesurée sur $[0,1]$, pas sur $[-1,1]$.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-2"><span class="otext">$-0{,}25$</span></label>
+              <div class="qcm-explain">Faux : erreur de facteur 2. Refaites le calcul avec la formule de la fiche 4.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-2"><span class="otext">$-0{,}5$</span></label>
+              <div class="qcm-explain">Correct : $x=\frac{2\times50-(40+80)}{80-40}=\frac{100-120}{40}=-0{,}5$.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-2"><span class="otext">$+0{,}5$</span></label>
+              <div class="qcm-explain">Faux : 50 est sous le milieu 60, sa valeur codée est donc négative.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quel est le défaut majeur de la méthode « un facteur à la fois » ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle masque les éventuelles interactions entre facteurs.</span></label>
+              <div class="qcm-explain">Correct : comme les autres facteurs sont bloqués, on ne voit jamais comment l'effet d'un facteur change avec le niveau d'un autre (fiche 3).</div>
+              <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle demande toujours plus d'essais que le plan complet.</span></label>
+              <div class="qcm-explain">Faux : elle en demande beaucoup moins (9 contre 27 dans l'exemple). Son problème est la pauvreté de l'information, pas le coût.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle est parfaitement équilibrée mais trop chère.</span></label>
+              <div class="qcm-explain">Faux : elle est au contraire déséquilibrée, le niveau de référence (« Moyen ») est sur-représenté.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle ne fonctionne qu'avec des facteurs qualitatifs.</span></label>
+              <div class="qcm-explain">Faux : elle s'applique à tout type de facteur, ce n'est pas la question.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Dans l'exemple de la colle, pourquoi le sous-ensemble équilibré de 9 essais échoue-t-il ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p1-4"><span class="otext">Parce que 9 est inférieur au nombre de paramètres.</span></label>
+              <div class="qcm-explain">Faux : le modèle a 7 paramètres, et $9\ge7$. Le nombre d'essais n'est pas en cause.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-4"><span class="otext">Parce qu'un niveau n'apparaît jamais.</span></label>
+              <div class="qcm-explain">Faux : chaque niveau apparaît 3 fois par facteur, c'est justement ce qui le rend trompeur.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-4"><span class="otext">Parce que les essais ont été tirés au hasard.</span></label>
+              <div class="qcm-explain">Faux : le hasard n'est pas le problème en soi, c'est la structure obtenue.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-4"><span class="otext">Parce que deux facteurs changent de niveau en même temps, leurs effets sont confondus.</span></label>
+              <div class="qcm-explain">Correct : les facteurs 1 et 2 sont liés artificiellement, les colonnes correspondantes de $X$ ne sont plus indépendantes et le modèle n'est pas estimable.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pour ajuster une droite avec 4 essais sur $[-1,1]$, quel plan minimise la variance des deux estimateurs ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p1-5"><span class="otext">4 essais régulièrement espacés : $-1,\ -1/3,\ 1/3,\ 1$.</span></label>
+              <div class="qcm-explain">Faux : les points intérieurs réduisent $\sigma_x^2$, donc augmentent $\mathbb V(\hat\beta_1)$.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-5"><span class="otext">2 essais en $-1$ et 2 essais en $+1$.</span></label>
+              <div class="qcm-explain">Correct : $\bar x=0$ et $\sigma_x^2=1$ maximal, d'où $\mathbb V(\hat\beta_0)=\mathbb V(\hat\beta_1)=\sigma^2/4$ (fiche 5).</div>
+              <label class="qcm-opt"><input type="radio" name="p1-5"><span class="otext">4 essais au centre $x=0$.</span></label>
+              <div class="qcm-explain">Faux : on ne peut plus estimer la pente du tout ($\sigma_x^2=0$, $X$ n'est pas de plein rang).</div>
+              <label class="qcm-opt"><input type="radio" name="p1-5"><span class="otext">3 essais en $+1$ et 1 essai en $-1$.</span></label>
+              <div class="qcm-explain">Faux : $\bar x=0{,}5\ne0$, ce qui dégrade $\mathbb V(\hat\beta_0)$ et crée une corrélation entre les estimateurs.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q6</span>Quel avantage du codage permet de comparer directement les effets de deux facteurs ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p1-6"><span class="otext">Tous les facteurs codés varient dans le même intervalle $[-1,+1]$ et sont sans unité.</span></label>
+              <div class="qcm-explain">Correct : un coefficient $\beta_i$ mesure alors l'effet d'un passage du centre au niveau haut, quelle que soit l'unité d'origine.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-6"><span class="otext">Le codage rend les facteurs indépendants de la réponse.</span></label>
+              <div class="qcm-explain">Faux : le codage est une simple transformation affine, il ne change pas la relation avec la réponse.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-6"><span class="otext">Le codage supprime l'erreur de mesure.</span></label>
+              <div class="qcm-explain">Faux : l'erreur $\varepsilon$ reste la même.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-6"><span class="otext">Le codage rend tous les plans orthogonaux.</span></label>
+              <div class="qcm-explain">Faux : l'orthogonalité dépend des points choisis (fiche 5 : la stratégie 1 codée n'est pas orthogonale).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-2">
+        <button class="lecture-head">
+          <span class="num">2</span>
+          <span class="title">Outils mathématiques pour les plans d'expérience</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s6">
+            <div class="tophead"><span class="num">6</span><h2>Matrice d'information</h2></div>
+            <p>Tout le cours repose sur le modèle linéaire $Y=X\beta+\varepsilon$. On note $X^\top X$ la matrice appelée ${}^tXX$ dans le polycopié.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition · Matrice d'information</p>
+              <p>Pour $X\in\mathcal M(n,p)$ de colonnes $c_1,\dots,c_p$, la matrice d'information $X^\top X\in\mathcal M(p,p)$ est la matrice des <b>produits scalaires</b> des colonnes :</p>
+              <div class="formula">$$X^\top X=\begin{pmatrix}\|c_1\|^2&\langle c_1,c_2\rangle&\cdots\\\langle c_2,c_1\rangle&\|c_2\|^2&\cdots\\\vdots&&\ddots\end{pmatrix}$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultat · Quand est-elle inversible ?</p>
+              <p>Une matrice carrée est inversible si et seulement si elle est de plein rang, et on a toujours $\mathrm{rg}(X)=\mathrm{rg}(X^\top X)$. Donc :</p>
+              <div class="formula">$$X^\top X\ \text{inversible}\iff X\ \text{de plein rang } p$$</div>
+              <p class="sense"><b>Sens :</b> dès que deux colonnes de $X$ sont égales (ou liées), le modèle n'est pas estimable. C'est exactement ce qui arrive quand deux facteurs varient ensemble (fiche 3) ou quand une fraction a une résolution trop faible (fiche 19).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s7">
+            <div class="tophead"><span class="num">7</span><h2>Vecteurs aléatoires</h2></div>
+            <p>Une réponse mesurée est aléatoire (erreur humaine, erreur de mesure). On suppose seulement qu'elle a une espérance et une variance : pas d'hypothèse de loi a priori, car les échantillons sont petits et les théorèmes asymptotiques ne s'appliquent pas.</p>
+            <div class="box box-def">
+              <p class="box-label">Définitions · Espérance et matrice de covariance</p>
+              <p>Pour $Y=(Y_1,\dots,Y_n)^\top$ :</p>
+              <div class="formula">$$\mathbb E(Y)=\big(\mathbb E(Y_1),\dots,\mathbb E(Y_n)\big)^\top,\qquad \mathbb V(Y)=\mathbb E\big[(Y-\mathbb E Y)(Y-\mathbb E Y)^\top\big]$$</div>
+              <p>Sur la diagonale de $\mathbb V(Y)$ : les variances $\mathrm{Var}(Y_i)$. Hors diagonale : les covariances $\mathrm{Cov}(Y_i,Y_j)$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultat · Transformation linéaire</p>
+              <p>Pour $A$ matrice non aléatoire de taille adaptée :</p>
+              <div class="formula">$$\mathbb E(AY)=A\,\mathbb E(Y),\qquad \mathbb V(AY)=A\,\mathbb V(Y)\,A^\top$$</div>
+              <p class="sense"><b>Sens :</b> c'est l'outil qui donne en une ligne la variance de $\hat\beta=(X^\top X)^{-1}X^\top Y$ (fiche 8).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s8">
+            <div class="tophead"><span class="num">8</span><h2>Moindres carrés et variance de prédiction</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Hypothèses · Modèle linéaire classique</p>
+              <p>$Y=X\beta+\varepsilon$ avec résidus centrés, non corrélés et de même variance :</p>
+              <div class="formula">$$\mathbb E(Y)=X\beta,\qquad \mathbb V(Y)=\sigma^2I_n$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultat · Estimateur des moindres carrés</p>
+              <p>Si $X$ est de plein rang :</p>
+              <div class="formula">$$\hat\beta=(X^\top X)^{-1}X^\top Y,\qquad \mathbb E(\hat\beta)=\beta,\qquad \mathbb V(\hat\beta)=\sigma^2(X^\top X)^{-1}$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultat · Réponse moyenne prédite</p>
+              <p>Au point $x$, on note $g(x)\in\mathbb R^p$ le <b>vecteur de régression</b>, construit comme une ligne de $X$ (par exemple $g(x)^\top=(1,x_1,\dots,x_m)$ pour le modèle d'ordre un). Alors :</p>
+              <div class="formula">$$\hat Y(x)=g(x)^\top\hat\beta,\qquad \mathrm{Var}\big(\hat Y(x)\big)=\sigma^2\,g(x)^\top(X^\top X)^{-1}g(x)$$</div>
+              <p class="sense"><b>Sens :</b> la qualité d'une prédiction dépend de trois choses : le point $x$, le bruit $\sigma^2$, et la matrice $X$, c'est-à-dire <b>les expériences choisies</b>. Choisir un plan d'expérience, c'est choisir $X$ pour rendre ces variances petites.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s9">
+            <div class="tophead"><span class="num">9</span><h2>Analyse de la variance et tests</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définitions · Sommes de carrés</p>
+              <div class="formula">$$SST=\sum_{i=1}^n(Y_i-\bar Y)^2,\qquad SSE=\sum_{i=1}^n(Y_i-\hat Y_i)^2,\qquad SSR=\sum_{i=1}^n(\hat Y_i-\bar Y)^2$$</div>
+              <p>Totale, due à l'erreur, due à la régression. Si le vecteur constant $\mathbb 1_n$ est dans $\mathrm{Im}\,X$ (le modèle a une constante) : $SST=SSR+SSE$.</p>
+              <p>Degrés de liberté : $n-1$, $n-p$ et $p-1$. D'où $MSE=\frac{SSE}{n-p}$ et $MSR=\frac{SSR}{p-1}$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultats · Deux indicateurs</p>
+              <div class="formula">$$R^2=\frac{SSR}{SST}=1-\frac{SSE}{SST},\qquad \hat\sigma^2=MSE=\frac{SSE}{n-p}\ \ \text{(sans biais)}$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Tests · Sous hypothèse de normalité</p>
+              <p><b>Validité du modèle.</b> $H_0$ : tous les $\beta_i$ sauf $\beta_0$ sont nuls. Statistique $T=\frac{MSR}{MSE}$, loi de Fisher à $(p-1,\,n-p)$ ddl. On rejette $H_0$ au niveau $\alpha$ si $t\ge f_{1-\alpha,\,p-1,\,n-p}$.</p>
+              <p><b>Significativité d'un paramètre.</b> $H_0:\beta_i=0$. Statistique $T=\frac{\hat\beta_i}{\sqrt{a_{ii}\,MSE}}$ où $a_{ii}$ est le $i$-ème terme diagonal de $(X^\top X)^{-1}$, loi de Student à $n-p$ ddl. On rejette si $|t|\ge f_{1-\alpha/2,\,n-p}$.</p>
+            </div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Piège classique</p>
+              <p>Les tests (et seulement eux) demandent l'hypothèse de <b>normalité</b> des réponses. L'estimation par moindres carrés et les variances $\sigma^2(X^\top X)^{-1}$ n'en ont pas besoin.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s10">
+            <div class="tophead"><span class="num">10</span><h2>Répétitions : erreur pure et manque d'ajustement</h2></div>
+            <p>$SSE$ mélange deux sources d'erreur : un <b>mauvais modèle</b> et une <b>variabilité</b> non contrôlée. Pour les séparer, on répète certaines expériences.</p>
+            <div class="box box-def">
+              <p class="box-label">Notations · Expériences répétées</p>
+              <p>$n^*$ conditions distinctes, la $i$-ème répétée $c_i$ fois, de réponses $Y_i^{(1)},\dots,Y_i^{(c_i)}$ et de moyenne $\bar Y_i=\frac1{c_i}\sum_uY_i^{(u)}$. Nombre total d'essais : $n=\sum_{i=1}^{n^*}c_i$.</p>
+              <div class="formula">$$SSLOF=\sum_{i=1}^{n^*}c_i\big(\hat Y_i-\bar Y_i\big)^2,\qquad SSPE=\sum_{i=1}^{n^*}\sum_{u=1}^{c_i}\big(Y_i^{(u)}-\bar Y_i\big)^2$$</div>
+              <p>LOF : <i>lack of fit</i>, manque d'ajustement. PE : <i>pure error</i>, erreur pure.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 01 · Décomposition de l'erreur</p>
+              <div class="formula">$$SSE=SSLOF+SSPE,\qquad \text{ddl : }(n-p)=(n^*-p)+(n-n^*)$$</div>
+              <p>$SSLOF$ vient du choix du modèle, $SSPE$ de la variabilité pure (une variance intra-classe).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 02 · Test du manque d'ajustement</p>
+              <p>$H_0$ : « le modèle est bien ajusté en moyenne ». Sous normalité :</p>
+              <div class="formula">$$T=\frac{SSLOF/(n^*-p)}{SSPE/(n-n^*)}=\frac{MSLOF}{MSPE}\sim\mathcal F(n^*-p,\ n-n^*)$$</div>
+              <p>On rejette $H_0$ au niveau $\alpha$ si $t\ge f_{1-\alpha,\,n^*-p,\,n-n^*}$.</p>
+              <p class="sense"><b>Sens :</b> on compare l'écart « modèle contre moyennes observées » au bruit « répétition contre répétition ». Si le modèle se trompe à peine plus que le bruit, il est bien ajusté. Le test n'existe que si au moins une expérience est répétée ($n\gt n^*$).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s11">
+            <div class="tophead"><span class="num">11</span><h2>Exercice : expériences répétées</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (chapitre 2, exercice 1)</p>
+              <p>On veut maximiser le rendement (%) d'une réaction qui dépend de la température. Six essais :</p>
+              <table class="cmp">
+                <tr><th>Temp. (°C)</th><td>10</td><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td></tr>
+                <tr><th>Rend. (%)</th><td>10</td><td>20</td><td>35</td><td>40</td><td>33</td><td>10</td></tr>
+              </table>
+              <p>1) Montrer qu'une droite ne convient pas. On passe au modèle quadratique $Y(x)=\beta_0+\beta_1x+\beta_{11}x^2+\varepsilon(x)$ sur $[10,30]$. 2) Analyse classique. 3) Analyse fine avec décomposition de $SSE$. 4) Température optimale, rendement prédit et dispersion.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) La droite ne convient pas</p>
+                <p>Le nuage monte puis redescend : c'est une parabole, pas une droite. Numériquement, l'ajustement d'une droite donne $R^2\approx0{,}005$ : la droite n'explique presque rien.</p>
+                <p class="method-label">2) Analyse classique du modèle quadratique</p>
+                <div class="formula">$$\hat y(x)=-66{,}6+10{,}96\,x-0{,}28\,x^2$$</div>
+                <p>$SST=863{,}3$, $SSR=812{,}5$, $SSE=50{,}8$, donc $R^2\approx0{,}941$. Test de validité : $T=\frac{812{,}5/2}{50{,}8/3}\approx24{,}0$, p-value $\approx0{,}014$. Les trois coefficients sont significatifs (p-values entre 0,006 et 0,017).</p>
+                <p>Avec la règle pratique « $R^2\gt0{,}95$ pour un bon ajustement », on juge le modèle <b>a priori mal ajusté</b>. C'est là que l'analyse fine change la conclusion.</p>
+                <p class="method-label">3) Analyse fine</p>
+                <p>Conditions distinctes : $n^*=5$ (10, 15, 20, 25, 30), avec $c_1=2$ (10 °C répété) et $c_2=\dots=c_5=1$. Donc $n=6$, $p=3$. Seule la condition 10 °C contribue à l'erreur pure : $\bar Y_1=15$ et</p>
+                <div class="formula">$$SSPE=(10-15)^2+(20-15)^2=50,\qquad SSLOF=SSE-SSPE=50{,}8-50=0{,}8$$</div>
+                <div class="formula">$$T=\frac{0{,}8/(5-3)}{50/(6-5)}=\frac{0{,}4}{50}=0{,}008$$</div>
+                <p>Sous $H_0$, $T\sim\mathcal F(2,1)$. La p-value vaut $\mathbb P(\mathcal F(2,1)\ge0{,}008)\approx0{,}992$. On ne peut pas rejeter $H_0$ : <b>le modèle est bien ajusté</b>.</p>
+                <p class="sense"><b>Sens :</b> presque toute l'erreur ($50$ sur $50{,}8$) est de l'erreur pure : les deux mesures à 10 °C diffèrent de 10 points. Le $R^2$ un peu faible ne vient pas d'un mauvais modèle mais du bruit de mesure. Sans répétition, on aurait conclu à tort.</p>
+                <p class="method-label">4) Optimum</p>
+                <p>La parabole est concave ($\hat\beta_{11}\lt0$). $\hat y'(x)=10{,}96-0{,}56x=0$ donne $x^*\approx19{,}6$ °C, et $\hat y(x^*)\approx40{,}6\,\%$.</p>
+                <p>Dispersion : $\mathrm{Var}(\hat Y(x^*))=\sigma^2g(x^*)^\top(X^\top X)^{-1}g(x^*)$ avec $g(x)^\top=(1,x,x^2)$ et $\sigma^2$ estimé par $MSE=16{,}9$. On trouve $\mathrm{Var}\approx8{,}16$, soit un écart-type $\approx2{,}9$ points de rendement.</p>
+                <p>Règle des 3 sigmas (sous normalité, $\mathbb P(\mu-3\sigma\le X\le\mu+3\sigma)\approx0{,}997$) : le rendement moyen à l'optimum est dans $]32{,}1\,;\,49{,}2[$.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-2">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 2</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Quand la matrice $X^\top X$ est-elle inversible ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p2-1"><span class="otext">Toujours, car elle est symétrique.</span></label>
+              <div class="qcm-explain">Faux : symétrique ne veut pas dire inversible (une matrice nulle est symétrique).</div>
+              <label class="qcm-opt"><input type="radio" name="p2-1"><span class="otext">Dès que $n\ge p$.</span></label>
+              <div class="qcm-explain">Faux : c'est nécessaire mais pas suffisant. Avec deux colonnes égales, $X$ n'est pas de plein rang même si $n$ est grand.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-1"><span class="otext">Si et seulement si $X$ est de plein rang $p$.</span></label>
+              <div class="qcm-explain">Correct : $\mathrm{rg}(X^\top X)=\mathrm{rg}(X)$ (fiche 6).</div>
+              <label class="qcm-opt"><input type="radio" name="p2-1"><span class="otext">Si et seulement si les réponses sont gaussiennes.</span></label>
+              <div class="qcm-explain">Faux : $X^\top X$ ne dépend que du plan, pas des réponses.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Que vaut $\mathbb V(\hat\beta)$ sous les hypothèses classiques ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p2-2"><span class="otext">$\sigma^2(X^\top X)^{-1}$</span></label>
+              <div class="qcm-explain">Correct : avec $A=(X^\top X)^{-1}X^\top$, $\mathbb V(AY)=A\,\sigma^2I_n\,A^\top=\sigma^2(X^\top X)^{-1}$.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-2"><span class="otext">$\sigma^2X^\top X$</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse. Plus il y a d'information, plus la variance est petite.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-2"><span class="otext">$\sigma^2I_p$ quel que soit le plan.</span></label>
+              <div class="qcm-explain">Faux : la variance dépend du plan choisi, c'est tout l'intérêt des plans d'expérience.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-2"><span class="otext">$\sigma^2/n$ pour chaque coefficient.</span></label>
+              <div class="qcm-explain">Faux en général. C'est vrai seulement pour un plan orthogonal avec $X^\top X=nI_p$ (factoriel complet, fiche 14).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>Combien de degrés de liberté pour $SSLOF$ et $SSPE$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p2-3"><span class="otext">$n-p$ et $p-1$</span></label>
+              <div class="qcm-explain">Faux : ce sont les ddl de $SSE$ et $SSR$.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-3"><span class="otext">$n-n^*$ et $n^*-p$</span></label>
+              <div class="qcm-explain">Faux : c'est inversé.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-3"><span class="otext">$n^*-1$ et $n-1$</span></label>
+              <div class="qcm-explain">Faux : ces valeurs ne s'additionnent pas en $n-p$.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-3"><span class="otext">$n^*-p$ et $n-n^*$</span></label>
+              <div class="qcm-explain">Correct : et leur somme vaut bien $n-p$, les ddl de $SSE$ (fiche 10).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Dans l'exercice de la fiche 11, pourquoi conclut-on finalement que le modèle quadratique est bien ajusté malgré $R^2\approx0{,}94$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p2-4"><span class="otext">Parce que les trois coefficients sont significatifs.</span></label>
+              <div class="qcm-explain">Faux : des coefficients significatifs n'excluent pas un manque d'ajustement.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-4"><span class="otext">Parce que presque toute l'erreur est de l'erreur pure : $SSLOF=0{,}8$ contre $SSPE=50$.</span></label>
+              <div class="qcm-explain">Correct : le test donne $T=0{,}008$ et une p-value de 0,992. L'imprécision vient du bruit de mesure, pas du modèle.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-4"><span class="otext">Parce que $R^2\gt0{,}9$ suffit toujours.</span></label>
+              <div class="qcm-explain">Faux : aucun seuil de $R^2$ ne remplace un test de manque d'ajustement.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-4"><span class="otext">Parce que le test de validité global a une p-value inférieure à 5 %.</span></label>
+              <div class="qcm-explain">Faux : ce test dit que le modèle vaut mieux que la constante seule, pas qu'il est bien ajusté.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Quelle hypothèse est indispensable pour les tests de Fisher et de Student, mais pas pour calculer $\hat\beta$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p2-5"><span class="otext">L'homoscédasticité.</span></label>
+              <div class="qcm-explain">Faux : elle sert déjà pour $\mathbb V(\hat\beta)=\sigma^2(X^\top X)^{-1}$.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-5"><span class="otext">Le plein rang de $X$.</span></label>
+              <div class="qcm-explain">Faux : sans plein rang, on ne peut même pas calculer $\hat\beta$.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-5"><span class="otext">La normalité des réponses.</span></label>
+              <div class="qcm-explain">Correct : les lois de Fisher et Student des statistiques de test en dépendent (fiche 9).</div>
+              <label class="qcm-opt"><input type="radio" name="p2-5"><span class="otext">L'orthogonalité du plan.</span></label>
+              <div class="qcm-explain">Faux : les tests fonctionnent pour tout plan de plein rang.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q6</span>De quoi dépend la variance de la réponse prédite $\mathrm{Var}(\hat Y(x))$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p2-6"><span class="otext">Du point $x$, de $\sigma^2$ et du plan (via $X$).</span></label>
+              <div class="qcm-explain">Correct : $\sigma^2g(x)^\top(X^\top X)^{-1}g(x)$. Le seul levier de l'expérimentateur est $X$.</div>
+              <label class="qcm-opt"><input type="radio" name="p2-6"><span class="otext">Uniquement de $\sigma^2$.</span></label>
+              <div class="qcm-explain">Faux : elle varie d'un point à l'autre (fiche 5 : $0{,}25\sigma^2$ au centre contre $0{,}73\sigma^2$ au bord pour la stratégie 2).</div>
+              <label class="qcm-opt"><input type="radio" name="p2-6"><span class="otext">Uniquement des réponses observées.</span></label>
+              <div class="qcm-explain">Faux : la formule ne contient pas $Y$ (seul $\sigma^2$ est estimé à partir des données).</div>
+              <label class="qcm-opt"><input type="radio" name="p2-6"><span class="otext">Du nombre de facteurs seulement.</span></label>
+              <div class="qcm-explain">Faux : à nombre de facteurs égal, deux plans donnent des variances différentes.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-3">
+        <button class="lecture-head">
+          <span class="num">3</span>
+          <span class="title">Plans factoriels complets pour modèles d'ordre un</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s12">
+            <div class="tophead"><span class="num">12</span><h2>Modèle d'ordre un et orthogonalité</h2></div>
+            <p>On suppose que la réponse est approchée par un polynôme de degré un en $m$ facteurs quantitatifs codés. C'est un modèle pauvre, mais utile quand le domaine est petit, ou pour le <b>criblage</b> (<i>screening</i>) : repérer, parmi beaucoup de facteurs, ceux qui comptent vraiment.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition · Modèle d'ordre un</p>
+              <div class="formula">$$Y(x)=f(x)+\varepsilon(x),\qquad f(x)=\beta_0+\sum_{i=1}^m\beta_ix_i$$</div>
+              <p>$\beta_0$ : <b>effet moyen général</b>. $\beta_i$ : <b>effet linéaire</b> du facteur $i$. Nombre de paramètres : $p=m+1$, donc il faut $n\ge m+1$ essais. Si $n=p$, le plan est dit <b>saturé</b>.</p>
+              <p>Écriture matricielle : $X=[\,\mathbb 1_n\mid D\,]$, où $D\in\mathcal M(n,m)$ est la <b>matrice du plan</b> (une ligne par expérience, une colonne par facteur).</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition 02 · Plan orthogonal</p>
+              <p>Un plan est <b>orthogonal</b> si et seulement si sa matrice d'information $X^\top X$ est <b>diagonale</b>.</p>
+              <p class="sense"><b>Sens :</b> colonnes de $X$ deux à deux orthogonales, donc estimateurs non corrélés, calculs triviaux (inverser une matrice diagonale), et surtout optimalité (chapitre 5).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s13">
+            <div class="tophead"><span class="num">13</span><h2>Factoriels à 2 et 3 facteurs, ordre de Yates</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition 03 · Plan factoriel complet</p>
+              <p>Pour $m$ facteurs, le plan <b>factoriel complet</b> est l'ensemble des sommets de l'hypercube $[-1,+1]^m$. Il contient $n=2^m$ expériences.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=2$ (4 sommets du carré)</p>
+              <div class="formula">$$X=\begin{pmatrix}1&-1&-1\\1&1&-1\\1&-1&1\\1&1&1\end{pmatrix},\qquad X^\top X=4I_3,\qquad \hat\beta=\tfrac14X^\top Y,\qquad \mathbb V(\hat\beta)=\tfrac{\sigma^2}4I_3$$</div>
+              <p>Vérification : chaque colonne est de norme au carré 4, et deux colonnes différentes ont autant de produits $+1$ que $-1$, d'où un produit scalaire nul.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=3$ (8 sommets du cube)</p>
+              <div class="formula">$$D=\begin{pmatrix}-1&-1&-1\\1&-1&-1\\-1&1&-1\\1&1&-1\\-1&-1&1\\1&-1&1\\-1&1&1\\1&1&1\end{pmatrix},\qquad X^\top X=8I_4,\qquad \mathbb V(\hat\beta)=\tfrac{\sigma^2}8I_4$$</div>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Méthode · Ordre de Yates pour écrire $D$</p>
+              <p>1. Première ligne : que des $-1$ (tous les facteurs au niveau bas).<br>
+              2. Colonne 1 : on change de signe à <b>chaque</b> ligne. Colonne 2 : toutes les <b>2</b> lignes. Colonne $k$ : toutes les $2^{k-1}$ lignes.</p>
+              <p class="sense"><b>Sens :</b> l'ordre n'a aucune importance mathématique, mais tout le monde repère les essais de la même façon. En pratique on randomise ensuite l'ordre de passage.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s14">
+            <div class="tophead"><span class="num">14</span><h2>Cas général et isovariance</h2></div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 03 · Le factoriel complet est orthogonal</p>
+              <p>Pour le modèle d'ordre un :</p>
+              <div class="formula">$$X^\top X=2^mI_p,\qquad \hat\beta=\frac1{2^m}X^\top Y,\qquad \mathbb V(\hat\beta)=\frac{\sigma^2}{2^m}I_p$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultat · Isovariance par rotations</p>
+              <p>Avec $g(x)^\top=(1,x_1,\dots,x_m)$ :</p>
+              <div class="formula">$$\mathrm{Var}\big(\hat Y(x)\big)=\frac{\sigma^2}{2^m}\,g(x)^\top g(x)=\frac{\sigma^2}{2^m}\Big(1+\sum_{i=1}^mx_i^2\Big)=\frac{\sigma^2}{2^m}\big(1+\|x\|^2\big)$$</div>
+              <p class="sense"><b>Sens :</b> la variance ne dépend que de la distance $r=\|x\|$ au centre, pas de la direction. On dit que le plan est <b>isovariant par rotations</b>. Toutes les prédictions à la même distance du centre sont aussi précises.</p>
+            </div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>La limite : la taille</p>
+              <p>$n=2^m$ explose alors que $p=m+1$ reste petit. Avec $m=10$ : 1 024 essais pour 11 paramètres. En pratique on n'utilise le factoriel complet que pour $m=2,3,4$. Au-delà, on passe aux fractions régulières (chapitre 4).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s15">
+            <div class="tophead"><span class="num">15</span><h2>Exercice : collage par presse hydraulique</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (chapitre 3, exercice 1)</p>
+              <p>On colle deux pièces plastiques. Facteurs : pression (40 ou 80 kg/m²), durée (6 ou 8 s), quantité de colle (10 ou 15 g). Réponse : résistance à la traction (plus elle est grande, mieux c'est). Plan factoriel complet :</p>
+              <table class="cmp">
+                <tr><th>Exp.</th><th>Pression</th><th>Durée</th><th>Quantité</th><th>Réponse</th></tr>
+                <tr><td>1</td><td>40</td><td>6</td><td>10</td><td>56</td></tr>
+                <tr><td>2</td><td>80</td><td>6</td><td>10</td><td>98</td></tr>
+                <tr><td>3</td><td>40</td><td>8</td><td>10</td><td>63</td></tr>
+                <tr><td>4</td><td>80</td><td>8</td><td>10</td><td>102</td></tr>
+                <tr><td>5</td><td>40</td><td>6</td><td>15</td><td>54</td></tr>
+                <tr><td>6</td><td>80</td><td>6</td><td>15</td><td>98</td></tr>
+                <tr><td>7</td><td>40</td><td>8</td><td>15</td><td>65</td></tr>
+                <tr><td>8</td><td>80</td><td>8</td><td>15</td><td>104</td></tr>
+              </table>
+              <p>1) Ajuster un modèle d'ordre un et juger l'ajustement. 2) Facteurs influents, interprétation, facteurs sans effet, réglages optimaux.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Codage et estimation</p>
+                <p>$x_1=\frac{P-60}{20}$, $x_2=D-7$, $x_3=\frac{Q-12{,}5}{2{,}5}$. Le tableau est exactement le factoriel $2^3$ en ordre de Yates, donc $\hat\beta=\frac18X^\top Y$ : chaque coefficient est une simple moyenne signée.</p>
+                <div class="formula">$$\hat\beta_0=\tfrac18(56+98+63+102+54+98+65+104)=80$$</div>
+                <div class="formula">$$\hat\beta_1=\tfrac18(-56+98-63+102-54+98-65+104)=20{,}5$$</div>
+                <div class="formula">$$\hat\beta_2=3{,}5,\qquad \hat\beta_3=0{,}25$$</div>
+                <div class="formula">$$\hat y=80+20{,}5\,x_1+3{,}5\,x_2+0{,}25\,x_3$$</div>
+                <p>$SST=3\,474$, $SSE=13{,}5$, donc $R^2\approx0{,}996$. Test de validité : $T=\frac{(3474-13{,}5)/3}{13{,}5/4}\approx341{,}8$, p-value $\approx3\times10^{-5}$. <b>L'ajustement est très bon.</b></p>
+                <p class="method-label">2) Interprétation</p>
+                <p>Plan orthogonal : $\mathbb V(\hat\beta_i)=\sigma^2/8$, estimée par $MSE/8=13{,}5/32$, soit un écart-type $\approx0{,}65$ pour chaque coefficient. Tests de Student à 4 ddl :</p>
+                <table class="cmp">
+                  <tr><th>Facteur</th><th>$\hat\beta_i$</th><th>$t$</th><th>p-value</th><th>Verdict</th></tr>
+                  <tr><td>Pression</td><td>20,5</td><td>31,6</td><td>$\approx6\times10^{-6}$</td><td>Très influent</td></tr>
+                  <tr><td>Durée</td><td>3,5</td><td>5,4</td><td>0,006</td><td>Influent</td></tr>
+                  <tr><td>Quantité</td><td>0,25</td><td>0,38</td><td>0,72</td><td>Sans effet</td></tr>
+                </table>
+                <p>Lecture concrète : passer la pression du milieu (60) au niveau haut (80) augmente la résistance de 20,5 en moyenne ; de 40 à 80, le gain est $2\times20{,}5=41$. Pour la durée, de 6 à 8 s, le gain est $2\times3{,}5=7$. Les facteurs étant codés, on compare directement : la pression pèse environ 6 fois plus que la durée.</p>
+                <p><b>Réglages optimaux</b> : pression 80, durée 8 s, et quantité de colle au minimum (10 g), puisqu'elle n'a pas d'effet : autant économiser la colle. Résistance moyenne prédite $\approx80+20{,}5+3{,}5=104$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s16">
+            <div class="tophead"><span class="num">16</span><h2>Exercice : ajouter des points au centre</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (chapitre 3, exercice 2)</p>
+              <p>Pour $m=2$ facteurs, on compare le plan 1 (factoriel complet $2^2$) et le plan 2 (factoriel complet plus deux essais au centre $(0,0)$). 1) En quoi le plan 2 est-il meilleur ? 2) Généraliser à $n_0$ essais centraux. Quel $n_0$ conseiller ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Effet de deux points centraux</p>
+                <p>Un point central a pour ligne $(1,0,0)$ dans $X$ : il ne touche que le terme constant.</p>
+                <div class="formula">$$\text{Plan 1 : }X^\top X=\mathrm{diag}(4,4,4)\qquad\text{Plan 2 : }X^\top X=\mathrm{diag}(6,4,4)$$</div>
+                <p>Le plan 2 reste <b>orthogonal</b>. $\mathbb V(\hat\beta_0)$ passe de $\sigma^2/4$ à $\sigma^2/6$, les pentes gardent $\sigma^2/4$. Pour la prédiction :</p>
+                <div class="formula">$$\mathrm{Var}\big(\hat Y(x)\big)=\sigma^2\Big(\tfrac14+\tfrac{\|x\|^2}4\Big)\ \longrightarrow\ \sigma^2\Big(\tfrac16+\tfrac{\|x\|^2}4\Big)$$</div>
+                <p>Toutes les prédictions sont meilleures, surtout près du centre. Deux autres gains décisifs : les deux essais centraux sont des <b>répétitions</b>, donc on obtient une estimation de l'erreur pure et on peut faire le <b>test de manque d'ajustement</b> (fiche 10). Et comparer la moyenne au centre à la moyenne aux sommets permet de <b>détecter une courbure</b> que le modèle d'ordre un ignore.</p>
+                <p class="method-label">2) Généralisation</p>
+                <div class="formula">$$X^\top X=\mathrm{diag}(4+n_0,\,4,\,4),\qquad \mathbb V(\hat\beta_0)=\frac{\sigma^2}{4+n_0}$$</div>
+                <p>Le gain est décroissant : de $\sigma^2/4$ à $\sigma^2/6$ avec 2 points, puis seulement $\sigma^2/8$ avec 4 points. On conseille donc un <b>petit nombre</b> de points centraux, typiquement $n_0=2$ à $4$ : assez pour estimer l'erreur pure, sans gaspiller de budget.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-3">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 3</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Combien d'essais contient le plan factoriel complet pour $m=5$ facteurs à deux niveaux ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p3-1"><span class="otext">10</span></label>
+              <div class="qcm-explain">Faux : ce serait $2m$, pas le nombre de sommets de l'hypercube.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-1"><span class="otext">32</span></label>
+              <div class="qcm-explain">Correct : $2^5=32$ sommets, pour seulement $p=6$ paramètres.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-1"><span class="otext">25</span></label>
+              <div class="qcm-explain">Faux : $5^2$ n'a pas de sens ici.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-1"><span class="otext">6</span></label>
+              <div class="qcm-explain">Faux : 6 est le nombre de paramètres du modèle d'ordre un, soit le minimum d'essais d'un plan saturé.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Dans l'ordre de Yates pour $m=3$, quelle est la colonne 3 de $D$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p3-2"><span class="otext">$(-1,-1,-1,-1,+1,+1,+1,+1)$</span></label>
+              <div class="qcm-explain">Correct : la colonne $k$ change de signe toutes les $2^{k-1}$ lignes, ici toutes les 4 lignes.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-2"><span class="otext">$(-1,+1,-1,+1,-1,+1,-1,+1)$</span></label>
+              <div class="qcm-explain">Faux : c'est la colonne 1 (change à chaque ligne).</div>
+              <label class="qcm-opt"><input type="radio" name="p3-2"><span class="otext">$(-1,-1,+1,+1,-1,-1,+1,+1)$</span></label>
+              <div class="qcm-explain">Faux : c'est la colonne 2 (change toutes les 2 lignes).</div>
+              <label class="qcm-opt"><input type="radio" name="p3-2"><span class="otext">$(+1,+1,+1,+1,-1,-1,-1,-1)$</span></label>
+              <div class="qcm-explain">Faux : la première ligne de $D$ ne contient que des $-1$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>Pour un factoriel complet $2^m$ et le modèle d'ordre un, que vaut $\mathbb V(\hat\beta)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p3-3"><span class="otext">$\sigma^2I_p$</span></label>
+              <div class="qcm-explain">Faux : il manque la division par le nombre d'essais.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-3"><span class="otext">$\frac{\sigma^2}{m}I_p$</span></label>
+              <div class="qcm-explain">Faux : c'est le nombre d'essais $2^m$ qui intervient, pas le nombre de facteurs.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-3"><span class="otext">$2^m\sigma^2I_p$</span></label>
+              <div class="qcm-explain">Faux : la variance diminue quand on fait plus d'essais, elle n'augmente pas.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-3"><span class="otext">$\frac{\sigma^2}{2^m}I_p$</span></label>
+              <div class="qcm-explain">Correct : $X^\top X=2^mI_p$ (proposition 03), donc $(X^\top X)^{-1}=2^{-m}I_p$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Que signifie « isovariant par rotations » ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p3-4"><span class="otext">Tous les coefficients ont la même variance.</span></label>
+              <div class="qcm-explain">Faux : c'est une autre propriété (vraie aussi pour le factoriel, mais ce n'est pas la définition).</div>
+              <label class="qcm-opt"><input type="radio" name="p3-4"><span class="otext">La variance de prédiction est la même partout dans le domaine.</span></label>
+              <div class="qcm-explain">Faux : elle augmente avec la distance au centre, $\frac{\sigma^2}{2^m}(1+\|x\|^2)$.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-4"><span class="otext">La variance de prédiction ne dépend que de la distance au centre $\|x\|$.</span></label>
+              <div class="qcm-explain">Correct : deux points à même distance du centre sont prédits avec la même précision, quelle que soit la direction.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-4"><span class="otext">On peut tourner le plan sans changer les réponses observées.</span></label>
+              <div class="qcm-explain">Faux : la propriété porte sur la variance de prédiction, pas sur les réponses.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>On ajoute 2 essais au centre d'un factoriel $2^2$. Qu'est-ce qui change ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p3-5"><span class="otext">Le plan n'est plus orthogonal.</span></label>
+              <div class="qcm-explain">Faux : les lignes $(1,0,0)$ n'ajoutent rien hors de la diagonale, $X^\top X=\mathrm{diag}(6,4,4)$.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-5"><span class="otext">Seule la variance de $\hat\beta_0$ diminue, et on peut estimer l'erreur pure.</span></label>
+              <div class="qcm-explain">Correct : $\sigma^2/4\to\sigma^2/6$ pour $\hat\beta_0$, les pentes ne bougent pas, et les deux répétitions donnent l'erreur pure (fiche 16).</div>
+              <label class="qcm-opt"><input type="radio" name="p3-5"><span class="otext">Les variances des pentes $\hat\beta_1,\hat\beta_2$ diminuent.</span></label>
+              <div class="qcm-explain">Faux : au centre, $x_1=x_2=0$, donc ces essais n'apportent aucune information sur les pentes.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-5"><span class="otext">On peut maintenant estimer des effets quadratiques séparés $\beta_{11}$ et $\beta_{22}$.</span></label>
+              <div class="qcm-explain">Faux : on peut détecter une courbure globale, mais pas séparer $\beta_{11}$ de $\beta_{22}$. Il faut des points axiaux (plan composite, fiche 32).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Dans l'exercice du collage, pourquoi régler la quantité de colle au minimum ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p3-6"><span class="otext">Parce que $\hat\beta_3$ est négatif.</span></label>
+              <div class="qcm-explain">Faux : $\hat\beta_3=0{,}25$ est positif, mais non significatif.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-6"><span class="otext">Parce que le plan ne permet pas d'estimer son effet.</span></label>
+              <div class="qcm-explain">Faux : le plan est orthogonal, l'effet est estimé avec la même précision que les autres.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-6"><span class="otext">Parce que son effet n'est pas significatif (p-value 0,72), donc autant économiser.</span></label>
+              <div class="qcm-explain">Correct : augmenter la colle ne change pas la résistance de façon détectable, le choix se fait alors sur le coût.</div>
+              <label class="qcm-opt"><input type="radio" name="p3-6"><span class="otext">Parce que le $R^2$ augmente quand on la diminue.</span></label>
+              <div class="qcm-explain">Faux : le $R^2$ décrit l'ajustement du modèle, il ne dépend pas du réglage choisi ensuite.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-4">
+        <button class="lecture-head">
+          <span class="num">4</span>
+          <span class="title">Fractions régulières pour modèles d'ordre un</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s17">
+            <div class="tophead"><span class="num">17</span><h2>Diviser le plan complet par deux</h2></div>
+            <p>Le factoriel complet est orthogonal mais trop gros. Idée : garder seulement une partie de ses sommets, choisie pour <b>conserver l'orthogonalité</b>. Ces sous-ensembles sont les <b>fractions régulières</b>.</p>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=3$, de 8 à 4 essais</p>
+              <p>Le modèle d'ordre un a $p=4$ paramètres, le factoriel en utilise 8. On garde seulement les sommets dont le <b>produit des trois coordonnées vaut $+1$</b> :</p>
+              <div class="formula">$$D_f=\begin{pmatrix}1&-1&-1\\-1&1&-1\\-1&-1&1\\1&1&1\end{pmatrix},\qquad X^\top X=4I_4$$</div>
+              <p>On a divisé le nombre d'essais par deux, le plan est saturé ($n=p=4$) et toujours orthogonal.</p>
+              <p class="sense"><b>Sens :</b> sur le cube, on garde un sommet sur deux, en damier. Chaque facteur reste testé 2 fois à chaque niveau, et chaque couple de facteurs voit ses 4 combinaisons de niveaux.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s18">
+            <div class="tophead"><span class="num">18</span><h2>Produit d'Hadamard et générateur</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition · Produit d'Hadamard</p>
+              <p>Pour $u,v\in\mathbb R^n$, $u\odot v=(u_iv_i)_{i=1,\dots,n}$ : le produit terme à terme. Il est associatif, commutatif, et $\mathbb I_n=(1,\dots,1)$ est l'élément neutre. Pour un vecteur à valeurs dans $\{-1,1\}$ :</p>
+              <div class="formula">$$u\odot u=\mathbb I_n$$</div>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Conventions · Notation compacte</p>
+              <p>On note $\mathbf 1,\dots,\mathbf m$ les colonnes de $D$ (plan complet), et on n'écrit plus le symbole $\odot$ : $\mathbf{12}$ veut dire « colonne 1 fois colonne 2, terme à terme ». Chaque colonne est son propre inverse : $\mathbf{11}=\mathbb I$.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition · Générateur</p>
+              <p>La fraction de la fiche 17 garde les lignes où le produit des colonnes 1, 2, 3 vaut 1 :</p>
+              <div class="formula">$$\mathbb I=\mathbf{123}$$</div>
+              <p>On dit que la fraction a pour <b>générateur</b> $\mathbf{123}$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Méthode · Lire les alias</p>
+              <p>On multiplie la relation par une colonne. Avec $\mathbb I=\mathbf{123}$ :</p>
+              <div class="formula">$$\mathbf 3=\mathbf 3\cdot\mathbb I=\mathbf{12}\,\mathbf 3^2=\mathbf{12}$$</div>
+              <p>Dans la fraction, la colonne du facteur 3 est égale au produit des colonnes 1 et 2. C'est aussi la façon <b>pratique</b> de construire la fraction : on écrit le factoriel complet en 1 et 2, puis on pose $\mathbf 3=\mathbf{12}$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s19">
+            <div class="tophead"><span class="num">19</span><h2>Résolution d'une fraction</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition 04 · Résolution (un générateur)</p>
+              <p>La <b>résolution</b> d'une fraction définie par un seul générateur est la <b>longueur</b> de ce générateur (nombre de chiffres). On la note en chiffres romains : $\mathbf{123}$ donne la résolution III.</p>
+            </div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pourquoi les résolutions I et II sont impossibles (ordre un)</p>
+              <p><b>Résolution I</b>, par exemple $\mathbb I=\mathbf 1$ : la colonne du facteur 1 ne contient que des 1, elle est égale à la colonne de la constante. $\beta_0$ et $\beta_1$ sont confondus.</p>
+              <p><b>Résolution II</b>, par exemple $\mathbb I=\mathbf{12}$ : alors $\mathbf 1=\mathbf 2$, les colonnes des facteurs 1 et 2 sont identiques. $X$ n'est pas de plein rang.</p>
+              <p>Il faut donc au moins la résolution III pour que deux colonnes du modèle d'ordre un ne soient jamais égales.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 04 · Une fraction de résolution III</p>
+              <p>Une fraction régulière du factoriel complet à $m$ facteurs, obtenue avec un générateur :</p>
+              <p>1) contient $n=2^{m-1}$ expériences ;<br>
+              2) si elle est de résolution III ou plus, elle est <b>orthogonale</b> pour le modèle d'ordre un :</p>
+              <div class="formula">$$X^\top X=2^{m-1}I_p,\qquad \hat\beta=\frac1{2^{m-1}}X^\top Y,\qquad \mathbb V(\hat\beta)=\frac{\sigma^2}{2^{m-1}}I_p$$</div>
+            </div>
+          </article>
+
+          <article class="topic" id="s20">
+            <div class="tophead"><span class="num">20</span><h2>Plusieurs générateurs, contrastes de définition</h2></div>
+            <p>Diviser par 2 ne suffit pas quand $m$ est grand : on impose plusieurs générateurs à la fois.</p>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=5$, $\mathbb I=\mathbf{123}=\mathbf{345}$</p>
+              <p>$p=6$ paramètres, le complet fait 32 essais, une demi-fraction 16. Avec deux générateurs, on garde 8 essais. Le produit de deux générateurs est encore un générateur :</p>
+              <div class="formula">$$(\mathbf{123})(\mathbf{345})=\mathbf{12}\,\mathbf 3^2\,\mathbf{45}=\mathbf{1245}=\mathbb I$$</div>
+              <p>$\mathbf{1245}$ est un <b>générateur caché</b> : on l'obtient algébriquement, sans construire la matrice.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition 05 · Groupe des contrastes de définition</p>
+              <p>C'est le groupe $\mathcal G$ engendré par les $q$ générateurs (pour le produit d'Hadamard). Dans l'exemple :</p>
+              <div class="formula">$$\mathcal G=\{\mathbb I,\ \mathbf{123},\ \mathbf{345},\ \mathbf{1245}\}$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 05 · Taille du groupe</p>
+              <p>Avec $q$ générateurs <b>indépendants</b>, $\mathcal G$ est un groupe fini à $2^q$ éléments (chaque générateur est pris ou non, comme pour les parties d'un ensemble).</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition 06 · Résolution (cas général)</p>
+              <p>La résolution est la <b>longueur du plus petit</b> élément de $\mathcal G$ autre que $\mathbb I$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 06 · Le résultat principal</p>
+              <p>Une fraction régulière obtenue avec $q$ générateurs indépendants :</p>
+              <p>1) contient $n=2^{m-q}$ expériences ;<br>
+              2) si elle est de résolution III ou plus, elle est orthogonale pour le modèle d'ordre un : $X^\top X=2^{m-q}I_p$, $\mathbb V(\hat\beta)=\frac{\sigma^2}{2^{m-q}}I_p$.</p>
+              <p>Notation : $2^{m-q}_{\text{III}}$ pour une fraction de résolution III.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · 10 facteurs en 16 essais</p>
+              <div class="formula">$$\mathbb I=\mathbf{125}=\mathbf{136}=\mathbf{147}=\mathbf{238}=\mathbf{249}=\mathbf{34}\,\overline{\mathbf{10}}$$</div>
+              <p>$p=11$ paramètres, le complet ferait $2^{10}=1\,024$ essais. Avec $q=6$ générateurs, on obtient une fraction $2^{10-6}_{\text{III}}$ de $2^4=16$ essais seulement, orthogonale. ($\overline{\mathbf{10}}$ désigne la colonne du facteur 10.)</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s21">
+            <div class="tophead"><span class="num">21</span><h2>Exercices : analyser une fraction</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Méthode · Analyser une fraction en 5 étapes</p>
+              <p>1. Vérifier que les générateurs sont <b>indépendants</b> (aucun n'est produit des autres) : on obtient le vrai $q$.<br>
+              2. Nombre d'essais : $n=2^{m-q}$. Le comparer à $p$.<br>
+              3. Écrire le groupe $\mathcal G$ (tous les produits, $2^q$ éléments).<br>
+              4. Résolution = longueur du plus court mot non trivial.<br>
+              5. Conclure : résolution III ou plus et $n\ge p$ donne un plan orthogonal pour l'ordre un.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 1 · $m=4$, $\mathbb I=\mathbf{123}=\mathbf{234}$</p>
+              <p>Analyser cette fraction régulière.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Deux générateurs indépendants, $q=2$, donc $n=2^{4-2}=4$ essais. Produit caché : $(\mathbf{123})(\mathbf{234})=\mathbf 1\,\mathbf 2^2\mathbf 3^2\,\mathbf 4=\mathbf{14}$.</p>
+                <div class="formula">$$\mathcal G=\{\mathbb I,\ \mathbf{14},\ \mathbf{123},\ \mathbf{234}\}$$</div>
+                <p>Le plus court mot est $\mathbf{14}$, de longueur 2 : <b>résolution II</b>. Conséquence : $\mathbf{14}=\mathbb I$ donne $\mathbf 1=\mathbf 4$, les colonnes des facteurs 1 et 4 sont identiques. Les 4 lignes gardées sont $(-1,1,-1,-1)$, $(-1,-1,1,-1)$, $(1,-1,-1,1)$, $(1,1,1,1)$ : la 1<sup>re</sup> et la 4<sup>e</sup> colonne coïncident bien.</p>
+                <p><b>Conclusion :</b> fraction inutilisable pour l'ordre un. De toute façon, $n=4\lt p=5$ : même avec une bonne résolution, 4 essais ne peuvent pas estimer 5 paramètres.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 2 · $m=6$, $\mathbb I=\mathbf{124}=\mathbf{135}=\mathbf{236}$</p>
+              <p>Analyser cette fraction régulière.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Trois générateurs indépendants (chacun contient un facteur absent des autres : 4, 5, 6), donc $q=3$ et $n=2^{6-3}=8$ essais, pour $p=7$ paramètres. Produits :</p>
+                <div class="formula">$$(\mathbf{124})(\mathbf{135})=\mathbf{2345},\quad(\mathbf{124})(\mathbf{236})=\mathbf{1346},\quad(\mathbf{135})(\mathbf{236})=\mathbf{1256},\quad(\mathbf{124})(\mathbf{135})(\mathbf{236})=\mathbf{456}$$</div>
+                <div class="formula">$$\mathcal G=\{\mathbb I,\mathbf{124},\mathbf{135},\mathbf{236},\mathbf{456},\mathbf{1256},\mathbf{1346},\mathbf{2345}\}$$</div>
+                <p>$2^3=8$ éléments, plus court mot de longueur 3 : <b>résolution III</b>. C'est une fraction $2^{6-3}_{\text{III}}$ : 8 essais, <b>orthogonale</b>, $X^\top X=8I_7$, presque saturée ($n=8$, $p=7$).</p>
+                <p>Construction : factoriel complet en 1, 2, 3, puis $\mathbf 4=\mathbf{12}$, $\mathbf 5=\mathbf{13}$, $\mathbf 6=\mathbf{23}$.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 3 · $m=5$, $\mathbb I=\mathbf{123}=\mathbf{345}=\mathbf{1245}$</p>
+              <p>Analyser cette fraction régulière.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>Piège :</b> les trois générateurs ne sont pas indépendants, car $\mathbf{1245}=(\mathbf{123})(\mathbf{345})$. Le troisième est le générateur caché de la fiche 20. Donc $q=2$, et non 3.</p>
+                <p>$n=2^{5-2}=8$ essais (et non 4), $p=6$, $\mathcal G=\{\mathbb I,\mathbf{123},\mathbf{345},\mathbf{1245}\}$, <b>résolution III</b>. Fraction $2^{5-2}_{\text{III}}$ orthogonale, $X^\top X=8I_6$.</p>
+                <p class="sense"><b>Sens :</b> ajouter un générateur qui est produit des autres n'enlève aucune ligne. Il faut toujours vérifier l'indépendance avant d'écrire $n=2^{m-q}$.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 4 · Construire la fraction $2^{10-6}_{\text{III}}$</p>
+              <p>Construire la matrice du plan de l'exemple à 10 facteurs (fiche 20).</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Chaque générateur exprime un nouveau facteur en fonction des facteurs de base 1 à 4 (on multiplie par la colonne du nouveau facteur) :</p>
+                <div class="formula">$$\mathbf 5=\mathbf{12},\ \ \mathbf 6=\mathbf{13},\ \ \mathbf 7=\mathbf{14},\ \ \mathbf 8=\mathbf{23},\ \ \mathbf 9=\mathbf{24},\ \ \overline{\mathbf{10}}=\mathbf{34}$$</div>
+                <p>On écrit le factoriel complet $2^4$ en ordre de Yates sur les colonnes 1 à 4, puis on calcule les 6 autres colonnes par produits :</p>
+                <table class="cmp">
+                  <tr><th>Exp</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5=12</th><th>6=13</th><th>7=14</th><th>8=23</th><th>9=24</th><th>10=34</th></tr>
+                  <tr><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                  <tr><td>2</td><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>1</td></tr>
+                  <tr><td>3</td><td>−1</td><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>−1</td><td>1</td></tr>
+                  <tr><td>4</td><td>1</td><td>1</td><td>−1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td></tr>
+                  <tr><td>5</td><td>−1</td><td>−1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>1</td><td>−1</td></tr>
+                  <tr><td>6</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td><td>1</td><td>−1</td></tr>
+                  <tr><td>7</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>−1</td></tr>
+                  <tr><td>8</td><td>1</td><td>1</td><td>1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td></tr>
+                  <tr><td>9</td><td>−1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td></tr>
+                  <tr><td>10</td><td>1</td><td>−1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>−1</td></tr>
+                  <tr><td>11</td><td>−1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>−1</td><td>1</td><td>−1</td></tr>
+                  <tr><td>12</td><td>1</td><td>1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>1</td><td>−1</td><td>1</td><td>−1</td></tr>
+                  <tr><td>13</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td></tr>
+                  <tr><td>14</td><td>1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>1</td><td>1</td><td>−1</td><td>−1</td><td>1</td></tr>
+                  <tr><td>15</td><td>−1</td><td>1</td><td>1</td><td>1</td><td>−1</td><td>−1</td><td>−1</td><td>1</td><td>1</td><td>1</td></tr>
+                  <tr><td>16</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+                <p>Vérification : les 11 colonnes de $X=[\mathbb 1\mid D]$ sont deux à deux orthogonales et $X^\top X=16I_{11}$.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-4">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 4</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Avec $\mathbb I=\mathbf{1234}$ (4 facteurs), à quoi est égale la colonne $\mathbf{12}$ dans la fraction ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p4-1"><span class="otext">$\mathbb I$</span></label>
+              <div class="qcm-explain">Faux : ce serait le cas si $\mathbf{12}$ était un générateur.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-1"><span class="otext">$\mathbf{3}$</span></label>
+              <div class="qcm-explain">Faux : il manque le facteur 4.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-1"><span class="otext">$\mathbf{34}$</span></label>
+              <div class="qcm-explain">Correct : $\mathbf{12}=\mathbf{12}\cdot\mathbf{1234}=\mathbf 1^2\mathbf 2^2\mathbf{34}=\mathbf{34}$.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-1"><span class="otext">$\mathbf{1234}$</span></label>
+              <div class="qcm-explain">Faux : $\mathbf{1234}=\mathbb I$, pas $\mathbf{12}$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Quelle est la résolution de la fraction $\mathbb I=\mathbf{123}=\mathbf{345}$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p4-2"><span class="otext">III</span></label>
+              <div class="qcm-explain">Correct : $\mathcal G=\{\mathbb I,\mathbf{123},\mathbf{345},\mathbf{1245}\}$, le plus court mot a 3 chiffres.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-2"><span class="otext">IV</span></label>
+              <div class="qcm-explain">Faux : 4 est la longueur du générateur caché $\mathbf{1245}$, mais on prend le <b>plus court</b> mot.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-2"><span class="otext">VI</span></label>
+              <div class="qcm-explain">Faux : on ne somme pas les longueurs des générateurs.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-2"><span class="otext">II</span></label>
+              <div class="qcm-explain">Faux : aucun élément de $\mathcal G$ n'a 2 chiffres.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>Pourquoi une fraction de résolution II est-elle inutilisable pour le modèle d'ordre un ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p4-3"><span class="otext">Parce qu'elle contient trop d'essais.</span></label>
+              <div class="qcm-explain">Faux : la résolution ne dit rien d'un excès d'essais.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-3"><span class="otext">Parce qu'un facteur y est constant.</span></label>
+              <div class="qcm-explain">Faux : c'est le problème de la résolution I.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-3"><span class="otext">Parce qu'elle n'est pas équilibrée pour les niveaux.</span></label>
+              <div class="qcm-explain">Faux : chaque colonne reste équilibrée, le problème est entre deux colonnes.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-3"><span class="otext">Parce qu'un générateur $\mathbf{ij}$ impose $\mathbf i=\mathbf j$ : deux facteurs ont des colonnes identiques.</span></label>
+              <div class="qcm-explain">Correct : $X$ n'est plus de plein rang, les effets des deux facteurs sont confondus (fiche 19).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Combien d'essais pour une fraction de 7 facteurs avec 4 générateurs indépendants ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p4-4"><span class="otext">16</span></label>
+              <div class="qcm-explain">Faux : $2^4$ correspond à $q=3$.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-4"><span class="otext">8</span></label>
+              <div class="qcm-explain">Correct : $n=2^{m-q}=2^{7-4}=8$, exactement $p=8$ paramètres : un plan saturé.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-4"><span class="otext">28</span></label>
+              <div class="qcm-explain">Faux : $n$ se calcule par puissances de 2, pas par produit.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-4"><span class="otext">3</span></label>
+              <div class="qcm-explain">Faux : 3 est l'exposant $m-q$, pas le nombre d'essais.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>On donne $\mathbb I=\mathbf{123}=\mathbf{345}=\mathbf{1245}$ pour $m=5$. Combien d'essais ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p4-5"><span class="otext">4, car il y a 3 générateurs.</span></label>
+              <div class="qcm-explain">Faux : c'est le piège de l'exercice 3, le troisième générateur n'est pas indépendant.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-5"><span class="otext">16</span></label>
+              <div class="qcm-explain">Faux : ce serait une demi-fraction avec un seul générateur.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-5"><span class="otext">8, car $\mathbf{1245}=(\mathbf{123})(\mathbf{345})$ donc $q=2$.</span></label>
+              <div class="qcm-explain">Correct : seuls deux générateurs sont indépendants, $n=2^{5-2}=8$.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-5"><span class="otext">32</span></label>
+              <div class="qcm-explain">Faux : c'est le plan complet.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q6</span>Combien d'éléments contient le groupe des contrastes de définition pour $q=3$ générateurs indépendants ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p4-6"><span class="otext">8, en comptant $\mathbb I$.</span></label>
+              <div class="qcm-explain">Correct : $2^q=8$ (proposition 05), comme dans l'exercice 2.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-6"><span class="otext">3</span></label>
+              <div class="qcm-explain">Faux : on oublie $\mathbb I$ et tous les produits de générateurs.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-6"><span class="otext">4</span></label>
+              <div class="qcm-explain">Faux : on oublie les produits de deux et trois générateurs.</div>
+              <label class="qcm-opt"><input type="radio" name="p4-6"><span class="otext">6</span></label>
+              <div class="qcm-explain">Faux : il manque $\mathbb I$ et le produit des trois générateurs.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-5">
+        <button class="lecture-head">
+          <span class="num">5</span>
+          <span class="title">Optimalité des plans d'expérience</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s22">
+            <div class="tophead"><span class="num">22</span><h2>Comparer deux plans</h2></div>
+            <p>Deux plans de même coût (même $n$) : lequel est le « meilleur » ? Avec un seul paramètre, c'est simple : $\mathcal D_1$ est plus efficace que $\mathcal D_2$ si $\mathrm{Var}(\hat\beta_1)\lt\mathrm{Var}(\hat\beta_2)$.</p>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>La difficulté</p>
+              <p>Avec $p$ paramètres, on doit comparer des <b>matrices</b> de covariance $\sigma^2(X^\top X)^{-1}$, et il n'existe pas d'ordre naturel sur les matrices. Un critère d'optimalité est une façon de résumer une matrice par un <b>nombre</b> à minimiser. On suppose désormais tous les plans réguliers ($X^\top X$ inversible).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s23">
+            <div class="tophead"><span class="num">23</span><h2>A-optimalité</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition 07 · A-efficacité (A comme <i>average</i>)</p>
+              <div class="formula">$$\Phi_1(\mathcal D)=\frac1p\,\mathrm{Trace}\big[(X^\top X)^{-1}\big]$$</div>
+              <p>Un plan qui minimise $\Phi_1$ dans une classe donnée est <b>A-optimal</b>.</p>
+              <p class="sense"><b>Sens :</b> à $\sigma^2$ près, c'est la <b>moyenne des variances</b> des $p$ estimateurs. Simple, mais ignore les termes hors diagonale, donc les corrélations entre estimateurs.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s24">
+            <div class="tophead"><span class="num">24</span><h2>D-optimalité</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition 08 · D-efficacité (D comme <i>determinant</i>)</p>
+              <div class="formula">$$\Phi_0(\mathcal D)=\Big(\mathrm{Det}\big[(X^\top X)^{-1}\big]\Big)^{1/p}=\big(\mathrm{Det}(X^\top X)\big)^{-1/p}$$</div>
+              <p>Un plan qui minimise $\Phi_0$ est <b>D-optimal</b>. De façon équivalente, il <b>maximise</b> $\mathrm{Det}(X^\top X)$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Pourquoi c'est le critère le plus utilisé</p>
+              <p>1. <b>Facile à calculer</b> : il suffit du déterminant de la matrice d'information, sans inversion.<br>
+              2. <b>Invariant par reparamétrisation affine</b>, donc en particulier par le codage des facteurs (exercice 1, fiche 26).<br>
+              3. <b>Interprétation géométrique</b> : l'ellipsoïde de confiance de $\beta$ a un volume proportionnel à $\sqrt{\mathrm{Det}\big[(X^\top X)^{-1}\big]}$. Minimiser $\Phi_0$, c'est minimiser ce volume.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s25">
+            <div class="tophead"><span class="num">25</span><h2>Critère Φq, E-optimalité, optimalité universelle</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Définition 09 · $\Phi_q$-efficacité</p>
+              <p>Soient $\lambda^{[1]}\ge\dots\ge\lambda^{[p]}$ les valeurs propres de $X^\top X$, et $\mu^{[i]}=1/\lambda^{[i]}$ celles de $(X^\top X)^{-1}$. Pour $0\lt q\lt+\infty$ :</p>
+              <div class="formula">$$\Phi_q(\mathcal D)=\Big(\frac1p\sum_{i=1}^p\big(\lambda^{[i]}\big)^{-q}\Big)^{1/q}$$</div>
+            </div>
+            <table class="cmp">
+              <tr><th>Valeur de $q$</th><th>Critère</th><th>Ce qu'on minimise</th></tr>
+              <tr><td>$q=1$</td><td>A-optimalité</td><td>Moyenne des variances</td></tr>
+              <tr><td>$q\to0$</td><td>D-optimalité</td><td>Volume de l'ellipsoïde de confiance</td></tr>
+              <tr><td>$q\to+\infty$</td><td>E-optimalité (E comme <i>extremal</i>)</td><td>Plus grand axe de l'ellipsoïde</td></tr>
+            </table>
+            <div class="box box-def">
+              <p class="box-label">Définition · E-efficacité</p>
+              <div class="formula">$$\Phi_\infty(\mathcal D)=\frac1{\lambda^{[p]}}=\mu^{[p]}$$</div>
+              <p>On minimise la plus grande valeur propre de $(X^\top X)^{-1}$, c'est-à-dire qu'on maximise la plus petite valeur propre de $X^\top X$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 07 · Optimalité universelle</p>
+              <p>Dans une classe $\Theta$ de plans, notons $C_{\mathcal D}=X^\top X$. Si un plan $\mathcal D^*$ vérifie :</p>
+              <p>1) $C_{\mathcal D^*}$ est un multiple de l'identité ;<br>
+              2) $\mathrm{Trace}(C_{\mathcal D^*})=\max_{\mathcal D\in\Theta}\mathrm{Trace}(C_{\mathcal D})$,</p>
+              <p>alors $\mathcal D^*$ est <b>universellement optimal</b> dans $\Theta$ : il est $\Phi_q$-optimal pour <b>tout</b> $q$ (donc A, D et E-optimal).</p>
+              <p class="sense"><b>Sens :</b> voilà pourquoi on cherche des plans <b>orthogonaux</b>. Une matrice d'information proportionnelle à l'identité, avec la plus grande trace possible, gagne selon tous les critères à la fois.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Application · Le factoriel complet est universellement optimal</p>
+              <p>Pour un factoriel complet, $C_{\mathcal D^*}=2^mI_p$ (point 1). Pour tout plan à $n=2^m$ points $x_u$ :</p>
+              <div class="formula">$$\mathrm{Trace}(C_{\mathcal D})=n+\sum_{u=1}^n\sum_{i=1}^mx_{ui}^2\le n+nm=\mathrm{Trace}(C_{\mathcal D^*})$$</div>
+              <p>car les facteurs codés vérifient $x_{ui}^2\le1$ (point 2). Même preuve pour les fractions régulières de résolution III ou plus.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s26">
+            <div class="tophead"><span class="num">26</span><h2>Exercices : optimalité</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 1 · Invariance de la D-optimalité</p>
+              <p>On reparamétrise le modèle par $\theta=H\beta+h$, avec $H$ matrice fixée (inversible) et $h$ vecteur fixé, par exemple via le codage. Montrer qu'un plan D-optimal pour $\beta$ l'est encore pour $\theta$.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>L'estimateur de $\theta$ est $\hat\theta=H\hat\beta+h$. Par la fiche 7 :</p>
+                <div class="formula">$$\mathbb V(\hat\theta)=H\,\mathbb V(\hat\beta)\,H^\top=\sigma^2H(X^\top X)^{-1}H^\top$$</div>
+                <div class="formula">$$\mathrm{Det}\big[\mathbb V(\hat\theta)\big]=\mathrm{Det}(H)^2\cdot\mathrm{Det}\big[\sigma^2(X^\top X)^{-1}\big]$$</div>
+                <p>Le facteur $\mathrm{Det}(H)^2\gt0$ ne dépend pas du plan. Minimiser le déterminant pour $\theta$ revient donc à le minimiser pour $\beta$ : <b>même plan optimal</b>. $\checkmark$</p>
+                <p class="sense"><b>Sens :</b> peu importe qu'on travaille en unités réelles ou en facteurs codés, le plan D-optimal est le même. Ce n'est pas vrai pour l'A-optimalité : la trace n'est pas invariante par $H$.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 2 · Prolongement de $\Phi_q$</p>
+              <p>Prolonger $\Phi_q$ par continuité en $0$ et en $+\infty$, et retrouver les critères D et E.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Avec $\mu_i=1/\lambda^{[i]}\gt0$, $\Phi_q=\big(\frac1p\sum_i\mu_i^q\big)^{1/q}$ est la moyenne d'ordre $q$ des $\mu_i$.</p>
+                <p class="method-label">En $q\to0$</p>
+                <p>$\mu_i^q=e^{q\ln\mu_i}=1+q\ln\mu_i+o(q)$, donc $\frac1p\sum_i\mu_i^q=1+\frac qp\sum_i\ln\mu_i+o(q)$ et :</p>
+                <div class="formula">$$\ln\Phi_q=\frac1q\ln\Big(1+\frac qp\sum_i\ln\mu_i+o(q)\Big)\xrightarrow[q\to0]{}\frac1p\sum_i\ln\mu_i$$</div>
+                <div class="formula">$$\Phi_0=\Big(\prod_i\mu_i\Big)^{1/p}=\Big(\mathrm{Det}\big[(X^\top X)^{-1}\big]\Big)^{1/p}$$</div>
+                <p>C'est le critère D (la moyenne géométrique des $\mu_i$).</p>
+                <p class="method-label">En $q\to+\infty$</p>
+                <p>Avec $\mu_{\max}=\max_i\mu_i$ : $\frac1p\mu_{\max}^q\le\frac1p\sum_i\mu_i^q\le\mu_{\max}^q$, d'où</p>
+                <div class="formula">$$p^{-1/q}\,\mu_{\max}\le\Phi_q\le\mu_{\max}\ \Longrightarrow\ \Phi_q\xrightarrow[q\to\infty]{}\mu_{\max}=\frac1{\lambda^{[p]}}=\Phi_\infty$$</div>
+                <p>C'est le critère E. $\checkmark$</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 3 · Optimalité du factoriel $2^2$</p>
+              <p>Vérifier que le factoriel complet pour $m=2$ est D-optimal (et A-optimal) pour le modèle d'ordre un parmi les plans à $n=4$ essais.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Par simulation (comme demandé)</p>
+                <p>On tire (ou on parcourt sur une grille) des plans de 4 points dans $[-1,1]^2$ et on calcule $\mathrm{Det}(X^\top X)$. Une recherche exhaustive sur la grille $\{-1,-0{,}5,0,0{,}5,1\}^2$ donne un maximum de $64$, atteint uniquement par les 4 sommets du carré.</p>
+                <p class="method-label">Preuve directe</p>
+                <p>$X^\top X$ est définie positive, de diagonale $(4,\ \sum x_{u1}^2,\ \sum x_{u2}^2)$ avec chaque terme $\le4$. L'inégalité de Hadamard ($\mathrm{Det}\,M\le\prod_iM_{ii}$) donne :</p>
+                <div class="formula">$$\mathrm{Det}(X^\top X)\le4\times4\times4=64=\mathrm{Det}(4I_3)$$</div>
+                <p>Égalité pour le factoriel : il est <b>D-optimal</b>. Pour A : $\big[(X^\top X)^{-1}\big]_{ii}\ge1/M_{ii}\ge1/4$, donc $\Phi_1\ge1/4$, atteint par le factoriel ($\Phi_1=1/4$) : il est aussi <b>A-optimal</b>. Tout cela découle d'ailleurs de la proposition 07.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-5">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 5</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Un plan D-optimal…<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p5-1"><span class="otext">minimise la trace de $(X^\top X)^{-1}$.</span></label>
+              <div class="qcm-explain">Faux : c'est la A-optimalité.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-1"><span class="otext">maximise le déterminant de $X^\top X$.</span></label>
+              <div class="qcm-explain">Correct : $\Phi_0=\mathrm{Det}(X^\top X)^{-1/p}$ est minimal quand ce déterminant est maximal.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-1"><span class="otext">maximise la plus grande valeur propre de $(X^\top X)^{-1}$.</span></label>
+              <div class="qcm-explain">Faux : on veut des variances petites, et c'est de toute façon un critère de type E.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-1"><span class="otext">minimise le nombre d'essais.</span></label>
+              <div class="qcm-explain">Faux : on compare des plans de même taille $n$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q2</span>Quel critère ignore les corrélations entre estimateurs ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p5-2"><span class="otext">D-optimalité</span></label>
+              <div class="qcm-explain">Faux : le déterminant tient compte de toute la matrice.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-2"><span class="otext">E-optimalité</span></label>
+              <div class="qcm-explain">Faux : les valeurs propres dépendent aussi des termes hors diagonale.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-2"><span class="otext">Optimalité universelle</span></label>
+              <div class="qcm-explain">Faux : elle implique l'optimalité pour tous les critères $\Phi_q$.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-2"><span class="otext">A-optimalité</span></label>
+              <div class="qcm-explain">Correct : la trace ne regarde que la diagonale, c'est-à-dire les variances (fiche 23).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quel lien entre $\Phi_q$ et les critères A, D, E ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p5-3"><span class="otext">$q=1$ donne A, $q\to0$ donne D, $q\to+\infty$ donne E.</span></label>
+              <div class="qcm-explain">Correct : moyenne arithmétique, géométrique et maximum des $\mu_i$ (fiches 25 et 26).</div>
+              <label class="qcm-opt"><input type="radio" name="p5-3"><span class="otext">$q=0$ donne A, $q=1$ donne D, $q=2$ donne E.</span></label>
+              <div class="qcm-explain">Faux : les valeurs sont décalées.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-3"><span class="otext">$q\to+\infty$ donne D.</span></label>
+              <div class="qcm-explain">Faux : la limite infinie donne le maximum des $\mu_i$, donc E.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-3"><span class="otext">Aucun lien, ce sont des familles indépendantes.</span></label>
+              <div class="qcm-explain">Faux : $\Phi_q$ est justement la généralisation qui les contient tous.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Quelles conditions donnent l'optimalité universelle (proposition 07) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p5-4"><span class="otext">$X^\top X$ diagonale seulement.</span></label>
+              <div class="qcm-explain">Faux : il faut un multiple de l'identité (diagonale constante) et la trace maximale.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-4"><span class="otext">Le plus grand nombre d'essais possible.</span></label>
+              <div class="qcm-explain">Faux : la comparaison se fait à $n$ fixé.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-4"><span class="otext">$X^\top X$ multiple de l'identité et de trace maximale dans la classe.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement l'énoncé, vérifié par le factoriel complet.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-4"><span class="otext">Déterminant de $X^\top X$ égal à 1.</span></label>
+              <div class="qcm-explain">Faux : aucun sens particulier.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi la D-optimalité ne dépend-elle pas du codage des facteurs ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p5-5"><span class="otext">Parce que le codage ne change pas $X$.</span></label>
+              <div class="qcm-explain">Faux : le codage change bien les colonnes de $X$.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-5"><span class="otext">Parce que le déterminant n'est multiplié que par une constante $\mathrm{Det}(H)^2$ qui ne dépend pas du plan.</span></label>
+              <div class="qcm-explain">Correct : l'ordre entre les plans est conservé (exercice 1, fiche 26).</div>
+              <label class="qcm-opt"><input type="radio" name="p5-5"><span class="otext">Parce que les plans D-optimaux sont toujours factoriels.</span></label>
+              <div class="qcm-explain">Faux : ce n'est pas vrai en général (voir les plans composites, fiche 35).</div>
+              <label class="qcm-opt"><input type="radio" name="p5-5"><span class="otext">Parce que la trace est invariante par changement de base.</span></label>
+              <div class="qcm-explain">Faux : c'est le déterminant qui compte ici, et $H(\cdot)H^\top$ n'est pas un changement de base orthonormée.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q6</span>Que minimise-t-on avec la E-optimalité ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p5-6"><span class="otext">Le volume de l'ellipsoïde de confiance.</span></label>
+              <div class="qcm-explain">Faux : c'est la D-optimalité.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-6"><span class="otext">La moyenne des variances.</span></label>
+              <div class="qcm-explain">Faux : c'est la A-optimalité.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-6"><span class="otext">Le nombre de valeurs propres nulles.</span></label>
+              <div class="qcm-explain">Faux : les plans considérés sont réguliers, aucune valeur propre n'est nulle.</div>
+              <label class="qcm-opt"><input type="radio" name="p5-6"><span class="otext">La longueur du plus grand axe de l'ellipsoïde, donc la pire variance dans une direction.</span></label>
+              <div class="qcm-explain">Correct : $\Phi_\infty=1/\lambda_{\min}(X^\top X)$.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-6">
+        <button class="lecture-head">
+          <span class="num">6</span>
+          <span class="title">Plans pour modèles à effets d'interactions</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s27">
+            <div class="tophead"><span class="num">27</span><h2>Effet d'interaction et modèle</h2></div>
+            <p>Dans le modèle d'ordre un, l'effet de la température est le même quelle que soit la pression. Souvent faux en pratique : l'effet d'un facteur dépend du niveau d'un autre. On parle d'<b>effet d'interaction</b>.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition · Modèle à effets d'interactions</p>
+              <div class="formula">$$f(x)=\beta_0+\sum_{i=1}^m\beta_ix_i+\sum_{i\lt j}\beta_{ij}x_ix_j$$</div>
+              <p>$\beta_{ij}$ est l'effet d'interaction entre les facteurs $i$ et $j$. Il y a $C_m^2=\frac{m(m-1)}2$ interactions, donc :</p>
+              <div class="formula">$$p=1+m+C_m^2=\frac{m^2+m+2}2$$</div>
+              <p>Écriture matricielle : $X=[\,\mathbb 1_n\mid D\mid D_I\,]$, où $D_I\in\mathcal M\big(n,\frac{m(m-1)}2\big)$ est la <b>matrice des effets d'interactions</b>, obtenue par produits d'Hadamard des colonnes de $D$.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Lire une interaction</p>
+              <p>$f(x)=10+3x_1+2x_2+1{,}5\,x_1x_2$. Effet de $x_1$ (passer de 0 à 1) : $3+1{,}5\,x_2$. Si $x_2=-1$, il vaut $1{,}5$ ; si $x_2=+1$, il vaut $4{,}5$. L'effet du facteur 1 <b>triple</b> selon le réglage du facteur 2.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s28">
+            <div class="tophead"><span class="num">28</span><h2>Factoriels complets et résolution V</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=3$, $p=7$, factoriel à 8 essais</p>
+              <p>Colonnes de $X$ : $\mathbb 1$, $\mathbf 1$, $\mathbf 2$, $\mathbf 3$, puis $\mathbf{12}$, $\mathbf{13}$, $\mathbf{23}$ calculées par produit d'Hadamard. On vérifie $X^\top X=8I_7$ : orthogonal, et seulement 8 essais pour 7 paramètres.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 08 · Factoriel complet</p>
+              <p>Tout factoriel complet est orthogonal pour le modèle à interactions : $X^\top X=2^mI_p$, $\mathbb V(\hat\beta)=\frac{\sigma^2}{2^m}I_p$. Mais $n=2^m\gg p$ dès que $m$ grandit : utilisé pour $m=2,3,4$.</p>
+            </div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pourquoi les résolutions III et IV ne suffisent plus</p>
+              <p><b>Résolution III</b>, par exemple $\mathbb I=\mathbf{123}$ : $\mathbf 3=\mathbf{12}$, un effet linéaire est confondu avec une interaction.</p>
+              <p><b>Résolution IV</b>, par exemple $\mathbb I=\mathbf{1234}$ : $\mathbf{12}=\mathbf{34}$, deux interactions sont confondues.</p>
+              <p>Pour que deux termes du modèle (de longueur au plus 2) ne soient jamais égaux, il faut que leur produit (de longueur au plus 4) ne soit jamais dans $\mathcal G$ : il faut donc au moins la résolution V.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 09 · Fractions de résolution V</p>
+              <p>Une fraction régulière à $q$ générateurs contient $n=2^{m-q}$ essais. Si elle est de <b>résolution V</b> ou plus, elle est orthogonale pour le modèle à interactions : $X^\top X=2^{m-q}I_p$.</p>
+            </div>
+            <table class="cmp">
+              <tr><th>Modèle</th><th>Résolution minimale pour l'orthogonalité</th></tr>
+              <tr><td>Ordre un</td><td>III</td></tr>
+              <tr><td>Interactions d'ordre deux</td><td>V</td></tr>
+              <tr><td>Interactions d'ordre trois</td><td>VII</td></tr>
+            </table>
+          </article>
+
+          <article class="topic" id="s29">
+            <div class="tophead"><span class="num">29</span><h2>Généralisations</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Modèle avec interactions d'ordre trois</p>
+              <div class="formula">$$f(x)=\beta_0+\sum_i\beta_ix_i+\sum_{i\lt j}\beta_{ij}x_ix_j+\sum_{i\lt j\lt k}\beta_{ijk}x_ix_jx_k,\qquad p=1+m+C_m^2+C_m^3=\frac{m^3+5m+6}6$$</div>
+              <p>Tout factoriel complet est orthogonal pour ce modèle, et toute fraction de résolution VII ou plus aussi (résultat théorique, peu utile : il faudrait au moins 7 facteurs).</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Modèle contenant tous les effets d'interactions</p>
+              <p>On inclut toutes les interactions, jusqu'à $\beta_{12\dots m}$. Nombre de paramètres :</p>
+              <div class="formula">$$p=\sum_{k=0}^mC_m^k=2^m$$</div>
+              <p>(un paramètre par sous-ensemble de facteurs). Le factoriel complet est orthogonal et <b>saturé</b> ($n=p=2^m$) : aucune fraction n'est possible. Utilisé pour $m=2,3,4,5$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s30">
+            <div class="tophead"><span class="num">30</span><h2>Exercices : interactions</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 1 · Isovariance</p>
+              <p>Les plans factoriels sont-ils isovariants par rotations pour le modèle à interactions ? (Commencer par $m=2$.)</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Pour $m=2$ : $g(x)^\top=(1,x_1,x_2,x_1x_2)$ et $X^\top X=4I_4$, donc</p>
+                <div class="formula">$$\mathrm{Var}\big(\hat Y(x)\big)=\frac{\sigma^2}4\big(1+x_1^2+x_2^2+x_1^2x_2^2\big)$$</div>
+                <p>À même distance $r=1$ du centre : en $(1,0)$, on trouve $\frac{\sigma^2}4\times2=0{,}5\,\sigma^2$ ; en $(\frac1{\sqrt2},\frac1{\sqrt2})$, on trouve $\frac{\sigma^2}4\times2{,}25\approx0{,}56\,\sigma^2$. La variance dépend de la direction : <b>le plan n'est pas isovariant</b>.</p>
+                <p>En général, le terme $\sum_{i\lt j}x_i^2x_j^2$ n'est pas une fonction de $\|x\|$ seul. Aucun plan factoriel (complet ou fractionnaire orthogonal) n'est isovariant pour ce modèle.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 2 · Modèle incomplet</p>
+              <p>$m=4$ facteurs, et les spécialistes affirment que la seule interaction possible est entre les facteurs 1 et 2 :</p>
+              <div class="formula">$$f(x)=\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_3+\beta_4x_4+\beta_{12}x_1x_2$$</div>
+              <p>Le budget permet au plus $n=10$ essais. Que proposer ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>$p=6$. Le complet $2^4$ fait 16 essais : trop cher. Une demi-fraction fait 8 essais : il faut choisir le générateur pour qu'aucun des termes $\mathbf 1,\mathbf 2,\mathbf 3,\mathbf 4,\mathbf{12}$ ne soit égal à un autre.</p>
+                <p><b>Proposition :</b> $\mathbb I=\mathbf{1234}$ (résolution IV). Les alias sont $\mathbf 1=\mathbf{234}$, $\mathbf 2=\mathbf{134}$, $\mathbf 3=\mathbf{124}$, $\mathbf 4=\mathbf{123}$ et $\mathbf{12}=\mathbf{34}$. Or $\mathbf{34}$ et les interactions d'ordre trois ne sont pas dans le modèle : aucun terme du modèle n'est confondu avec un autre. On vérifie $X^\top X=8I_6$ : <b>plan orthogonal en 8 essais</b>.</p>
+                <p>À éviter : $\mathbb I=\mathbf{123}$ ou $\mathbb I=\mathbf{124}$, qui donnent $\mathbf 3=\mathbf{12}$ ou $\mathbf 4=\mathbf{12}$. Les 2 essais restants du budget peuvent servir de <b>points centraux</b> : meilleure estimation de $\beta_0$, estimation de l'erreur pure et test de manque d'ajustement (fiche 16), sans casser l'orthogonalité.</p>
+                <p class="sense"><b>Sens :</b> une résolution IV ne suffit pas pour le modèle à interactions <b>complet</b>, mais suffit ici car on sait a priori quelles interactions sont absentes. Si les spécialistes se trompent sur $\beta_{34}$, son effet se retrouve mélangé dans $\hat\beta_{12}$ : c'est « à leurs risques et périls ».</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-6">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 6</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Combien de paramètres pour le modèle à interactions d'ordre deux avec $m=4$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p6-1"><span class="otext">5</span></label>
+              <div class="qcm-explain">Faux : c'est le modèle d'ordre un ($m+1$).</div>
+              <label class="qcm-opt"><input type="radio" name="p6-1"><span class="otext">16</span></label>
+              <div class="qcm-explain">Faux : c'est le modèle avec toutes les interactions ($2^m$).</div>
+              <label class="qcm-opt"><input type="radio" name="p6-1"><span class="otext">11</span></label>
+              <div class="qcm-explain">Correct : $1+4+6=11=\frac{16+4+2}2$.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-1"><span class="otext">10</span></label>
+              <div class="qcm-explain">Faux : on a oublié la constante $\beta_0$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Quelle résolution minimale garantit l'orthogonalité pour le modèle à interactions d'ordre deux ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p6-2"><span class="otext">V</span></label>
+              <div class="qcm-explain">Correct : le produit de deux termes du modèle a une longueur au plus 4, il ne doit pas être dans $\mathcal G$ (proposition 09).</div>
+              <label class="qcm-opt"><input type="radio" name="p6-2"><span class="otext">III</span></label>
+              <div class="qcm-explain">Faux : suffisant pour l'ordre un seulement, un effet linéaire serait confondu avec une interaction.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-2"><span class="otext">IV</span></label>
+              <div class="qcm-explain">Faux : deux interactions seraient confondues ($\mathbf{12}=\mathbf{34}$ avec $\mathbb I=\mathbf{1234}$).</div>
+              <label class="qcm-opt"><input type="radio" name="p6-2"><span class="otext">VII</span></label>
+              <div class="qcm-explain">Faux : c'est pour les interactions d'ordre trois.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>Avec $\mathbb I=\mathbf{123}$, quel problème pour le modèle à interactions ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p6-3"><span class="otext">Aucun, la fraction est de résolution III.</span></label>
+              <div class="qcm-explain">Faux : la résolution III ne suffit que pour l'ordre un.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-3"><span class="otext">Les facteurs 1 et 2 ont la même colonne.</span></label>
+              <div class="qcm-explain">Faux : ce serait le cas avec $\mathbb I=\mathbf{12}$.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-3"><span class="otext">Le plan contient trop d'essais.</span></label>
+              <div class="qcm-explain">Faux : la taille n'est pas le problème.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-3"><span class="otext">L'effet de $x_3$ est confondu avec l'interaction $x_1x_2$.</span></label>
+              <div class="qcm-explain">Correct : $\mathbf 3=\mathbf{12}$, on ne peut pas séparer $\beta_3$ et $\beta_{12}$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q4</span>Pour le modèle qui contient toutes les interactions, le factoriel complet est…<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p6-4"><span class="otext">non orthogonal.</span></label>
+              <div class="qcm-explain">Faux : il reste orthogonal.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-4"><span class="otext">orthogonal et saturé, car $p=2^m=n$.</span></label>
+              <div class="qcm-explain">Correct : un paramètre par sous-ensemble de facteurs, autant que de sommets (fiche 29).</div>
+              <label class="qcm-opt"><input type="radio" name="p6-4"><span class="otext">remplaçable par une demi-fraction.</span></label>
+              <div class="qcm-explain">Faux : avec $n=p$ déjà, on ne peut pas enlever d'essais.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-4"><span class="otext">isovariant par rotations.</span></label>
+              <div class="qcm-explain">Faux : les termes croisés rendent la variance dépendante de la direction (exercice 1, fiche 30).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Dans l'exercice du modèle incomplet ($m=4$, seule interaction $x_1x_2$), pourquoi $\mathbb I=\mathbf{1234}$ convient-il malgré sa résolution IV ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p6-5"><span class="otext">Parce que la résolution IV suffit toujours pour les interactions.</span></label>
+              <div class="qcm-explain">Faux : en général il faut la résolution V.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-5"><span class="otext">Parce que $\mathbf{12}$ n'a pas d'alias.</span></label>
+              <div class="qcm-explain">Faux : $\mathbf{12}=\mathbf{34}$.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-5"><span class="otext">Parce que l'alias de $\mathbf{12}$ est $\mathbf{34}$, qui n'est pas dans le modèle.</span></label>
+              <div class="qcm-explain">Correct : aucun terme du modèle n'est confondu avec un autre, $X^\top X=8I_6$.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-5"><span class="otext">Parce que 8 essais sont toujours suffisants.</span></label>
+              <div class="qcm-explain">Faux : le nombre d'essais ne garantit rien sans bonne structure d'alias.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q6</span>Que signifie $\beta_{12}\ne0$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p6-6"><span class="otext">L'effet du facteur 1 dépend du niveau du facteur 2.</span></label>
+              <div class="qcm-explain">Correct : $\partial f/\partial x_1=\beta_1+\beta_{12}x_2$ varie avec $x_2$.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-6"><span class="otext">Les facteurs 1 et 2 sont corrélés dans le plan.</span></label>
+              <div class="qcm-explain">Faux : une interaction est une propriété du phénomène, pas une corrélation entre colonnes du plan.</div>
+              <label class="qcm-opt"><input type="radio" name="p6-6"><span class="otext">La réponse a une courbure en $x_1$.</span></label>
+              <div class="qcm-explain">Faux : la courbure pure vient d'un terme $x_1^2$ (chapitre 7).</div>
+              <label class="qcm-opt"><input type="radio" name="p6-6"><span class="otext">Le facteur 1 n'a pas d'effet.</span></label>
+              <div class="qcm-explain">Faux : cela ne dit rien de $\beta_1$.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-7">
+        <button class="lecture-head">
+          <span class="num">7</span>
+          <span class="title">Plans d'expérience pour surfaces de réponse</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s31">
+            <div class="tophead"><span class="num">31</span><h2>Modèle d'ordre deux</h2></div>
+            <p>Les modèles précédents n'ont pas de terme quadratique : ils ne peuvent pas décrire une <b>courbure</b>, par exemple un optimum à l'intérieur du domaine. On ajuste alors un polynôme complet de degré deux : une <b>surface de réponse</b>.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition · Modèle pour surfaces de réponse</p>
+              <div class="formula">$$f(x)=\beta_0+\sum_{i=1}^m\beta_ix_i+\sum_{i=1}^m\beta_{ii}x_i^2+\sum_{i\lt j}\beta_{ij}x_ix_j,\qquad p=\frac{(m+1)(m+2)}2$$</div>
+              <p>$\beta_{ii}$ : <b>effet quadratique</b> du facteur $i$. $X=[\,\mathbb 1_n\mid D\mid D_Q\mid D_I\,]$, avec $D_Q\in\mathcal M(n,m)$ la <b>matrice des effets quadratiques</b>.</p>
+            </div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Les plans factoriels ne marchent plus</p>
+              <p>Aux sommets, $x_i=\pm1$ donc $x_i^2=1$ : chaque colonne de $D_Q$ est égale à $\mathbb 1_n$. La matrice $X$ contient $m+1$ colonnes identiques et n'est jamais de plein rang. Exemple $m=2$ : 4 essais pour $p=6$, et trois colonnes égales. <b>Il faut au moins trois niveaux par facteur.</b></p>
+            </div>
+          </article>
+
+          <article class="topic" id="s32">
+            <div class="tophead"><span class="num">32</span><h2>Plans composites centrés</h2></div>
+            <p>Idée : réutiliser un plan factoriel (souvent déjà réalisé pour un modèle d'ordre un) et le <b>compléter</b>.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 10 · Plan composite centré</p>
+              <p>1) Une <b>partie factorielle</b> : les sommets de $[-1,1]^m$, ou une fraction régulière de résolution V ou plus ;<br>
+              2) une <b>partie axiale</b> : les $2m$ points $(\pm\alpha,0,\dots,0),\dots,(0,\dots,0,\pm\alpha)$ sur les axes, à distance $\alpha$ du centre ;<br>
+              3) une <b>partie centrale</b> : $n_0$ répétitions du centre.</p>
+              <div class="formula">$$n=2^{m-q}+2m+n_0$$</div>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=2$, $n_0=2$</p>
+              <p>4 sommets, 4 points axiaux, 2 centres : $n=10$ pour $p=6$. La matrice d'information (ordre des colonnes : $1,x_1,x_2,x_1^2,x_2^2,x_1x_2$) :</p>
+              <div class="formula">$$X^\top X=\begin{pmatrix}10&0&0&4+2\alpha^2&4+2\alpha^2&0\\0&4+2\alpha^2&0&0&0&0\\0&0&4+2\alpha^2&0&0&0\\4+2\alpha^2&0&0&4+2\alpha^4&4&0\\4+2\alpha^2&0&0&4&4+2\alpha^4&0\\0&0&0&0&0&4\end{pmatrix}$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Résultat · Matrice d'information canonique</p>
+              <p>Pour tout composite centré, $X^\top X$ a la forme :</p>
+              <div class="formula">$$X^\top X=\begin{pmatrix}n&0&c_2\mathbb I_m^\top&0\\0&c_2I_m&0&0\\c_2\mathbb I_m&0&(c_4-c_{22})I_m+c_{22}J_m&0\\0&0&0&c_{22}I_{m(m-1)/2}\end{pmatrix}$$</div>
+              <p>$c_2,c_4,c_{22}$ sont des moments du plan et $J_m$ la matrice carrée remplie de 1. Le bloc quadratique est <b>complètement symétrique</b>.</p>
+              <p class="sense"><b>Sens :</b> l'orthogonalité exacte (matrice diagonale) est <b>impossible</b> en ordre deux, car la constante et les carrés sont toujours liés ($c_2\ne0$). La forme <b>canonique</b> est le mieux possible : un maximum de zéros. On retrouve l'orthogonalité en réécrivant le modèle dans une base de polynômes orthogonaux.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s33">
+            <div class="tophead"><span class="num">33</span><h2>Choisir α et n₀</h2></div>
+            <div class="box box-thm">
+              <p class="box-label">Le nombre de points centraux $n_0$</p>
+              <p>Même raisonnement que la fiche 16 : quelques points centraux améliorent nettement la variance de prédiction au centre, puis le gain s'épuise. En pratique $n_0=2,3,4$ si le budget le permet.</p>
+            </div>
+            <table class="cmp">
+              <tr><th>Type de composite</th><th>Choix de α</th><th>Propriété obtenue</th></tr>
+              <tr><td>Faces centrées</td><td>$\alpha=1$</td><td>Seulement 3 niveaux par facteur ($-1,0,1$), pratique si changer de niveau est difficile</td></tr>
+              <tr><td>Isovariant par rotations</td><td>$\alpha=\big(2^{m-q}\big)^{1/4}$</td><td>Variance de prédiction fonction de $\|x\|$ seulement</td></tr>
+              <tr><td>Équiradial</td><td>$\alpha=\sqrt m$</td><td>Tous les points (hors centre) à la même distance du centre</td></tr>
+              <tr><td>Presque orthogonal</td><td>$\alpha=\sqrt{\dfrac{\sqrt{2^{m-q}}\big(\sqrt n-\sqrt{2^{m-q}}\big)}2}$</td><td>Maximum de zéros dans $(X^\top X)^{-1}$</td></tr>
+            </table>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=2$, factoriel complet</p>
+              <p>Isovariant : $\alpha=4^{1/4}=\sqrt2$. Équiradial : $\alpha=\sqrt2$. Pour deux facteurs, les deux choix coïncident : les 8 points non centraux sont sur le cercle de rayon $\sqrt2$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s34">
+            <div class="tophead"><span class="num">34</span><h2>Box-Behnken et plans hybrides</h2></div>
+            <div class="box box-def">
+              <p class="box-label">Plans de Box et Behnken</p>
+              <p>Plans à matrice d'information canonique qui n'utilisent que les niveaux $-1,0,+1$. Pour $m=3$ (12 essais, plus en général des points centraux) :</p>
+              <div class="formula">$$D=\begin{pmatrix}\pm1&\pm1&0\\\pm1&0&\pm1\\0&\pm1&\pm1\end{pmatrix}$$</div>
+              <p>Chaque ligne symbolique représente un factoriel $2^2$ sur deux facteurs, le troisième au centre. Pas de point aux sommets du cube : utile quand les combinaisons extrêmes sont dangereuses ou impossibles.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Plans hybrides</p>
+              <p>On part d'une structure classique pour $m-1$ facteurs et on ajoute une colonne pour le $m$-ième. Exemple : le plan hybride 311A pour $m=3$, à 10 essais, avec les niveaux $\pm1$, $\pm\sqrt2$, $0$ et $\pm1/\sqrt2$. Intérêt : des plans très économiques (proches de $p=10$) à matrice canonique.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s35">
+            <div class="tophead"><span class="num">35</span><h2>Exercices : surfaces de réponse</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 1 · Composite centré D-optimal</p>
+              <p>Composite centré pour $m=2$, domaine sphérique de rayon $\sqrt2$ (donc $\alpha\le\sqrt2$). 1) Avec $n_0=2$, quelle valeur de $\alpha$ donne un plan D-optimal ? 2) Même question sans point central. Expliquer pourquoi les résultats diffèrent autant.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Avec $n_0=2$</p>
+                <p>On maximise $\mathrm{Det}(X^\top X)$ en $\alpha\in\,]0,\sqrt2]$ (calcul numérique). Le déterminant croît avec $\alpha$ : il vaut 8 064 en $\alpha=1$ et atteint son maximum 65 536 au bord, en $\alpha^*=\sqrt2$. On écarte les points axiaux le plus possible.</p>
+                <p class="method-label">2) Sans point central</p>
+                <p>Le maximum est intérieur : $\alpha^*\approx1{,}074$, avec $\mathrm{Det}\approx2\,427$. Et en $\alpha=\sqrt2$, le déterminant est <b>nul</b>.</p>
+                <p class="method-label">Pourquoi cette différence</p>
+                <p>Sans centre et avec $\alpha=\sqrt2$, les 8 points sont tous sur le cercle de rayon $\sqrt2$, donc $x_1^2+x_2^2=2$ pour chaque essai. Les colonnes vérifient alors :</p>
+                <div class="formula">$$\text{col}(x_1^2)+\text{col}(x_2^2)=2\,\mathbb 1_n$$</div>
+                <p>$X$ n'est pas de plein rang et le modèle n'est pas estimable. Il faut donc ramener les points axiaux vers l'intérieur pour casser cette relation, d'où un optimum en $\alpha\approx1{,}07$. Avec des points centraux, pour lesquels $x_1^2+x_2^2=0$, la relation est cassée d'office, et on peut pousser $\alpha$ jusqu'au bord.</p>
+                <p class="sense"><b>Sens :</b> les points centraux ne servent pas seulement à estimer l'erreur pure. En ordre deux, ils sont indispensables pour séparer la constante des effets quadratiques quand le plan est équiradial.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Exercice 2 · Mise en œuvre d'un composite centré</p>
+              <p>On cherche à <b>minimiser</b> la réponse ($m=2$, domaine sphérique de rayon $\sqrt2$) avec le plan suivant :</p>
+              <table class="cmp">
+                <tr><th>Fact. 1</th><td>−1</td><td>+1</td><td>−1</td><td>+1</td><td>$\sqrt2$</td><td>$-\sqrt2$</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><th>Fact. 2</th><td>−1</td><td>−1</td><td>+1</td><td>+1</td><td>0</td><td>0</td><td>$\sqrt2$</td><td>$-\sqrt2$</td><td>0</td><td>0</td></tr>
+                <tr><th>Réponse</th><td>12,4</td><td>10,2</td><td>8,6</td><td>6,8</td><td>5,0</td><td>7,5</td><td>10,2</td><td>14,2</td><td>4,3</td><td>4,5</td></tr>
+              </table>
+              <p>1) Ce plan est-il isovariant par rotations ? Écrire la variance de la réponse prédite. 2) Trouver les niveaux qui minimisent la réponse, la réponse prédite optimale et son écart-type.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Isovariance</p>
+                <p>Partie factorielle complète ($2^{m-q}=4$) et $\alpha=\sqrt2=4^{1/4}$ : c'est exactement la condition d'isovariance (fiche 33). Le calcul confirme, avec $r=\|x\|$ :</p>
+                <div class="formula">$$\mathrm{Var}\big(\hat Y(x)\big)=\sigma^2\Big(\frac12-\frac38\,r^2+\frac7{32}\,r^4\Big)$$</div>
+                <p>Au centre, $0{,}5\,\sigma^2$ ; minimum vers $r\approx0{,}93$ ; puis la variance remonte vers le bord.</p>
+                <p class="method-label">2) Ajustement</p>
+                <div class="formula">$$\hat y=4{,}40-0{,}942\,x_1-1{,}607\,x_2+0{,}994\,x_1^2+3{,}969\,x_2^2+0{,}100\,x_1x_2$$</div>
+                <p>$SSE\approx0{,}50$, $R^2\approx0{,}995$, $MSE\approx0{,}124$ (4 ddl). Tous les termes sont significatifs sauf l'interaction ($p\approx0{,}60$).</p>
+                <p class="method-label">Point stationnaire</p>
+                <p>On écrit $\hat y=\hat\beta_0+x^\top b+x^\top Bx$ avec $b=(-0{,}942;\,-1{,}607)$ et $B=\begin{pmatrix}0{,}994&0{,}050\\0{,}050&3{,}969\end{pmatrix}$. Le gradient s'annule en :</p>
+                <div class="formula">$$x^*=-\tfrac12B^{-1}b\approx(0{,}464\,;\,0{,}197)$$</div>
+                <p>Les valeurs propres de $B$ ($0{,}99$ et $3{,}97$) sont positives : c'est bien un <b>minimum</b>, situé dans le domaine ($\|x^*\|\approx0{,}50\le\sqrt2$).</p>
+                <p><b>Réponse prédite optimale :</b> $\hat y(x^*)\approx4{,}02$. <b>Écart-type :</b> $\sqrt{MSE\cdot g(x^*)^\top(X^\top X)^{-1}g(x^*)}\approx\sqrt{0{,}052}\approx0{,}23$.</p>
+                <p class="sense"><b>Sens :</b> on règle le facteur 1 un peu au-dessus du centre et le facteur 2 très légèrement au-dessus. La réponse y vaut environ 4,0, avec une incertitude de l'ordre de 0,2 : une prédiction précise, car $x^*$ est proche du centre où la variance est faible.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-7">
+            <div class="qcm-head">
+              <h3>QCM de révision · Chapitre 7</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Combien de paramètres pour une surface de réponse à $m=3$ facteurs ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p7-1"><span class="otext">7</span></label>
+              <div class="qcm-explain">Faux : c'est le modèle à interactions (sans les carrés).</div>
+              <label class="qcm-opt"><input type="radio" name="p7-1"><span class="otext">10</span></label>
+              <div class="qcm-explain">Correct : $\frac{(3+1)(3+2)}2=10$ (1 constante, 3 linéaires, 3 quadratiques, 3 interactions).</div>
+              <label class="qcm-opt"><input type="radio" name="p7-1"><span class="otext">8</span></label>
+              <div class="qcm-explain">Faux : c'est $2^3$, le nombre de sommets.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-1"><span class="otext">9</span></label>
+              <div class="qcm-explain">Faux : on a oublié la constante.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q2</span>Pourquoi un factoriel ne peut-il pas ajuster un modèle d'ordre deux ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p7-2"><span class="otext">Parce qu'il n'est pas orthogonal.</span></label>
+              <div class="qcm-explain">Faux : le problème n'est pas l'orthogonalité mais le rang.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-2"><span class="otext">Parce que les interactions sont confondues.</span></label>
+              <div class="qcm-explain">Faux : dans le factoriel complet, les interactions sont bien séparées.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-2"><span class="otext">Parce qu'il a toujours trop peu d'essais.</span></label>
+              <div class="qcm-explain">Faux : même en répétant les sommets, le problème reste.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-2"><span class="otext">Parce que $x_i^2=1$ aux sommets : les colonnes quadratiques sont égales à celle de la constante.</span></label>
+              <div class="qcm-explain">Correct : $X$ n'est pas de plein rang, il faut au moins trois niveaux (fiche 31).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Nombre d'essais d'un composite centré à $m=3$, partie factorielle complète, $n_0=3$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p7-3"><span class="otext">17</span></label>
+              <div class="qcm-explain">Correct : $2^3+2\times3+3=8+6+3=17$.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-3"><span class="otext">14</span></label>
+              <div class="qcm-explain">Faux : on a oublié les points centraux.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-3"><span class="otext">20</span></label>
+              <div class="qcm-explain">Faux : il n'y a que $2m=6$ points axiaux, pas $3m$.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-3"><span class="otext">11</span></label>
+              <div class="qcm-explain">Faux : on a oublié la partie axiale.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q4</span>Quelle valeur de α rend isovariant un composite centré à $m=4$ avec partie factorielle complète ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p7-4"><span class="otext">$\alpha=1$</span></label>
+              <div class="qcm-explain">Faux : c'est le choix « faces centrées ».</div>
+              <label class="qcm-opt"><input type="radio" name="p7-4"><span class="otext">$\alpha=4$</span></label>
+              <div class="qcm-explain">Faux : les points seraient loin hors du domaine.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-4"><span class="otext">$\alpha=2$</span></label>
+              <div class="qcm-explain">Correct : $\alpha=(2^4)^{1/4}=16^{1/4}=2$ (ici égal aussi à $\sqrt m$, donc équiradial).</div>
+              <label class="qcm-opt"><input type="radio" name="p7-4"><span class="otext">$\alpha=\sqrt2$</span></label>
+              <div class="qcm-explain">Faux : c'est la valeur pour $m=2$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pour $m=2$ sans point central, pourquoi $\alpha=\sqrt2$ est-il le pire choix ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p7-5"><span class="otext">Parce que les points axiaux sortent du domaine.</span></label>
+              <div class="qcm-explain">Faux : $\sqrt2$ est exactement le rayon du domaine.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-5"><span class="otext">Parce que tous les points sont sur un même cercle, donc $x_1^2+x_2^2$ est constant et $X$ n'est pas de plein rang.</span></label>
+              <div class="qcm-explain">Correct : $\mathrm{Det}(X^\top X)=0$, d'où un optimum intérieur $\alpha\approx1{,}07$ (fiche 35).</div>
+              <label class="qcm-opt"><input type="radio" name="p7-5"><span class="otext">Parce que le plan n'est plus isovariant.</span></label>
+              <div class="qcm-explain">Faux : $\alpha=\sqrt2$ est justement la valeur isovariante, mais le modèle n'est même plus estimable.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-5"><span class="otext">Parce que le nombre d'essais dépasse le budget.</span></label>
+              <div class="qcm-explain">Faux : $\alpha$ ne change pas le nombre d'essais.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q6</span>Quel est l'intérêt principal d'un plan de Box et Behnken ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="p7-6"><span class="otext">Il est orthogonal pour le modèle d'ordre deux.</span></label>
+              <div class="qcm-explain">Faux : l'orthogonalité exacte est impossible en ordre deux, il est canonique.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-6"><span class="otext">Il utilise tous les sommets du cube.</span></label>
+              <div class="qcm-explain">Faux : il n'en utilise aucun.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-6"><span class="otext">Il demande moins d'essais que $p$.</span></label>
+              <div class="qcm-explain">Faux : impossible, il faut toujours $n\ge p$.</div>
+              <label class="qcm-opt"><input type="radio" name="p7-6"><span class="otext">Il n'utilise que trois niveaux $-1,0,+1$ et évite les combinaisons extrêmes.</span></label>
+              <div class="qcm-explain">Correct : pratique quand les sommets sont dangereux, coûteux ou irréalisables (fiche 34).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="mnemonics">
+        <h2>Chaînes à retenir</h2>
+        <div class="chain"><b>Coder</b> : $x=\frac{2x^*-(a+b)}{b-a}$ → tous les facteurs dans $[-1,1]$, sans unité</div>
+        <div class="chain"><b>Plan = choix de X</b> → $\mathbb V(\hat\beta)=\sigma^2(X^\top X)^{-1}$ et $\mathrm{Var}(\hat Y(x))=\sigma^2g^\top(X^\top X)^{-1}g$</div>
+        <div class="chain"><b>Répéter</b> → $SSE=SSLOF+SSPE$ → test de manque d'ajustement $MSLOF/MSPE$</div>
+        <div class="chain"><b>Factoriel complet $2^m$</b> → orthogonal, $X^\top X=2^mI_p$, universellement optimal, mais trop gros</div>
+        <div class="chain"><b>Fraction $2^{m-q}$</b> → groupe $\mathcal G$ à $2^q$ mots → résolution = plus court mot</div>
+        <div class="chain"><b>Résolution III</b> ordre un · <b>V</b> interactions · <b>VII</b> interactions d'ordre trois</div>
+        <div class="chain"><b>A</b> trace · <b>D</b> déterminant · <b>E</b> plus petite valeur propre · tous dans $\Phi_q$</div>
+        <div class="chain"><b>Ordre deux</b> → factoriel impossible → composite centré $2^{m-q}+2m+n_0$, $\alpha=(2^{m-q})^{1/4}$ pour l'isovariance</div>
+        <p class="source-note">Mémo basé sur le polycopié <i>Plans d'expérience</i> de Walter Tinsson, ENSAI 3A, 2026-2027 (chapitres 1 à 7). Les corrections des exercices ont été recalculées numériquement.</p>
+      </div>
+
+    </main>
+  </div>
+
+
+  <button id="toTop" aria-label="Retour en haut">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+<script>
+(function(){
+  "use strict";
+
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  function getStored(){ try{ return localStorage.getItem('pde-memo-theme'); }catch(e){ return null; } }
+  function setStored(v){ try{ localStorage.setItem('pde-memo-theme', v); }catch(e){} }
+  var stored = getStored();
+  if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next;
+    if(!current){ next = prefersDark ? 'light' : 'dark'; }
+    else if(current === 'dark'){ next = 'light'; }
+    else { next = 'dark'; }
+    root.setAttribute('data-theme', next);
+    setStored(next);
+  });
+
+  var bar = document.getElementById('progress');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    bar.style.width = height > 0 ? (scrollTop / height * 100) + '%' : '0%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  var toTop = document.getElementById('toTop');
+  document.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 500);
+  }, { passive: true });
+  toTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+  function markFormulaScroll(){
+    document.querySelectorAll('.formula').forEach(function(f){
+      f.classList.toggle('is-scrollable', f.scrollWidth > f.clientWidth + 2);
+    });
+  }
+  (function hookMathJaxReady(tries){
+    tries = tries || 0;
+    if(window.MathJax && window.MathJax.startup && window.MathJax.startup.promise){
+      window.MathJax.startup.promise.then(markFormulaScroll);
+    } else if(tries < 100){
+      setTimeout(function(){ hookMathJaxReady(tries + 1); }, 100);
+    } else {
+      markFormulaScroll();
+    }
+  })();
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(markFormulaScroll, 150);
+  });
+
+  document.querySelectorAll('.lecture-head').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.lecture').classList.toggle('collapsed');
+      setTimeout(markFormulaScroll, 50);
+    });
+  });
+
+  var toc = document.getElementById('toc');
+  var navToggle = document.getElementById('navToggle');
+  var overlay = document.getElementById('mobileOverlay');
+  function closeNav(){ toc.classList.remove('open'); overlay.hidden = true; }
+  navToggle.addEventListener('click', function(){
+    toc.classList.add('open'); overlay.hidden = false;
+  });
+  overlay.addEventListener('click', closeNav);
+  toc.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc-lecture a'));
+  var topics = Array.prototype.slice.call(document.querySelectorAll('article.topic'));
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id;
+        links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  topics.forEach(function(t){ io.observe(t); });
+
+  var search = document.getElementById('search');
+  var count = document.getElementById('searchCount');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box'));
+  function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  var boxData = boxes.map(function(b){ return { el: b, text: normalize(b.textContent) }; });
+
+  search.addEventListener('input', function(){
+    var q = normalize(search.value.trim());
+    if(!q){
+      boxData.forEach(function(b){ b.el.classList.remove('dim'); });
+      count.textContent = '';
+      document.querySelectorAll('.lecture').forEach(function(l){ l.classList.remove('collapsed'); });
+      return;
+    }
+    var matches = 0;
+    boxData.forEach(function(b){
+      var hit = b.text.indexOf(q) !== -1;
+      b.el.classList.toggle('dim', !hit);
+      if(hit){
+        matches++;
+        var lec = b.el.closest('.lecture');
+        if(lec) lec.classList.remove('collapsed');
+        var det = b.el.closest('details.solution');
+        if(det) det.open = true;
+      }
+    });
+    count.textContent = matches + ' résultat' + (matches === 1 ? '' : 's');
+    setTimeout(markFormulaScroll, 50);
+  });
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.documentElement.style.scrollBehavior = 'auto';
+  }
+
+  document.querySelectorAll('.qcm').forEach(function(qcm){
+    var submitBtn = qcm.querySelector('.qcm-submit');
+    var resetBtn = qcm.querySelector('.qcm-reset');
+    var resultEl = qcm.querySelector('.qcm-result');
+    var pool = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var VISIBLE = Math.min(5, pool.length);
+    var windowStart = 0;
+    var visible = [];
+
+    function resetQuestion(q){
+      q.classList.remove('graded', 'q-correct', 'q-incorrect');
+      q.querySelectorAll('.qcm-opt').forEach(function(opt){
+        opt.classList.remove('opt-right', 'opt-wrong-checked');
+        var input = opt.querySelector('input');
+        input.checked = false;
+        input.disabled = false;
+      });
+    }
+
+    function showWindow(start){
+      windowStart = ((start % pool.length) + pool.length) % pool.length;
+      visible = [];
+      pool.forEach(function(q){ q.style.display = 'none'; resetQuestion(q); });
+      for(var i = 0; i < VISIBLE; i++){
+        var q = pool[(windowStart + i) % pool.length];
+        q.style.display = '';
+        var qnum = q.querySelector('.qnum');
+        if(qnum) qnum.textContent = 'Q' + (i + 1);
+        visible.push(q);
+      }
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    }
+
+    submitBtn.addEventListener('click', function(){
+      var score = 0;
+      visible.forEach(function(q){
+        var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
+        var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
+        var checked = [];
+        opts.forEach(function(opt, idx){
+          if(opt.querySelector('input').checked) checked.push(idx);
+        });
+        checked.sort();
+        var isCorrect = checked.length === correct.length && checked.every(function(v, i){ return v === correct[i]; });
+        if(isCorrect) score++;
+        q.classList.add('graded');
+        q.classList.toggle('q-correct', isCorrect);
+        q.classList.toggle('q-incorrect', !isCorrect);
+        opts.forEach(function(opt, idx){
+          var input = opt.querySelector('input');
+          var isRight = correct.indexOf(idx) !== -1;
+          var wasChecked = input.checked;
+          opt.classList.toggle('opt-right', isRight);
+          opt.classList.toggle('opt-wrong-checked', wasChecked && !isRight);
+          input.disabled = true;
+        });
+      });
+      resultEl.textContent = 'Score : ' + score + ' / ' + visible.length;
+      submitBtn.disabled = true;
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      showWindow(windowStart + 2);
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    showWindow(0);
+  });
+})();
+</script>
+
+</body>
+</html>
