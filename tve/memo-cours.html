@@ -353,6 +353,17 @@ window.MathJax = {
           <li><a href="#s44"><span class="toc-num">44</span>Simulation commentée</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>6 : Examen du 17/10/2025 (corrigé)</p>
+        <ol>
+          <li><a href="#s45"><span class="toc-num">45</span>Ex. 1 : questions de cours</a></li>
+          <li><a href="#s46"><span class="toc-num">46</span>Ex. 2 : borne d'un uniforme</a></li>
+          <li><a href="#s47"><span class="toc-num">47</span>Ex. 3 : Pareto et maximum glissant</a></li>
+          <li><a href="#s48"><span class="toc-num">48</span>Ex. 4 : condition de second ordre</a></li>
+          <li><a href="#s49"><span class="toc-num">49</span>Ex. 5 : moments d'une Pareto généralisée</a></li>
+          <li><a href="#s50"><span class="toc-num">50</span>Ex. 6 : lecture d'une analyse de données</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
@@ -362,7 +373,7 @@ window.MathJax = {
         <p>Synthèse des trois chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), comment estimer un quantile ou une probabilité bien au-delà des données observées quand la queue est lourde, puis comment faire pour n'importe quel type de queue (Pickands, moments, maximum de vraisemblance). Chaque chapitre est relié au précédent et au suivant.</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>44 fiches</b> · 4 QCM</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>50 fiches</b> · 5 QCM</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -1994,6 +2005,213 @@ for nom, x in echantillons.items():
               <div class="qcm-explain">Correct : chapitre 1 (existence de $\gamma$), chapitre 2 (estimer pour $\gamma\gt0$), chapitre 3 (estimer pour tout $\gamma$). Toujours avec le même compromis : $k$ petit donne de la variance, $k$ grand du biais.</div>
               <label class="qcm-opt"><input type="radio" name="t4-6"><span class="otext">La normalité des données.</span></label>
               <div class="qcm-explain">Faux : on suppose au contraire que les queues sont non gaussiennes.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+          <article class="topic" id="s45">
+            <div class="tophead"><span class="num">45</span><h2>Examen 17/10/2025, Ex. 1 : questions de cours</h2></div>
+            <p><b>Énoncé.</b> (i) Différences GEV / GPD (objectifs, conditions de validité). (ii) Différences queue lourde / queue courte. (iii) Estimateur de Hill et conditions de consistance.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>(i) GEV vs GPD.</b> La loi <b>GEV</b> ($G_\gamma$) modélise la distribution limite du <b>maximum</b> d'un bloc de $n$ observations (méthode des maxima par blocs, ex. le maximum annuel) : elle vient du théorème de Fisher-Tippett-Gnedenko (fiche 4), valable quand $n\to\infty$, c'est-à-dire quand chaque bloc contient suffisamment d'observations. La loi <b>GPD</b> ($H_{\gamma,\sigma}$) modélise la distribution limite des <b>excès</b> au-dessus d'un seuil élevé $u$ (méthode POT, Peaks Over Threshold) : elle vient du théorème de Pickands-Balkema-de Haan (fiche 7), valable quand $u\to\infty$ (ou $F(u)\to1$). Les deux approches partagent le <b>même</b> indice des valeurs extrêmes $\gamma$, mais la GPD exploite en général <b>plus d'information</b> (toutes les observations au-dessus du seuil, pas une seule par bloc), au prix du choix d'un seuil $u$ au lieu d'une taille de bloc.</p>
+                <p><b>(ii) Queue lourde vs queue courte.</b> Une loi à <b>queue lourde</b> ($\gamma\gt0$, domaine de Fréchet) a une fonction de survie à décroissance <b>polynomiale</b> : $1-F(x)\sim x^{-1/\gamma}L(x)$ avec $L$ à variation lente. Conséquence directe : les moments d'ordre $k\ge1/\gamma$ sont infinis, et le support est non borné à droite. Une loi à <b>queue courte</b> ($\gamma\lt0$, domaine de Weibull) a un <b>point terminal fini</b> $x^\star=\sup\{x:F(x)\lt1\}\lt\infty$ : le support est borné à droite. Entre les deux, le cas $\gamma=0$ (Gumbel, queue <b>légère</b>) a une décroissance exponentielle, support borné ou non, et tous les moments finis.</p>
+                <p><b>(iii) Estimateur de Hill.</b> Avec $X_{1,n}\le\cdots\le X_{n,n}$ les statistiques d'ordre et $k=k_n$ un nombre intermédiaire d'excès :
+                $$\hat\gamma^{H}_k=\frac1k\sum_{i=1}^k\log X_{n-i+1,n}-\log X_{n-k,n}=\frac1k\sum_{i=1}^k\log\frac{X_{n-i+1,n}}{X_{n-k,n}}.$$
+                Conditions pour la consistance (fiche 14) : (a) $k=k_n\to\infty$ et $k_n/n\to0$ (suite intermédiaire : assez d'observations dans la queue, mais une proportion négligeable de l'échantillon) ; (b) la loi appartient au domaine d'attraction de <b>Fréchet</b>, $\gamma\gt0$ (Hill est <b>spécifiquement</b> construit pour la queue lourde : pour $\gamma\le0$ il ne converge pas vers $\gamma$, cf. fiche 38 et l'exercice 6 ci-dessous).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s46">
+            <div class="tophead"><span class="num">46</span><h2>Examen 17/10/2025, Ex. 2 : borne d'un uniforme</h2></div>
+            <p><b>Énoncé.</b> $X_1,\ldots,X_n$ i.i.d. $\sim\mathcal U[0,\theta]$, $\theta$ fini. (i) Estimateur consistant de $\theta$. (ii) Est-il biaisé ? Correction éventuelle.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>(i) Un estimateur consistant.</b> Le maximum empirique $\hat\theta=X_{n,n}=\max(X_1,\ldots,X_n)$ convient. En effet, pour $\varepsilon\in(0,\theta)$ :
+                $$\mathbb P(\theta-\hat\theta\gt\varepsilon)=\mathbb P(X_{n,n}\lt\theta-\varepsilon)=\left(\frac{\theta-\varepsilon}\theta\right)^n\xrightarrow[n\to\infty]{}0,$$
+                et $\hat\theta\le\theta$ toujours, donc $\hat\theta\xrightarrow{\mathbb P}\theta$ : $X_{n,n}$ est consistant.</p>
+                <p><b>(ii) Biais.</b> La fonction de répartition de $X_{n,n}$ est $F_{X_{n,n}}(x)=(x/\theta)^n$ sur $[0,\theta]$, de densité $f(x)=nx^{n-1}/\theta^n$. Donc
+                $$\mathbb E[X_{n,n}]=\int_0^\theta x\cdot\frac{nx^{n-1}}{\theta^n}\,dx=\frac n{\theta^n}\left[\frac{x^{n+1}}{n+1}\right]_0^\theta=\frac{n\theta}{n+1}.$$
+                Le biais est $\mathbb E[X_{n,n}]-\theta=-\dfrac\theta{n+1}\ne0$ : l'estimateur est <b>biaisé</b> (il sous-estime systématiquement $\theta$, ce qui est intuitif : le maximum observé ne peut jamais dépasser la vraie borne). <b>Correction sans biais</b> : $\hat\theta^\star=\dfrac{n+1}n X_{n,n}$, car $\mathbb E[\hat\theta^\star]=\dfrac{n+1}n\cdot\dfrac{n\theta}{n+1}=\theta$.</p>
+                <p class="sense"><b>Vérifié numériquement</b> (Monte Carlo, $\theta=5$, $n=50$, $2\times10^5$ répétitions) : $\mathbb E[X_{n,n}]$ simulé $\approx4{,}902$, formule $n\theta/(n+1)=4{,}902$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s47">
+            <div class="tophead"><span class="num">47</span><h2>Examen 17/10/2025, Ex. 3 : Pareto et maximum glissant</h2></div>
+            <p><b>Énoncé.</b> $X_1,\ldots,X_n$ i.i.d. $\sim$ Pareto, $F_X(x)=1-x^{-1/\gamma}$, $x\ge1$. (i) Constantes de normalisation du maximum $M_n$. (ii)-(iii) Loi et domaine d'attraction du maximum glissant $Y_i=\max(X_{i-1},X_i,X_{i+1})$. (iv) Le maximum $M_n'$ de ces $Y_i$ converge-t-il aussi ?</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>(i) Normalisation de $M_n$.</b> La fonction quantile de queue est $U(t)=F_X^{-1}(1-1/t)$ : on résout $1-F_X(x)=1/t\iff x^{-1/\gamma}=1/t\iff x=t^\gamma$, donc $U(t)=t^\gamma$. On prend $a_n=n^\gamma$, $b_n=0$ :
+                $$\mathbb P\!\left(\frac{M_n}{n^\gamma}\le x\right)=F_X(n^\gamma x)^n=\left(1-\frac{x^{-1/\gamma}}n\right)^n\xrightarrow[n\to\infty]{}\exp(-x^{-1/\gamma}),\quad x\gt0,$$
+                qui est la loi de <b>Fréchet standard</b> $\Phi_{1/\gamma}$, une GEV de paramètre de forme $\gamma$ (à changement de variable $(x^\gamma-1)/\gamma$ près). Donc $a_n=n^\gamma$, $b_n=0$.</p>
+                <p><b>(ii) Loi du maximum glissant.</b> $X_{i-1},X_i,X_{i+1}$ sont i.i.d., donc
+                $$F_Y(y)=\mathbb P(X_{i-1}\le y,\,X_i\le y,\,X_{i+1}\le y)=F_X(y)^3=\left(1-y^{-1/\gamma}\right)^3,\quad y\ge1.$$
+                <span class="q-badge">note</span> La formule de l'énoncé (« $1-y^{-1/\gamma\cdot3}$ ») est un artefact de mise en page du sujet : il s'agit bien du <b>cube</b> de la fonction de répartition de $X$, $\left(1-y^{-1/\gamma}\right)^3$, pas d'un exposant $3\gamma$.</p>
+                <p><b>(iii) Domaine d'attraction de $Y$.</b> En développant au voisinage de $y\to\infty$ (où $y^{-1/\gamma}\to0$) :
+                $$1-F_Y(y)=1-\left(1-y^{-1/\gamma}\right)^3=3y^{-1/\gamma}-3y^{-2/\gamma}+y^{-3/\gamma}\sim3\,y^{-1/\gamma}.$$
+                La fonction de survie est à variation régulière d'indice $-1/\gamma$, <b>le même</b> que pour $X$ (seule la constante multiplicative change, $3$ au lieu de $1$) : $F_Y$ appartient donc aussi au domaine d'attraction de Fréchet, avec le <b>même</b> indice des valeurs extrêmes $\gamma$.</p>
+                <p><b>(iv) Convergence de $M_n'=\max(Y_2,\ldots,Y_{n-1})$.</b> Les $Y_i$ ne sont <b>pas indépendants</b> (fenêtres glissantes qui se chevauchent), le théorème de Fisher-Tippett-Gnedenko ne s'applique donc pas tel quel. Mais on peut conclure directement, sans même invoquer la théorie des suites dépendantes : chaque $X_j$, $1\le j\le n$, apparaît dans au moins une fenêtre ($X_1$ dans $Y_2$, $X_n$ dans $Y_{n-1}$, et $X_j$ dans $Y_j$ pour $2\le j\le n-1$). L'union de toutes les fenêtres $\{i-1,i,i+1\}_{i=2}^{n-1}$ recouvre donc $\{1,\ldots,n\}$ tout entier, si bien que
+                $$M_n'=\max(Y_2,\ldots,Y_{n-1})=\max(X_1,\ldots,X_n)=M_n\quad\text{exactement (égalité de variables aléatoires, pas seulement en loi).}$$
+                Par conséquent $(M_n'-b_n')/a_n'$ converge vers la <b>même</b> limite que $(M_n-b_n)/a_n$, avec <b>$a_n'=a_n=n^\gamma$, $b_n'=b_n=0$, $\gamma'=\gamma$</b>.</p>
+                <p class="sense"><b>Recoupement par l'indice extrémal.</b> On peut retrouver ce résultat par la théorie des suites stationnaires dépendantes : un maximum glissant sur une fenêtre de taille $3$ construit à partir d'une suite i.i.d. a un <b>indice extrémal</b> $\theta=1/3$ (chaque grande valeur de $X_i$ crée un « cluster » de 3 dépassements consécutifs parmi les $Y$). La constante de normalisation du maximum d'une suite stationnaire de même queue que $Y$ (survie $\sim3y^{-1/\gamma}$) mais d'indice extrémal $\theta$ est $a_n'=(3n\theta)^\gamma$ : avec $\theta=1/3$, $a_n'=(3n\cdot\frac13)^\gamma=n^\gamma=a_n$, ce qui <b>confirme exactement</b> l'identité $M_n'=M_n$ trouvée ci-dessus. Vérifié numériquement (20 tirages uniformes) : $\max(X)=\max(Y)$ à la précision machine.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s48">
+            <div class="tophead"><span class="num">48</span><h2>Examen 17/10/2025, Ex. 4 : condition de second ordre</h2></div>
+            <p><b>Énoncé.</b> (i) La classe de Hall ($U(t)=t^\alpha(a+bt^\beta+o(t^\beta))$) satisfait-elle $C_2(\gamma,\rho,A)$ ? (ii) Cas de la loi de Fréchet. (iii) Cas de la loi de Burr.</p>
+
+            <details class="solution">
+              <summary>Voir la correction (avec vérification symbolique)</summary>
+              <div class="box box-thm">
+                <p><b>(i) Classe de Hall.</b> Pour $U(t)=t^\alpha(a+bt^\beta+o(t^\beta))$ avec $a\gt0$, $b\ne0$, $\beta\lt0$ :
+                $$\frac{U(tx)}{U(t)}=x^\alpha\cdot\frac{a+bt^\beta x^\beta+o(t^\beta)}{a+bt^\beta+o(t^\beta)}=x^\alpha\left[1+\frac ba t^\beta(x^\beta-1)+o(t^\beta)\right]$$
+                (développement limité de $1/(1+\varepsilon)\approx1-\varepsilon$ puis produit, à l'ordre $1$ en $t^\beta$). Donc
+                $$\frac{U(tx)/U(t)-x^\alpha}{(b\beta/a)\,t^\beta}\xrightarrow[t\to\infty]{}\frac{x^\alpha(x^\beta-1)}\beta=x^\alpha\cdot\frac{x^\beta-1}\beta.$$
+                En identifiant à $C_2(\gamma,\rho,A)$ (où le membre de droite est $x^\gamma(x^\rho-1)/\rho$) : <b>$\gamma=\alpha$, $\rho=\beta$, $A(t)=\dfrac{b\beta}a\,t^\beta$.</b> $A$ est bien de signe constant ($b\beta/a$ est une constante non nulle) et $A(t)\to0$ car $\beta\lt0$.</p>
+                <p><b>(ii) Loi de Fréchet</b> $F(x)=e^{-x^{-a}}$. On résout $1-F(x)=1/t$ : $x^{-a}=-\log(1-1/t)$, soit $U(t)=\big[-\log(1-1/t)\big]^{-1/a}$. En développant $-\log(1-1/t)=\frac1t+\frac1{2t^2}+o(t^{-2})=\frac1t\left(1+\frac1{2t}+o(t^{-1})\right)$ :
+                $$U(t)=t^{1/a}\left(1+\frac1{2t}\right)^{-1/a}+o(t^{1/a-1})=t^{1/a}-\frac1{2a}\,t^{1/a-1}+o(t^{1/a-1}).$$
+                C'est la classe de Hall avec $\alpha=1/a$, $\beta=-1$, $a_{\text{Hall}}=1$, $b_{\text{Hall}}=-1/(2a)$. D'après (i) : <b>$\gamma=1/a$, $\rho=-1$, $A(t)=\dfrac1{2a}\,t^{-1}$.</b></p>
+                <p><b>(iii) Loi de Burr</b> $F(x)=1-(1+x^a)^{-b}$. On résout $(1+x^a)^{-b}=1/t\iff x^a=t^{1/b}-1$, soit $U(t)=(t^{1/b}-1)^{1/a}=t^{1/(ab)}(1-t^{-1/b})^{1/a}=t^{1/(ab)}\left(1-\frac1a t^{-1/b}+o(t^{-1/b})\right).$
+                Classe de Hall avec $\alpha=1/(ab)$, $\beta=-1/b$, $a_{\text{Hall}}=1$, $b_{\text{Hall}}=-1/a$. D'après (i) : <b>$\gamma=\dfrac1{ab}$, $\rho=-\dfrac1b$, $A(t)=\dfrac1{ab}\,t^{-1/b}$.</b></p>
+                <p class="sense"><b>Vérifications effectuées</b> (sympy/numpy) : (i) la limite symbolique $\big[U(tx)/U(t)-x^\alpha\big]/A(t)$ a été calculée exactement et coïncide avec $x^\alpha(x^\rho-1)/\rho$ (différence symbolique nulle). (ii) le développement en série de $U_{\text{Fréchet}}$ confirme les deux premiers termes $t^{1/a}$ et $-\frac1{2a}t^{1/a-1}$. (iii) pour Burr ($a=2,b=3$), l'écart relatif entre $U(t)$ exact et son approximation de Hall décroît de $1{,}4\times10^{-3}$ ($t=10^3$) à $1{,}3\times10^{-9}$ ($t=10^{12}$), confirmant la convergence.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s49">
+            <div class="tophead"><span class="num">49</span><h2>Examen 17/10/2025, Ex. 5 : moments d'une Pareto généralisée</h2></div>
+            <p><b>Énoncé.</b> $Y\sim$ GPD$(\sigma,\gamma)$, $\gamma\lt\frac12$. 1. Calculer $\mathbb E(Y)$, $\mathrm{Var}(Y)$. 2. En déduire $\gamma,\sigma$ en fonction des moments. 3. Théorème de Pickands-Balkema-de Haan sur les excès. 4. Estimateurs de $\sigma_k,\gamma$. 5. Problème et solution.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>1. Espérance et variance.</b> La fonction de survie est $\bar F(y)=\big(1+\gamma y/\sigma\big)^{-1/\gamma}$. Avec $\mathbb E(Y)=\int_0^\infty\bar F(y)\,dy$ et le changement de variable $u=1+\gamma y/\sigma$ ($dy=\frac\sigma\gamma du$, $u:1\to\infty$ pour $\gamma\gt0$) :
+                $$\mathbb E(Y)=\frac\sigma\gamma\int_1^\infty u^{-1/\gamma}du=\frac\sigma\gamma\cdot\frac1{1/\gamma-1}=\frac\sigma{1-\gamma}\quad(\text{valable pour }\gamma\lt1).$$
+                Pour le second moment, on utilise $\mathbb E(Y^2)=\int_0^\infty2y\,\bar F(y)\,dy$ (car $\mathbb E(Z^2)=\int_0^\infty\mathbb P(Z^2\gt t)dt=\int_0^\infty2z\,\mathbb P(Z\gt z)\,dz$ pour $Z\ge0$). Même changement de variable, $y=\sigma(u-1)/\gamma$ :
+                $$\mathbb E(Y^2)=\frac{2\sigma^2}{\gamma^2}\int_1^\infty(u-1)u^{-1/\gamma}du=\frac{2\sigma^2}{\gamma^2}\left[\frac{u^{2-1/\gamma}}{2-1/\gamma}-\frac{u^{1-1/\gamma}}{1-1/\gamma}\right]_1^\infty.$$
+                La convergence à $u\to\infty$ exige $2-1/\gamma\lt0$, c'est-à-dire <b>$\gamma\lt\frac12$</b> : c'est exactement l'hypothèse de l'énoncé. En évaluant en $u=1$ on obtient $\mathbb E(Y^2)=\dfrac{2\sigma^2}{(1-\gamma)(1-2\gamma)}$, d'où
+                $$\mathrm{Var}(Y)=\mathbb E(Y^2)-\mathbb E(Y)^2=\frac{2\sigma^2}{(1-\gamma)(1-2\gamma)}-\frac{\sigma^2}{(1-\gamma)^2}=\frac{\sigma^2}{(1-\gamma)^2(1-2\gamma)}.$$</p>
+                <p><b>2. Inversion.</b> Notons $m=\mathbb E(Y)=\sigma/(1-\gamma)$ et $v=\mathrm{Var}(Y)$. Alors $v=m^2/(1-2\gamma)$, donc $1-2\gamma=m^2/v$, soit
+                $$\gamma=\frac12\left(1-\frac{m^2}v\right),\qquad 1-\gamma=\frac12\left(1+\frac{m^2}v\right)\ \Rightarrow\ \sigma=m(1-\gamma)=\frac m2\left(1+\frac{m^2}v\right),$$
+                ce qui redonne exactement les formules de l'énoncé avec $m=\mathbb E(Y)$, $v=\mathrm{Var}(Y)$.</p>
+                <p><b>3. Pickands-Balkema-de Haan.</b> Pour $X_1,\ldots,X_n$ i.i.d. dans un domaine d'attraction (Fréchet, Gumbel ou Weibull) d'indice $\gamma$, le théorème affirme que la loi des excès $X_{n-i+1,n}-X_{n-k,n}$ ($1\le i\le k$) au-dessus du seuil intermédiaire $X_{n-k,n}$ converge vers une GPD$(\sigma_k,\gamma)$ quand $k=k_n\to\infty$, $k/n\to0$ : c'est le fondement théorique de l'approche paramétrique (fiche 34).</p>
+                <p><b>4. Estimateurs.</b> En appliquant la question 2 aux excès $\{X_{n-i+1,n}-X_{n-k,n}\}_{i=1}^k$, de moyenne empirique $\bar e_k$ et variance empirique $S_k^2$ :
+                $$\hat\gamma=\frac12\left(1-\frac{\bar e_k^2}{S_k^2}\right),\qquad\hat\sigma_k=\frac{\bar e_k}2\left(1+\frac{\bar e_k^2}{S_k^2}\right).$$</p>
+                <p><b>5. Problème et solution.</b> Ces estimateurs des moments ne sont définis <b>que si</b> $\mathrm{Var}(Y)$ existe, c'est-à-dire $\gamma\lt\frac12$ (question 1) : pour une queue très lourde ($\gamma\ge\frac12$), $S_k^2$ diverge ou devient extrêmement instable, et $\hat\gamma,\hat\sigma_k$ perdent toute fiabilité (grande variance, sensibilité à la plus grande observation). En pratique, on préfère alors le <b>maximum de vraisemblance</b> de la GPD (fiche 43), nettement plus efficace et sans cette restriction a priori sur $\gamma$, ou l'estimateur des moments du chapitre 3 (fiche 31), construit pour fonctionner quel que soit le signe de $\gamma$ (cf. tableau de synthèse, fiche 35).</p>
+                <p class="sense"><b>Vérifié numériquement</b> (intégration, $\sigma=2$, $\gamma=0{,}3$) : $\mathbb E(Y)$ numérique $2{,}85714$ contre formule $2{,}85714$ ; $\mathrm{Var}(Y)$ numérique $20{,}4067$ contre formule $20{,}4082$ (écart dû à la troncature de l'intégrale, négligeable).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s50">
+            <div class="tophead"><span class="num">50</span><h2>Examen 17/10/2025, Ex. 6 : lecture d'une analyse de données ($n=906$)</h2></div>
+            <p><b>Énoncé.</b> Boîte à moustaches/histogramme, puis estimateurs des moments/MLE, puis Hill, pour un jeu de données de taille $906$ (Figure 1 du sujet). 1. Grande classe suggérée par les graphiques du haut ? 2. Et par les estimateurs des moments/MLE ? 3. Pourquoi Hill diverge-t-il des deux autres ? 4. Proposer une valeur numérique de $\gamma$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>1. Boîte à moustaches et histogramme.</b> Les données sont concentrées sur un intervalle étroit ($\approx18$ à $28$), avec un histogramme globalement symétrique en cloche et quelques valeurs atypiques des <b>deux</b> côtés de la boîte à moustaches. Rien n'évoque une queue lourde (pas d'étalement marqué à droite, pas de valeurs extrêmes démesurées) : à ce stade, une <b>queue légère ou courte</b> (plutôt qu'une queue lourde) est la lecture la plus naturelle.</p>
+                <p><b>2. Estimateurs des moments et du maximum de vraisemblance.</b> Les deux courbes du graphique du milieu sont <b>négatives</b> sur presque toute la plage $k\in[50,700]$ (de $0$ à $-0{,}4$ environ), et décroissent progressivement. Un $\hat\gamma$ négatif et stable en signe sur une large plage de $k$ pointe vers le domaine de <b>Weibull</b> ($\gamma\lt0$), donc vers une <b>queue courte</b> (point terminal fini) : l'intuition de la question 1 se précise, on penche maintenant clairement pour « courte » plutôt que « légère ».</p>
+                <p><b>3. Écart avec l'estimateur de Hill.</b> L'estimateur de Hill reste proche de $0$ (légèrement positif, $\approx0{,}05$), quasiment plat, alors que moments et MLE descendent jusqu'à $-0{,}3$/$-0{,}4$. Cet écart s'explique par la <b>construction même</b> de Hill (fiche 14 et exercice 1(iii) ci-dessus) : il est bâti pour estimer un indice <b>positif</b> (domaine de Fréchet), via un rapport $U(tx)/U(t)\to x^\gamma$ qui n'est informatif que pour $\gamma\gt0$. Pour $\gamma\le0$, ce rapport tend vers $1$ (fiche 26) et Hill ne capte plus le bon signal : il <b>ne converge pas vers le vrai $\gamma$</b> et reste proche de $0$ quelle que soit la vraie valeur négative, exactement le comportement illustré par la fiche 38 (« Hill échoue pour $\gamma\lt0$ ») et reproduit ici sur un vrai jeu de données.</p>
+                <p><b>4. Estimation numérique.</b> Puisque Hill est <b>invalide</b> dans ce contexte (domaine de Weibull), on retient la lecture des courbes <b>moments/MLE</b>, en choisissant $k$ dans une zone de compromis biais-variance : pas trop petit (grande variance, les courbes sont très bruitées pour $k\lesssim100$), pas trop grand (biais croissant visible au-delà de $k\approx300$-$400$, où les deux courbes continuent de descendre sans se stabiliser). Dans la zone relativement stable $k\in[100,250]$ environ, les deux courbes se situent autour de $\hat\gamma\approx-0{,}15$ à $-0{,}20$. On propose donc <b>$\hat\gamma\approx-0{,}2$</b>, avec une incertitude de l'ordre de $\pm0{,}1$ compte tenu du bruit visible sur le graphique.</p>
+                <p class="sense"><b>Démarche</b> plutôt que chiffre isolé : la valeur proposée n'est pas à lire au pixel près sur un graphique imprimé, mais la méthode (écarter Hill, repérer un plateau des deux autres estimateurs, choisir un $k$ ni trop petit ni trop grand) est ce qui est évalué.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-5">
+            <div class="qcm-head">
+              <h3>QCM de révision · Questions probables (style examen)</h3>
+              <span class="qcm-meta">⏱ 10 min · 6 questions</span>
+            </div>
+            <p class="qcm-intro">Questions dans l'esprit de l'examen du 17/10/2025 (et des types de questions qui reviennent d'une année sur l'autre sur ce cours) : définitions, conditions de validité, pièges classiques. « Recommencer » propose une autre série.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Pourquoi utilise-t-on la méthode POT (GPD) plutôt que les maxima par blocs (GEV) quand on dispose de données journalières sur une seule année ?<span class="q-badge">cours</span></p>
+              <label class="qcm-opt"><input type="radio" name="t5-1"><span class="otext">Parce que la GPD n'a pas besoin que $\gamma$ soit positif.</span></label>
+              <div class="qcm-explain">Faux : la GEV aussi admet $\gamma$ quelconque (fiche 5).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-1"><span class="otext">Parce que la GEV exige de découper les données en blocs, perdant beaucoup d'information si on n'a qu'un an de données (un seul maximum annuel).</span></label>
+              <div class="qcm-explain">Faux en partie : le vrai problème n'est pas la perte d'info en général, mais ci-dessous.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-1"><span class="otext">Parce qu'avec un an de données on ne peut former qu'un seul bloc (donc un seul maximum, invisible statistiquement), alors que la méthode des excès au-dessus d'un seuil exploite directement toutes les observations extrêmes disponibles.</span></label>
+              <div class="qcm-explain">Correct : c'est l'argument central de la comparaison GEV/GPD (exercice 1(i) de l'examen). La GPD reste exploitable même avec peu de « blocs » naturels.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-1"><span class="otext">Parce que la GEV ne s'applique qu'aux données gaussiennes.</span></label>
+              <div class="qcm-explain">Faux : aucun rapport avec la normalité.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Un estimateur de $\gamma$ basé sur la variance empirique des excès (méthode des moments pour la GPD) devient numériquement instable. Explication la plus probable ?<span class="q-badge">cours</span></p>
+              <label class="qcm-opt"><input type="radio" name="t5-2"><span class="otext">Le seuil choisi est trop bas.</span></label>
+              <div class="qcm-explain">Possible mais pas la cause structurelle visée ici.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-2"><span class="otext">Le vrai $\gamma$ est proche de ou supérieur à $\frac12$ : $\mathrm{Var}(Y)$ est alors très grande ou infinie (exercice 5), rendant l'estimateur des moments GPD peu fiable.</span></label>
+              <div class="qcm-explain">Correct : condition $\gamma\lt\frac12$ nécessaire à l'existence même de $\mathrm{Var}(Y)$ (fiche 49 / exercice 5, question 1).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-2"><span class="otext">L'échantillon est trop grand.</span></label>
+              <div class="qcm-explain">Faux : un plus grand échantillon aide en général.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-2"><span class="otext">Le paramètre $\sigma$ est négatif.</span></label>
+              <div class="qcm-explain">Faux : $\sigma\gt0$ par définition de la GPD.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>On observe sur un graphique que Hill est stable autour de $0{,}3$ sur une large plage de $k$, tandis que l'estimateur des moments oscille davantage autour de la même valeur. Que peut-on en conclure ?<span class="q-badge">application</span></p>
+              <label class="qcm-opt"><input type="radio" name="t5-3"><span class="otext">Les données sont probablement dans le domaine de Fréchet ($\gamma\approx0{,}3\gt0$) : Hill est fiable ici et sa stabilité renforce la lecture.</span></label>
+              <div class="qcm-explain">Correct : Hill est fait pour $\gamma\gt0$ (contrairement à l'exercice 6 de l'examen, où $\gamma$ était négatif) ; sa stabilité est alors un bon signe, pas un artefact.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-3"><span class="otext">Hill est forcément faux car il est trop stable.</span></label>
+              <div class="qcm-explain">Faux : une bonne stabilité est au contraire recherchée (critère de choix de $k$, fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-3"><span class="otext">On ne peut rien dire sans la vraie valeur de $\gamma$.</span></label>
+              <div class="qcm-explain">Faux : la cohérence et la stabilité de Hill sur une large plage sont déjà un indicateur fort en pratique (fiche 15).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-3"><span class="otext">Les données sont dans le domaine de Weibull.</span></label>
+              <div class="qcm-explain">Faux : un $\hat\gamma$ positif et stable via Hill pointe vers Fréchet, pas Weibull.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Pourquoi la condition de second ordre $C_2(\gamma,\rho,A)$ est-elle utile en pratique, au-delà de la théorie ?<span class="q-badge">cours</span></p>
+              <label class="qcm-opt"><input type="radio" name="t5-4"><span class="otext">Elle permet de calculer $\gamma$ exactement sans estimation.</span></label>
+              <div class="qcm-explain">Faux : $\gamma$ reste à estimer, la condition encadre seulement la vitesse de convergence.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-4"><span class="otext">Elle remplace la condition de premier ordre.</span></label>
+              <div class="qcm-explain">Faux : elle la complète, ne la remplace pas (fiche 20).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-4"><span class="otext">Elle ne sert qu'à démontrer des théorèmes, jamais exploitée numériquement.</span></label>
+              <div class="qcm-explain">Faux : $\rho$ intervient explicitement dans des estimateurs « bias-reduced » (hors programme détaillé ici, mais mentionné en cours).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-4"><span class="otext">Le paramètre $\rho$ contrôle la vitesse à laquelle $U(tx)/U(t)$ approche $x^\gamma$ : plus $\rho$ est proche de $0$, plus le biais des estimateurs (Hill, moments) décroît lentement quand $k$ augmente.</span></label>
+              <div class="qcm-explain">Correct : c'est le lien direct entre $C_2$ et le compromis biais-variance déjà vu fiche 15, formalisé ici (exercice 4 de l'examen).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Un maximum glissant sur une fenêtre de taille $r$ (comme l'exercice 3 de l'examen, $r=3$) est construit à partir de variables i.i.d. de queue $X$. Que peut-on dire de son domaine d'attraction ?<span class="q-badge">application</span></p>
+              <label class="qcm-opt"><input type="radio" name="t5-5"><span class="otext">Il change systématiquement de domaine d'attraction par rapport à $X$.</span></label>
+              <div class="qcm-explain">Faux : le domaine (et $\gamma$) reste le même, seule la constante de la fonction de survie change (facteur $r$).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-5"><span class="otext">Il reste dans le même domaine d'attraction, avec le même $\gamma$ ; le maximum du processus glissant sur $n$ termes égale exactement le maximum des $X_i$ sous-jacents.</span></label>
+              <div class="qcm-explain">Correct : démontré fiche 47 (exercice 3) en toute généralité, l'union des fenêtres recouvre tous les indices.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-5"><span class="otext">Il faut toujours une taille d'échantillon multipliée par $r$ pour compenser.</span></label>
+              <div class="qcm-explain">Faux : aucune compensation de taille n'est nécessaire, l'égalité des maxima est exacte.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-5"><span class="otext">Le théorème de Fisher-Tippett-Gnedenko s'applique directement car les $Y_i$ sont i.i.d.</span></label>
+              <div class="qcm-explain">Faux : les $Y_i$ sont dépendants (fenêtres qui se chevauchent), ce n'est pas la raison de la convergence ici.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Sur un jeu de données borné à droite (support fini observé), quel est le piège le plus probable à l'examen ?<span class="q-badge">piège</span></p>
+              <label class="qcm-opt"><input type="radio" name="t5-6"><span class="otext">Conclure que la GEV ne s'applique pas du tout.</span></label>
+              <div class="qcm-explain">Faux : la GEV s'applique, avec $\gamma\lt0$ (domaine de Weibull, fiche 5).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-6"><span class="otext">Oublier de vérifier que $\sigma\gt0$ dans la GPD ajustée.</span></label>
+              <div class="qcm-explain">Pas le piège le plus probable sur ce type de question (c'est une contrainte de paramétrage, pas une erreur de raisonnement typique).</div>
+              <label class="qcm-opt"><input type="radio" name="t5-6"><span class="otext">Utiliser l'estimateur de Hill sans vérifier le signe de $\gamma$, alors qu'il n'est valide que pour $\gamma\gt0$ et donnera une valeur proche de $0$, pas le vrai $\gamma$ négatif (exercice 6 de l'examen).</span></label>
+              <div class="qcm-explain">Correct : c'est exactement le piège illustré par l'exercice 6 de l'examen et la fiche 38.</div>
+              <label class="qcm-opt"><input type="radio" name="t5-6"><span class="otext">Penser que les données sont forcément gaussiennes.</span></label>
+              <div class="qcm-explain">Faux : rien n'impose une loi gaussienne, c'est même rarement le cas en pratique.</div>
             </div>
 
             <div class="qcm-actions">
