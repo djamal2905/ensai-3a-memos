@@ -84,6 +84,8 @@ window.MathJax = {
   }
   h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; text-wrap:balance; color:var(--ink); margin:0; }
   code, .mono{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  pre.code{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:10px; padding:14px 16px; margin:10px 0; overflow-x:auto; font-size:.8rem; line-height:1.5; }
+  pre.code code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
   a{ color:var(--accent-strong); }
   p{ margin:.5em 0; color:var(--ink-soft); max-width:68ch; }
 
@@ -269,7 +271,7 @@ window.MathJax = {
       </div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="search" type="text" placeholder="Filtrer : Hill, GEV, Pareto…" aria-label="Filtrer le mémo" />
+        <input id="search" type="text" placeholder="Filtrer : Hill, Pickands, moments, GEV…" aria-label="Filtrer le mémo" />
       </div>
       <span id="searchCount"></span>
       <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -310,7 +312,7 @@ window.MathJax = {
         </ol>
       </div>
       <div class="toc-lecture">
-        <p>3 : Exercices &amp; corrections</p>
+        <p>3 : Exercices &amp; corrections (chapitres 1 et 2)</p>
         <ol>
           <li><a href="#s18"><span class="toc-num">18</span>Quantile explicite d'une loi de Pareto</a></li>
           <li><a href="#s19"><span class="toc-num">19</span>Un maximum mobile en domaine de Fréchet</a></li>
@@ -322,18 +324,58 @@ window.MathJax = {
           <li><a href="#s25"><span class="toc-num">25</span>Consistance de Hill sur une Pareto exacte</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>4 : Estimateurs dans le cas général</p>
+        <ol>
+          <li><a href="#s26"><span class="toc-num">26</span>Du chapitre 2 au chapitre 3</a></li>
+          <li><a href="#s27"><span class="toc-num">27</span>Le modèle position-échelle</a></li>
+          <li><a href="#s28"><span class="toc-num">28</span>Estimateur de Pickands</a></li>
+          <li><a href="#s29"><span class="toc-num">29</span>Pickands : TCL et limites</a></li>
+          <li><a href="#s30"><span class="toc-num">30</span>Hill pour γ&lt;0 et relation en log U</a></li>
+          <li><a href="#s31"><span class="toc-num">31</span>Estimateur des moments : construction</a></li>
+          <li><a href="#s32"><span class="toc-num">32</span>Estimateur des moments : TCL</a></li>
+          <li><a href="#s33"><span class="toc-num">33</span>Échelle, quantile extrême, point terminal</a></li>
+          <li><a href="#s34"><span class="toc-num">34</span>Approche paramétrique (GPD)</a></li>
+          <li><a href="#s35"><span class="toc-num">35</span>Quel estimateur choisir ?</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>5 : Exercices &amp; corrections (chapitre 3)</p>
+        <ol>
+          <li><a href="#s36"><span class="toc-num">36</span>Pickands exact sur trois lois</a></li>
+          <li><a href="#s37"><span class="toc-num">37</span>Les sommes de Riemann</a></li>
+          <li><a href="#s38"><span class="toc-num">38</span>Hill échoue pour γ&lt;0</a></li>
+          <li><a href="#s39"><span class="toc-num">39</span>Moments : consistance (3 régimes)</a></li>
+          <li><a href="#s40"><span class="toc-num">40</span>Application numérique complète</a></li>
+          <li><a href="#s41"><span class="toc-num">41</span>Weissman, cas particulier</a></li>
+          <li><a href="#s42"><span class="toc-num">42</span>Comparer les variances</a></li>
+          <li><a href="#s43"><span class="toc-num">43</span>MLE GPD et lien avec Hill</a></li>
+          <li><a href="#s44"><span class="toc-num">44</span>Simulation commentée</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
         <h1>Des maxima aux quantiles extrêmes</h1>
-        <p>Synthèse des deux premiers chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), puis comment estimer en pratique un quantile ou une probabilité bien au-delà des données observées.</p>
+        <p>Synthèse des trois chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), comment estimer un quantile ou une probabilité bien au-delà des données observées quand la queue est lourde, puis comment faire pour n'importe quel type de queue (Pickands, moments, maximum de vraisemblance). Chaque chapitre est relié au précédent et au suivant.</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>25 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>44 fiches</b> · 4 QCM</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
+      </div>
+
+      <div class="box box-def">
+        <p class="box-label">Fil rouge · Comment les trois chapitres s'enchaînent</p>
+        <table class="cmp">
+          <tr><th>Chapitre</th><th>Question posée</th><th>Outils</th><th>Limite qui mène au suivant</th></tr>
+          <tr><td><b>1</b> Modèles de valeurs extrêmes</td><td>Quelle est la loi limite du maximum ?</td><td>Fisher-Tippett, GEV, domaines d'attraction, Pickands-Balkema-de Haan</td><td>$\gamma$ existe mais il est <b>inconnu</b> : il faut l'estimer</td></tr>
+          <tr><td><b>2</b> Queues lourdes</td><td>Comment estimer $\gamma$ et un quantile extrême ?</td><td>Interpolation, Hill, Weissman</td><td>Seulement pour $\gamma\gt0$ (Hill échoue si $\gamma\le0$)</td></tr>
+          <tr><td><b>3</b> Cas général</td><td>Comment faire pour tout $\gamma\in\mathbb R$ ?</td><td>Modèle position-échelle, Pickands, moments, GPD</td><td>Choix de $k$ et du seuil (compromis biais-variance)</td></tr>
+        </table>
+        <p class="sense"><b>Une idée traverse les trois chapitres :</b> extrapoler depuis un niveau intermédiaire <b>observable</b> vers un niveau extrême <b>non observé</b>, via la relation $U(tx)\approx U(t)+a(t)\frac{x^\gamma-1}\gamma$ (chapitre 3), qui se simplifie en $U(tx)\approx x^\gamma U(t)$ quand $\gamma\gt0$ (chapitre 2).</p>
       </div>
 
       <!-- ================= LECTURE 1 ================= -->
@@ -811,6 +853,11 @@ window.MathJax = {
         </button>
         <div class="lecture-body">
 
+          <div class="box box-def">
+            <p class="box-label">Lien avec le chapitre 1</p>
+            <p>Le chapitre 1 a montré que le comportement des maxima est gouverné par un seul nombre, <b>$\gamma$</b> (indice des valeurs extrêmes). Il reste à l'<b>estimer</b>. Ici on se limite au cas $\gamma\gt0$ (domaine de Fréchet), pour lequel $U$ est à variation régulière d'indice $\gamma$ et $U(tx)/U(t)\to x^\gamma$. Cette relation très simple conduit à Hill et Weissman. <b>Le chapitre 3 supprimera la restriction $\gamma\gt0$.</b></p>
+          </div>
+
           <article class="topic" id="s9">
             <div class="tophead"><span class="num">9</span><h2>Le problème de l'extrapolation</h2></div>
 
@@ -1073,7 +1120,7 @@ window.MathJax = {
       <section class="lecture" id="lecture-3">
         <button class="lecture-head">
           <span class="num">3</span>
-          <span class="title">Exercices &amp; corrections</span>
+          <span class="title">Exercices &amp; corrections (chapitres 1 et 2)</span>
           <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="lecture-body">
@@ -1247,6 +1294,718 @@ window.MathJax = {
         </div>
       </section>
 
+
+      <!-- ================= LECTURE 4 ================= -->
+      <section class="lecture" id="lecture-4">
+        <button class="lecture-head">
+          <span class="num">4</span>
+          <span class="title">Estimateurs dans le cas général</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s26">
+            <div class="tophead"><span class="num">26</span><h2>Du chapitre 2 au chapitre 3 : ce qui ne marche plus</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Lien avec le chapitre précédent</p>
+              <p>Au chapitre 2, tout reposait sur une seule relation, valable seulement pour $\gamma\gt0$ :</p>
+              <div class="formula">$$\frac{U(tx)}{U(t)}\ \xrightarrow[t\to\infty]{}\ x^\gamma,\qquad\forall x\gt0\qquad\text{(équivalent à la relation (B) de la fiche 10)}$$</div>
+              <p>Elle donne l'estimateur de Hill (fiche 14) pour $\gamma$ et l'estimateur de Weissman (fiche 16) pour un quantile extrême. <b>Le chapitre 3 supprime cette restriction</b> : on veut estimer $\gamma\in\mathbb R$ quelconque, c'est-à-dire traiter aussi Gumbel ($\gamma=0$) et Weibull ($\gamma\lt0$).</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pourquoi la relation (B) ne suffit plus</p>
+              <p>Si $\gamma\le0$, on a $U(tx)/U(t)\to1$ pour tout $x\gt0$ : le rapport ne dépend plus de $\gamma$ et ne contient donc <b>aucune information</b> sur lui. Il faut regarder non plus des <b>rapports</b> de quantiles mais des <b>différences</b> de quantiles, normalisées par une fonction d'échelle $a(t)$ (fiche 27).</p>
+            </div>
+
+            <table class="cmp">
+              <tr><th></th><th>Chapitre 2</th><th>Chapitre 3</th></tr>
+              <tr><td>Valeurs de $\gamma$</td><td>$\gamma\gt0$ seulement</td><td>tout $\gamma\in\mathbb R$</td></tr>
+              <tr><td>Relation utilisée</td><td>rapport $U(tx)/U(t)\to x^\gamma$</td><td>différence $\frac{U(tx)-U(t)}{a(t)}\to\frac{x^\gamma-1}\gamma$</td></tr>
+              <tr><td>Inconnues à estimer</td><td>$\gamma$ seulement</td><td>$\gamma$ <b>et</b> l'échelle $a(t)$</td></tr>
+              <tr><td>Estimateur de $\gamma$</td><td>Hill</td><td>Pickands, moments, maximum de vraisemblance GPD</td></tr>
+              <tr><td>Quantile extrême</td><td>Weissman (cas particulier)</td><td>$X_{n-k,n}+\hat\sigma\,\frac{(\cdots)^{\hat\gamma}-1}{\hat\gamma}$ (fiche 33)</td></tr>
+            </table>
+            <p class="sense"><b>Notation :</b> le nombre d'observations extrêmes utilisées est noté $k$ dans ce chapitre. C'est le $K$ des fiches 14 à 17.</p>
+          </article>
+
+          <article class="topic" id="s27">
+            <div class="tophead"><span class="num">27</span><h2>Extrapolation générale : le modèle position-échelle</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Rappel · Théorème 1.2.3 (fiche 6) sous la forme utile ici</p>
+              <p>Si $F\in\mathrm{MDA}(G_\gamma)$, il existe une fonction positive $a(\cdot)$ (la <b>fonction d'échelle</b>) telle que pour tout $x\gt0$ :</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac{U(tx)-U(t)}{a(t)}=\begin{cases}\dfrac{x^\gamma-1}{\gamma}&\text{si }\gamma\ne0\\[2mm]\log x&\text{si }\gamma=0\end{cases}\tag{1}$$</div>
+              <p>On note $D_\gamma(x)$ le membre de droite : $D_\gamma(x)=\frac{x^\gamma-1}\gamma$, prolongé par $\log x$ en $\gamma=0$ (c'est la limite de $\frac{x^\gamma-1}\gamma$ quand $\gamma\to0$).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Cas $\gamma\lt0$ : l'expression « à la Hill »</p>
+              <p>Si $\gamma\lt0$, la fonction $F$ a un <b>point terminal fini</b> $\theta=x_F$ et $U(t)\to\theta$. En faisant $x\to\infty$ dans (1), on obtient $\frac{\theta-U(t)}{a(t)}\to-\frac1\gamma$, puis par différence :</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac{\theta-U(tx)}{\theta-U(t)}=x^\gamma,\qquad\forall x\gt0\tag{2}$$</div>
+              <p>C'est l'analogue de la relation (B) du chapitre 2, mais <b>avec $\theta-U$ au lieu de $U$</b>.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Le problème de (2) et sa solution</p>
+              <p><b>Problème :</b> pour estimer un quantile extrême $q(\beta_n)$ avec (2), il faudrait estimer $\theta$ <b>et</b> $\gamma$ ensemble. L'expression est peu stable numériquement : elle n'est pas « viable ».</p>
+              <p><b>Solution :</b> l'approche des excès (théorème de Pickands-Balkema-de Haan, fiche 7) : $\mathbb P(X-t\gt x\mid X\gt t)\to\mathrm{Pareto}_{\sigma,\gamma}(x)$. On réécrit (1) sous la forme</p>
+              <div class="formula">$$\underbrace{U(tx)}_{\text{quantile extrême à estimer}}\ \approx\ \underbrace{U(t)}_{\text{paramètre de position}}\ +\ \underbrace{a(t)}_{\text{paramètre d'échelle}}\cdot\frac{x^\gamma-1}\gamma$$</div>
+              <p class="sense"><b>Lecture :</b> $U(t)$ est un <b>quantile intermédiaire</b> (on l'estime directement par une statistique d'ordre $X_{n-k,n}$) ; il reste à estimer l'<b>échelle</b> $a(t)$ et la <b>forme</b> $\gamma$. Tout le chapitre sert à ça.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemples · Les trois régimes avec leurs quantités exactes</p>
+              <table class="cmp">
+                <tr><th>Loi</th><th>$\gamma$</th><th>$U(t)$</th><th>$a(t)$</th><th>Point terminal</th></tr>
+                <tr><td>Pareto$(\gamma)$ : $\bar F(x)=x^{-1/\gamma}$</td><td>$\gt0$</td><td>$t^\gamma$</td><td>$\gamma t^\gamma$</td><td>$+\infty$</td></tr>
+                <tr><td>Exponentielle $\mathcal E(1)$</td><td>$0$</td><td>$\log t$</td><td>$1$</td><td>$+\infty$</td></tr>
+                <tr><td>Uniforme $\mathcal U(0,1)$</td><td>$-1$</td><td>$1-\frac1t$</td><td>$\frac1t$</td><td>$1$</td></tr>
+              </table>
+              <p><b>Vérification de (1)</b> pour la Pareto : $\frac{U(tx)-U(t)}{a(t)}=\frac{t^\gamma(x^\gamma-1)}{\gamma t^\gamma}=\frac{x^\gamma-1}\gamma$ (exact). Pour l'exponentielle : $\frac{\log(tx)-\log t}{1}=\log x$. Pour l'uniforme : $\frac{\frac1t-\frac1{tx}}{1/t}=1-\frac1x=\frac{x^{-1}-1}{-1}$. Les trois formules sont <b>exactes</b>, pas seulement asymptotiques.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s28">
+            <div class="tophead"><span class="num">28</span><h2>Approche non paramétrique : l'estimateur de Pickands</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Hypothèses de la section 3.1</p>
+              <p>① $X_1,\dots,X_n$ i.i.d. de fonction de répartition $F\in\mathrm{MDA}(G_\gamma)$ pour un certain $\gamma$ ; ② $q$ et $U$ désignent la fonction quantile et la fonction quantile de queue ; ③ $X_{1,n}\le\dots\le X_{n,n}$ sont les statistiques d'ordre.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition (exercice 3.1) · Une identité qui contient $\gamma$</p>
+              <p>Si $F\in\mathrm{MDA}(G_\gamma)$, alors pour tout $\gamma\in\mathbb R$ :</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac1{\log2}\,\log\!\left[\frac{U(4t)-U(2t)}{U(2t)-U(t)}\right]=\gamma$$</div>
+            </div>
+
+            <details class="solution">
+              <summary>Voir la preuve pas à pas</summary>
+              <div class="box box-thm">
+                <p>On part de (1) avec le point de base $2t$ : pour $x=2$ au numérateur, $x=\tfrac12$ pour le dénominateur.</p>
+                <p><b>Numérateur.</b> $\dfrac{U(4t)-U(2t)}{a(2t)}=\dfrac{U(2t\cdot2)-U(2t)}{a(2t)}\to D_\gamma(2)=\dfrac{2^\gamma-1}{\gamma}$.</p>
+                <p><b>Dénominateur.</b> $U(2t)-U(t)=-\big(U(2t\cdot\tfrac12)-U(2t)\big)$, donc $\dfrac{U(2t)-U(t)}{a(2t)}\to-D_\gamma(\tfrac12)=-\dfrac{2^{-\gamma}-1}{\gamma}=\dfrac{1-2^{-\gamma}}{\gamma}$.</p>
+                <p><b>Rapport.</b> Le facteur inconnu $a(2t)$ <b>se simplifie</b> :</p>
+                <div class="formula">$$\frac{U(4t)-U(2t)}{U(2t)-U(t)}\ \to\ \frac{2^\gamma-1}{1-2^{-\gamma}}=\frac{2^\gamma-1}{2^{-\gamma}(2^\gamma-1)}=2^\gamma$$</div>
+                <p>En prenant $\frac1{\log2}\log(\cdot)$ on obtient $\gamma$. Pour $\gamma=0$ : numérateur $\to\log 2$, dénominateur $\to\log2$, rapport $\to1=2^0$ ✓.</p>
+                <p class="sense"><b>Idée à retenir :</b> en prenant un <b>rapport de deux différences</b> de quantiles, la fonction d'échelle inconnue $a$ disparaît et il ne reste que $2^\gamma$.</p>
+              </div>
+            </details>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Estimateur de Pickands</p>
+              <p>On remplace $U(n/j)$ par la statistique d'ordre $X_{n-j,n}$ et on prend $t=n/(4k)$ : $U(4t)=X_{n-k,n}$, $U(2t)=X_{n-2k,n}$, $U(t)=X_{n-4k,n}$. Avec $k=k_n\to\infty$, $k/n\to0$ (et $4k\le n$) :</p>
+              <div class="formula">$$\hat\gamma^P_k=\frac1{\log2}\,\log\!\left[\frac{X_{n-k,n}-X_{n-2k,n}}{X_{n-2k,n}-X_{n-4k,n}}\right]$$</div>
+              <p class="sense"><b>Remarque de construction :</b> le polycopié écrit d'abord la version avec $\lceil k/4\rceil,\lceil k/2\rceil,k$, puis la remplace par $k,2k,4k$ « pour une version plus jolie ». C'est la même chose à un changement de $k$ près.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s29">
+            <div class="tophead"><span class="num">29</span><h2>Pickands : normalité asymptotique et limites</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Condition du second ordre $\mathcal H_2(\gamma,a,\rho,A)$</p>
+              <p>Pour obtenir un TCL, il faut contrôler la <b>vitesse</b> de la convergence (1) : il existe $\gamma\in\mathbb R$, $a\gt0$, $\rho\le0$ et une fonction $A$ de signe constant avec $A(t)\to0$, telles que pour tout $x\gt0$</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac1{A(t)}\left[\frac{U(tx)-U(t)}{a(t)}-\frac{x^\gamma-1}\gamma\right]=\frac1\rho\left(\frac{x^{\gamma+\rho}-1}{\gamma+\rho}-\frac{x^\gamma-1}\gamma\right)$$</div>
+              <p>(avec la limite à droite quand $\gamma=0$ ou $\rho=0$). C'est la version « différences » de la condition $\mathcal C_2$ du chapitre 2.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · TCL pour l'estimateur de Pickands</p>
+              <p>Si $\mathcal H_2(\gamma,a,\rho,A)$ est vérifiée, $k=k_n\to\infty$, $k/n\to0$ et $\sqrt k\,A(n/k)\to\lambda\in\mathbb R$, alors</p>
+              <div class="formula">$$\sqrt k\,(\hat\gamma^P_k-\gamma)\ \xrightarrow{\ \mathcal L\ }\ \mathcal N\big(\lambda\,b^P(\gamma,\rho),\ v^P(\gamma)\big)$$</div>
+              <div class="formula">$$v^P(\gamma)=\frac{\gamma^2\big(2^{2\gamma+1}+1\big)}{4(\log2)^2(2^\gamma-1)^2},\qquad b^P(\gamma,\rho)=\frac{4^{-\rho}\gamma\Big[(4^{\gamma+\rho}-1)-(2^\gamma+1)(2^{\gamma+\rho}-1)\Big]}{\rho\,(\gamma+\rho)\,2^\gamma(2^\gamma-1)\log2}$$</div>
+              <p>(pour $\gamma=0$ ou $\rho=0$, limite à droite ; on a alors $v^P(0)=\frac3{4(\log2)^4}\approx3{,}25$). J'ai <b>recalculé</b> $b^P$ à partir de $\mathcal H_2$ et vérifié numériquement la formule sur des lois à second ordre explicite, car l'écriture manuscrite du polycopié est difficile à lire sur ce point.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>La limite pratique de Pickands</p>
+              <p>L'estimateur n'utilise que <b>trois observations extrêmes</b> : $X_{n-k,n}$, $X_{n-2k,n}$, $X_{n-4k,n}$. Il en résulte une <b>variance asymptotique importante</b> $v^P(\gamma)$ : pour $\gamma=1$, $v^P\approx4{,}68$ contre $1$ pour Hill. Cela motive la construction d'un estimateur qui <b>utilise les $k$ plus grandes valeurs</b> : l'estimateur des moments (fiches 31 et 32).</p>
+              <p><b>Avantage :</b> il est valable pour <b>tout</b> $\gamma\in\mathbb R$, et il est invariant par transformation affine $X\mapsto cX+d$ (les différences se simplifient).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s30">
+            <div class="tophead"><span class="num">30</span><h2>Hill pour $\gamma\lt0$ et la relation en $\log U$</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Remarque et exercice 3.2 · Hill ne marche pas pour $\gamma\lt0$</p>
+              <p>On pourrait essayer d'appliquer l'estimateur de Hill quand le point terminal $\theta=x_F$ est fini ($\gamma\lt0$). Mais :</p>
+              <div class="formula">$$\gamma\lt0,\ \theta\gt0\ \Longrightarrow\ X_{n-k,n}\xrightarrow{\ \mathbb P\ }\theta\quad\text{et}\quad\hat\gamma^H=\frac1k\sum_{i=1}^k\log\frac{X_{n-i+1,n}}{X_{n-k,n}}\xrightarrow{\ \mathbb P\ }0$$</div>
+              <p>Hill converge vers <b>0</b> et non vers $\gamma$ (preuve en fiche 38).</p>
+              <p class="sense"><b>Lecture :</b> Hill estime en fait $\gamma_+=\max(\gamma,0)$ (c'est le résultat (B) de la fiche 32, démontré en fiche 38).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Proposition (complément pour que « Hill » devienne utile quel que soit $\gamma$)</p>
+              <p>Si le point terminal $\theta=x_F\gt0$ (donc $U\gt0$ à l'infini), on dispose de la relation d'extrapolation suivante, où $\gamma_-=\min(0,\gamma)$ :</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac{U(t)}{a(t)}\Big[\log U(tx)-\log U(t)\Big]=\begin{cases}\log x&\text{si }\gamma\ge0\\[1mm]\dfrac{x^\gamma-1}\gamma&\text{si }\gamma\lt0\end{cases}=D_{\gamma_-}(x)\tag{3}$$</div>
+            </div>
+
+            <details class="solution">
+              <summary>Voir la preuve</summary>
+              <div class="box box-thm">
+                <p><b>Cas $\gamma\gt0$.</b> D'après le chapitre 1, $U(tx)/U(t)\to x^\gamma$, donc $\log U(tx)-\log U(t)\to\gamma\log x$. De plus $a(t)\sim\gamma U(t)$, donc $\frac{U(t)}{a(t)}\to\frac1\gamma$. Le produit tend vers $\frac1\gamma\cdot\gamma\log x=\log x$.</p>
+                <p><b>Cas $\gamma\le0$.</b> Alors $U(tx)/U(t)\to1$ (pour $\gamma\lt0$ car $U\to\theta\gt0$ ; pour $\gamma=0$ d'après la remarque 1.2.3). On utilise $\log(1+u)\sim u$ :</p>
+                <div class="formula">$$\frac{U(t)}{a(t)}\log\!\Big[1+\Big(\frac{U(tx)}{U(t)}-1\Big)\Big]\sim\frac{U(t)}{a(t)}\cdot\frac{U(tx)-U(t)}{U(t)}=\frac{U(tx)-U(t)}{a(t)}\ \to\ D_\gamma(x)$$</div>
+                <p class="sense"><b>Sens :</b> pour $\gamma\ge0$ on retrouve le chapitre 2 (logarithme) ; pour $\gamma\lt0$ on retrouve la relation (1). La relation (3) <b>recolle</b> les deux, avec $\gamma_-$ à la place de $\gamma$.</p>
+              </div>
+            </details>
+
+            <div class="box box-def">
+              <p class="box-label">Notation à retenir : $\gamma_+$ et $\gamma_-$</p>
+              <p>$\gamma_+=\max(\gamma,0)$ et $\gamma_-=\min(\gamma,0)$, donc <b>$\gamma=\gamma_++\gamma_-$</b>. L'idée de l'estimateur des moments : estimer séparément $\gamma_+$ (par Hill, qui marche pour $\gamma\ge0$ et donne 0 pour $\gamma\lt0$) et $\gamma_-$ (par une combinaison de moments), puis les <b>additionner</b>.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s31">
+            <div class="tophead"><span class="num">31</span><h2>Estimateur des moments : la construction</h2></div>
+            <p>On utilise la relation (3) avec $t=\dfrac n{k+1}$ et $x=\dfrac{k+1}i$ pour $i=1,\dots,k$, puis des sommes de Riemann.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Étape 1 · Une somme qui tend vers une intégrale</p>
+              <p>Avec ce choix, $U(tx)=U(n/i)$ et $U(t)=U(n/(k+1))$. Par (3), pour chaque $i$ :</p>
+              <div class="formula">$$\frac{U(\frac n{k+1})}{a(\frac n{k+1})}\Big[\log U\!\big(\tfrac ni\big)-\log U\!\big(\tfrac n{k+1}\big)\Big]\ \approx\ D_{\gamma_-}\!\Big(\frac{k+1}i\Big)$$</div>
+              <p>On somme de $1$ à $k$ et on divise par $k$. Le membre de droite est une <b>somme de Riemann</b> de la fonction $s\mapsto D_{\gamma_-}(1/s)$ sur $]0,1]$ (points $s_i=\frac i{k+1}$). Quand $k\to\infty$ avec $k/n\to0$ :</p>
+              <div class="formula">$$M_1:=\frac{U(\frac n{k+1})}{a(\frac n{k+1})}\cdot\frac1k\sum_{i=1}^k\Big[\log U\!\big(\tfrac ni\big)-\log U\!\big(\tfrac n{k+1}\big)\Big]\ \longrightarrow\ \int_0^1D_{\gamma_-}\!\big(\tfrac1s\big)\,ds=\frac1{1-\gamma_-}$$</div>
+              <p>Calcul des intégrales : si $\gamma\ge0$, $\int_0^1\log\frac1s\,ds=1$ ; si $\gamma\lt0$, $\int_0^1\frac{s^{-\gamma}-1}{\gamma}ds=\frac1\gamma\Big(\frac1{1-\gamma}-1\Big)=\frac1{1-\gamma}$ (détail en fiche 37).</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Étape 2 · Le même calcul avec les carrés</p>
+              <div class="formula">$$M_2:=\Big(\frac{U(\frac n{k+1})}{a(\frac n{k+1})}\Big)^2\frac1k\sum_{i=1}^k\Big[\log U\!\big(\tfrac ni\big)-\log U\!\big(\tfrac n{k+1}\big)\Big]^2\ \longrightarrow\ \int_0^1D_{\gamma_-}\!\big(\tfrac1s\big)^2ds=\begin{cases}2&\text{si }\gamma\ge0\\[1mm]\dfrac2{(1-\gamma)(1-2\gamma)}&\text{si }\gamma\lt0\end{cases}$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Étape 3 · L'astuce : l'échelle inconnue disparaît dans le rapport</p>
+              <p>Le facteur $\frac{U}{a}$ est inconnu. Mais il est <b>le même</b> dans $M_1^2$ et dans $M_2$, donc dans leur rapport il se simplifie :</p>
+              <div class="formula">$$\frac{M_1^2}{M_2}=\frac{\Big[\frac1k\sum(\cdots)\Big]^2}{\frac1k\sum(\cdots)^2}\ \longrightarrow\ \begin{cases}\dfrac12&\text{si }\gamma\ge0\\[2mm]\dfrac{1-2\gamma}{2(1-\gamma)}&\text{si }\gamma\lt0\end{cases}$$</div>
+              <p>et on isole $\gamma_-$ :</p>
+              <div class="formula">$$\frac12\Big[1-\frac{M_1^2}{M_2}\Big]^{-1}\ \longrightarrow\ \begin{cases}1&\text{si }\gamma\ge0\\1-\gamma&\text{si }\gamma\lt0\end{cases}=1-\gamma_-$$</div>
+              <p>Vérification pour $\gamma\lt0$ : $1-\frac{1-2\gamma}{2(1-\gamma)}=\frac{2-2\gamma-1+2\gamma}{2(1-\gamma)}=\frac1{2(1-\gamma)}$, dont l'inverse vaut $2(1-\gamma)$ ; fois $\frac12$ : $1-\gamma$ ✓.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s32">
+            <div class="tophead"><span class="num">32</span><h2>Estimateur des moments : définition et TCL</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Les deux moments empiriques</p>
+              <p>On remplace $U(n/i)$ par $X_{n-i+1,n}$ et $U(n/(k+1))$ par $X_{n-k,n}$ :</p>
+              <div class="formula">$$\pi^{(1)}_k=\frac1k\sum_{i=1}^k\Big(\log X_{n-i+1,n}-\log X_{n-k,n}\Big),\qquad\pi^{(2)}_k=\frac1k\sum_{i=1}^k\Big(\log X_{n-i+1,n}-\log X_{n-k,n}\Big)^2$$</div>
+              <p>Remarque : $\pi^{(1)}_k$ <b>est exactement</b> l'estimateur de Hill $\hat\gamma^H_k=\hat\gamma^+_k$ du chapitre 2.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Les deux morceaux convergent (A) et (B)</p>
+              <div class="formula">$$\hat\gamma^-_k:=1-\frac12\Big[1-\frac{(\pi^{(1)}_k)^2}{\pi^{(2)}_k}\Big]^{-1}\xrightarrow{\ \mathbb P\ }\gamma_-\quad(A),\qquad\hat\gamma^+_k:=\pi^{(1)}_k\xrightarrow{\ \mathbb P\ }\gamma_+\quad(B)$$</div>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Estimateur des moments de $\gamma$</p>
+              <div class="formula">$$\boxed{\ \hat\gamma^{\mathrm{Mom}}_k=\pi^{(1)}_k+1-\frac12\Big[1-\frac{(\pi^{(1)}_k)^2}{\pi^{(2)}_k}\Big]^{-1}\ }\ \xrightarrow{\ \mathbb P\ }\ \gamma_++\gamma_-=\gamma$$</div>
+              <p class="sense"><b>Sens :</b> $\pi^{(1)}$ estime $\gamma_+$ et la partie en crochets estime $\gamma_-$. Un estimateur qui utilise <b>toutes les $k$ plus grandes valeurs</b>, donc avec un biais et une variance plus faibles que ceux de Pickands.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Condition $\mathcal H_{\log,2}(\gamma,a,\rho,Q)$</p>
+              <p>On suppose $\theta=\lim U(t)\gt0$ ; il existe $\gamma\in\mathbb R$, $a\gt0$, $\rho\le0$ et une fonction $Q$ de signe constant, $Q(t)\to0$, telles que pour tout $x\gt0$</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac1{Q(t)}\left[\frac{\log U(tx)-\log U(t)}{a(t)/U(t)}-\frac{x^{\gamma_-}-1}{\gamma_-}\right]=\frac1\rho\left[\frac{x^{\gamma_-+\rho}-1}{\gamma_-+\rho}-\frac{x^{\gamma_-}-1}{\gamma_-}\right]$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Théorème · TCL pour l'estimateur des moments</p>
+              <p>Si $\mathcal H_{\log,2}(\gamma,a,\rho,Q)$ est vérifiée, $k=k_n\to\infty$, $k/n\to0$, et $\sqrt k\,Q(n/k)\to\lambda\in\mathbb R$ :</p>
+              <div class="formula">$$\sqrt k\,(\hat\gamma^{\mathrm{Mom}}_k-\gamma)\ \xrightarrow{\ \mathcal L\ }\ \mathcal N\big(\lambda\,b^{\mathrm{Mom}}(\gamma,\rho),\ v^{\mathrm{Mom}}(\gamma)\big)$$</div>
+              <div class="formula">$$v^{\mathrm{Mom}}(\gamma)=\begin{cases}\gamma^2+1&\text{si }\gamma\ge0\\[2mm]\dfrac{(1-\gamma)^2(1-2\gamma)(1-\gamma+6\gamma^2)}{(1-3\gamma)(1-4\gamma)}&\text{si }\gamma\lt0\end{cases}$$</div>
+              <p class="sense"><b>Lecture :</b> pour $\gamma\ge0$, la variance vaut celle de Hill <b>plus 1</b> ($\gamma^2$ de Hill, plus $1$ pour avoir estimé aussi la partie $\gamma_-$, qui est nulle mais inconnue a priori). C'est le prix pour ne pas avoir à savoir si $\gamma\gt0$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s33">
+            <div class="tophead"><span class="num">33</span><h2>L'échelle, le quantile extrême et le point terminal</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Rappel : ce qu'il nous manque</p>
+              <p>L'extrapolation $U(tx)\approx U(t)+a(t)\frac{x^\gamma-1}\gamma$ est complète dès qu'on a trois choses : $U(t)$ (une statistique d'ordre), $\gamma$ (fiches 28 à 32) et <b>$a(t)$</b> (ici).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Estimateur de l'échelle</p>
+              <p>Avec $t=n/k$ et $\hat q(1-k/n)=X_{n-k,n}$, la relation de la fiche 31 donne $\frac{U(n/k)}{a(n/k)}\pi^{(1)}_k\approx\frac1{1-\gamma_-}$ (c'est $M_1$ pour $k$ grand, car $\frac n{k+1}\approx\frac nk$). On en déduit</p>
+              <div class="formula">$$\hat\sigma^{\mathrm{Mom}}_k:=\hat a(n/k)=X_{n-k,n}\;\pi^{(1)}_k\;\big(1-\hat\gamma^-_k\big),\qquad\hat\gamma^-_k=\hat\gamma^{\mathrm{Mom}}_k-\pi^{(1)}_k$$</div>
+              <p class="sense"><b>Notation :</b> le polycopié écrit $(1-\hat\gamma^{\mathrm{Mom}}_k)$ ; la dérivation ci-dessus montre que c'est bien $1-\hat\gamma^-_k$ (la partie négative) qui intervient. Les deux coïncident quand $\gamma\ge0$ ou $\gamma$ proche de 0, et diffèrent seulement par $\pi^{(1)}_k$ sinon.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Estimateur du quantile extrême (cas général)</p>
+              <p>On applique l'extrapolation avec $t=n/k$ et $tx=\dfrac1{1-\beta_n}$, c'est-à-dire $x_n=\dfrac k{n(1-\beta_n)}$ (grand si $n(1-\beta_n)\to c\lt\infty$) :</p>
+              <div class="formula">$$\hat q^*(\beta_n)=X_{n-k,n}+\hat\sigma^{\mathrm{Mom}}_k\,\frac{\Big(\dfrac k{n(1-\beta_n)}\Big)^{\hat\gamma^{\mathrm{Mom}}_k}-1}{\hat\gamma^{\mathrm{Mom}}_k}$$</div>
+              <p>(le polycopié l'écrit $\big[\frac nk(1-\beta_n)\big]^{-\hat\gamma}$, ce qui est la même chose).</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Lien avec le chapitre 2 · Weissman est un cas particulier</p>
+              <p>Si $\gamma\gt0$ et $a(t)\approx\gamma U(t)$ (cas Pareto), alors $\hat\sigma\approx\hat\gamma X_{n-k,n}$ et</p>
+              <div class="formula">$$\hat q^*(\beta_n)=X_{n-k,n}+\hat\gamma X_{n-k,n}\frac{x_n^{\hat\gamma}-1}{\hat\gamma}=X_{n-k,n}\Big(\frac k{n(1-\beta_n)}\Big)^{\hat\gamma}=\hat q_{\text{Weissman}}(\beta_n)$$</div>
+              <p>(preuve détaillée en fiche 41). Le chapitre 3 <b>contient</b> le chapitre 2.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Un bonus pour $\gamma\lt0$ : estimer le point terminal</p>
+              <p>Quand $x\to\infty$ et $\gamma\lt0$, $\frac{x^\gamma-1}\gamma\to-\frac1\gamma$. L'extrapolation donne donc l'estimateur du point terminal (valeur maximale possible) :</p>
+              <div class="formula">$$\hat\theta=X_{n-k,n}-\frac{\hat\sigma_k}{\hat\gamma_k}\qquad(\hat\gamma_k\lt0)$$</div>
+              <p class="sense"><b>Interprétation :</b> la valeur extrême « absolue » est à une distance $\sigma/|\gamma|$ au-dessus du quantile intermédiaire. Pour une Uniforme $\mathcal U(0,1)$ ($\gamma=-1$, $a(n/k)=\frac kn$, $X_{n-k,n}\approx1-\frac kn$) : $\hat\theta=\big(1-\frac kn\big)-\frac{k/n}{-1}=1$ ✓, le vrai point terminal.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s34">
+            <div class="tophead"><span class="num">34</span><h2>Approche paramétrique : la loi de Pareto généralisée</h2></div>
+
+            <div class="box box-def">
+              <p class="box-label">Le modèle</p>
+              <p>Si $F\in\mathrm{MDA}(G_\gamma)$, alors $\mathbb P(X-t\gt x\mid X\gt t)\xrightarrow[t\to\infty]{}\overline{\mathrm{Pareto}}_{\sigma,\gamma}(x)$ (théorème de Pickands-Balkema-de Haan, fiche 7), avec</p>
+              <div class="formula">$$\overline H_{\sigma,\gamma}(x)=\Big(1+\frac{\gamma x}\sigma\Big)^{-1/\gamma},\quad H_{\sigma,\gamma}(x)=1-\Big(1+\frac{\gamma x}\sigma\Big)^{-1/\gamma},\quad h_{\sigma,\gamma}(x)=\frac1\sigma\Big(1+\frac{\gamma x}\sigma\Big)^{-\frac1\gamma-1}\mathbf 1_{\{1+\frac\gamma\sigma x\gt0\}}$$</div>
+              <p>On suppose que, au-dessus d'un seuil $t$ élevé, les excès <b>suivent exactement</b> cette loi, puis on estime $(\sigma,\gamma)$ par maximum de vraisemblance.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Les données : les excès au-dessus du seuil $X_{n-k,n}$</p>
+              <p>Le seuil est la statistique d'ordre $X_{n-k,n}$ (son rôle : la « position » $t$). Il reste $k$ excès :</p>
+              <div class="formula">$$Y_i=X_{n-i+1,n}-X_{n-k,n},\qquad i=1,\dots,k$$</div>
+              <div class="formula">$$L(\sigma,\gamma)=\prod_{i=1}^k\frac1\sigma\Big(1+\frac{\gamma Y_i}\sigma\Big)^{-\frac1\gamma-1}\mathbf 1_{\{1+\frac\gamma\sigma Y_i\gt0\}},\qquad\ell(\sigma,\gamma)=-k\log\sigma-\Big(\frac1\gamma+1\Big)\sum_{i=1}^k\log\Big(1+\frac{\gamma Y_i}\sigma\Big)$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Ce qu'il faut savoir</p>
+              <p>1. Il n'y a <b>pas de formule fermée</b> en général : on maximise $\ell$ numériquement.<br>
+              2. Cas $\gamma=0$ (limite) : la GPD devient une exponentielle de moyenne $\sigma$, $\ell(\sigma)=-k\log\sigma-\frac1\sigma\sum Y_i$ et $\hat\sigma=\bar Y$ (exercice, fiche 43).<br>
+              3. La contrainte $1+\frac\gamma\sigma Y_i\gt0$ doit être vérifiée pour tous les excès : si $\gamma\lt0$ on doit avoir $\sigma/|\gamma|\gt\max_iY_i$ (le point terminal est au-dessus du plus grand excès).<br>
+              4. <b>Lien avec Hill</b> (chapitre 2, fiche 14) : si l'on impose en plus $\sigma=\gamma u$ avec $u=X_{n-k,n}$ (cas Pareto exacte), la vraisemblance GPD devient exactement celle de Pareto et le MLE de $\gamma$ est l'estimateur de Hill (fiche 43).</p>
+              <p class="sense"><b>Résultat classique hors du polycopié :</b> pour $\gamma\gt-\tfrac12$, le MLE de $(\sigma,\gamma)$ est asymptotiquement normal (Smith), avec une variance $(1+\gamma)^2$ pour $\sqrt k(\hat\gamma-\gamma)$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s35">
+            <div class="tophead"><span class="num">35</span><h2>Quel estimateur choisir ? Tableau de synthèse</h2></div>
+
+            <table class="cmp">
+              <tr><th></th><th>Hill</th><th>Pickands</th><th>Moments</th><th>MLE (GPD)</th></tr>
+              <tr><td>$\gamma$ admissible</td><td>$\gt0$</td><td>tout $\gamma$</td><td>tout $\gamma$</td><td>$\gt-\frac12$ (régulier)</td></tr>
+              <tr><td>Observations utilisées</td><td>$k$ plus grandes</td><td>3 seulement</td><td>$k$ plus grandes</td><td>$k$ plus grandes</td></tr>
+              <tr><td>Variance de $\sqrt k(\hat\gamma-\gamma)$</td><td>$\gamma^2$</td><td>$v^P(\gamma)$</td><td>$v^{\mathrm{Mom}}(\gamma)$</td><td>$(1+\gamma)^2$</td></tr>
+              <tr><td>Formule fermée</td><td>oui</td><td>oui</td><td>oui</td><td>non (optimisation)</td></tr>
+              <tr><td>Estime aussi l'échelle</td><td>non</td><td>non</td><td>oui ($\hat\sigma^{\mathrm{Mom}}$)</td><td>oui ($\hat\sigma$)</td></tr>
+            </table>
+
+            <div class="box box-ex">
+              <p class="box-label">Comparaison numérique des variances asymptotiques de $\sqrt k(\hat\gamma-\gamma)$</p>
+              <table class="cmp">
+                <tr><th>$\gamma$</th><th>Hill</th><th>Pickands $v^P$</th><th>Moments $v^{\mathrm{Mom}}$</th><th>$v^P/v^{\mathrm{Mom}}$</th></tr>
+                <tr><td>$-0{,}5$</td><td>non valable</td><td>3,03</td><td>1,80</td><td>1,68</td></tr>
+                <tr><td>$-0{,}25$</td><td>non valable</td><td>3,10</td><td>1,09</td><td>2,85</td></tr>
+                <tr><td>$0$</td><td>non valable</td><td>3,25</td><td>1,00</td><td>3,25</td></tr>
+                <tr><td>$0{,}25$</td><td>0,06</td><td>3,48</td><td>1,06</td><td>3,27</td></tr>
+                <tr><td>$0{,}5$</td><td>0,25</td><td>3,79</td><td>1,25</td><td>3,03</td></tr>
+                <tr><td>$1$</td><td>1,00</td><td>4,68</td><td>2,00</td><td>2,34</td></tr>
+                <tr><td>$2$</td><td>4,00</td><td>7,63</td><td>5,00</td><td>1,53</td></tr>
+              </table>
+              <p>J'ai confirmé ces variances par simulation (600 répétitions, $n=20\,000$, $k=400$, queue Pareto généralisée) : écart-type de $\sqrt k(\hat\gamma-\gamma)$ pour $\gamma=1$ : Hill 1,02 ; Pickands 2,16 (théorie 2,16) ; moments 1,41 (théorie 1,41).</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Règle pratique de décision</p>
+              <p>1. Si on sait que $\gamma\gt0$ (données financières, sinistres lourds) : <b>Hill</b> est le plus précis.<br>
+              2. Si le signe de $\gamma$ est inconnu : <b>moments</b> par défaut (valable partout, variance modeste), avec en bonus l'échelle et le quantile extrême.<br>
+              3. <b>Pickands</b> sert surtout de vérification rapide (3 points) ou quand on veut un estimateur invariant et sans logarithme.<br>
+              4. Si le modèle GPD est crédible au-dessus d'un seuil : <b>MLE</b>, plus efficace mais plus sensible au choix du seuil.<br>
+              5. Dans tous les cas, tracer l'estimation en fonction de $k$ (comme le Hill plot) et chercher un plateau.</p>
+              <p class="sense"><b>Le fil rouge du cours :</b> choisir $k$ reste le même compromis qu'aux chapitres précédents : $k$ petit donne de la variance, $k$ grand donne du biais.</p>
+            </div>
+          </article>
+
+          <div class="qcm" id="qcm-3">
+            <div class="qcm-head">
+              <h3>QCM de révision · Séance 3</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Cochez la bonne réponse pour chaque question, puis validez pour voir le corrigé détaillé. « Recommencer » propose une autre série.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Quelles observations l'estimateur de Pickands utilise-t-il ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t3-1"><span class="otext">Les $k$ plus grandes, comme Hill.</span></label>
+              <div class="qcm-explain">Faux : c'est Hill (et l'estimateur des moments). Pickands est bien plus économe, ce qui explique sa variance élevée.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-1"><span class="otext">Seulement le maximum $X_{n,n}$.</span></label>
+              <div class="qcm-explain">Faux : le maximum seul est dégénéré (fiche 2) et n'estime pas $\gamma$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-1"><span class="otext">Trois statistiques d'ordre : $X_{n-k,n}$, $X_{n-2k,n}$, $X_{n-4k,n}$.</span></label>
+              <div class="qcm-explain">Correct : c'est la fiche 28. Le rapport des deux différences élimine l'échelle inconnue.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-1"><span class="otext">Tout l'échantillon.</span></label>
+              <div class="qcm-explain">Faux : on ne regarde que la queue, jamais le centre de la distribution.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Que vaut $\lim_{t\to\infty}\frac{U(tx)-U(t)}{a(t)}$ quand $\gamma=0$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t3-2"><span class="otext">$\log x$</span></label>
+              <div class="qcm-explain">Correct : c'est la limite de $\frac{x^\gamma-1}\gamma$ quand $\gamma\to0$. Exemple exact : loi exponentielle, $U(t)=\log t$, $a(t)=1$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-2"><span class="otext">$0$</span></label>
+              <div class="qcm-explain">Faux : la limite n'est pas nulle, la normalisation par $a(t)$ est justement choisie pour qu'elle soit non triviale.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-2"><span class="otext">$x$</span></label>
+              <div class="qcm-explain">Faux : ce serait $\gamma=1$ à un changement de variable près.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-2"><span class="otext">$+\infty$</span></label>
+              <div class="qcm-explain">Faux : la limite est finie pour tout $x\gt0$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q3</span>On applique l'estimateur de Hill à un échantillon uniforme sur $[0,1]$ ($\gamma=-1$). Il converge vers…<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t3-3"><span class="otext">$-1$.</span></label>
+              <div class="qcm-explain">Faux : Hill est positif par construction (moyenne de logarithmes de rapports plus grands que 1).</div>
+              <label class="qcm-opt"><input type="radio" name="t3-3"><span class="otext">$0$, c'est-à-dire $\gamma_+=\max(\gamma,0)$.</span></label>
+              <div class="qcm-explain">Correct : tous les rapports $X_{n-i+1,n}/X_{n-k,n}$ tendent vers 1 (fiche 38). Hill ne détecte que la partie positive de $\gamma$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-3"><span class="otext">$+\infty$.</span></label>
+              <div class="qcm-explain">Faux : les rapports sont bornés par $\theta/X_{n-k,n}\to1$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-3"><span class="otext">Il ne converge pas.</span></label>
+              <div class="qcm-explain">Faux : il converge, mais vers la mauvaise valeur.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Pour $\gamma\ge0$, que vaut la variance asymptotique de l'estimateur des moments ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t3-4"><span class="otext">$\gamma^2$, comme Hill.</span></label>
+              <div class="qcm-explain">Faux : c'est la variance de Hill, plus faible. L'estimateur des moments paie le fait de ne pas supposer $\gamma\gt0$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-4"><span class="otext">$(1+\gamma)^2$.</span></label>
+              <div class="qcm-explain">Faux : c'est la variance du MLE de la loi de Pareto généralisée.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-4"><span class="otext">$2\gamma^2$.</span></label>
+              <div class="qcm-explain">Faux : pas de résultat de ce type.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-4"><span class="otext">$\gamma^2+1$.</span></label>
+              <div class="qcm-explain">Correct : une unité de plus que Hill (fiche 32).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q5</span>Pourquoi forme-t-on le rapport $\frac{(\pi^{(1)}_k)^2}{\pi^{(2)}_k}$ dans l'estimateur des moments ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t3-5"><span class="otext">Parce que le facteur inconnu $U/a$ y apparaît à la même puissance en haut et en bas, donc il se simplifie.</span></label>
+              <div class="qcm-explain">Correct : $M_1^2$ et $M_2$ contiennent tous deux $(U/a)^2$ (fiche 31).</div>
+              <label class="qcm-opt"><input type="radio" name="t3-5"><span class="otext">Parce que ce rapport est toujours égal à $1/2$.</span></label>
+              <div class="qcm-explain">Faux : il vaut $1/2$ seulement si $\gamma\ge0$ ; sinon il vaut $\frac{1-2\gamma}{2(1-\gamma)}$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-5"><span class="otext">Parce qu'il rend l'estimateur indépendant de $k$.</span></label>
+              <div class="qcm-explain">Faux : $k$ intervient dans $\pi^{(1)}_k$ et $\pi^{(2)}_k$.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-5"><span class="otext">Parce qu'il permet de se passer de la condition du second ordre.</span></label>
+              <div class="qcm-explain">Faux : le TCL a encore besoin de $\mathcal H_{\log,2}$ pour contrôler le biais.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Dans l'estimateur du quantile extrême $\hat q^*(\beta_n)=X_{n-k,n}+\hat\sigma\frac{x_n^{\hat\gamma}-1}{\hat\gamma}$, que vaut $x_n$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="t3-6"><span class="otext">$n(1-\beta_n)$.</span></label>
+              <div class="qcm-explain">Faux : c'est le nombre attendu d'observations au-delà du quantile, qui reste borné.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-6"><span class="otext">$k/n$.</span></label>
+              <div class="qcm-explain">Faux : c'est le niveau intermédiaire, qui tend vers 0.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-6"><span class="otext">$\dfrac{k}{n(1-\beta_n)}$.</span></label>
+              <div class="qcm-explain">Correct : c'est le rapport entre l'extrême $\frac1{1-\beta_n}$ et l'intermédiaire $\frac nk$ (fiche 33). Il est grand pour un quantile au-delà de l'échantillon.</div>
+              <label class="qcm-opt"><input type="radio" name="t3-6"><span class="otext">$\beta_n/k$.</span></label>
+              <div class="qcm-explain">Faux : cette quantité n'a aucun sens dans la relation (1).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 5 ================= -->
+      <section class="lecture" id="lecture-5">
+        <button class="lecture-head">
+          <span class="num">5</span>
+          <span class="title">Exercices &amp; corrections (chapitre 3)</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s36">
+            <div class="tophead"><span class="num">36</span><h2>Pickands exact sur trois lois (Pareto, exponentielle, uniforme)</h2></div>
+            <p><b>Énoncé.</b> On idéalise : on suppose $X_{n-j,n}=U(n/j)$ (les statistiques d'ordre sont égales à leur valeur typique). Calculer $\hat\gamma^P_k$ pour (a) Pareto$(\gamma)$, $U(t)=t^\gamma$ ; (b) $\mathcal E(1)$, $U(t)=\log t$ ; (c) $\mathcal U(0,1)$, $U(t)=1-\frac1t$. Que remarque-t-on ?</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>On note $t=\frac n{4k}$ : $X_{n-k,n}=U(4t)$, $X_{n-2k,n}=U(2t)$, $X_{n-4k,n}=U(t)$.</p>
+                <p class="method-label">(a) Pareto</p>
+                <div class="formula">$$\frac{U(4t)-U(2t)}{U(2t)-U(t)}=\frac{(4t)^\gamma-(2t)^\gamma}{(2t)^\gamma-t^\gamma}=\frac{t^\gamma2^\gamma(2^\gamma-1)}{t^\gamma(2^\gamma-1)}=2^\gamma\ \Longrightarrow\ \hat\gamma^P=\frac{\log2^\gamma}{\log2}=\gamma$$</div>
+                <p class="method-label">(b) Exponentielle</p>
+                <div class="formula">$$\frac{\log4t-\log2t}{\log2t-\log t}=\frac{\log2}{\log2}=1\ \Longrightarrow\ \hat\gamma^P=\frac{\log1}{\log2}=0$$</div>
+                <p class="method-label">(c) Uniforme</p>
+                <div class="formula">$$\frac{(1-\frac1{4t})-(1-\frac1{2t})}{(1-\frac1{2t})-(1-\frac1t)}=\frac{\frac1{4t}}{\frac1{2t}}=\frac12\ \Longrightarrow\ \hat\gamma^P=\frac{\log\frac12}{\log2}=-1$$</div>
+                <p class="sense"><b>Remarque :</b> pour ces trois lois, qui vérifient (1) <b>exactement</b>, l'estimateur idéalisé redonne le bon $\gamma$ sans aucune erreur, quel que soit $k$. Les erreurs en pratique viennent donc uniquement (i) du <b>caractère aléatoire</b> des statistiques d'ordre (variance $v^P$) et (ii) de l'écart au modèle (biais). C'est aussi le test de cohérence à faire avant tout calcul sur données.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s37">
+            <div class="tophead"><span class="num">37</span><h2>Les sommes de Riemann de l'estimateur des moments</h2></div>
+            <p><b>Énoncé.</b> Le polycopié demande de « finir la somme de Riemann ». Calculer $I_1(\gamma)=\int_0^1D_{\gamma_-}(\tfrac1s)\,ds$ et $I_2(\gamma)=\int_0^1D_{\gamma_-}(\tfrac1s)^2\,ds$, puis la limite de $\frac12[1-I_1^2/I_2]^{-1}$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction pas à pas</summary>
+              <div class="box box-thm">
+                <p class="method-label">Cas $\gamma\ge0$ : $D_{\gamma_-}(x)=\log x$</p>
+                <p>$I_1=\int_0^1\log\frac1s\,ds=\big[s-s\log s\big]_0^1=1$. Pour $I_2=\int_0^1\log^2\frac1s\,ds$, on intègre par parties : $\int\log^2s\,ds=s\log^2s-2s\log s+2s$, donc $I_2=2$ (la valeur en 0 est 0). Ainsi $\frac{I_1^2}{I_2}=\frac12$, et $\frac12[1-\frac12]^{-1}=1=1-\gamma_-$ ✓.</p>
+                <p class="method-label">Cas $\gamma\lt0$ : $D_{\gamma}(\frac1s)=\frac{s^{-\gamma}-1}{\gamma}$</p>
+                <div class="formula">$$I_1=\frac1\gamma\int_0^1(s^{-\gamma}-1)\,ds=\frac1\gamma\Big(\frac1{1-\gamma}-1\Big)=\frac1\gamma\cdot\frac{\gamma}{1-\gamma}=\frac1{1-\gamma}$$</div>
+                <div class="formula">$$I_2=\frac1{\gamma^2}\int_0^1(s^{-2\gamma}-2s^{-\gamma}+1)\,ds=\frac1{\gamma^2}\Big(\frac1{1-2\gamma}-\frac2{1-\gamma}+1\Big)=\frac1{\gamma^2}\cdot\frac{2\gamma^2}{(1-2\gamma)(1-\gamma)}=\frac2{(1-\gamma)(1-2\gamma)}$$</div>
+                <p>(numérateur : $(1-\gamma)-2(1-2\gamma)+(1-2\gamma)(1-\gamma)=2\gamma^2$). Donc</p>
+                <div class="formula">$$\frac{I_1^2}{I_2}=\frac{1}{(1-\gamma)^2}\cdot\frac{(1-\gamma)(1-2\gamma)}2=\frac{1-2\gamma}{2(1-\gamma)},\qquad\frac12\Big[1-\frac{I_1^2}{I_2}\Big]^{-1}=\frac12\cdot2(1-\gamma)=1-\gamma$$</div>
+                <p class="sense"><b>Vérification numérique :</b> pour $\gamma=-1$, $I_1=\frac12$, $I_2=\frac13$, $I_1^2/I_2=\frac34$ ; pour $\gamma=-\frac12$, $I_1=\frac23$, $I_2=\frac23$, rapport $\frac23$. Cela redonne bien $1-\gamma_-=2$ et $\frac32$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s38">
+            <div class="tophead"><span class="num">38</span><h2>Hill ne converge pas vers $\gamma$ quand $\gamma\lt0$ (exercice 3.2)</h2></div>
+            <p><b>Énoncé.</b> On suppose $\gamma\lt0$ (donc $x_F\lt\infty$) et $\theta=x_F\gt0$. Soit $k=k_n\to\infty$ avec $k/n\to0$. Montrer que ① $X_{n-k,n}\xrightarrow{\mathbb P}\theta$ ; ② $\hat\gamma^H=\frac1k\sum_{i=1}^k\log\frac{X_{n-i+1,n}}{X_{n-k,n}}\xrightarrow{\mathbb P}0$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">① Le quantile intermédiaire tend vers le point terminal</p>
+                <p>$X_{n-k,n}$ est un estimateur de $q(1-k/n)=U(n/k)$. Comme $k/n\to0$, $\frac nk\to\infty$ et $U(\frac nk)\to\theta$ puisque $\gamma\lt0$ (fiche 27). La consistance du quantile intermédiaire (chapitre 2, fiche 11) donne $X_{n-k,n}\xrightarrow{\mathbb P}\theta$.</p>
+                <p class="method-label">② Hill tend vers 0</p>
+                <p>Pour $1\le i\le k$ : $X_{n-k,n}\le X_{n-i+1,n}\le X_{n,n}\le\theta$. Donc, tous les termes étant positifs,</p>
+                <div class="formula">$$0\le\hat\gamma^H=\frac1k\sum_{i=1}^k\log\frac{X_{n-i+1,n}}{X_{n-k,n}}\le\log\frac\theta{X_{n-k,n}}\xrightarrow{\ \mathbb P\ }\log\frac\theta\theta=0$$</div>
+                <p>(on a majoré chaque terme par le plus grand ; $\theta\gt0$ évite que $\log$ explose). Donc $\hat\gamma^H\xrightarrow{\mathbb P}0\ne\gamma$.</p>
+                <p class="sense"><b>Sens :</b> quand le support est borné, toutes les grandes valeurs sont « collées » contre $\theta$, leurs rapports valent presque 1 et leurs logarithmes presque 0. Hill ne voit que $\gamma_+=\max(\gamma,0)$ et répond $0$. Moralité : <b>Hill ne détecte pas qu'on est en domaine de Weibull</b>, d'où l'intérêt du chapitre 3.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s39">
+            <div class="tophead"><span class="num">39</span><h2>L'estimateur des moments est consistant dans les trois régimes</h2></div>
+            <p><b>Énoncé.</b> Vérifier que $\hat\gamma^{\mathrm{Mom}}_k\xrightarrow{\mathbb P}\gamma$ pour $\gamma\gt0$, $\gamma=0$ et $\gamma\lt0$, en donnant les limites de $\pi^{(1)}_k$ et du rapport $(\pi^{(1)}_k)^2/\pi^{(2)}_k$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>On utilise (B) $\pi^{(1)}_k\to\gamma_+$ et le rapport $M_1^2/M_2$ de la fiche 31 (le facteur $U/a$ se simplifie).</p>
+                <table class="cmp">
+                  <tr><th>Régime</th><th>$\pi^{(1)}_k\to$</th><th>$\frac{(\pi^{(1)}_k)^2}{\pi^{(2)}_k}\to$</th><th>$\hat\gamma^-_k\to$</th><th>$\hat\gamma^{\mathrm{Mom}}_k\to$</th></tr>
+                  <tr><td>$\gamma\gt0$ (ex. $0{,}5$)</td><td>$\gamma$</td><td>$\frac12$</td><td>$1-\frac12\cdot2=0$</td><td>$\gamma+0=\gamma$</td></tr>
+                  <tr><td>$\gamma=0$</td><td>$0$</td><td>$\frac12$</td><td>$0$</td><td>$0$</td></tr>
+                  <tr><td>$\gamma\lt0$ (ex. $-1$)</td><td>$0$</td><td>$\frac34$</td><td>$1-\frac12\cdot4=-1$</td><td>$0+(-1)=\gamma$</td></tr>
+                </table>
+                <p><b>Détail pour $\gamma\gt0$ :</b> $\pi^{(1)}\to\gamma$ et $\pi^{(2)}\to2\gamma^2$ (second moment d'une exponentielle de moyenne $\gamma$), donc $(\pi^{(1)})^2/\pi^{(2)}\to\frac12$ ; le crochet vaut $\frac12$, son inverse $2$, et $\hat\gamma^-\to1-1=0$.</p>
+                <p><b>Détail pour $\gamma\lt0$ :</b> $\pi^{(1)}\to0$ (fiche 38) mais le rapport $(\pi^{(1)})^2/\pi^{(2)}$ ne tend pas vers 0 : numérateur et dénominateur tendent <b>tous deux vers 0 au même rythme</b>, ce qui laisse la limite $\frac{1-2\gamma}{2(1-\gamma)}$.</p>
+                <p class="sense"><b>Contrôle par simulation</b> (échantillon uniforme, $n=10\,000$, $k=200$, vrai $\gamma=-1$) : $\hat\gamma^H=0{,}01$ (Hill, faux), $\hat\gamma^{\mathrm{Mom}}=-1{,}09$ (bon).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s40">
+            <div class="tophead"><span class="num">40</span><h2>Application numérique complète : $\hat\gamma$, $\hat\sigma$, point terminal et quantile extrême</h2></div>
+            <p><b>Énoncé (valeurs fictives pour s'entraîner).</b> Un échantillon de taille $n=1000$ est analysé avec $k=50$. On a calculé $X_{n-k,n}=10$, $\pi^{(1)}_k=0{,}15$ et $\pi^{(2)}_k=0{,}03$. 1) Calculer $\hat\gamma^{\mathrm{Mom}}_k$. 2) Calculer $\hat\sigma^{\mathrm{Mom}}_k$. 3) Estimer le point terminal. 4) Estimer le quantile d'ordre $\beta_n$ avec $1-\beta_n=10^{-4}$ (une valeur dépassée une fois sur $10\,000$, donc au-delà de l'échantillon).</p>
+
+            <details class="solution">
+              <summary>Voir la correction pas à pas</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Estimateur des moments</p>
+                <div class="formula">$$\frac{(\pi^{(1)})^2}{\pi^{(2)}}=\frac{0{,}15^2}{0{,}03}=\frac{0{,}0225}{0{,}03}=0{,}75,\qquad\hat\gamma^-=1-\frac12\cdot\frac1{1-0{,}75}=1-\frac12\cdot4=-1$$</div>
+                <div class="formula">$$\hat\gamma^{\mathrm{Mom}}=\pi^{(1)}+\hat\gamma^-=0{,}15-1=-0{,}85$$</div>
+                <p>$\hat\gamma\lt0$ : queue bornée (domaine de Weibull).</p>
+                <p class="method-label">2) L'échelle</p>
+                <div class="formula">$$\hat\sigma=X_{n-k,n}\,\pi^{(1)}\,(1-\hat\gamma^-)=10\times0{,}15\times(1+1)=3$$</div>
+                <p class="method-label">3) Le point terminal</p>
+                <div class="formula">$$\hat\theta=X_{n-k,n}-\frac{\hat\sigma}{\hat\gamma}=10-\frac3{-0{,}85}=10+3{,}529=13{,}53$$</div>
+                <p class="method-label">4) Le quantile extrême</p>
+                <p>$x_n=\dfrac k{n(1-\beta_n)}=\dfrac{50}{1000\times10^{-4}}=500$. Avec $500^{-0{,}85}=e^{-0{,}85\times6{,}2146}=0{,}00508$ :</p>
+                <div class="formula">$$\hat q^*(\beta_n)=10+3\cdot\frac{0{,}00508-1}{-0{,}85}=10+3\times1{,}1705=13{,}51$$</div>
+                <p class="sense"><b>Contrôle de cohérence :</b> $X_{n-k,n}=10\lt\hat q^*=13{,}51\lt\hat\theta=13{,}53$. Le quantile à 1 pour 10 000 est presque au point terminal estimé : c'est normal pour $\gamma\lt0$, où les valeurs extrêmes s'accumulent contre la borne. Avec $\gamma\gt0$, au contraire, le quantile continuerait de croître comme $x_n^\gamma$ sans jamais s'arrêter.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s41">
+            <div class="tophead"><span class="num">41</span><h2>Weissman est un cas particulier du quantile général</h2></div>
+            <p><b>Énoncé.</b> Montrer que si $a(t)=\gamma U(t)$ et $\gamma\gt0$, l'estimateur du quantile extrême de la fiche 33 se réduit à l'estimateur de Weissman de la fiche 16.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Dans le cas $\gamma\gt0$, $\hat\gamma^-\to0$, donc $\hat\sigma\approx X_{n-k,n}\hat\gamma^H$ (car $\hat\sigma=X_{n-k,n}\pi^{(1)}(1-\hat\gamma^-)$ et $\pi^{(1)}=\hat\gamma^H$). Avec $\hat\gamma=\hat\gamma^H$ et $x_n=\frac k{n(1-\beta_n)}$ :</p>
+                <div class="formula">$$\hat q^*=X_{n-k,n}+X_{n-k,n}\hat\gamma\cdot\frac{x_n^{\hat\gamma}-1}{\hat\gamma}=X_{n-k,n}\,x_n^{\hat\gamma}=\Big(\frac{n(1-\beta_n)}k\Big)^{-\hat\gamma}X_{n-k,n}$$</div>
+                <p>C'est exactement la formule de Weissman (fiche 16).</p>
+                <p class="sense"><b>Pourquoi c'est vrai conceptuellement :</b> pour $\gamma\gt0$ on a $a(t)\sim\gamma U(t)$ (la loi de Pareto en est l'exemple exact : $U=t^\gamma$, $a=\gamma t^\gamma$, fiche 27). Le terme « position + échelle » se réduit à un simple produit, d'où l'extrapolation multiplicative du chapitre 2. Le chapitre 3 est donc une <b>généralisation</b>, pas un changement de méthode.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s42">
+            <div class="tophead"><span class="num">42</span><h2>Comparer les variances : combien d'observations en plus pour Pickands ?</h2></div>
+            <p><b>Énoncé.</b> On est dans le cas $\gamma=1$ avec $k=400$ observations extrêmes. 1) Donner l'écart-type asymptotique de Hill, de Pickands et des moments. 2) Combien d'observations extrêmes faudrait-il à Pickands pour égaler la précision de Hill ?</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Écarts-types</p>
+                <p>Les variances asymptotiques de $\sqrt k(\hat\gamma-\gamma)$ pour $\gamma=1$ : Hill $\gamma^2=1$ ; Pickands $v^P(1)=\frac{1\cdot(2^3+1)}{4(\log2)^2(2-1)^2}=\frac9{1{,}9218}=4{,}68$ ; moments $\gamma^2+1=2$. L'écart-type de $\hat\gamma$ est $\sqrt{v/k}$, avec $\sqrt{400}=20$ :</p>
+                <div class="formula">$$\text{Hill : }\frac1{20}=0{,}050,\qquad\text{moments : }\frac{\sqrt2}{20}=0{,}071,\qquad\text{Pickands : }\frac{\sqrt{4{,}68}}{20}=0{,}108$$</div>
+                <p class="method-label">2) Observations supplémentaires</p>
+                <p>Pour égaler la précision de Hill avec Pickands, il faut $v^P/k_P=1/k_H$, soit $k_P=4{,}68\,k_H$ : <b>4,7 fois plus d'observations extrêmes</b> (1 872 au lieu de 400). Or $k$ est limité par le besoin $k/n\to0$ (rester dans la queue) : on ne peut pas augmenter $k$ à volonté sans introduire du biais.</p>
+                <p class="sense"><b>Sens :</b> utiliser seulement 3 statistiques d'ordre (Pickands) coûte cher. La simulation confirme (600 répétitions, $n=20\,000$, $k=400$) : écart-type de $\sqrt k(\hat\gamma-\gamma)$ égal à 1,02 (Hill), 1,41 (moments), 2,16 (Pickands).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s43">
+            <div class="tophead"><span class="num">43</span><h2>Le maximum de vraisemblance GPD : exponentielle et lien avec Hill</h2></div>
+            <p><b>Énoncé.</b> (a) Écrire la log-vraisemblance de la GPD quand $\gamma=0$ et trouver $\hat\sigma$. (b) Soit $u=X_{n-k,n}$ et supposons que $X/u$ suit exactement une loi de Pareto$(\gamma)$ au-dessus de $u$. Montrer que les excès $Y=X-u$ suivent une GPD de paramètres $(\gamma u,\gamma)$ et que le MLE de $\gamma$ avec $\sigma=\gamma u$ imposé est l'estimateur de Hill.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">(a) Cas $\gamma=0$</p>
+                <p>Quand $\gamma\to0$, $(1+\gamma y/\sigma)^{-1/\gamma}\to e^{-y/\sigma}$ : la GPD est l'exponentielle de moyenne $\sigma$, de densité $\frac1\sigma e^{-y/\sigma}$.</p>
+                <div class="formula">$$\ell(\sigma)=-k\log\sigma-\frac1\sigma\sum_{i=1}^kY_i,\qquad\ell'(\sigma)=-\frac k\sigma+\frac1{\sigma^2}\sum_iY_i=0\ \Longrightarrow\ \hat\sigma=\bar Y=\frac1k\sum_{i=1}^kY_i$$</div>
+                <p>($\ell''\lt0$ en $\hat\sigma$, donc c'est bien un maximum.) Le MLE est la moyenne des excès.</p>
+                <p class="method-label">(b) Pareto et GPD</p>
+                <p>Si $X/u\sim\mathrm{Pareto}(\gamma)$ sur $]1,\infty[$, $\mathbb P(X\gt x\mid X\gt u)=(x/u)^{-1/\gamma}$. Avec $Y=X-u$ : $\mathbb P(Y\gt y)=(1+y/u)^{-1/\gamma}=\big(1+\frac{\gamma y}{\gamma u}\big)^{-1/\gamma}$, soit une GPD de paramètres $\sigma=\gamma u$ et $\gamma$. ✓</p>
+                <p>La vraisemblance en $\gamma$ seul est alors $\prod\frac1{\gamma u}\big(1+\frac{Y_i}u\big)^{-\frac1\gamma-1}=\prod\frac1{\gamma u}\big(\frac{X_i}u\big)^{-\frac1\gamma-1}$, d'où la log-vraisemblance (à une constante près)</p>
+                <div class="formula">$$\ell(\gamma)=-k\log\gamma-\Big(\frac1\gamma+1\Big)\sum_{i=1}^k\log\frac{X_{n-i+1,n}}{u}$$</div>
+                <p>qui est exactement la log-vraisemblance Pareto de la fiche 14. Son maximum est $\hat\gamma=\frac1k\sum_i\log\frac{X_{n-i+1,n}}{X_{n-k,n}}=\hat\gamma^H$.</p>
+                <p class="sense"><b>Conclusion :</b> Hill est le MLE de $\gamma$ dans le modèle « GPD avec $\sigma=\gamma u$ », c'est-à-dire <b>quand on impose que la queue soit une Pareto pure</b>. Le MLE général de la fiche 34 relâche cette contrainte et laisse $\sigma$ libre : il couvre aussi $\gamma\le0$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s44">
+            <div class="tophead"><span class="num">44</span><h2>Simulation commentée : trois lois, trois estimateurs</h2></div>
+            <p><b>Énoncé.</b> Écrire un programme qui calcule Hill, Pickands et moments, et l'appliquer à trois échantillons de taille $n=10\,000$ avec $k=200$ : Pareto $\alpha=2$ ($\gamma=0{,}5$), $|T|$ avec $T$ de Student à 4 ddl ($\gamma=0{,}25$), uniforme sur $[0,1]$ ($\gamma=-1$).</p>
+
+            <details class="solution">
+              <summary>Voir le code et les résultats</summary>
+              <div class="box box-thm">
+<pre class="code"><code>import numpy as np
+from scipy import stats
+
+def estimateurs(x, k):
+    x = np.sort(x); n = len(x)
+    X = lambda j: x[n - 1 - j]                      # X_{n-j,n}
+    log_exces = np.log(x[n - k:]) - np.log(X(k))   # log(X_{n-i+1,n} / X_{n-k,n}), i = 1..k
+    pi1, pi2 = log_exces.mean(), (log_exces**2).mean()
+    hill = pi1
+    pickands = np.log((X(k) - X(2*k)) / (X(2*k) - X(4*k))) / np.log(2)
+    moments = pi1 + 1 - 0.5 / (1 - pi1**2 / pi2)
+    return hill, pickands, moments
+
+rng = np.random.default_rng(7)
+k = 200
+echantillons = {
+    "Pareto, alpha=2   (gamma =  0.50)": rng.pareto(2.0, 10000) + 1,
+    "|Student t4|      (gamma =  0.25)": np.abs(stats.t.rvs(4, size=10000, random_state=11)),
+    "Uniforme [0,1]    (gamma = -1.00)": rng.random(10000),
+}
+for nom, x in echantillons.items():
+    print(nom, np.round(estimateurs(x, k), 3))</code></pre>
+                <table class="cmp">
+                  <tr><th>Loi (vrai $\gamma$)</th><th>Hill</th><th>Pickands</th><th>Moments</th></tr>
+                  <tr><td>Pareto $\alpha=2$ ($0{,}5$)</td><td>0,473</td><td>0,406</td><td>0,624</td></tr>
+                  <tr><td>$|$Student $t_4|$ ($0{,}25$)</td><td>0,290</td><td>$-0{,}012$</td><td>0,160</td></tr>
+                  <tr><td>Uniforme ($-1$)</td><td>0,010</td><td>$-0{,}940$</td><td>$-1{,}088$</td></tr>
+                </table>
+                <p class="sense"><b>Lecture :</b> (i) pour $\gamma\gt0$, Hill est le plus proche de la valeur vraie ; (ii) pour l'uniforme, <b>Hill échoue</b> (0,01 au lieu de $-1$), conformément à la fiche 38, alors que Pickands ($-0{,}94$) et les moments ($-1{,}09$) retrouvent $-1$ ; (iii) Pickands est <b>très bruité</b> : $-0{,}012$ pour la Student au lieu de $0{,}25$, ce qui illustre sa variance élevée (fiche 29) ; (iv) un seul tirage ne prouve rien, mais ces ordres de grandeur sont ceux annoncés par la théorie. En pratique, on trace chaque estimateur en fonction de $k$.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-4">
+            <div class="qcm-head">
+              <h3>QCM transversal · Les trois chapitres ensemble</h3>
+              <span class="qcm-meta">⏱ 10 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Ces questions relient les chapitres entre eux. « Recommencer » propose une autre série.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Quel théorème du chapitre 1 justifie que les excès au-dessus d'un seuil suivent une loi de Pareto généralisée, utilisée au chapitre 3 ?<span class="q-badge">lien</span></p>
+              <label class="qcm-opt"><input type="radio" name="t4-1"><span class="otext">Fisher-Tippett-Gnedenko.</span></label>
+              <div class="qcm-explain">Faux : il décrit la loi limite du <b>maximum</b> (GEV), pas celle des excès.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-1"><span class="otext">Pickands-Balkema-de Haan (fiche 7).</span></label>
+              <div class="qcm-explain">Correct : mêmes conditions, même $\gamma$ que la GEV, mais loi limite GPD pour les excès. C'est la base de l'approche paramétrique (fiche 34).</div>
+              <label class="qcm-opt"><input type="radio" name="t4-1"><span class="otext">Le théorème central limite.</span></label>
+              <div class="qcm-explain">Faux : aucune limite gaussienne pour les excès en théorie des extrêmes.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-1"><span class="otext">La loi des grands nombres.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Pourquoi le chapitre 2 se limite-t-il à $\gamma\gt0$ ?<span class="q-badge">lien</span></p>
+              <label class="qcm-opt"><input type="radio" name="t4-2"><span class="otext">Parce que $\gamma\le0$ est impossible.</span></label>
+              <div class="qcm-explain">Faux : $\gamma=0$ (Gumbel) et $\gamma\lt0$ (Weibull) existent (chapitre 1, fiche 5).</div>
+              <label class="qcm-opt"><input type="radio" name="t4-2"><span class="otext">Parce que Hill est trop lent pour $\gamma\le0$.</span></label>
+              <div class="qcm-explain">Faux : il n'est pas lent, il converge vers la mauvaise limite.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-2"><span class="otext">Parce que la relation $U(tx)/U(t)\to x^\gamma$ n'est informative que pour $\gamma\gt0$ ; pour $\gamma\le0$ le rapport tend vers 1.</span></label>
+              <div class="qcm-explain">Correct : c'est tout le point de la fiche 26. Le chapitre 3 passe aux différences normalisées.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-2"><span class="otext">Parce que le quantile extrême n'existe pas pour $\gamma\le0$.</span></label>
+              <div class="qcm-explain">Faux : il existe, et on l'estime justement au chapitre 3.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Quel lien y a-t-il entre l'estimateur de Hill (chapitre 2) et celui des moments (chapitre 3) ?<span class="q-badge">lien</span></p>
+              <label class="qcm-opt"><input type="radio" name="t4-3"><span class="otext">Hill est la partie $\pi^{(1)}_k$ de l'estimateur des moments, et estime $\gamma_+$.</span></label>
+              <div class="qcm-explain">Correct : $\hat\gamma^{\mathrm{Mom}}=\hat\gamma^H+\hat\gamma^-$. Le chapitre 3 ajoute à Hill une correction qui détecte le cas $\gamma\lt0$.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-3"><span class="otext">Ce sont deux estimateurs sans rapport.</span></label>
+              <div class="qcm-explain">Faux : le premier est un morceau du second.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-3"><span class="otext">L'estimateur des moments remplace Hill et n'utilise pas les logarithmes.</span></label>
+              <div class="qcm-explain">Faux : il utilise les logarithmes des statistiques d'ordre, comme Hill.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-3"><span class="otext">Hill est plus général car il marche pour tout $\gamma$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, Hill échoue pour $\gamma\lt0$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Quel est le point commun entre la relation (B) du chapitre 2 et la relation (1) du chapitre 3 ?<span class="q-badge">lien</span></p>
+              <label class="qcm-opt"><input type="radio" name="t4-4"><span class="otext">Elles sont toutes deux valables seulement pour $\gamma\gt0$.</span></label>
+              <div class="qcm-explain">Faux : (1) est valable pour tout $\gamma\in\mathbb R$.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-4"><span class="otext">Elles ne font intervenir que des rapports.</span></label>
+              <div class="qcm-explain">Faux : (1) fait intervenir des différences.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-4"><span class="otext">Aucun : l'une est empirique, l'autre théorique.</span></label>
+              <div class="qcm-explain">Faux : elles sont toutes deux théoriques.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-4"><span class="otext">Toutes deux permettent d'extrapoler un quantile intermédiaire vers un quantile extrême ; (B) est le cas particulier $a(t)=\gamma U(t)$ de (1).</span></label>
+              <div class="qcm-explain">Correct : voir la fiche 41 (Weissman est un cas particulier).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Un échantillon est borné à droite (domaine de Weibull). Quels estimateurs de $\gamma$ peut-on utiliser ?<span class="q-badge">lien</span></p>
+              <label class="qcm-opt"><input type="radio" name="t4-5"><span class="otext">Hill et Weissman.</span></label>
+              <div class="qcm-explain">Faux : ils sont construits pour $\gamma\gt0$ ; Hill répondrait $0$.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-5"><span class="otext">Pickands, moments, ou MLE de la GPD.</span></label>
+              <div class="qcm-explain">Correct : ce sont les trois estimateurs valables pour $\gamma\lt0$ (fiche 35).</div>
+              <label class="qcm-opt"><input type="radio" name="t4-5"><span class="otext">Aucun : $\gamma\lt0$ n'est pas estimable.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-5"><span class="otext">Seulement la moyenne empirique.</span></label>
+              <div class="qcm-explain">Faux : la moyenne n'a rien à voir avec l'indice de queue.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q6</span>Quel est le fil rouge qui traverse les trois chapitres ?<span class="q-badge">lien</span></p>
+              <label class="qcm-opt"><input type="radio" name="t4-6"><span class="otext">Le théorème central limite.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-6"><span class="otext">Le maximum de vraisemblance.</span></label>
+              <div class="qcm-explain">Faux : il n'apparaît qu'à la fin (fiche 34).</div>
+              <label class="qcm-opt"><input type="radio" name="t4-6"><span class="otext">L'extrapolation depuis un niveau intermédiaire observable vers un niveau extrême non observé, contrôlée par un seul nombre $\gamma$.</span></label>
+              <div class="qcm-explain">Correct : chapitre 1 (existence de $\gamma$), chapitre 2 (estimer pour $\gamma\gt0$), chapitre 3 (estimer pour tout $\gamma$). Toujours avec le même compromis : $k$ petit donne de la variance, $k$ grand du biais.</div>
+              <label class="qcm-opt"><input type="radio" name="t4-6"><span class="otext">La normalité des données.</span></label>
+              <div class="qcm-explain">Faux : on suppose au contraire que les queues sont non gaussiennes.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       <div class="mnemonics">
         <h2>Chaînes à retenir</h2>
         <div class="chain"><b>$M_n$ seule → dégénérée</b> → il faut normaliser : $(M_n-b_n)/a_n$ → loi non dégénérée</div>
@@ -1257,7 +2016,12 @@ window.MathJax = {
         <div class="chain"><b>Estimateur de Hill</b> = moyenne des log-excès au-dessus du (K+1)-ème point → estime γ</div>
         <div class="chain"><b>Interpolation (B)</b> + Hill → <b>estimateur de Weissman</b> : extrapole un quantile au-delà de l'échantillon</div>
         <div class="chain"><b>Toujours le même compromis</b> : K petit → variance ↑ ; K grand → biais ↑</div>
-        <p class="source-note">Mémo basé sur les notes du cours <i>Théorie des Valeurs Extrêmes</i> : J.G. Gómez-García, ENSAI 3A GR/GS, 2025-2026 (chapitres 1 et 2, séances à ce jour).</p>
+        <div class="chain"><b>Chapitre 2 → 3</b> : Hill ne vaut que pour γ&gt;0 (rapport U(tx)/U(t) → 1 si γ≤0) → on passe aux <b>différences</b> normalisées par a(t)</div>
+        <div class="chain"><b>Modèle position-échelle</b> : U(tx) ≈ U(t) + a(t)·(x^γ−1)/γ → position = X<sub>n−k,n</sub> ; échelle et γ à estimer</div>
+        <div class="chain"><b>Pickands</b> : rapport de deux différences (k, 2k, 4k) → a(t) disparaît → 2^γ → valable ∀γ mais <b>3 points seulement</b> (variance élevée)</div>
+        <div class="chain"><b>Moments</b> : γ = γ₊ + γ₋ → γ₊ par Hill (π¹), γ₋ par 1 − ½[1 − (π¹)²/π²]⁻¹ → toutes les k valeurs, valable ∀γ</div>
+        <div class="chain"><b>Quantile extrême général</b> : X<sub>n−k,n</sub> + σ̂·((k/(n(1−β)))<sup>γ̂</sup>−1)/γ̂ → <b>Weissman</b> si γ&gt;0 et σ̂ = γ̂ X<sub>n−k,n</sub></div>
+        <p class="source-note">Mémo basé sur les notes du cours <i>Théorie des Valeurs Extrêmes</i> : J.G. Gómez-García, ENSAI 3A GR/GS, 2025-2026 (chapitres 1, 2 et 3, avec les notes manuscrites du chapitre 3). Les exercices et leurs corrections ont été recalculés numériquement ; la formule du biais de Pickands a été recalculée car l'écriture manuscrite était difficile à lire.</p>
       </div>
 
     </main>
