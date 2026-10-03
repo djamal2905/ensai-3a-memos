@@ -10,6 +10,7 @@ Synthèses de cours au format mémo web consultable (définitions, théorèmes, 
 - [Cheat sheet scikit-learn](ml/cheatsheet-sklearn.html)
 - [Théorie des Valeurs Extrêmes](tve/memo-cours.html) : GEV, domaines d'attraction, Hill, Weissman, exercices corrigés
 - [Plans d'expérience](plans-experience/memo-cours.html) : factoriels complets, fractions régulières, optimalité, surfaces de réponse, QCM et exercices corrigés
+- [Calcul stochastique](calcul-stochastique/memo-cours.html) : martingales, brownien, Lévy, Itô, EDS, finance, TD et annales corrigés
 
 ## 2A
 
