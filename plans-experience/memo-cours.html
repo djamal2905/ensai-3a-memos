@@ -352,16 +352,24 @@ window.MathJax = {
           <li><a href="#s35"><span class="toc-num">35</span>Exercices : surfaces de réponse</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>8 : Examen 2025/2026 (corrigé)</p>
+        <ol>
+          <li><a href="#s36"><span class="toc-num">36</span>Questions de cours</a></li>
+          <li><a href="#s37"><span class="toc-num">37</span>Exercice 1 : points centraux et efficacité</a></li>
+          <li><a href="#s38"><span class="toc-num">38</span>Exercice 2 : composite centré complet</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
         <h1>Obtenir un maximum d'information en un minimum d'expériences</h1>
-        <p>Synthèse complète du cours : vocabulaire et codage, outils du modèle linéaire, plans factoriels complets, fractions régulières, critères d'optimalité, modèles à interactions et surfaces de réponse. Chaque chapitre se termine par un QCM corrigé, et tous les exercices du polycopié sont corrigés pas à pas avec les valeurs numériques.</p>
+        <p>Synthèse complète du cours : vocabulaire et codage, outils du modèle linéaire, plans factoriels complets, fractions régulières, critères d'optimalité, modèles à interactions et surfaces de réponse. Chaque chapitre se termine par un QCM corrigé, et tous les exercices du polycopié sont corrigés pas à pas avec les valeurs numériques. L'examen 2025/2026 est corrigé en détail (fiches 36 à 38).</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : W. Tinsson, Plans d'expérience, ENSAI 3A, 2026-2027</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>35 fiches</b> · 7 QCM</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>38 fiches</b> · 8 QCM</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -1738,6 +1746,12 @@ window.MathJax = {
               <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Les plans factoriels ne marchent plus</p>
               <p>Aux sommets, $x_i=\pm1$ donc $x_i^2=1$ : chaque colonne de $D_Q$ est égale à $\mathbb 1_n$. La matrice $X$ contient $m+1$ colonnes identiques et n'est jamais de plein rang. Exemple $m=2$ : 4 essais pour $p=6$, et trois colonnes égales. <b>Il faut au moins trois niveaux par facteur.</b></p>
             </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · $m=2$, les 4 sommets de $[-1,1]^2$</p>
+              <p>Colonnes dans l'ordre $1,x_1,x_2,x_1^2,x_2^2,x_1x_2$ :</p>
+              <div class="formula">$$X=\begin{pmatrix}1&-1&-1&1&1&1\\1&1&-1&1&1&-1\\1&-1&1&1&1&-1\\1&1&1&1&1&1\end{pmatrix}$$</div>
+              <p class="sense"><b>Sens :</b> les colonnes 1, 4 et 5 (la constante, $x_1^2$ et $x_2^2$) sont <b>identiques</b> ligne à ligne, ce n'est pas un simple manque d'essais ($n\lt p$) : même en répétant indéfiniment les 4 sommets, ces trois colonnes resteraient égales et $\beta_0,\beta_{11},\beta_{22}$ ne seraient jamais séparément estimables, seule leur somme le serait. Ajouter un point central ($x_1=x_2=0$) ne suffit pas non plus à lui seul : il casse l'égalité des trois colonnes mais le plan reste à 2 niveaux par facteur, donc toujours sans information sur la courbure propre à chaque facteur (d'où la partie axiale du plan composite centré, fiche suivante.</p>
+            </div>
           </article>
 
           <article class="topic" id="s32">
@@ -1926,6 +1940,227 @@ window.MathJax = {
               <div class="qcm-explain">Faux : impossible, il faut toujours $n\ge p$.</div>
               <label class="qcm-opt"><input type="radio" name="p7-6"><span class="otext">Il n'utilise que trois niveaux $-1,0,+1$ et évite les combinaisons extrêmes.</span></label>
               <div class="qcm-explain">Correct : pratique quand les sommets sont dangereux, coûteux ou irréalisables (fiche 34).</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+          <article class="topic" id="s36">
+            <div class="tophead"><span class="num">36</span><h2>Examen 2025/2026 · Questions de cours</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Question 1</p>
+              <p>Quelle résolution faut-il utiliser afin d'ajuster un modèle à effets d'interactions avec une fraction régulière ? Quels problèmes rencontre-t-on sans cette résolution ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Il faut une fraction régulière de <b>résolution V (ou plus)</b> (Proposition 09, fiche 29) : c'est la condition pour que la fraction reste orthogonale vis-à-vis du modèle à effets d'interactions, avec $^tXX=2^{m-q}I_p$.</p>
+                <p>En dessous de V, le plus court mot du groupe des contrastes $\mathcal G$ a une longueur $\le4$, ce qui <b>confond (aliase)</b> des effets entre eux :</p>
+                <ul>
+                  <li>résolution III : des <b>effets principaux</b> sont confondus avec des <b>interactions à deux facteurs</b> ;</li>
+                  <li>résolution IV : les effets principaux restent purs, mais des <b>couples d'interactions à deux facteurs</b> sont confondus entre eux.</li>
+                </ul>
+                <p class="sense"><b>Sens :</b> dans les deux cas on n'observe plus un effet isolé mais une <b>somme</b> d'effets qu'on ne peut plus séparer sans hypothèse supplémentaire (ex. supposer certaines interactions nulles a priori) : $^tXX$ n'est alors plus diagonale pour ce modèle.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Question 2</p>
+              <p>La commande <code>FrF2</code> de R donne, dans la liste nommée <code>generators</code> : <code>[1] D=AB E=AC</code>, puis dans la liste nommée <code>main</code> (structure des alias) : <code>[1] A=BD=CE B=AD C=AE D=AB E=AC</code>. Reconstruire la matrice $D$. Expliquer la dernière ligne affichée.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Reconstruction</p>
+                <p>$m=5$ facteurs, $q=2$ générateurs : partie de base sur A, B, C ($2^3=8$ essais), puis $D=AB$ et $E=AC$ (produit d'Hadamard, fiche 18) :</p>
+                <div class="formula">$$D=\begin{pmatrix}-1&-1&-1&+1&+1\\-1&-1&+1&+1&-1\\-1&+1&-1&-1&+1\\-1&+1&+1&-1&-1\\+1&-1&-1&-1&-1\\+1&-1&+1&-1&+1\\+1&+1&-1&+1&-1\\+1&+1&+1&+1&+1\end{pmatrix}\quad\begin{smallmatrix}A\ B\ C\ D\ E\end{smallmatrix}$$</div>
+                <p>Vérification (recouvrement numérique) : relation de définition $\mathbb I=ABD=ACE=BCDE$, longueur minimale $3$ donc résolution <b>III</b>, cohérent avec un plan à $n=2^{5-2}=8$ essais pour $p=6$ paramètres.</p>
+                <p class="method-label">La dernière ligne (structure des alias)</p>
+                <p>Elle montre que ce plan, étant de résolution III, confond chaque effet principal avec une interaction à deux facteurs : $A$ est indiscernable de $BD$ et de $CE$ (on n'estime en réalité que $\beta_A+\beta_{BD}+\beta_{CE}$), de même pour $B=AD$, $C=AE$, $D=AB$, $E=AC$. C'est exactement le problème décrit en question 1.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Question 3</p>
+              <p>$m=6$ facteurs, modèle d'ordre un ($p=7$). Pour chacune des stratégies, permet-elle d'ajuster le modèle ? Si oui, est-elle intéressante ? Écrire la matrice du meilleur plan.</p>
+              <ol>
+                <li>Plan factoriel complet.</li>
+                <li>Fraction définie par $\mathbb I=126$.</li>
+                <li>Fraction définie par $\mathbb I=124=126$.</li>
+                <li>Fraction définie par $\mathbb I=124=135=236$.</li>
+              </ol>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Factoriel complet</p>
+                <p>$n=2^6=64$. Toujours orthogonal (Proposition 08) donc utilisable, mais très peu économique : $64\gg p=7$.</p>
+                <p class="method-label">2) $\mathbb I=126$ (un seul générateur, longueur 3)</p>
+                <p>Résolution III : $n=2^{6-1}=32$. Utilisable (III suffit pour l'ordre un, Proposition 06), mais encore loin du minimum.</p>
+                <p class="method-label">3) $\mathbb I=124=126$</p>
+                <p>Groupe des contrastes : $\mathcal G=\{\mathbb I,124,126,46\}$, car $124\cdot126=1^22^246=46$ (produit d'Hadamard, fiche 18). Le plus court mot est <b>$46$, de longueur 2</b> : résolution <b>II</b>. C'est <b>inutilisable</b> pour un modèle d'ordre un (fiche 19, exercice déjà signalé dans le cours) : le mot $46$ signifie que les colonnes 4 et 6 sont confondues, donc $\beta_4$ et $\beta_6$ ne sont plus séparément estimables.</p>
+                <p class="method-label">4) $\mathbb I=124=135=236$ : la meilleure stratégie</p>
+                <p>$q=3$ générateurs, groupe $\mathcal G=\{\mathbb I,124,135,236,2345,1346,1256,456\}$ (8 éléments, $2^3$, Proposition 05). Le plus court mot (hors $\mathbb I$) a pour longueur $3$ : résolution <b>III</b>, qui suffit pour l'ordre un. $n=2^{6-3}=8$ : c'est le plus petit plan régulier possible juste au-dessus du minimum théorique $p=7$ (un essai de plus, puisque $n$ doit être une puissance de 2).</p>
+                <div class="formula">$$D=\begin{pmatrix}-1&-1&-1&+1&+1&+1\\-1&-1&+1&+1&-1&-1\\-1&+1&-1&-1&+1&-1\\-1&+1&+1&-1&-1&+1\\+1&-1&-1&-1&-1&+1\\+1&-1&+1&-1&+1&-1\\+1&+1&-1&+1&-1&-1\\+1&+1&+1&+1&+1&+1\end{pmatrix}$$</div>
+                <p>avec colonnes $1,2,3$ (base factorielle $2^3$) puis $4=12$, $5=13$, $6=23$. Vérifié numériquement : $^tXX=8I_7$.</p>
+                <p class="sense"><b>Sens :</b> le classement (du moins bon au meilleur) est 3) inutilisable &lt; 1) valide mais 8× trop gros &lt; 2) valide mais 4× trop gros &lt; 4) valide et quasi minimal. Plus de générateurs ($q$ grand) ne veut pas dire pire : c'est au contraire ce qui réduit $n$, à condition que la résolution obtenue reste suffisante.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s37">
+            <div class="tophead"><span class="num">37</span><h2>Examen 2025/2026 · Exercice 1 : points centraux et comparaison d'efficacité</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé</p>
+              <p>Modèle d'ordre un, $m=2$. $\mathcal D$ : factoriel complet ($n=4$). $\mathcal D'$ : $\mathcal D$ plus $n_0=2$ expériences centrales.</p>
+              <ol>
+                <li>Montrer que $\mathcal D'$ donne de meilleurs résultats que $\mathcal D$.</li>
+                <li>Combien d'expériences au centre suggère-t-on en général ?</li>
+                <li>Budget limité à $n=4$ : un plan « un facteur à la fois » $D=\begin{pmatrix}1&0\\-1&0\\0&1\\0&-1\end{pmatrix}$ est-il meilleur que $\mathcal D$ factoriel ?</li>
+              </ol>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) $\mathcal D$ contre $\mathcal D'$</p>
+                <p>Pour $\mathcal D$ (factoriel complet, $p=3$) : $^tXX=4I_3$, donc $\mathbb V(\hat\beta_i)=\sigma^2/4$ pour $i=0,1,2$.</p>
+                <p>Pour $\mathcal D'$, les deux points centraux $(0,0)$ ajoutent $1$ à chaque fois à la somme de carrés de la colonne constante, mais $0$ aux colonnes $x_1,x_2$ (et ne créent aucune corrélation, les produits croisés restent nuls) :</p>
+                <div class="formula">$$^tX'X'=\mathrm{diag}(6,\,4,\,4)$$</div>
+                <p>D'où $\mathbb V(\hat\beta_0)=\sigma^2/6&lt;\sigma^2/4$ (strictement meilleur) et $\mathbb V(\hat\beta_1)=\mathbb V(\hat\beta_2)=\sigma^2/4$ (inchangé, aucune perte). De plus, $\mathcal D'$ réplique le centre ($c_i=2$ pour ce point) : on peut désormais calculer $SSPE$ et tester le manque d'ajustement (fiche 10-11), ce qu'un $\mathcal D$ sans répétition ne permet pas du tout ($n-n^*=0$ dans ce cas).</p>
+                <p class="sense"><b>Sens :</b> $\mathcal D'$ domine $\mathcal D$ sur tous les plans : variance de l'intercept réduite, variances des effets linéaires inchangées, et un test de validité du modèle devient possible, à coût marginal (2 essais de plus, faciles car au centre).</p>
+                <p class="method-label">2) Nombre de points centraux</p>
+                <p>Un petit nombre suffit en pratique : $n_0=2,3$ ou $4$ (fiche 33). Au-delà, le gain sur $\mathbb V(\hat\beta_0)$ et sur la puissance du test de manque d'ajustement devient marginal face au coût supplémentaire.</p>
+                <p class="method-label">3) « Un facteur à la fois » contre factoriel</p>
+                <p>Pour ce $D$ : $^tXX=\mathrm{diag}(4,2,2)$, orthogonal, mais chaque facteur n'est à $\pm1$ que sur la moitié des essais (l'autre moitié vaut 0), d'où une variance des effets linéaires deux fois plus grande que le factoriel. En $D$-efficacité (fiche 24, plus petit = meilleur) :</p>
+                <div class="formula">$$\Phi_0(\text{factoriel})=\left(\tfrac1{64}\right)^{1/3}\approx0{,}250\ \ \lt\ \ \Phi_0(\text{un facteur})=\left(\tfrac1{16}\right)^{1/3}\approx0{,}397$$</div>
+                <p>(vérifié aussi en A-efficacité : $0{,}250$ contre $0{,}417$). Le plan factoriel complet est donc strictement <b>meilleur</b> : à nombre d'essais égal, faire varier les deux facteurs <b>simultanément</b> à leurs bornes extrait plus d'information que les faire varier un par un.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s38">
+            <div class="tophead"><span class="num">38</span><h2>Examen 2025/2026 · Exercice 2 : composite centré, analyse complète</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé</p>
+              <p>$m=2$, domaine sphérique de rayon $\sqrt2$, composite centré <b>sans</b> point central, points axiaux à distance $\alpha\in[0,\sqrt2]$ du centre.</p>
+              <ol>
+                <li>Ajuste-t-il un modèle d'ordre un ? Quel $\alpha$ donne la D-optimalité ? Est-ce aussi universellement optimal ?</li>
+                <li>Modèle à effets d'interactions : le plan est-il orthogonal ? Formule de $\hat\beta_{12}$ ?</li>
+                <li>Modèle pour surface de réponse : matrice du modèle et matrice d'information. Le fait qu'elle ne soit pas diagonale est-il gênant ?</li>
+                <li>Montrer que $\alpha=0$ et $\alpha=\sqrt2$ rendent le plan singulier. Interprétation géométrique en $\alpha=\sqrt2$.</li>
+                <li>Un point central change-t-il ce constat ?</li>
+              </ol>
+              <p class="box-note">Cf. aussi fiche 35 (même dispositif, question de D-optimalité déjà traitée avec et sans point central).</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1) Modèle d'ordre un</p>
+                <p>Les 8 points sont $(\pm1,\pm1)$ (factorielle) et $(\pm\alpha,0),(0,\pm\alpha)$ (axiale). Calcul direct (ou symbolique) :</p>
+                <div class="formula">$$^tXX=\mathrm{diag}\big(8,\ 4+2\alpha^2,\ 4+2\alpha^2\big)$$</div>
+                <p>Diagonale quel que soit $\alpha$ : le plan est donc toujours <b>orthogonal</b> pour l'ordre un. $\mathrm{Det}(^tXX)=8(4+2\alpha^2)^2$ est strictement croissant en $\alpha$ : on maximise en prenant $\alpha$ <b>au bord du domaine admissible</b>, soit $\alpha^*=\sqrt2$ (cf. fiche 35, où ce même résultat apparaît pour le cas avec point central).</p>
+                <p>En $\alpha=\sqrt2$ : $4+2\alpha^2=8$, donc $^tXX=8I_3$ : <b>un multiple de l'identité</b>. La trace $\mathrm{Trace}(^tXX)=8+2(4+2\alpha^2)=16+4\alpha^2$ est elle aussi croissante en $\alpha$, donc maximale au même bord $\alpha=\sqrt2$. Les deux conditions de la Proposition 07 sont réunies : ce plan est donc non seulement D-optimal mais aussi <b>universellement optimal</b> (au sein de cette classe) en $\alpha=\sqrt2$.</p>
+                <p class="method-label">2) Modèle à effets d'interactions</p>
+                <p>La colonne $x_1x_2$ vaut $(1,-1,-1,1,0,0,0,0)$ (les points axiaux ont toujours une coordonnée nulle, donc ne contribuent jamais au produit $x_1x_2$) :</p>
+                <div class="formula">$$^tXX=\mathrm{diag}\big(8,\ 4+2\alpha^2,\ 4+2\alpha^2,\ 4\big)$$</div>
+                <p>Toujours diagonale : le plan reste <b>orthogonal</b> pour ce modèle, quel que soit $\alpha$ (cohérent avec le fait qu'un plan composite centré reste, par construction, une fraction factorielle complétée). L'estimateur ne dépend que des 4 points factoriels, comme pour un $2^2$ pur :</p>
+                <div class="formula">$$\hat\beta_{12}=\tfrac14\big(Y_1-Y_2-Y_3+Y_4\big)$$</div>
+                <p>(en notant $Y_1,\dots,Y_4$ les réponses aux points $(-1,-1),(1,-1),(-1,1),(1,1)$).</p>
+                <p class="method-label">3) Modèle pour surface de réponse</p>
+                <p>$X=[\mathbb 1_n\mid D\mid D_Q\mid D_I]$ avec colonnes $1,x_1,x_2,x_1^2,x_2^2,x_1x_2$. La matrice d'information (vérifiée symboliquement) :</p>
+                <div class="formula">$$^tXX=\begin{pmatrix}8&0&0&4{+}2\alpha^2&4{+}2\alpha^2&0\\0&4{+}2\alpha^2&0&0&0&0\\0&0&4{+}2\alpha^2&0&0&0\\4{+}2\alpha^2&0&0&4{+}2\alpha^4&4&0\\4{+}2\alpha^2&0&0&4&4{+}2\alpha^4&0\\0&0&0&0&0&4\end{pmatrix}$$</div>
+                <p>Elle n'est <b>pas diagonale</b> : la constante est corrélée aux deux effets quadratiques, et les deux effets quadratiques sont corrélés entre eux (bloc complètement symétrique, fiche 32 - « matrice canonique »). Ce n'est <b>pas gênant en soi</b> : les effets linéaires et l'interaction restent isolés et s'estiment par des formules simples ; seuls $\hat\beta_0,\hat\beta_{11},\hat\beta_{22}$ doivent être obtenus ensemble en inversant le petit bloc $3\times3$ correspondant (ou, de façon équivalente, en reparamétrant sur une base de polynômes orthogonaux, fiche 32).</p>
+                <p class="method-label">4) Singularité aux deux bornes</p>
+                <p>Le déterminant se factorise (calcul symbolique) :</p>
+                <div class="formula">$$\mathrm{Det}(^tXX)=256\,\alpha^4\,(\alpha^2-2)^2(\alpha^2+2)^2$$</div>
+                <p>qui s'annule exactement en $\alpha=0$ et en $\alpha=\sqrt2$ (racine de $\alpha^2-2$), confirmant les deux bornes.</p>
+                <p><b>En $\alpha=0$ :</b> les points axiaux s'effondrent tous en $(0,0)$. Les colonnes $x_1^2$ et $x_2^2$ valent alors toutes deux $(1,1,1,1,0,0,0,0)$ : elles sont <b>identiques</b>, $X$ n'est plus de plein rang. C'est le même problème que celui, déjà signalé au chapitre 7 (fiche 31), d'un plan factoriel seul pour un modèle d'ordre deux : $(m+1)$ colonnes égales à l'indicatrice.</p>
+                <p><b>En $\alpha=\sqrt2$ :</b> <i>tous</i> les points (factoriels et axiaux) sont alors à distance $\sqrt2$ de l'origine, donc $x_1^2+x_2^2=2$ pour <b>chaque</b> essai. Géométriquement, les 8 points sont cocycliques (sur le même cercle de rayon $\sqrt2$). Algébriquement :</p>
+                <div class="formula">$$\text{col}(x_1^2)+\text{col}(x_2^2)=2\,\mathbb 1_n=2\,\text{col}(1)$$</div>
+                <p>la colonne constante est combinaison linéaire exacte des deux colonnes quadratiques : $X$ n'est pas de plein rang.</p>
+                <p class="method-label">5) Avec un point central</p>
+                <p>Non, la situation <b>n'est pas symétrique</b>. En rajoutant $(0,0)$ :</p>
+                <ul>
+                  <li>en $\alpha=\sqrt2$, le nouveau point vérifie $x_1^2+x_2^2=0\ne2$ : il <b>casse</b> la relation exacte ci-dessus. Vérifié numériquement : $\mathrm{Det}(^tXX)=32\,768\ne0$, le plan redevient de plein rang.</li>
+                  <li>en $\alpha=0$, le point central tombe exactement là où les points axiaux dégénérés étaient déjà : il n'apporte <b>aucune</b> information nouvelle pour séparer $x_1^2$ de $x_2^2$ (colonnes toujours identiques). Vérifié numériquement : $\mathrm{Det}(^tXX)=0$, <b>toujours singulier</b>.</li>
+                </ul>
+                <p class="sense"><b>Sens :</b> un unique point central répare la singularité « équiradiale » du bord $\alpha=\sqrt2$ (il brise la relation géométrique entre colonnes), mais ne répare jamais l'effondrement $\alpha=0$ (il ne fait que s'ajouter à un endroit déjà sur-représenté). C'est une raison supplémentaire, au-delà du test de manque d'ajustement (fiche 10), de toujours inclure quelques points centraux dans un composite centré.</p>
+              </div>
+            </details>
+          </article>
+
+          <div class="qcm" id="qcm-8">
+            <div class="qcm-head">
+              <h3>QCM de révision · Examen 2025/2026</h3>
+              <span class="qcm-meta">⏱ 8 min · 5 questions</span>
+            </div>
+            <p class="qcm-intro">Questions dans l'esprit de l'examen 2025/2026 : résolution, lecture d'une sortie <code>FrF2</code>, et composites centrés aux bornes du domaine.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Une fraction régulière de résolution IV est utilisée pour ajuster un modèle à effets d'interactions. Que se passe-t-il ?<span class="q-badge">cours</span></p>
+              <label class="qcm-opt"><input type="radio" name="e-1"><span class="otext">Rien, IV est suffisant.</span></label>
+              <div class="qcm-explain">Faux : il faut la résolution V (ou plus) pour ce modèle (Proposition 09).</div>
+              <label class="qcm-opt"><input type="radio" name="e-1"><span class="otext">Des effets principaux sont confondus avec des interactions.</span></label>
+              <div class="qcm-explain">Faux : c'est le symptôme de la résolution III, pas IV.</div>
+              <label class="qcm-opt"><input type="radio" name="e-1"><span class="otext">Des couples d'interactions à deux facteurs sont confondus entre eux.</span></label>
+              <div class="qcm-explain">Correct : en résolution IV le plus court mot du groupe des contrastes a 4 lettres, ce qui aliase deux interactions entre elles (les effets principaux restent purs).</div>
+              <label class="qcm-opt"><input type="radio" name="e-1"><span class="otext">Le plan n'est plus orthogonal pour aucun modèle.</span></label>
+              <div class="qcm-explain">Faux : il reste orthogonal pour le modèle d'ordre un (III suffit pour celui-ci).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span><code>FrF2</code> affiche <code>generators: F=ABC</code> pour $m=6$ facteurs avec un seul générateur. Quelle est la résolution ?<span class="q-badge">application</span></p>
+              <label class="qcm-opt"><input type="radio" name="e-2"><span class="otext">II</span></label>
+              <div class="qcm-explain">Faux : le mot $ABCF$ a 4 lettres, pas 2.</div>
+              <label class="qcm-opt"><input type="radio" name="e-2"><span class="otext">IV</span></label>
+              <div class="qcm-explain">Correct : $\mathbb I=ABCF$, un seul mot de longueur 4 (hors $\mathbb I$) donc résolution IV.</div>
+              <label class="qcm-opt"><input type="radio" name="e-2"><span class="otext">III</span></label>
+              <div class="qcm-explain">Faux : III correspondrait à un générateur à 3 lettres, ex. $D=AB$.</div>
+              <label class="qcm-opt"><input type="radio" name="e-2"><span class="otext">On ne peut pas savoir sans la matrice $D$.</span></label>
+              <div class="qcm-explain">Faux : la résolution se lit directement sur la longueur du générateur (ici $ABCF$), pas besoin de reconstruire $D$ (fiche 19).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>$m=6$, fraction définie par $\mathbb I=124=126$. Pourquoi est-elle inutilisable pour un modèle d'ordre un ?<span class="q-badge">piège</span></p>
+              <label class="qcm-opt"><input type="radio" name="e-3"><span class="otext">Parce que $n=2^{6-2}=16$ est trop petit.</span></label>
+              <div class="qcm-explain">Faux : $16\ge p=7$, le nombre d'essais n'est pas le problème.</div>
+              <label class="qcm-opt"><input type="radio" name="e-3"><span class="otext">Parce qu'il y a trois générateurs au lieu de deux.</span></label>
+              <div class="qcm-explain">Faux : il n'y a que deux générateurs explicites ($124$ et $126$) ; $46$ est un générateur caché, pas un troisième générateur choisi.</div>
+              <label class="qcm-opt"><input type="radio" name="e-3"><span class="otext">Parce que le plan n'est pas orthogonal.</span></label>
+              <div class="qcm-explain">Incomplet : c'est vrai mais ce n'est pas la raison profonde demandée ici (voir l'option suivante).</div>
+              <label class="qcm-opt"><input type="radio" name="e-3"><span class="otext">Parce que $124\cdot126=46$ est un mot de longueur 2 : les effets principaux 4 et 6 sont confondus entre eux.</span></label>
+              <div class="qcm-explain">Correct : résolution II, en dessous du minimum III requis pour l'ordre un (fiche 19).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q4</span>Composite centré $m=2$, domaine sphérique de rayon $\sqrt2$, sans point central. Pourquoi $\alpha=\sqrt2$ rend-il le plan singulier pour une surface de réponse ?<span class="q-badge">cours</span></p>
+              <label class="qcm-opt"><input type="radio" name="e-4"><span class="otext">Tous les points tombent alors sur le même cercle, donc $x_1^2+x_2^2$ est constant et devient proportionnel à la colonne constante.</span></label>
+              <div class="qcm-explain">Correct : $\text{col}(x_1^2)+\text{col}(x_2^2)=2\cdot\text{col}(1)$, une dépendance linéaire exacte entre colonnes de $X$.</div>
+              <label class="qcm-opt"><input type="radio" name="e-4"><span class="otext">Parce que $\sqrt2$ est en dehors du domaine expérimental.</span></label>
+              <div class="qcm-explain">Faux : $\sqrt2$ est exactement le rayon du domaine, donc à l'intérieur (sur le bord).</div>
+              <label class="qcm-opt"><input type="radio" name="e-4"><span class="otext">Parce que les points axiaux et factoriels coïncident alors.</span></label>
+              <div class="qcm-explain">Faux : ils restent à des positions différentes, seulement à la même distance du centre.</div>
+              <label class="qcm-opt"><input type="radio" name="e-4"><span class="otext">Parce qu'il n'y a plus assez d'essais pour $p=6$ paramètres.</span></label>
+              <div class="qcm-explain">Faux : $n=8\ge p=6$, ce n'est pas un problème de nombre d'essais mais de rang de $X$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Dans la même situation, on ajoute un seul point central. Que devient la singularité ?<span class="q-badge">application</span></p>
+              <label class="qcm-opt"><input type="radio" name="e-5"><span class="otext">Elle disparaît aux deux bornes $\alpha=0$ et $\alpha=\sqrt2$.</span></label>
+              <div class="qcm-explain">Faux : elle persiste en $\alpha=0$ (le point central tombe là où les points axiaux dégénérés sont déjà).</div>
+              <label class="qcm-opt"><input type="radio" name="e-5"><span class="otext">Elle persiste aux deux bornes.</span></label>
+              <div class="qcm-explain">Faux : en $\alpha=\sqrt2$ le point central casse la relation $x_1^2+x_2^2=2$ et restaure le plein rang.</div>
+              <label class="qcm-opt"><input type="radio" name="e-5"><span class="otext">Elle disparaît en $\alpha=\sqrt2$ mais persiste en $\alpha=0$.</span></label>
+              <div class="qcm-explain">Correct : le point central $(0,0)$ vérifie $x_1^2+x_2^2=0\ne2$, ce qui casse la dépendance linéaire au bord $\sqrt2$ ; mais en $\alpha=0$ il coïncide avec les points axiaux déjà effondrés, sans rien apporter de nouveau.</div>
+              <label class="qcm-opt"><input type="radio" name="e-5"><span class="otext">Le plan devient singulier pour toutes les valeurs de $\alpha$.</span></label>
+              <div class="qcm-explain">Faux : pour $\alpha\in\,]0,\sqrt2[$ le plan (avec ou sans point central) est de plein rang.</div>
             </div>
 
             <div class="qcm-actions">
