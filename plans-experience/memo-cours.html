@@ -464,6 +464,15 @@ window.MathJax = {
               <p class="box-label">Exemple · Température entre 20 et 30 °C</p>
               <p>$x=\frac{2x^*-50}{10}=\frac{x^*-25}{5}$. Donc $20\mapsto-1$, $22\mapsto-0{,}6$, $25\mapsto0$, $28\mapsto+0{,}6$, $30\mapsto+1$.</p>
             </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Interpréter un coefficient estimé (ce qui reste flou avec $-1/+1$)</p>
+              <p>Le modèle codé est $\hat y=\hat\beta_0+\hat\beta_1x$ avec $x\in[-1,+1]$. La difficulté n'est pas de coder $x^*$ en $x$ (fiche précédente), mais de relire $\hat\beta_1$ une fois le modèle ajusté : $\hat\beta_1$ est la variation de $y$ quand $x$ passe de $0$ à $+1$, c'est-à-dire quand le facteur réel passe du <b>centre</b> au <b>niveau haut</b>, jamais du niveau bas au niveau haut directement.</p>
+              <p>Reprenons la température (20 à 30 °C, centre 25 °C). Supposons l'ajustement donne $\hat\beta_0=68$ et $\hat\beta_1=5$ (rendement en %) :</p>
+              <p>Passage du <b>centre au niveau haut</b> ($x:0\to+1$, soit $25\to30$ °C) : le rendement varie de $\hat\beta_1=5$ points, donc $68\to73$.<br>
+              Passage du <b>niveau bas au niveau haut</b> ($x:-1\to+1$, soit $20\to30$ °C) : le rendement varie de $2\hat\beta_1=10$ points, donc $63\to73$.<br>
+              Passage du <b>niveau bas au centre</b> ($x:-1\to0$, soit $20\to25$ °C) : à nouveau $\hat\beta_1=5$ points, donc $63\to68$, cohérent avec un modèle linéaire (effet proportionnel au déplacement en $x$).</p>
+              <p class="sense"><b>Sens :</b> $\hat\beta_1$ ne se lit jamais "en °C" ni "pour tout le domaine" : c'est un taux, à multiplier par la variation de $x$ réellement effectuée ($\Delta x=1$ pour centre→haut, $\Delta x=2$ pour bas→haut). C'est pour ça que coder rend les $\hat\beta_i$ de plusieurs facteurs <b>directement comparables</b> (QCM Q6) : chacun est déjà exprimé "par unité de $x$ codé", qui vaut toujours la même chose (la moitié de l'étendue du domaine), quelle que soit l'unité physique d'origine.</p>
+            </div>
           </article>
 
           <article class="topic" id="s5">
