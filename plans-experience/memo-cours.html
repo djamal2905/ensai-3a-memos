@@ -610,6 +610,18 @@ window.MathJax = {
             <div class="tophead"><span class="num">6</span><h2>Matrice d'information</h2></div>
             <p>Tout le cours repose sur le modèle linéaire $Y=X\beta+\varepsilon$. On note $X^\top X$ la matrice appelée ${}^tXX$ dans le polycopié.</p>
             <div class="box box-def">
+              <p class="box-label">Rappel · Produit matriciel, produit scalaire, produit d'Hadamard</p>
+              <p><b>Produit matriciel</b> $AB$ (avec $A\in\mathcal M(n,m)$, $B\in\mathcal M(m,p)$) : le terme $(i,j)$ de $AB$ est le produit scalaire de la ligne $i$ de $A$ et de la colonne $j$ de $B$. En particulier, pour deux vecteurs colonnes $u,v\in\mathbb R^n$, le <b>produit scalaire</b> $\langle u,v\rangle=u^\top v=\sum_{k=1}^nu_kv_k$ est le produit matriciel d'une ligne $1\times n$ par une colonne $n\times1$ : le résultat est un <b>nombre</b>.</p>
+              <p>Le <b>produit d'Hadamard</b> $u\odot v$ (fiche 18) est différent : il multiplie terme à terme, $(u\odot v)_k=u_kv_k$, et le résultat est un <b>vecteur</b> de même taille que $u$ et $v$, jamais un nombre. Confondre les deux, tous deux appliqués à des colonnes de $-1/+1$, est la source la plus fréquente de blocage sur $X^\top X$ et sur les générateurs.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Les deux produits sur les mêmes colonnes $\pm1$</p>
+              <p>Avec $u=(-1,1,-1,1)^\top$ et $v=(-1,-1,1,1)^\top$ :</p>
+              <div class="formula">$$\langle u,v\rangle=u^\top v=(-1)(-1)+(1)(-1)+(-1)(1)+(1)(1)=1-1-1+1=0\qquad(\text{un nombre})$$</div>
+              <div class="formula">$$u\odot v=\big((-1)(-1),(1)(-1),(-1)(1),(1)(1)\big)^\top=(1,-1,-1,1)^\top\qquad(\text{un vecteur})$$</div>
+              <p class="sense"><b>Sens :</b> $\langle u,v\rangle=0$ dit que les colonnes $u$ et $v$ sont <b>orthogonales</b> (fiche 12) : c'est ce qui remplit $X^\top X$ de zéros. $u\odot v=(1,-1,-1,1)^\top$ est au contraire une <b>nouvelle colonne</b> : c'est exactement comme ça qu'on construit une colonne d'interaction (fiche 17) ou un générateur $D=AB$ (fiche 18) à partir des colonnes de facteurs. Même ingrédient ($\pm1$), deux opérations totalement différentes.</p>
+            </div>
+            <div class="box box-def">
               <p class="box-label">Définition · Matrice d'information</p>
               <p>Pour $X\in\mathcal M(n,p)$ de colonnes $c_1,\dots,c_p$, la matrice d'information $X^\top X\in\mathcal M(p,p)$ est la matrice des <b>produits scalaires</b> des colonnes :</p>
               <div class="formula">$$X^\top X=\begin{pmatrix}\|c_1\|^2&\langle c_1,c_2\rangle&\cdots\\\langle c_2,c_1\rangle&\|c_2\|^2&\cdots\\\vdots&&\ddots\end{pmatrix}$$</div>
