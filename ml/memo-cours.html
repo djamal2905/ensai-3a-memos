@@ -415,16 +415,24 @@ window.MathJax = {
           <li><a href="#s29"><span class="toc-num">29</span>Mercer, feature maps &amp; noyaux avancés</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>Examen 2025/2026 (corrigé)</p>
+        <ol>
+          <li><a href="#s30"><span class="toc-num">30</span>QCM de cours (28 questions)</a></li>
+          <li><a href="#s31"><span class="toc-num">31</span>Exercice : régression robuste &amp; M-estimation</a></li>
+          <li><a href="#s32"><span class="toc-num">32</span>Exercice : info. mutuelle &amp; HSIC, cas gaussien</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
         <h1>De l'ERM au SVM et aux RKHS, en passant par les ensembles et la robustesse</h1>
-        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (classification Bayes/LDA/logistique, SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation, régresser en présence d'outliers, et enfin régresser sans hypothèse paramétrique (k-NN, Nadaraya-Watson, splines, RKHS).</p>
+        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (classification Bayes/LDA/logistique, SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation, régresser en présence d'outliers, et enfin régresser sans hypothèse paramétrique (k-NN, Nadaraya-Watson, splines, RKHS). L'examen 2025/2026 est corrigé en détail (fiches 30 à 32).</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : LectureNotesML (S. Da Veiga), QCM, sujets d'examen et TP ENSAI 3A</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>25 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>32 fiches</b></span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -1961,6 +1969,25 @@ print("valeurs propres >= 0 :", (np.linalg.eigvalsh(K) >= -1e-8).all())</code></
               <p class="box-label">Remarque · Erreur out-of-bag (OOB), gratuite</p>
               <p>Un tirage bootstrap de taille $n$ laisse de côté, en moyenne, une fraction $(1-1/n)^n\to e^{-1}\approx36.8\%$ des observations. Chaque point $\mathbf x_i$ peut donc être prédit par les seuls arbres qui ne l'ont <b>pas</b> vu à l'entraînement : cela fournit une estimation du risque (l'erreur OOB) <b>sans avoir besoin d'un jeu de validation séparé</b>, à un coût de calcul quasi nul.</p>
             </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Importance des variables (MDI)</p>
+              <p><b>Mean Decrease in Impurity</b>, la mesure par défaut des librairies (scikit-learn, R) : pour chaque variable $X^{(j)}$, on moyenne la réduction d'impureté qu'elle a provoquée, sur tous les nœuds de tous les arbres où elle a servi au split, pondérée par la proportion d'individus concernés :</p>
+              <div class="formula">$$\mathrm{MDI}(X^{(j)})=\frac1B\sum_{b=1}^B\sum_{\substack{\text{nœud }k\in T_b\\ \mathrm{split}(k)=X^{(j)}}}p_{T_b}(k)\,\Delta i_{T_b}(k)$$</div>
+              <p>En pratique, les valeurs de MDI pour toutes les variables sont ensuite normalisées pour sommer à 1.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Importance des variables (MDA / permutation)</p>
+              <p><b>Mean Decrease Accuracy</b> : l'idée est qu'une variable non importante ne devrait pas changer l'erreur de généralisation si on la rend inutilisable. En pratique (par calcul), on <b>permute aléatoirement</b> les valeurs de $X^{(j)}$ sur l'échantillon OOB, on recalcule la prédiction, et on mesure la hausse d'erreur :</p>
+              <div class="formula">$$\mathrm{MDA}(X^{(j)})=\frac1{n^{\text{test}}}\sum_{i=1}^{n^{\text{test}}}l\Big(y_i^*,\tfrac1B\sum_{b=1}^Bg_b^{(-j)}(\mathbf x_i^*)\Big)-l\Big(y_i^*,\tfrac1B\sum_{b=1}^Bg_b(\mathbf x_i^*)\Big)$$</div>
+              <p class="sense"><b>Sens :</b> permuter casse artificiellement le lien statistique entre $X^{(j)}$ et la cible, sans reconstruire $B$ forêts (un par variable retirée, bien trop coûteux) : une seule forêt entraînée suffit, l'évaluation se fait sur le jeu OOB déjà disponible gratuitement (remarque ci-dessus).</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>MDI et MDA sont biaisées</p>
+              <p>Les deux sont <b>sur-sensibles aux variables catégorielles à beaucoup de modalités</b> (elles paraissent plus importantes qu'elles ne le sont réellement), et toutes deux se comportent mal quand des variables explicatives sont <b>corrélées entre elles</b> (l'importance d'un bloc de variables redondantes se répartit arbitrairement entre elles, sous-estimant chacune).</p>
+            </div>
           </article>
 
           <article class="topic" id="s20">
@@ -3080,6 +3107,113 @@ print(krr_predict(X, alpha, np.array([1.0]), gamma=0.5))  # -&gt; [1.136]</code>
             </div>
           </div>
 
+          <article class="topic" id="s30">
+            <div class="tophead"><span class="num">30</span><h2>Examen 2025/2026 · QCM de cours (28 questions)</h2></div>
+            <p>28 questions à choix unique (+1/-1/0), toutes de cours. Réponses et justifications brèves, groupées par thème et reliées aux fiches correspondantes.</p>
+
+            <div class="box box-thm">
+              <p class="box-label">Q1-5 · Ridge &amp; Lasso (fiches 5, 7)</p>
+              <p><b>Q1</b> (b) $\sum\beta_j^2$ : c'est la définition même de la pénalité Ridge.<br>
+              <b>Q2</b> (a) Lasso fait de la sélection de variables en mettant exactement certains coefficients à zéro (seuillage doux, fiche 7), Ridge ne le fait jamais.<br>
+              <b>Q3</b> (a) $\lambda$ règle le compromis biais/variance entre ajustement aux données et complexité du modèle.<br>
+              <b>Q4</b> (a) Augmenter $\lambda$ en Ridge rétrécit tous les coefficients vers 0, sans jamais les annuler exactement.<br>
+              <b>Q5</b> (a) À $\lambda=0$, la pénalité disparaît : Lasso (comme Ridge) redonne exactement l'OLS.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Q6-11 · Optimisation (fiches 9-14)</p>
+              <p><b>Q6</b> (a) $\theta_t=\theta_{t-1}-\gamma_t\nabla F(\theta_{t-1})$ : la définition de la descente de gradient, signe moins car on descend.<br>
+              <b>Q7</b> (a) Le pas $\gamma$ fixe l'amplitude de chaque mise à jour des paramètres.<br>
+              <b>Q8</b> (a) La convexité de la fonction de perte garantit qu'un minimum local est global (fiche 9).<br>
+              <b>Q9</b> (a) Le SGD (fiche 13) ne calcule le gradient que sur un sous-échantillon à chaque itération : coût par itération indépendant de $n$, adapté aux grands jeux de données.<br>
+              <b>Q10</b> (a) Le sous-gradient (fiche 12) généralise le gradient aux fonctions non différentiables (ex. $|\cdot|$ en 0).<br>
+              <b>Q11</b> (a) C'est la définition même : SGD utilise un sous-échantillon à chaque pas, le gradient batch utilise tout le jeu de données.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Q12-19 · SVM, noyaux &amp; RKHS (fiches 15-18)</p>
+              <p><b>Q12</b> (a) Le SVM cherche l'hyperplan qui maximise la marge entre les classes (fiche 15).<br>
+              <b>Q13</b> (c) La marge est la distance entre les vecteurs de support les plus proches et la frontière de décision.<br>
+              <b>Q14</b> (a) Les vecteurs de support (seuls points à $\alpha&gt;0$) définissent entièrement l'hyperplan optimal.<br>
+              <b>Q15</b> (a) Le kernel trick transforme implicitement des données non séparables linéairement en les envoyant dans un espace de plus grande dimension.<br>
+              <b>Q16</b> (a) Le problème dual (fiche 16) ne dépend des données que via des produits scalaires $\langle\mathbf x_i,\mathbf x_j\rangle$, remplaçables par un noyau.<br>
+              <b>Q17</b> (a) Une marge souple autorise des points mal classés ou dans la marge, contre une pénalité (fiche 16).<br>
+              <b>Q18</b> (a) En RKHS (fiche 17), la feature map $\phi$ envoie une observation vers un espace de plus grande (parfois infinie) dimension.<br>
+              <b>Q19</b> (a) Un SVM ou une KRR à noyau (fiches 17, 28) manipulent une matrice $n\times n$ : coût $O(n^3)$, qui explose sur de grands jeux de données (fiche 29).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Q20-23 · Boosting (fiche 20)</p>
+              <p><b>Q20</b> (c) FAUX que les apprenants faibles sont indépendants : c'est tout l'inverse, le boosting les construit <b>séquentiellement</b>, chacun corrigeant le précédent.<br>
+              <b>Q21</b> (c) À chaque itération d'AdaBoost, les poids des points mal classés par l'apprenant précédent augmentent : le suivant se concentre dessus.<br>
+              <b>Q22</b> (a) AdaBoost minimise implicitement la perte exponentielle ; Gradient Boosting généralise à n'importe quelle perte différentiable (fiche 20).<br>
+              <b>Q23</b> (b) Le taux d'apprentissage $\nu$ (shrinkage) limite la contribution de chaque nouvel arbre à l'ensemble.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">Q24-28 · Sélection de variables (fiches 22-23)</p>
+              <p><b>Q24</b> (a) La sélection de variables vise à retirer les variables non informatives ou redondantes.<br>
+              <b>Q25</b> (b) Une information mutuelle nulle signifie exactement l'indépendance des deux variables (fiche 22, contrairement à Pearson).<br>
+              <b>Q26</b> (a) Pearson ne capture que les dépendances linéaires ; l'information mutuelle capture aussi les dépendances non linéaires (fiche 22).<br>
+              <b>Q27</b> (a) L'information mutuelle nécessite une estimation de densité, difficile et peu fiable en grande dimension (fiche 23) : c'est sa limite pratique principale.<br>
+              <b>Q28</b> (a) HSIC (fiche 23) vit dans un RKHS potentiellement infini-dimensionnel et évite l'estimation de densité, contrairement à l'information mutuelle.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s31">
+            <div class="tophead"><span class="num">31</span><h2>Examen 2025/2026 · Régression robuste &amp; M-estimation</h2></div>
+            <p>Correction complète de l'exercice sur les variantes robustes de l'OLS (fiches 24-25).</p>
+
+            <div class="box box-thm">
+              <p class="box-label">1-2 · OLS et WLS, forme matricielle</p>
+              <p>Avec $X=(\mathbf x_1,\dots,\mathbf x_n)^\top$ et $Y=(y_1,\dots,y_n)^\top$, l'OLS s'écrit $\hat\theta^{\mathrm{OLS}}=\arg\min_\theta\|Y-X\theta\|^2$, d'où $\hat\theta^{\mathrm{OLS}}=(X^\top X)^{-1}X^\top Y$. Pour la WLS, avec $W=\mathrm{diag}(w_1,\dots,w_n)$ : $\hat\theta^{\mathrm{WLS}}=\arg\min_\theta(Y-X\theta)^\top W(Y-X\theta)$, d'où $\hat\theta^{\mathrm{WLS}}=(X^\top WX)^{-1}X^\top WY$.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">3 · LAD comme WLS à poids variables, et IRLS</p>
+              <p>(a) Avec $|a|=a^2/|a|$ : $|y_i-\mathbf x_i^\top\theta|=w_i(y_i-\mathbf x_i^\top\theta)^2$ pour $w_i=1/|y_i-\mathbf x_i^\top\theta|$. $\hat\theta^{\mathrm{LAD}}$ est donc une WLS de poids $w_i=1/|r_i|$, $r_i$ le résidu.</p>
+              <p>(b) <b>Algorithme IRLS</b> : (1) initialiser $\theta^{(0)}$ (ex. par OLS) ; (2) à l'itération $t$, calculer les résidus $r_i^{(t)}=y_i-\mathbf x_i^\top\theta^{(t)}$ puis les poids $w_i^{(t)}=1/|r_i^{(t)}|$ (avec une petite constante ajoutée au dénominateur en pratique, pour éviter la division par 0) ; (3) résoudre la WLS $\theta^{(t+1)}=(X^\top W^{(t)}X)^{-1}X^\top W^{(t)}Y$ ; (4) répéter jusqu'à convergence ($\|\theta^{(t+1)}-\theta^{(t)}\|$ petit).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">4 · Régression $L^p$</p>
+              <p>Pour $a\ne0$, $|a|^p=a^2\cdot|a|^{p-2}$. Donc $\hat\theta^{L^p}$ est une WLS de poids $w_i=|r_i|^{p-2}$, et le même algorithme IRLS s'applique en remplaçant $w_i^{(t)}=1/|r_i^{(t)}|$ par $w_i^{(t)}=|r_i^{(t)}|^{p-2}$.</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">5 · M-estimation : cadre général</p>
+              <p>(a) En dérivant $\sum_i\rho(y_i-\mathbf x_i^\top\theta)$ par rapport à $\theta$, avec $\psi=\rho'$ : la condition d'optimalité est $\sum_i\psi(y_i-\mathbf x_i^\top\theta)\mathbf x_i^\top=0$.</p>
+              <p>(b) En comparant à la condition WLS donnée $\sum_iw_i(y_i-\mathbf x_i^\top\theta)\mathbf x_i^\top=0$, il suffit de poser $w_i\cdot r_i=\psi(r_i)$, soit $w_i=\psi(r_i)/r_i$ : $\hat\theta^{\mathrm M}$ est une WLS de poids $w_i=\psi(r_i)/r_i$.</p>
+              <p>(c) <b>OLS</b> : $\rho(r)=r^2/2$, $\psi(r)=r$, donc $w_i=1$ (poids constant, c'est bien l'OLS non pondéré). <b>LAD</b> : $\rho(r)=|r|$, $\psi(r)=\mathrm{sign}(r)$ (sous-gradient en 0), donc $w_i=\mathrm{sign}(r_i)/r_i=1/|r_i|$ : on retrouve exactement le résultat de la question 3(a).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s32">
+            <div class="tophead"><span class="num">32</span><h2>Examen 2025/2026 · Information mutuelle &amp; HSIC, cas gaussien</h2></div>
+            <p>Correction complète, tous les calculs vérifiés (fiches 22-23).</p>
+
+            <div class="box box-thm">
+              <p class="box-label">1 · Information mutuelle d'un couple gaussien</p>
+              <p>Pour $Z=(X,Y)$ gaussien bivarié de corrélation $\rho$, l'entropie d'un gaussien univarié est $H(X)=\frac12\log(2\pi e\sigma_X^2)$, et l'entropie du couple $H(X,Y)=\log(2\pi e)+\frac12\log|\Sigma|$ avec $|\Sigma|=\sigma_X^2\sigma_Y^2(1-\rho^2)$. D'où :</p>
+              <div class="formula">$$I(X;Y)=H(X)+H(Y)-H(X,Y)=-\frac12\log(1-\rho^2)$$</div>
+              <p class="sense"><b>Sens :</b> $I(X;Y)\ge0$, nul ssi $\rho=0$ (indépendance, vraie seulement en gaussien), et diverge vers $+\infty$ quand $\rho\to\pm1$ (dépendance parfaite).</p>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">2 · HSIC à noyaux linéaires</p>
+              <p>Avec $k(x,x')=xx'$ et $l(y,y')=yy'$, l'intégrale double de la fiche 23 se factorise en deux copies identiques :</p>
+              <div class="formula">$$\mathrm{HSIC}(X,Y)=\Big(\iint xy\big[p_{XY}(x,y)-p_X(x)p_Y(y)\big]\,dx\,dy\Big)^2=\big(\mathbb E[XY]-\mathbb E[X]\mathbb E[Y]\big)^2=\mathrm{Cov}(X,Y)^2$$</div>
+            </div>
+
+            <div class="box box-thm">
+              <p class="box-label">3 · Comparaison et normalisation</p>
+              <p>(a) Pour un couple gaussien, $I(X;Y)=-\frac12\log(1-\rho^2)$ (invariant par changement d'échelle de $X,Y$, ne dépend que de $\rho$) tandis que $\mathrm{HSIC}(X,Y)=\mathrm{Cov}(X,Y)^2=\rho^2\sigma_X^2\sigma_Y^2$ <b>dépend de l'échelle</b> de $X$ et $Y$, pas seulement de leur corrélation. Les deux s'annulent exactement ensemble ($\rho=0$), mais HSIC brut n'est pas directement comparable entre paires de variables d'échelles différentes : un retraitement est nécessaire pour la sélection de variables.</p>
+              <p>(b) Puisque $\mathrm{HSIC}(X,X)=\mathrm{Var}(X)^2$ et $\mathrm{HSIC}(Y,Y)=\mathrm{Var}(Y)^2$, la mesure normalisée</p>
+              <div class="formula">$$\frac{\mathrm{HSIC}(X,Y)}{\sqrt{\mathrm{HSIC}(X,X)\,\mathrm{HSIC}(Y,Y)}}=\frac{\mathrm{Cov}(X,Y)^2}{\mathrm{Var}(X)\mathrm{Var}(Y)}=\rho^2=\mathrm{Corr}(X,Y)^2$$</div>
+              <p class="sense"><b>Sens :</b> $\rho^2$ est une fonction strictement croissante de $I(X;Y)=-\frac12\log(1-\rho^2)$ (cas gaussien) : classer les variables par ce HSIC normalisé donne exactement le <b>même classement</b> que les classer par information mutuelle, tout en restant calculable sans estimation de densité.</p>
+            </div>
+          </article>
+
         </div>
       </section>
 
@@ -3096,7 +3230,7 @@ print(krr_predict(X, alpha, np.array([1.0]), gamma=0.5))  # -&gt; [1.136]</code>
         <div class="chain"><b>bagging</b> → réduit la variance (parallèle) &nbsp;·&nbsp; <b>boosting</b> → réduit le biais (séquentiel)</div>
         <div class="chain"><b>Pearson = 0</b> ⇏ indépendance &nbsp;·&nbsp; <b>info. mutuelle / HSIC = 0</b> ⟺ indépendance</div>
         <div class="chain"><b>IRLS</b> → poids w = ψ(r)/r → OLS (w=1) et LAD (w=1/|r|) comme cas particuliers</div>
-        <p class="source-note">Mémo basé sur <i>LectureNotesML_Lecture1</i> (variantes de l'OLS) et <i>LectureNotesML_Lecture2</i> (optimisation pour le ML), S. Da Veiga, ENSAI 3A, enrichi à partir des QCM, sujets d'examen (2023-2026) et TP du cours pour les lectures 3 à 6 (SVM &amp; noyaux, méthodes d'ensemble, sélection de variables, régression robuste).</p>
+        <p class="source-note">Mémo basé sur <i>LectureNotesML_Lecture1</i> (variantes de l'OLS) et <i>LectureNotesML_Lecture2</i> (optimisation pour le ML), S. Da Veiga, ENSAI 3A, enrichi à partir des QCM, sujets d'examen (2023-2026) et TP du cours pour les lectures 3 à 6 (SVM &amp; noyaux, méthodes d'ensemble, sélection de variables, régression robuste). Importance des variables (MDI/MDA, fiche 19) ajoutée depuis <i>LectureNotesML_Lecture5</i>. Examen 2025/2026 corrigé en détail (fiches 30-32).</p>
       </div>
 
     </main>
