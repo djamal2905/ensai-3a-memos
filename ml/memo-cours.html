@@ -530,6 +530,13 @@ window.MathJax = {
               <p class="sense"><b>Sens :</b> si $Z^TZ$ (matrice de Gram) n'est pas inversible, par ex. $n \lt d+1$ ou colonnes corrélées, l'OLS existe toujours mais n'est plus unique.</p>
             </div>
 
+            <div class="box box-ex">
+              <p class="box-label">Autre point de vue · Dérivation probabiliste (à la Andrew Ng, CS229)</p>
+              <p>Le cours construit l'OLS par ERM (minimiser une perte, fiche 1). Une autre façon, tout aussi standard, d'arriver à la <b>même</b> formule : supposer un modèle génératif $y_i=z_i^\top\theta+\varepsilon_i$ avec $\varepsilon_i\overset{\text{iid}}\sim\mathcal N(0,\sigma^2)$, puis chercher le $\theta$ le plus <b>vraisemblable</b> (MLE) plutôt que l'ERM.</p>
+              <div class="formula">$$\log L(\theta)=\sum_{i=1}^n\log p(y_i\mid z_i;\theta)=-\frac n2\log(2\pi\sigma^2)-\frac1{2\sigma^2}\sum_{i=1}^n(y_i-z_i^\top\theta)^2$$</div>
+              <p class="sense"><b>Sens :</b> le premier terme ne dépend pas de $\theta$, et $\sigma^2&gt;0$ ne change pas l'$\arg\max$ : maximiser $\log L(\theta)$ revient exactement à minimiser $\sum_i(y_i-z_i^\top\theta)^2$, la perte OLS. <b>L'ERM (minimiser une perte choisie) et le MLE (sous hypothèse de bruit gaussien) donnent le même estimateur</b> : ce n'est pas une coïncidence, c'est le même raisonnement qu'on retrouvera pour la régression logistique (perte d'entropie croisée = MLE sous un bruit de Bernoulli, fiche 15), l'angle que privilégie le cours CS229 de Stanford pour introduire ces deux modèles.</p>
+            </div>
+
             <div class="box box-def">
               <p class="box-label">Définition · Coefficient de détermination $R^2$</p>
               <div class="formula">$$R^2=1-\frac{\|\hat Y-Y\|^2}{\|Y-\bar y\mathbf 1_n\|^2}$$</div>
@@ -1265,6 +1272,13 @@ def nesterov(X, y, gamma, n_iter):
               <p>La perte 0-1 n'étant ni continue ni dérivable, on la remplace par la <b>perte d'entropie croisée</b> $l_{\text{CE}}(y,\hat\eta(\mathbf x))=-\mathbb 1_{y=0}\log(1-\hat\eta(\mathbf x))-\mathbb 1_{y=1}\log(\hat\eta(\mathbf x))$, ce qui donne le problème de <b>régression logistique</b> :</p>
               <div class="formula">$$\min_{\beta_0,\beta}\ \frac1n\sum_{i=1}^n\Big[\log\big(1+\exp(\beta_0+\mathbf x_i^T\beta)\big) - y_i(\beta_0+\mathbf x_i^T\beta)\Big]$$</div>
               <p class="sense"><b>Sens :</b> contrairement à l'OLS (fiche 3), il n'existe <b>pas de solution explicite</b> : ce problème est convexe (donc résoluble par GD/SGD, fiches 9-13) mais sans formule fermée. On peut aussi lui ajouter une pénalité $L^1$ ou $L^2$ (fiches 5-7) en haute dimension.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Autre point de vue · Dérivation probabiliste (à la Andrew Ng, CS229)</p>
+              <p>Comme pour l'OLS (fiche 3), la perte d'entropie croisée n'est pas un choix arbitraire : elle tombe directement du MLE si l'on suppose $Y\mid \mathbf X{=}\mathbf x\sim\mathrm{Bernoulli}(\eta(\mathbf x))$, c'est-à-dire $\mathbb P(Y{=}1\mid\mathbf x)=\hat\eta(\mathbf x)$ :</p>
+              <div class="formula">$$\log L(\beta)=\sum_{i=1}^n\Big[y_i\log\hat\eta(\mathbf x_i)+(1-y_i)\log\big(1-\hat\eta(\mathbf x_i)\big)\Big]$$</div>
+              <p class="sense"><b>Sens :</b> $-\log L(\beta)$ est exactement $n$ fois la somme des pertes d'entropie croisée ci-dessus : maximiser la vraisemblance sous hypothèse de Bernoulli $\equiv$ minimiser l'entropie croisée. <b>Même structure que l'OLS</b> (fiche 3) : un choix de loi pour $Y$ (gaussienne pour l'OLS, Bernoulli ici) détermine entièrement la perte à minimiser par MLE, et retombe sur la perte qu'on aurait choisie « à la main » par ERM.</p>
             </div>
 
             <div class="box box-ex">
