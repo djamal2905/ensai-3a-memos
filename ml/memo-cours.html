@@ -2177,6 +2177,37 @@ def bagging_predict(X_train, y_train, X_test, n_estimators=100, rng=None):
             </div>
           </details>
 
+          <div class="box box-ex">
+            <p class="box-label">Exercice 6 (bonus) · Généraliser AdaBoost au multiclasse (SAMME)</p>
+            <p>AdaBoost (fiche 20) et l'exercice 3 supposent une classification <b>binaire</b> : $y_i\in\{-1,+1\}$. Pour $K>2$ classes, l'algorithme SAMME généralise ce principe en encodant chaque classe comme un <b>vecteur</b> plutôt qu'un simple scalaire. On note $g(\mathbf x)\in\{1,\dots,K\}$ la classe prédite par un classifieur faible, et $u(\mathbf x)\in\mathbb R^K$ son encodage vectoriel :</p>
+            <div class="formula">$$u_k(\mathbf x) = \begin{cases}1 & \text{si } g(\mathbf x)=k\\ -\dfrac1{K-1} & \text{sinon}\end{cases}$$</div>
+            <p>Le vecteur $z_i\in\mathbb R^K$ encode de la même façon la vraie classe $y_i$. Après $m-1$ itérations, le modèle additif vaut $S_{m-1}(\mathbf x)=\sum_{j=1}^{m-1}\alpha_ju_j(\mathbf x)$ (avec $S_0\equiv0$), et la perte multiclasse est $\ell(z,v)=\exp\big(-\frac1Kz^\top v\big)$. En notant $w_i^{(m)}=\exp\big(-\frac1Kz_i^\top S_{m-1}(\mathbf x_i)\big)$, montrez que choisir $(\alpha^*,u^*)$ minimisant $\sum_i\ell\big(z_i,\,S_{m-1}(\mathbf x_i)+\alpha u(\mathbf x_i)\big)$ équivaut à résoudre :</p>
+            <div class="formula">$$\min_{\alpha,u}\ \sum_iw_i^{(m)}\exp\Big(-\frac\alpha Kz_i^\top u(\mathbf x_i)\Big)$$</div>
+          </div>
+          <details class="solution">
+            <summary>Voir la correction</summary>
+            <div class="box box-thm">
+              <p class="method-label">Étape 1 : pourquoi distinguer $g(\mathbf x)$ et $u(\mathbf x)$</p>
+              <p>$g(\mathbf x)$ est un simple numéro de classe (un scalaire), $u(\mathbf x)$ un vecteur de $\mathbb R^K$ : $\alpha g(\mathbf x)$ et $\alpha u(\mathbf x)$ ne sont <b>pas</b> la même quantité. Exemple avec $K=3$, un classifieur qui prédit la classe $2$ (donc $g(\mathbf x)=2$ et $u(\mathbf x)=(-\frac12,1,-\frac12)$) et $\alpha=2$ :</p>
+              <div class="formula">$$\alpha g(\mathbf x) = 2\times2 = 4 \qquad\text{(un scalaire)} \qquad\qquad \alpha u(\mathbf x) = 2\Big({-}\tfrac12,1,{-}\tfrac12\Big) = ({-}1,2,{-}1) \qquad\text{(un vecteur)}$$</div>
+              <p>C'est pour cette raison que le modèle additif se construit avec l'encodage vectoriel $u(\mathbf x)$, jamais avec $g(\mathbf x)$ directement : $S_m(\mathbf x)=S_{m-1}(\mathbf x)+\alpha u(\mathbf x)$.</p>
+              <p class="method-label">Étape 2 : substituer le modèle additif dans la perte</p>
+              <div class="formula">$$\sum_{i=1}^n\ell\big(z_i,\,S_{m-1}(\mathbf x_i)+\alpha u(\mathbf x_i)\big) = \sum_{i=1}^n\exp\Big({-}\frac1Kz_i^\top\big[S_{m-1}(\mathbf x_i)+\alpha u(\mathbf x_i)\big]\Big)$$</div>
+              <p class="method-label">Étape 3 : développer le produit scalaire par linéarité</p>
+              <p>Pour tout vecteur $z_i$ et toute paire de vecteurs $A,B$ de même dimension, $z_i^\top(A+B)=z_i^\top A+z_i^\top B$ (linéarité du produit scalaire). Donc :</p>
+              <div class="formula">$$z_i^\top\big[S_{m-1}(\mathbf x_i)+\alpha u(\mathbf x_i)\big] = z_i^\top S_{m-1}(\mathbf x_i) + \alpha\, z_i^\top u(\mathbf x_i)$$</div>
+              <p>et l'exposant devient $-\frac1Kz_i^\top S_{m-1}(\mathbf x_i) - \frac\alpha Kz_i^\top u(\mathbf x_i)$.</p>
+              <p class="method-label">Étape 4 : séparer l'exponentielle en deux facteurs</p>
+              <p>En utilisant $e^{a+b}=e^ae^b$ :</p>
+              <div class="formula">$$\exp\Big({-}\frac1Kz_i^\top S_{m-1}(\mathbf x_i) - \frac\alpha Kz_i^\top u(\mathbf x_i)\Big) = \underbrace{\exp\Big({-}\frac1Kz_i^\top S_{m-1}(\mathbf x_i)\Big)}_{\text{dépend de l'ancien modèle}} \times \underbrace{\exp\Big({-}\frac\alpha Kz_i^\top u(\mathbf x_i)\Big)}_{\text{dépend du nouveau classifieur}}$$</div>
+              <p class="method-label">Étape 5 : identifier les poids $w_i^{(m)}$</p>
+              <p>Le premier facteur ne dépend <b>ni</b> de $\alpha$ <b>ni</b> de $u$ : il ne dépend que du modèle déjà construit $S_{m-1}$. On lui donne un nom, $w_i^{(m)}=\exp\big(-\frac1Kz_i^\top S_{m-1}(\mathbf x_i)\big)$, et il devient une <b>constante connue</b> au moment de choisir $(\alpha,u)$. L'optimisation complète se réécrit :</p>
+              <div class="formula">$$\sum_{i=1}^n\ell\big(z_i,\,S_{m-1}(\mathbf x_i)+\alpha u(\mathbf x_i)\big) = \sum_{i=1}^nw_i^{(m)}\exp\Big({-}\frac\alpha Kz_i^\top u(\mathbf x_i)\Big)$$</div>
+              <p>et minimiser le membre de gauche en $(\alpha,u)$ équivaut donc à minimiser le membre de droite, puisque les deux ne diffèrent que par le facteur $w_i^{(m)}$, fixe à cette étape. $\blacksquare$</p>
+              <p class="sense"><b>Sens :</b> c'est exactement la même idée qu'à l'exercice 3 (fiche 20) : on factorise la perte exponentielle pour isoler, dans un poids $w_i^{(m)}$, tout ce qui dépend du modèle <b>déjà appris</b>, et ne laisser dans l'optimisation que ce qui dépend du <b>nouveau</b> classifieur. SAMME ne fait qu'étendre ce principe à un encodage vectoriel : quand $K=2$, le même mécanisme de poids-qui-ne-dépendent-que-du-passé redonne le principe de l'AdaBoost binaire standard.</p>
+            </div>
+          </details>
+
           <div class="qcm" id="qcm-4">
             <div class="qcm-head">
               <h3>QCM de révision · Lecture 4 (méthodes d'ensemble)</h3>
