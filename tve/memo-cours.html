@@ -364,6 +364,15 @@ window.MathJax = {
           <li><a href="#s50"><span class="toc-num">50</span>Ex. 6 : lecture d'une analyse de données</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>7 : Intervalles de confiance &amp; niveaux de retour (TP)</p>
+        <ol>
+          <li><a href="#s51"><span class="toc-num">51</span>IC pour l'indice des valeurs extrêmes (Hill)</a></li>
+          <li><a href="#s52"><span class="toc-num">52</span>IC pour un quantile extrême : Weissman et méthode générale</a></li>
+          <li><a href="#s53"><span class="toc-num">53</span>Niveaux de retour GEV : exercice corrigé</a></li>
+          <li><a href="#s54"><span class="toc-num">54</span>Niveaux de retour vs quantiles extrêmes : saisonnalité</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
@@ -373,7 +382,7 @@ window.MathJax = {
         <p>Synthèse des trois chapitres du cours : comment caractériser la loi limite du maximum (théorème fondamental, domaines d'attraction), comment estimer un quantile ou une probabilité bien au-delà des données observées quand la queue est lourde, puis comment faire pour n'importe quel type de queue (Pickands, moments, maximum de vraisemblance). Chaque chapitre est relié au précédent et au suivant.</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : J.G. Gómez-García : ENSAI 3A, 2025-2026 (notes de cours)</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>50 fiches</b> · 5 QCM</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>54 fiches</b> · 5 QCM</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -2223,6 +2232,150 @@ for nom, x in echantillons.items():
               <span class="qcm-result"></span>
             </div>
           </div>
+
+          <article class="topic" id="s51">
+            <div class="tophead"><span class="num">51</span><h2>Intervalle de confiance pour l'indice des valeurs extrêmes (Hill)</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Loi asymptotique de Hill et delta-method (TP1, séance 1)</p>
+              <p>Sous les conditions de régularité usuelles (second ordre, fiche 20), l'estimateur de Hill (fiche 14) vérifie</p>
+              <div class="formula">$$\sqrt K\,\frac{\hat\gamma^H-\gamma}\gamma\ \xrightarrow[K\to\infty]{d}\ \mathcal N(0,1)$$</div>
+              <p>Comme $\gamma\gt0$ (domaine de validité de Hill), un intervalle construit directement sur $\hat\gamma^H$ pourrait descendre sous $0$ pour $K$ petit. On applique donc la delta-method au logarithme : $g(\gamma)=\log\gamma$, $g'(\gamma)=1/\gamma$, donc $\sqrt K\big(\log\hat\gamma^H-\log\gamma\big)\to\mathcal N(0,1)$, ce qui donne un intervalle qui reste positif par construction :</p>
+              <div class="formula">$$\mathrm{IC}_{1-\alpha}(\gamma)=\Big[\hat\gamma^H\,e^{-z_{1-\alpha/2}/\sqrt K},\ \ \hat\gamma^H\,e^{+z_{1-\alpha/2}/\sqrt K}\Big]$$</div>
+              <p class="sense"><b>Pourquoi passer par le log :</b> un IC construit naïvement comme $\hat\gamma^H\pm z_{1-\alpha/2}\,\gamma/\sqrt K$ est symétrique autour de $\hat\gamma^H$ et peut donner une borne inférieure négative, absurde puisque $\gamma\gt0$ ici. La version log-transformée est asymétrique (multiplicative) et reste toujours strictement positive.</p>
+            </div>
+
+            <p><b>Exercice (suite de la fiche 24).</b> Avec $n=10$, $K=4$, $\hat\gamma^H\approx1{,}09$ (fiche 24), calculer un $\mathrm{IC}_{95\%}$ pour $\gamma$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>$z_{0{,}975}\approx1{,}96$ et $\sqrt K=\sqrt4=2$, donc $z_{1-\alpha/2}/\sqrt K=1{,}96/2=0{,}98$ :</p>
+                <div class="formula">$$\mathrm{IC}_{95\%}(\gamma)=\big[1{,}09\,e^{-0{,}98},\ 1{,}09\,e^{+0{,}98}\big]=[1{,}09\times0{,}375,\ 1{,}09\times2{,}66]\approx[0{,}41,\ 2{,}90]$$</div>
+                <p class="sense"><b>Sens :</b> l'intervalle va presque du simple au septuple ($0{,}41$ à $2{,}90$) autour de l'estimation ponctuelle $1{,}09$. Ce n'est pas une anomalie de calcul : avec seulement $K=4$ observations extrêmes, $1/\sqrt K=0{,}5$ est énorme, et le facteur multiplicatif $e^{\pm1{,}96\times0{,}5}$ explose. C'est la version quantitative de la remarque qualitative déjà faite en fiche 24 : un $K$ aussi petit rend toute inférence très incertaine.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s52">
+            <div class="tophead"><span class="num">52</span><h2>Intervalle de confiance pour un quantile extrême : Weissman et méthode générale</h2></div>
+
+            <div class="box box-thm">
+              <p class="box-label">Cas Weissman (TP1, séance 1) : delta-method sur $\log\hat q$</p>
+              <p>Pour $\hat q(\beta_n)=X_{n-K,n}\big(\frac K{n(1-\beta_n)}\big)^{\hat\gamma^H}$ (fiche 16), la même idée (loi asymptotique de Hill transmise au quantile, puis delta-method sur le log) donne, en notant $c:=\log\!\big(\frac K{n\,p}\big)$ avec $p=1-\beta_n$ :</p>
+              <div class="formula">$$\mathrm{IC}_{1-\alpha}\big(q(1-p)\big)=\Big[\hat q\,e^{-z_{1-\alpha/2}\,|c|\,\hat\gamma^H/\sqrt K},\ \ \hat q\,e^{+z_{1-\alpha/2}\,|c|\,\hat\gamma^H/\sqrt K}\Big]$$</div>
+              <p class="sense"><b>Lecture du facteur $c$ :</b> $c=\log(K/(np))$ mesure, sur l'échelle logarithmique, le facteur d'extrapolation entre le quantile intermédiaire $X_{n-K,n}$ (niveau $1-K/n$, observable) et le quantile extrême $q(1-p)$ visé (niveau $1-p$, hors de l'échantillon). Plus $p$ est petit (extrapolation lointaine), plus $|c|$ est grand, et plus l'intervalle est large : le prix de l'extrapolation se paie directement dans la largeur de l'IC.</p>
+            </div>
+
+            <p><b>Exercice (suite des fiches 24 et 51).</b> Avec $n=10$, $K=4$, $\hat\gamma^H\approx1{,}09$, $\hat q(0{,}99)\approx389$ (fiche 24), calculer un $\mathrm{IC}_{95\%}$ pour $q(0{,}99)$.</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Ici $p=1-\beta_n=0{,}01$, donc $c=\log\!\big(\frac4{10\times0{,}01}\big)=\log(40)\approx3{,}689$, d'où $|c|\,\hat\gamma^H/\sqrt K=3{,}689\times1{,}09/2\approx2{,}01$ et l'exposant $z_{0{,}975}\times2{,}01\approx1{,}96\times2{,}01\approx3{,}94$ :</p>
+                <div class="formula">$$\mathrm{IC}_{95\%}\big(q(0{,}99)\big)=\big[389\,e^{-3{,}94},\ 389\,e^{+3{,}94}\big]\approx[389\times0{,}0194,\ 389\times51{,}4]\approx[7{,}6,\ 20\,000]$$</div>
+                <p class="sense"><b>Sens :</b> l'intervalle couvre plus de trois ordres de grandeur. Il ne faut pas lire $389$ comme une valeur fiable à quelques pourcents : c'est le même phénomène qu'en fiche 51 (petit $K$), amplifié ici par l'extrapolation elle-même ($|c|$ grand). Un quantile extrapolé loin de l'échantillon porte toujours une incertitude bien plus grande que ne le suggère sa seule valeur ponctuelle.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Au-delà de Weissman : la méthode générale (cas $\gamma$ quelconque, fiches 33-34)</p>
+              <p>Weissman n'est qu'un cas particulier (fiche 33, domaine de Fréchet) de l'extrapolation GPD/GEV générale. Dans le cas général, on estime $(\sigma,\gamma)$ (ou $(\mu,\sigma,\gamma)$ pour la GEV) par maximum de vraisemblance, dont la loi asymptotique normale (Smith, déjà citée fiche 34) donne une matrice de covariance estimée $\hat\Sigma$. Pour une fonctionnelle $h(\mu,\sigma,\gamma)$ quelconque (un quantile extrême, un niveau de retour), la delta-method multivariée donne :</p>
+              <div class="formula">$$\widehat{\mathrm{Var}}\big(h(\hat\mu,\hat\sigma,\hat\gamma)\big)\approx\nabla h^\top\,\hat\Sigma\,\nabla h,\qquad \mathrm{IC}_{1-\alpha}=h(\hat\theta)\pm z_{1-\alpha/2}\sqrt{\nabla h^\top\hat\Sigma\,\nabla h}$$</div>
+              <p class="sense"><b>Lien avec Weissman :</b> quand $\gamma\gt0$ et $a(t)\approx\gamma U(t)$ (fiche 33), cette formule générale se réduit, après simplification, exactement à l'IC de Weissman ci-dessus : la méthode générale <b>contient</b> le cas Weissman, elle ne le contredit pas. Un exemple numérique complet (avec $\nabla h$ explicite) est traité fiche 53 pour un niveau de retour GEV.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Limite honnête : tout ceci suppose des observations i.i.d.</p>
+              <p>Ces intervalles (Hill, Weissman, méthode générale) reposent tous sur une hypothèse d'observations <b>indépendantes</b>. Si les données présentent une dépendance de court terme (épisodes orageux pluri-journaliers, saisonnalité, etc.), la variance réelle de $\hat\gamma$ et de $\hat q$ est <b>sous-estimée</b> : les intervalles calculés sont trop étroits, donnant une fausse impression de précision.</p>
+              <p class="sense"><b>Deux corrections possibles</b> si on veut aller plus loin : (i) la <b>déclusterisation</b> (ne garder qu'une observation par épisode dépendant, par exemple un jour par épisode orageux, avant de recalculer Hill/Weissman) ; (ii) un <b>bootstrap par blocs</b> plutôt que la formule asymptotique i.i.d., qui respecte la dépendance à court terme sans avoir à la modéliser explicitement.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s53">
+            <div class="tophead"><span class="num">53</span><h2>Niveaux de retour GEV : exercice corrigé (méthode delta et vraisemblance profil)</h2></div>
+
+            <p><b>Énoncé (TP2, question bonus).</b> On extrait les maxima annuels d'une série de températures maximales mensuelles (Perth, 75 années complètes, 1945-2019) et on y ajuste une loi GEV. Estimer les niveaux de retour à 10, 50 et 100 ans, avec un intervalle de confiance par la méthode delta <b>et</b> par vraisemblance profil. Quels intervalles semblent les plus fiables, et pourquoi ?</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Ajustement GEV par maximum de vraisemblance</p>
+                <p>Sur les $75$ maxima annuels, le maximum de vraisemblance donne (écarts-types entre parenthèses) :</p>
+                <div class="formula">$$\hat\mu=32{,}16\ (0{,}173),\qquad\hat\sigma=1{,}359\ (0{,}121),\qquad\hat\gamma=-0{,}230\ (0{,}073)$$</div>
+                <p>avec la matrice de covariance estimée du triplet $(\hat\mu,\hat\sigma,\hat\gamma)$ :</p>
+                <div class="formula">$$\hat\Sigma=\begin{pmatrix}0{,}02997&0{,}00172&-0{,}00472\\0{,}00172&0{,}01461&-0{,}00458\\-0{,}00472&-0{,}00458&0{,}00535\end{pmatrix}$$</div>
+                <p>Le signe de $\hat\gamma$ est négatif : on est dans le domaine de <b>Weibull</b> (queue courte, point terminal fini, fiche 5), cohérent avec une température maximale physiquement bornée.</p>
+
+                <p class="method-label">Niveau de retour à $T$ ans et gradient (méthode delta, fiche 52)</p>
+                <p>En notant $p=1/T$ et $y_p=-\log(1-p)$, le niveau de retour GEV s'écrit (en inversant $G_\gamma(z_T)=1-p$) :</p>
+                <div class="formula">$$z_T=\mu+\frac\sigma\gamma\big(y_p^{-\gamma}-1\big)$$</div>
+                <p>Son gradient par rapport à $(\mu,\sigma,\gamma)$, nécessaire pour la delta-method :</p>
+                <div class="formula">$$\frac{\partial z_T}{\partial\mu}=1,\qquad \frac{\partial z_T}{\partial\sigma}=\frac{y_p^{-\gamma}-1}\gamma,\qquad \frac{\partial z_T}{\partial\gamma}=-\frac\sigma{\gamma^2}\big(y_p^{-\gamma}-1\big)-\frac\sigma\gamma\,y_p^{-\gamma}\log y_p$$</div>
+                <p>et $\mathrm{IC}_{95\%}(z_T)=\hat z_T\pm1{,}96\sqrt{\nabla z_T^\top\hat\Sigma\,\nabla z_T}$.</p>
+
+                <p class="method-label">Résultats numériques</p>
+                <table class="cmp">
+                  <tr><th>$T$ (ans)</th><th>$\hat z_T$ (°C)</th><th>IC 95% (delta)</th><th>IC 95% (vraisemblance profil)</th></tr>
+                  <tr><td>10</td><td>34{,}55</td><td>[34{,}11 ; 34{,}99]</td><td>[34{,}15 ; 35{,}09]</td></tr>
+                  <tr><td>50</td><td>35{,}66</td><td>[34{,}97 ; 36{,}35]</td><td>[35{,}15 ; 36{,}75]</td></tr>
+                  <tr><td>100</td><td>36{,}02</td><td>[35{,}18 ; 36{,}86]</td><td>[35{,}45 ; 37{,}41]</td></tr>
+                </table>
+
+                <p class="method-label">Vraisemblance profil : le principe</p>
+                <p>Au lieu de linéariser $z_T(\hat\mu,\hat\sigma,\hat\gamma)$ (ce que fait la delta-method), on reparamètre le modèle en $(z_T,\sigma,\gamma)$ (en substituant $\mu=z_T-\frac\sigma\gamma(y_p^{-\gamma}-1)$) et on maximise la log-vraisemblance sur $(\sigma,\gamma)$ pour chaque valeur fixée de $z_T$ : $\ell_p(z_T)=\max_{\sigma,\gamma}\ell(z_T,\sigma,\gamma)$. L'intervalle de confiance est l'ensemble des $z_T$ tels que $2\big[\ell(\hat\theta)-\ell_p(z_T)\big]\le\chi^2_{1,1-\alpha}$ (déviance), ses bornes étant les deux points où $\ell_p$ croise ce seuil.</p>
+                <p class="sense"><b>Lequel est le plus fiable ?</b> Les deux méthodes coïncident presque sur l'estimation ponctuelle, mais divergent de plus en plus sur la borne <b>supérieure</b> quand $T$ croît (à $100$ ans : $36{,}86$ en delta contre $37{,}41$ en profil). La méthode delta repose sur une approximation <b>quadratique locale</b> (gaussienne, symétrique) de la vraisemblance autour de $\hat\theta$ ; or extrapoler à $T=100$ ans revient à s'éloigner fortement de l'échantillon, là où la vraisemblance réelle n'est <b>plus du tout symétrique</b> (ceci est d'autant plus marqué que $\hat\gamma$ est loin de $0$). La vraisemblance profil exploite directement la forme réelle (non quadratique) de la vraisemblance et reste donc fiable même loin de $\hat\theta$ : c'est elle qu'on privilégie en pratique pour des niveaux de retour à horizon long.</p>
+
+                <p class="method-label">Point terminal et plausibilité physique</p>
+                <p>Puisque $\hat\gamma\lt0$, le point terminal estimé (fiche 33) est fini :</p>
+                <div class="formula">$$\hat\theta=\hat\mu-\frac{\hat\sigma}{\hat\gamma}=32{,}16-\frac{1{,}36}{-0{,}230}\approx38{,}1\ \text{°C}$$</div>
+                <p class="sense"><b>Sens :</b> même la borne supérieure du niveau de retour centennal par vraisemblance profil ($37{,}41$°C) reste sous ce plafond théorique ($38{,}1$°C), et le maximum annuel réellement observé sur la période est $36{,}3$°C. Les niveaux de retour estimés sont donc physiquement cohérents avec un modèle à queue courte (une température maximale journalière est par nature bornée), contrairement à ce qu'on obtiendrait avec un modèle à queue lourde où rien n'empêcherait l'extrapolation de diverger.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s54">
+            <div class="tophead"><span class="num">54</span><h2>Niveaux de retour et quantiles extrêmes : le rôle de la saisonnalité</h2></div>
+
+            <p><b>Énoncé (TP2, suite du bonus).</b> Comparer les niveaux de retour de la fiche 53 aux quantiles extrêmes estimés par méthode POT/GPD sur les valeurs mensuelles regroupées (question 4). À quel niveau $p$ de la distribution mensuelle un niveau de retour à $T$ ans correspond-il approximativement ? Pourquoi les deux approches peuvent-elles être en désaccord (penser à la saisonnalité) ?</p>
+
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">La correspondance, sous hypothèse i.i.d.</p>
+                <p>Un maximum annuel $M$ est le maximum de $12$ valeurs mensuelles. <b>Si</b> ces $12$ valeurs étaient i.i.d. de fonction de répartition $F$ (hypothèse à discuter, voir plus bas), alors $\mathbb P(M\le z)=F(z)^{12}$, et un niveau de retour à $T$ ans (défini par $\mathbb P(M\gt z_T)=1/T$) correspondrait au quantile mensuel de niveau $p$ tel que :</p>
+                <div class="formula">$$F(z_T)^{12}=1-\frac1T\quad\Longleftrightarrow\quad p=F(z_T)=\Big(1-\frac1T\Big)^{1/12}$$</div>
+                <table class="cmp">
+                  <tr><th>$T$ (ans)</th><th>$p=(1-1/T)^{1/12}$</th></tr>
+                  <tr><td>10</td><td>$0{,}9913$</td></tr>
+                  <tr><td>50</td><td>$0{,}9983$</td></tr>
+                  <tr><td>100</td><td>$0{,}9992$</td></tr>
+                </table>
+
+                <p class="method-label">Comparaison numérique avec la question 4 (POT/GPD mensuel)</p>
+                <p>La question 4 du TP a estimé, sur les $906$ valeurs mensuelles regroupées (seuil au rang $k=180$) : $\hat q(0{,}995)\approx38{,}2$°C et $\hat q(0{,}999)\approx42{,}1$°C. Les niveaux $p$ ci-dessus ($0{,}9913$ à $0{,}9992$) se situent justement entre ces deux valeurs : on attendrait donc, par cohérence, des niveaux de retour entre $38$°C et $42$°C environ.</p>
+                <p>Or la fiche 53 donne $\hat z_{10}\approx34{,}6$°C, $\hat z_{50}\approx35{,}7$°C, $\hat z_{100}\approx36{,}0$°C : des valeurs <b>nettement plus basses</b>, même en tenant compte des intervalles de confiance (la borne haute à $100$ ans ne dépasse pas $37{,}4$°C). Les deux approches sont donc clairement en désaccord.</p>
+
+                <p class="method-label">L'explication : la saisonnalité casse l'hypothèse i.i.d.</p>
+                <p>La formule $p=(1-1/T)^{1/12}$ suppose que les $12$ valeurs mensuelles d'une même année sont i.i.d. de <b>même</b> loi $F$. C'est faux ici : à Perth, les mois d'été (décembre à février) ont une température maximale structurellement bien plus élevée que les mois d'hiver. Le modèle POT de la question 4 ajuste sa GPD sur les $k=180$ plus grandes valeurs parmi les $906$ regroupées, c'est-à-dire sur un sous-ensemble <b>presque exclusivement composé de mois d'été</b> : son quantile $\hat q(0{,}995)$ répond donc à la question « quelle est la valeur mensuelle dépassée une fois sur $200$ <b>mois</b>, toutes saisons confondues », qui n'est pas du tout le même objet probabiliste qu'un maximum <b>annuel</b> (qui est, lui, presque toujours un mois d'été, mais un seul par an). Le mélange des saisons dans le pool mensuel gonfle artificiellement la rareté apparente d'une valeur d'été modérément chaude (elle est rare <i>parmi tous les mois de l'année</i>, alors qu'elle ne l'est pas <i>parmi les seuls mois d'été</i>), ce qui explique que les quantiles mensuels extrêmes de la question 4 apparaissent plus élevés que les niveaux de retour annuels de la fiche 53.</p>
+                <p class="sense"><b>Pour comparer correctement :</b> il faudrait soit désaisonnaliser (ajuster un modèle distinct par mois, ou se restreindre aux seuls mois d'été avant d'appliquer POT), soit comparer le niveau de retour annuel directement au quantile <b>annuel</b> (ce que fait la GEV par construction), mais jamais mélanger un quantile calculé sur un pool mensuel saisonnier avec un niveau de retour qui, lui, filtre déjà implicitement la saison via le « maximum de l'année ».</p>
+              </div>
+
+              <div class="box box-ex">
+                <p class="method-label">Extension : températures minimales, l'astuce « $-X$ »</p>
+                <p>Pour les extrêmes <b>bas</b> (vagues de froid), on ne peut pas ajuster directement une GEV de maxima sur des minima. L'astuce standard : poser $Y=-X$ (ici $X=$ minimum mensuel de température), extraire les maxima annuels de $Y$, ajuster une GEV sur $Y$, puis retourner le signe. Sur les mêmes 75 années (minima mensuels Perth) :</p>
+                <div class="formula">$$\hat\mu_Y=-7{,}80,\qquad\hat\sigma_Y=0{,}963,\qquad\hat\gamma_Y=-0{,}178$$</div>
+                <p>Un niveau de retour à $T$ ans de $Y$ (rare valeur <b>haute</b> de $Y$) correspond à un niveau de retour à $T$ ans de $X$ par <b>le bas</b> (rare valeur <b>basse</b>, un froid record), de valeur $-\hat z_T(Y)$ :</p>
+                <table class="cmp">
+                  <tr><th>$T$ (ans)</th><th>Niveau de retour froid de $X$ (°C), IC 95% delta</th></tr>
+                  <tr><td>10</td><td>$6{,}01$ [$5{,}65$ ; $6{,}38$]</td></tr>
+                  <tr><td>50</td><td>$5{,}09$ [$4{,}35$ ; $5{,}83$]</td></tr>
+                  <tr><td>100</td><td>$4{,}77$ [$3{,}81$ ; $5{,}73$]</td></tr>
+                </table>
+                <p class="sense"><b>Sens et plausibilité :</b> le point terminal de $Y$ est $\hat\mu_Y-\hat\sigma_Y/\hat\gamma_Y\approx-2{,}38$, donc le point terminal <b>bas</b> de $X$ est $+2{,}38$°C : le modèle interdit à ce « mois le plus froid de l'année » de descendre sous $2{,}4$°C environ. Le niveau de retour centennal estimé ($4{,}77$°C, IC jusqu'à $3{,}81$°C) reste confortablement au-dessus de ce plancher théorique, comme pour le cas chaud de la fiche 53 : les deux cas sont cohérents entre eux (même signe de $\gamma$, même type de borne physique), ce qui renforce la confiance dans la lecture « queue courte » pour cette variable.</p>
+              </div>
+            </details>
+          </article>
 
         </div>
       </section>
