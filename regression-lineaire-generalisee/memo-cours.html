@@ -1202,7 +1202,7 @@ window.MathJax = {
               <p><span class="mono">Residual standard error: 0.03015 on 25 DF (1 observation deleted due to missingness) ; R² = 0.8179, R²a = 0.796 ; F = 37.42 on 3 and 25 DF, p = 2.131e-09.</span></p>
               <p><b>Re-validation</b> : $R_a^2$ passe de 0.68 à 0.796 ; VIF = 4.37 / 1.30 / 3.89 (OK) ; Breusch-Pagan BP = 5.0063, p = 0.1713 (OK) ; Durbin-Watson DW = 1.5398, p = 0.03282 et Breusch-Godfrey LM = 0.086423, p = 0.7688 : <b>la corrélation a été largement absorbée</b>. Le nuage $(\hat Y, \hat\varepsilon)$ ne montre aucune structure ; seul l'individu 30 reste un peu éloigné.</p>
               <p><b>Modélisation finale adoptée</b>, pour chaque semaine $i$ :</p>
-              <div class="formula">$$Consumption_i = -0.06 - 0.002\,Temp_{i-1} + 0.003\,Income_i + 0.005\,Temp_i + \varepsilon_i$$</div>
+              <div class="formula">$$Consumption_i = -0.06 - 0.002\,Temp_{i-1} + 0.003\,Income_i + 0.006\,Temp_i + \varepsilon_i$$</div>
               <p>où $\varepsilon_i$ représente l'erreur de modélisation, centrée et de variance $\hat\sigma^2 = 0.03^2$.</p>
               <p class="sense"><b>Sens :</b> ce fil rouge illustre la boucle complète du chapitre : ajuster, valider par les résidus, détecter un défaut (auto-corrélation), enrichir le modèle, re-valider, puis arbitrer par les critères de sélection.</p>
             </div>
