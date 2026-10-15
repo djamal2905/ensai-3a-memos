@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Statistiques de Processus : Mémo de cours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script>
+(function(){
+  function loadScript(src, onerror, onload){
+    var s = document.createElement('script');
+    s.src = src; s.async = true; s.id = 'mathjax-script';
+    if(onerror) s.onerror = onerror;
+    if(onload) s.onload = onload;
+    document.head.appendChild(s);
+  }
+  function showMathWarning(){
+    var b = document.createElement('div');
+    b.textContent = 'Les formules n\'ont pas pu se charger (réseau qui bloque les CDN, ou hors connexion). Réessayez avec un autre réseau (Wi-Fi/4G) ou un autre navigateur.';
+    b.style.cssText = 'position:sticky;top:0;z-index:90;background:#c1483c;color:#fff;font:600 .78rem "Source Sans 3",sans-serif;padding:9px 14px;text-align:center;';
+    document.body.insertBefore(b, document.body.firstChild);
+  }
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js', function(){
+    loadScript('https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js', showMathWarning);
+  });
+})();
+</script>
+<style>
+  :root{
+    --ink:#1c2230; --ink-soft:#454c5a; --muted:#5c6b72;
+    --paper:#f1f3ef; --surface:#ffffff; --surface-2:#e8ebe5; --border:#d7dcd3;
+    --accent:#5b4a9a; --accent-strong:#43347a; --accent-soft:#ece8f5; --accent-ink:#32275f;
+    --def-bg:#edf6ee; --def-border:#4c8a5c; --def-label:#2c6b3d;
+    --thm-bg:#fbeee6; --thm-border:#b5643f; --thm-label:#9a4d2c;
+    --ex-bg:#eaf1fb; --ex-border:#3f6ea3; --ex-label:#2c5480;
+    --warn-bg:#fdeceb; --warn-border:#c1483c; --warn-color:#9a2f24;
+    --code-ink:#e7e9ee; --code-bg:#1a2028; --code-border:#2b3340;
+    --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
+    --radius: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+      --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+      --accent:#b3a3ee; --accent-strong:#d2c8f7; --accent-soft:#221d36; --accent-ink:#e4ddfa;
+      --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+      --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+      --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+      --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+      --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+    --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+    --accent:#b3a3ee; --accent-strong:#d2c8f7; --accent-soft:#221d36; --accent-ink:#e4ddfa;
+    --def-bg:#152a1c; --def-border:#4c8a5c; --def-label:#7fcf94;
+    --thm-bg:#2c1c14; --thm-border:#b5643f; --thm-label:#e39a72;
+    --ex-bg:#141f2c; --ex-border:#3f6ea3; --ex-label:#87b3e6;
+    --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
+    --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; text-wrap:balance; color:var(--ink); margin:0; }
+  code, .mono{ font-family:"JetBrains Mono", ui-monospace, monospace; }
+  a{ color:var(--accent-strong); }
+  p{ margin:.5em 0; color:var(--ink-soft); max-width:68ch; }
+
+  #progress{ position:fixed; top:0; left:0; height:3px; width:0%; background:var(--accent); z-index:80; transition:width .1s linear; }
+
+  header.topbar{
+    position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{ max-width:1280px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:14px; }
+  .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
+  .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .brand .name{ font:600 1.05rem/1.1 "Fraunces", serif; }
+  .icon-14{ width:14px; height:14px; flex-shrink:0; }
+  .icon-16{ width:16px; height:16px; flex-shrink:0; }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
+    cursor:pointer; font-size:1rem;
+  }
+  .icon-btn:hover{ background:var(--surface-2); }
+  .icon-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .search-wrap{ position:relative; flex:0 1 260px; }
+  .search-wrap input{
+    width:100%; padding:8px 12px 8px 32px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); font:500 .88rem "Source Sans 3", sans-serif;
+  }
+  .search-wrap svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none; }
+  #searchCount{ font:500 .72rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  #navToggle{ display:none; }
+
+  .layout{ max-width:1280px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:250px minmax(0,1fr); gap:36px; align-items:start; }
+  aside.toc{ position:sticky; top:64px; max-height:calc(100vh - 84px); overflow-y:auto; padding:18px 4px 40px 0; font-size:.85rem; }
+  aside.toc h2{ font:600 .7rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:10px; }
+  .toc-lecture{ margin-bottom:18px; }
+  .toc-lecture > p{ font:700 .78rem "Source Sans 3",sans-serif; color:var(--ink); margin:0 0 6px; }
+  .toc-lecture ol{ list-style:none; margin:0; padding:0; border-left:2px solid var(--border); }
+  .toc-lecture li a{ display:block; padding:5px 0 5px 12px; color:var(--muted); text-decoration:none; border-left:2px solid transparent; margin-left:-2px; font-weight:500; }
+  .toc-lecture li a:hover{ color:var(--ink); }
+  .toc-lecture li a.active{ color:var(--accent-strong); border-left-color:var(--accent); background:var(--accent-soft); border-radius:0 6px 6px 0; }
+  .toc-num{ display:inline-block; width:1.4em; color:var(--muted); font:600 .78em "JetBrains Mono",monospace; }
+
+  main{ min-width:0; padding-bottom:70px; }
+
+  .hero{ padding:34px 0 22px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+  .hero .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .hero h1{ font-size:clamp(1.7rem, 1.2rem + 2vw, 2.5rem); margin:.3em 0 .2em; }
+  .hero p{ max-width:62ch; color:var(--muted); font-size:.98rem; }
+  .hero .meta{ display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; font:500 .78rem "JetBrains Mono",monospace; color:var(--muted); }
+  .hero .meta span{ display:flex; align-items:center; gap:6px; }
+  .hero .meta b{ color:var(--ink-soft); font-weight:600; }
+
+  section.lecture{ margin-bottom:10px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
+  section.lecture + section.lecture{ margin-top:24px; }
+  .lecture-head{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; border:0; background:var(--surface-2); padding:16px 22px; cursor:pointer; font-family:"Fraunces", serif; }
+  .lecture-head .num{ font:700 1rem "JetBrains Mono",monospace; color:var(--accent); }
+  .lecture-head .title{ flex:1; font-size:1.15rem; font-weight:600; color:var(--ink); }
+  .lecture-head .chev{ transition:transform .2s ease; color:var(--muted); }
+  .lecture.collapsed .lecture-head .chev{ transform:rotate(-90deg); }
+  .lecture-body{ padding:8px 22px 6px; }
+  .lecture.collapsed .lecture-body{ display:none; }
+
+  article.topic{ padding:26px 0; border-top:1px dashed var(--border); scroll-margin-top:76px; }
+  article.topic:first-child{ border-top:0; }
+  article.topic .tophead{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  article.topic .tophead .num{ font:700 .95rem "JetBrains Mono",monospace; color:var(--accent); }
+  article.topic h2{ font-size:1.32rem; }
+  article.topic > p:first-of-type{ margin-top:10px; }
+
+  .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:14px 0; }
+  .box-label{ display:flex; align-items:center; gap:8px; font:700 .76rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px; }
+  .box p{ margin:.35em 0; font-size:.94rem; }
+  .box-def{ background:var(--def-bg); border-color:var(--def-border); } .box-def .box-label{ color:var(--def-label); }
+  .box-thm{ background:var(--thm-bg); border-color:var(--thm-border); } .box-thm .box-label{ color:var(--thm-label); }
+  .box-ex{ background:var(--ex-bg); border-color:var(--ex-border); } .box-ex .box-label{ color:var(--ex-label); }
+  .box-warn{ background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-color); }
+  .box-warn .box-label{ color:var(--warn-color); }
+  .box-warn p{ color:var(--warn-color); font-weight:600; }
+
+  .formula{ position:relative; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin:10px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .formula mjx-container{ margin:0 !important; }
+  .formula.is-scrollable::after{ content:""; position:absolute; top:1px; right:1px; bottom:1px; width:26px; border-radius:0 7px 7px 0; background:linear-gradient(to right, transparent, var(--surface-2) 75%); pointer-events:none; }
+  .formula.is-scrollable::before{ content:"⟷"; position:absolute; top:3px; right:6px; font-size:.7rem; color:var(--muted); pointer-events:none; }
+  p.sense{ font-size:.86rem; color:var(--accent-ink); max-width:none; background:var(--accent-soft); border-radius:8px; padding:7px 10px 7px 26px; margin:8px 0 0; position:relative; }
+  p.sense b{ color:var(--accent-strong); }
+  p.sense::before{ content:"→"; font-weight:700; color:var(--accent); position:absolute; left:9px; top:7px; }
+
+  details.solution{ margin:14px 0; }
+  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
+  details.solution summary::-webkit-details-marker{ display:none; }
+  details.solution summary::before{ content:"▶"; font-size:.7em; transition:transform .15s ease; }
+  details.solution[open] summary::before{ transform:rotate(90deg); }
+  details.solution[open] summary{ border-radius:8px 8px 0 0; }
+  details.solution > .box{ margin-top:0; border-radius:0 0 10px 10px; border-top:none; }
+  .method-label{ display:inline-block; font:700 .72rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.03em; color:var(--ex-label); background:var(--ex-bg); border:1px solid var(--ex-border); border-radius:6px; padding:2px 8px; margin:10px 0 6px; }
+  .method-label:first-child{ margin-top:0; }
+
+  table.cmp{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.83rem; }
+  .cmp th, .cmp td{ padding:6px 10px; border:1px solid var(--border); text-align:center; color:var(--ink-soft); }
+  .cmp th{ background:var(--surface-2); font-weight:700; color:var(--ink); }
+  .cmp td:first-child, .cmp th:first-child{ text-align:left; }
+
+  .qcm{ margin-top:32px; border:1px solid var(--border); border-radius:14px; background:var(--surface-2); padding:20px 22px 24px; box-shadow:var(--shadow); }
+  .qcm-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px; }
+  .qcm-head h3{ font-size:1.05rem; margin:0; }
+  .qcm-meta{ font:600 .74rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
+  .qcm-intro{ font-size:.86rem; color:var(--muted); margin:2px 0 14px; }
+  .qcm-q{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:12px 0; }
+  .qcm-q .qtext{ font-weight:600; color:var(--ink); margin:0 0 10px; font-size:.95rem; }
+  .qcm-q .qtext .qnum{ color:var(--accent); font:700 .8rem "JetBrains Mono",monospace; margin-right:6px; }
+  .qcm-opt{ display:flex; gap:10px; align-items:flex-start; padding:7px 9px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
+  .qcm-opt:hover{ background:var(--surface-2); }
+  .qcm-opt input{ margin-top:3px; flex-shrink:0; accent-color:var(--accent); }
+  .qcm-opt .otext{ font-size:.89rem; color:var(--ink-soft); }
+  .qcm-explain{ display:none; font-size:.82rem; color:var(--muted); margin:2px 0 0 34px; padding:4px 0 4px 10px; border-left:2px solid var(--border); }
+  .qcm-q.graded .qcm-explain{ display:block; }
+  .qcm-q.graded .qcm-opt{ cursor:default; }
+  .qcm-q.graded .qcm-opt.opt-right{ background:var(--def-bg); border-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-right .qcm-explain{ border-left-color:var(--def-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked{ background:var(--warn-bg); border-color:var(--warn-border); }
+  .qcm-q.graded .qcm-opt.opt-wrong-checked .qcm-explain{ border-left-color:var(--warn-border); }
+  .qcm-q .q-badge{ display:none; font:700 .72rem "JetBrains Mono",monospace; padding:2px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+  .qcm-q.graded .q-badge{ display:inline-block; }
+  .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
+  .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
+  .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
+  .qcm-btn.ghost:hover{ background:var(--accent-soft); }
+  .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .qcm-result{ font:700 .95rem "JetBrains Mono",monospace; color:var(--ink); }
+  .qcm-result:empty{ display:none; }
+  .multi-badge{ display:inline-flex; align-items:center; gap:4px; font:700 .68rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:6px; padding:1px 7px 1px 6px; margin-left:8px; vertical-align:middle; }
+  .multi-badge svg{ width:12px; height:12px; flex-shrink:0; }
+
+  .mnemonics{ margin-top:38px; background:var(--code-bg); color:var(--code-ink); border-radius:14px; padding:26px 28px; }
+  .mnemonics h2{ color:var(--code-ink); font-size:1.1rem; margin-bottom:14px; }
+  .chain{ font:600 .95rem "JetBrains Mono",monospace; padding:8px 0; border-top:1px solid var(--code-border); color:#dfe3ea; }
+  .chain:first-of-type{ border-top:0; }
+  .chain b{ color:var(--accent-strong); }
+  .source-note{ max-width:none; margin-top:16px; padding-top:14px; border-top:1px solid var(--code-border); font-size:.8rem; color:#98a2b3; }
+
+  #toTop{ position:fixed; right:20px; bottom:20px; z-index:70; width:42px; height:42px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; }
+  #toTop.show{ opacity:1; pointer-events:auto; }
+  #toTop:hover{ transform:translateY(-2px); }
+
+  .dim{ opacity:.28; filter:grayscale(.4); }
+  mark{ background:var(--accent); color:#fff; border-radius:2px; padding:0 1px; }
+
+  #mobileOverlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:55; }
+
+  .diagram{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px; margin:14px 0; }
+  .diagram svg{ display:block; margin:0 auto; max-width:100%; height:auto; color:var(--ink-soft); }
+  .diagram-cap{ text-align:center; font-size:.78rem; color:var(--muted); margin-top:6px; }
+
+  code.rcode{ display:block; white-space:pre-wrap; background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 12px; font-size:.8rem; overflow-x:auto; margin:8px 0; }
+
+  @media (max-width: 880px){
+    .layout{ grid-template-columns:1fr; padding:0 16px; }
+    aside.toc{ position:fixed; top:0; left:0; height:100vh; width:280px; max-height:none; background:var(--surface); border-right:1px solid var(--border); z-index:65; padding:70px 16px 20px; transform:translateX(-100%); transition:transform .25s ease; }
+    aside.toc.open{ transform:translateX(0); }
+    #navToggle{ display:inline-flex; }
+    .search-wrap{ flex:1 1 auto; }
+    .hero{ padding:24px 0 18px; }
+    .lecture-body{ padding:8px 14px 4px; }
+    .lecture-head{ padding:14px 16px; }
+    .box{ padding:12px 12px; }
+    .formula{ padding:9px 10px; font-size:.9em; }
+  }
+
+  @media (max-width: 420px){
+    .formula{ font-size:.8em; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="progress"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button id="navToggle" class="icon-btn" aria-label="Ouvrir le sommaire">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="brand">
+        <span class="eyebrow">ENSAI · 3A · GS/SSV</span>
+        <span class="name">Statistiques de Processus</span>
+      </div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Filtrer : Markov, générateur, M/M/1…" aria-label="Filtrer le mémo" />
+      </div>
+      <span id="searchCount"></span>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
+  </header>
+
+  <div id="mobileOverlay" hidden></div>
+
+  <div class="layout">
+
+    <aside class="toc" id="toc">
+      <h2>Sommaire</h2>
+      <div class="toc-lecture">
+        <p>1 : Chaînes de Markov, fondations</p>
+        <ol>
+          <li><a href="#s1"><span class="toc-num">1</span>Qu'est-ce qu'une chaîne de Markov ?</a></li>
+          <li><a href="#s2"><span class="toc-num">2</span>Construire et calculer avec une chaîne</a></li>
+          <li><a href="#s3"><span class="toc-num">3</span>Irréductibilité, récurrence, transience</a></li>
+          <li><a href="#s4"><span class="toc-num">4</span>Récurrence positive et loi invariante</a></li>
+          <li><a href="#s5"><span class="toc-num">5</span>Chaînes de naissance et de mort</a></li>
+          <li><a href="#s6"><span class="toc-num">6</span>Chaînes absorbantes</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>2 : Markov, statistique et applications</p>
+        <ol>
+          <li><a href="#s7"><span class="toc-num">7</span>Théorème ergodique et convergence</a></li>
+          <li><a href="#s8"><span class="toc-num">8</span>TLC pour les chaînes de Markov</a></li>
+          <li><a href="#s9"><span class="toc-num">9</span>Estimer P par maximum de vraisemblance</a></li>
+          <li><a href="#s10"><span class="toc-num">10</span>Construire un test d'adéquation</a></li>
+          <li><a href="#s11"><span class="toc-num">11</span>Mots exceptionnels dans l'ADN</a></li>
+          <li><a href="#s12"><span class="toc-num">12</span>Modèles de Markov cachés et EM</a></li>
+          <li><a href="#s13"><span class="toc-num">13</span>Backward-forward et Viterbi</a></li>
+          <li><a href="#s14"><span class="toc-num">14</span>Chaînes de Markov avec covariables</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>3 : Processus de Poisson</p>
+        <ol>
+          <li><a href="#s15"><span class="toc-num">15</span>Le processus de Poisson simple</a></li>
+          <li><a href="#s16"><span class="toc-num">16</span>Temps de sauts et statistiques d'ordre</a></li>
+          <li><a href="#s17"><span class="toc-num">17</span>Asymptotique et estimation de λ</a></li>
+          <li><a href="#s18"><span class="toc-num">18</span>Processus de Poisson non homogène</a></li>
+          <li><a href="#s19"><span class="toc-num">19</span>Estimation MV du processus de Weibull</a></li>
+          <li><a href="#s20"><span class="toc-num">20</span>Poisson composé et Cramér-Lundberg</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>4 : Processus markoviens de sauts</p>
+        <ol>
+          <li><a href="#s21"><span class="toc-num">21</span>Fonctions aléatoires de sauts</a></li>
+          <li><a href="#s22"><span class="toc-num">22</span>Le générateur infinitésimal</a></li>
+          <li><a href="#s23"><span class="toc-num">23</span>Forward, backward, chaîne immergée</a></li>
+          <li><a href="#s24"><span class="toc-num">24</span>Construction et non-explosion</a></li>
+          <li><a href="#s25"><span class="toc-num">25</span>Estimer le générateur par MV</a></li>
+          <li><a href="#s26"><span class="toc-num">26</span>Classification et théorème ergodique</a></li>
+          <li><a href="#s27"><span class="toc-num">27</span>Exemples : 2 états, naissance-mort, épidémie</a></li>
+          <li><a href="#s28"><span class="toc-num">28</span>Galton-Watson à temps continu</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>5 : Files d'attente</p>
+        <ol>
+          <li><a href="#s29"><span class="toc-num">29</span>La file M/M/1</a></li>
+          <li><a href="#s30"><span class="toc-num">30</span>Régime stationnaire et formule de Little</a></li>
+          <li><a href="#s31"><span class="toc-num">31</span>M/M/1/K et M/M/s</a></li>
+          <li><a href="#s32"><span class="toc-num">32</span>Formule d'Erlang et comparaisons</a></li>
+          <li><a href="#s33"><span class="toc-num">33</span>Découragement et M/M/S/S</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>6 : TP et annales corrigées</p>
+        <ol>
+          <li><a href="#s34"><span class="toc-num">34</span>TP1 · Chaîne à deux états</a></li>
+          <li><a href="#s35"><span class="toc-num">35</span>TP1 · Épidémie discrète</a></li>
+          <li><a href="#s36"><span class="toc-num">36</span>TP1 · Séquence ADN intron</a></li>
+          <li><a href="#s37"><span class="toc-num">37</span>TP2 · HMM gaussien</a></li>
+          <li><a href="#s38"><span class="toc-num">38</span>TP2 · Simulation d'une CTMC</a></li>
+          <li><a href="#s39"><span class="toc-num">39</span>TP2 · Épidémie à temps continu</a></li>
+          <li><a href="#s40"><span class="toc-num">40</span>Jeux de données réels (Poisson)</a></li>
+          <li><a href="#s41"><span class="toc-num">41</span>Annale 2024 · Exercice 1</a></li>
+          <li><a href="#s42"><span class="toc-num">42</span>Annale 2024 · Exercice 2</a></li>
+          <li><a href="#s43"><span class="toc-num">43</span>Annale 2024 · Exercice 3</a></li>
+        </ol>
+      </div>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <span class="eyebrow">Mémo de cours</span>
+        <h1>Des chaînes de Markov aux files d'attente</h1>
+        <p>Le cours entier, réécrit pour être compris du premier coup : chaque notion part d'une intuition et d'un exemple avant la formalisation, avec des schémas pour les objets qu'on dessine toujours au tableau (chaîne de Markov, processus de Poisson, générateur, file d'attente, HMM). Chaque chapitre se termine par un QCM corrigé, puis viennent les TP, les jeux de données réels et l'annale 2024, tous corrigés pas à pas.</p>
+        <div class="meta">
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : L. Truquet, Statistique des processus, ENSAI 3A, 2024</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>43 fiches</b> · 5 QCM · TP1, TP2 et annale 2024 corrigés</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
+        </div>
+      </div>
+
+      <section class="lecture" id="lecture-1">
+        <button class="lecture-head">
+          <span class="num">1</span>
+          <span class="title">Chaînes de Markov : fondations</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s1">
+            <div class="tophead"><span class="num">1</span><h2>Qu'est-ce qu'une chaîne de Markov ?</h2></div>
+            <p>Imaginez une particule qui saute d'un état à l'autre, pas à pas : du temps $0$ au temps $1$, du temps $1$ au temps $2$, etc. Un <b>processus stochastique</b> est simplement une famille de variables aléatoires $(X_t)_{t\in I}$ indexées par le temps $I$ (discret $\mathbb N,\mathbb Z$, ou continu $\mathbb R_+$), toutes définies sur le même espace de probabilité. Ce cours étudie quelques familles de processus suffisamment simples pour qu'on sache en faire de la statistique (estimer leurs paramètres, construire des intervalles de confiance et des tests), tout en restant assez riches pour modéliser des phénomènes réels : génétique des populations, séquences ADN, fiabilité, épidémiologie, files d'attente.</p>
+            <p>La première famille, et la plus importante du cours, est celle des <b>chaînes de Markov</b>. L'idée intuitive est simple : <b>pour prédire le futur, seul le présent compte</b>, le passé devient inutile dès qu'on connaît l'état actuel. C'est une hypothèse de « mémoire courte » qui simplifie énormément les calculs tout en restant réaliste pour beaucoup de phénomènes (une file d'attente, une position sur un réseau, un nucléotide dans l'ADN...).</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 1 · Chaîne de Markov</p>
+              <p>Une suite $\mathbf X=(X_n)_{n\in\mathbb N}$ à valeurs dans un ensemble $E$ (fini ou dénombrable) est une <b>chaîne de Markov</b> si pour tout $n$ et tout $(x_0,\dots,x_{n+1})$ tel que $\mathbb P(X_0=x_0,\dots,X_n=x_n)>0$ :</p>
+              <div class="formula">$$\mathbb P(X_{n+1}=x_{n+1}\mid X_0=x_0,\dots,X_n=x_n)=\mathbb P(X_{n+1}=x_{n+1}\mid X_n=x_n)$$</div>
+              <p>Autrement dit : la loi de $X_{n+1}$ sachant tout le passé ne dépend que de $X_n$. « Conditionnellement au présent, le futur est indépendant du passé. »</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition 2 · Matrice stochastique, chaîne homogène</p>
+              <p>Une matrice $(P(x,y))_{(x,y)\in E^2}$ est <b>stochastique</b> si $P(x,y)\ge0$ et $\sum_{y\in E}P(x,y)=1$ pour tout $x$. La chaîne $\mathbf X$ est <b>homogène</b> s'il existe une matrice stochastique $P$ (la <b>transition</b>) telle que pour tout $n$, $\mathbb P(X_{n+1}=y\mid X_n=x)=P(x,y)$ (dès que $\mathbb P(X_n=x)>0$). Dans tout ce cours, « chaîne de Markov » signifie chaîne homogène.</p>
+            </div>
+            <div class="diagram">
+              <svg viewBox="0 0 420 220" role="img" aria-label="Diagramme de transition d'une chaîne de Markov à deux états">
+                <defs>
+                  <marker id="arrD1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+                <circle cx="120" cy="110" r="34" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="120" y="117" text-anchor="middle" font-size="18" fill="currentColor" font-family="JetBrains Mono, monospace">0</text>
+                <circle cx="300" cy="110" r="34" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="300" y="117" text-anchor="middle" font-size="18" fill="currentColor" font-family="JetBrains Mono, monospace">1</text>
+                <path d="M152,95 Q210,55 268,95" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD1)"/>
+                <text x="210" y="50" text-anchor="middle" font-size="13" fill="currentColor">P(0,1) = p</text>
+                <path d="M268,125 Q210,165 152,125" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD1)"/>
+                <text x="210" y="188" text-anchor="middle" font-size="13" fill="currentColor">P(1,0) = q</text>
+                <path d="M100,84 A34,34 0 1 1 100,136" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#arrD1)"/>
+                <text x="48" y="113" text-anchor="middle" font-size="12" fill="currentColor">1−p</text>
+                <path d="M320,136 A34,34 0 1 1 320,84" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#arrD1)"/>
+                <text x="372" y="113" text-anchor="middle" font-size="12" fill="currentColor">1−q</text>
+              </svg>
+              <p class="diagram-cap">Chaque flèche porte une probabilité de transition $P(x,y)$ ; la somme des flèches sortant d'un état vaut toujours 1. Le polycopié compare, sur cet exemple à 2 états, une trajectoire i.i.d. Bernoulli(1/2) (très désordonnée) à une trajectoire de chaîne avec $p=q=0.25$ : la chaîne reste collée à un état beaucoup plus longtemps, parce que $P(x,x)$ est grand.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s2">
+            <div class="tophead"><span class="num">2</span><h2>Construire et calculer avec une chaîne</h2></div>
+            <p>En pratique, on ne vérifie presque jamais la définition 1 directement : on construit la chaîne par une <b>récurrence aléatoire</b> $X_{n+1}=F(X_n,U_{n+1})$, où les $U_n$ sont des bruits i.i.d. indépendants de $X_0$. C'est très naturel : à chaque étape, l'état suivant est une fonction déterministe de l'état actuel et d'un tirage aléatoire frais.</p>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 1 · Construction par récurrence aléatoire</p>
+              <p>Si $(U_n)_{n\ge1}$ est i.i.d., indépendante de $X_0$, et $F:E\times G\to E$ mesurable, alors $X_{n+1}=F(X_n,U_{n+1})$ définit une chaîne de Markov homogène de transition $P(x,y)=\mathbb P(F(x,U_1)=y)$.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Quatre exemples classiques (à connaître)</p>
+              <p><b>1. Marche aléatoire sur $\mathbb Z^d$ :</b> $X_{n+1}=X_n+\xi_{n+1}$, $\xi_i$ i.i.d. Transition $P(x,y)=\mathbb P(\xi_1=y-x)$. Cas $d=1$ symétrique : $P(x,y)=1/2$ si $|x-y|=1$.</p>
+              <p><b>2. Stock de pièces détachées :</b> $X_{n+1}=\max(X_n+q-D_{n+1},0)$, $q$ réapprovisionnement, $D_n$ demandes i.i.d. $P(x,0)=\mathbb P(D_1\ge x+q)$, $P(x,y)=\mathbb P(D_1=x+q-y)$ si $0<y\le x+q$.</p>
+              <p><b>3. Galton-Watson</b> (arbre généalogique) : $X_0=1$, $X_{n+1}=\sum_{i=1}^{X_n}Y_{n,i}\mathbf 1_{X_n>0}$ où $(Y_{n,i})$ i.i.d. de loi $(p_k)_{k\in\mathbb N}$ (nombre d'enfants). Modélise l'extinction d'un nom de famille.</p>
+              <p><b>4. Wright-Fisher</b> (génétique des populations) : $X_n$ = nombre d'individus porteurs de l'allèle $A$ dans une population de taille $N$. $X_{n+1}\mid X_n=i\ \sim\ \mathrm{Binomiale}(N,i/N)$ : chaque individu de la génération $n+1$ hérite, indépendamment, de l'allèle d'un parent tiré au hasard dans la génération $n$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 2 · Les lois fini-dimensionnelles se factorisent</p>
+              <p>Pour une chaîne de loi initiale $\mu$ (loi de $X_0$) et de transition $P$ :</p>
+              <div class="formula">$$\mathbb P(X_0=x_0,\dots,X_n=x_n)=\mu(x_0)P(x_0,x_1)\cdots P(x_{n-1},x_n)$$</div>
+              <div class="formula">$$\mathbb P(X_{n+p}=y\mid X_p=x)=P^n(x,y),\qquad \mathbb P(X_n=y)=\mu P^n(y)$$</div>
+              <p class="sense"><b>Sens :</b> la loi initiale $\mu$ et la seule matrice $P$ déterminent <b>toute</b> la loi du processus. C'est pour ça qu'on peut tout calculer à partir de $P$ : puissances $P^n$, invariantes, etc. (Proposition 3, admise : cette propriété s'étend à des fonctions de tout le futur $g(X_n,X_{n+1},\dots)$.)</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s3">
+            <div class="tophead"><span class="num">3</span><h2>Irréductibilité, récurrence, transience</h2></div>
+            <p>Deux questions reviennent sans cesse : <b>la chaîne peut-elle aller partout ?</b> (irréductibilité) et <b>revient-elle toujours là d'où elle est partie ?</b> (récurrence). Ce sont les deux notions qui organisent tout le comportement en temps long d'une chaîne.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 3 · Irréductibilité</p>
+              <p>$\mathbf X$ est <b>irréductible</b> si pour tout $(x,y)\in E^2$, il existe $n\ge1$ tel que $P^n(x,y)>0$ : on peut aller de n'importe quel état à n'importe quel autre, en un nombre fini de pas, avec probabilité positive.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition 4 · Récurrent / transient</p>
+              <p>Soit $T_x=\inf\{n\ge1:X_n=x\}$ le temps de retour en $x$ (avec $\inf\emptyset=+\infty$). L'état $x$ est <b>récurrent</b> si $\mathbb P_x(T_x<\infty)=1$ (partant de $x$, on y revient sûrement), <b>transient</b> sinon.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 4 · Tout ou rien</p>
+              <p>Pour une chaîne irréductible, deux cas seulement sont possibles : <b>tous</b> les états sont récurrents (la chaîne est dite récurrente, et repasse p.s. une infinité de fois par chaque état), ou <b>tous</b> sont transients (chaîne transiente, chaque état n'est visité qu'un nombre fini de fois p.s.).</p>
+              <p><b>Conséquence pratique :</b> si $E$ est fini, une chaîne irréductible est automatiquement récurrente (elle ne peut pas « s'échapper à l'infini », il n'y a nulle part où fuir).</p>
+            </div>
+            <details class="solution">
+              <summary>Voir l'idée de la preuve (Proposition 4)</summary>
+              <div class="box box-thm">
+                <p>On pose $U(x)=\sum_{n\ge1}\mathbf 1_{\{X_n=x\}}$, le nombre de visites en $x$. Le <b>Lemme 1</b> montre que $x$ est récurrent ssi $\mathbb P_x(U(x)=+\infty)=1$ ssi $\mathbb E_x(U(x))=+\infty$ (et transient ssi ces quantités valent $0$ et $<\infty$). Par irréductibilité, il existe $r,s$ avec $P^r(x,y)>0$ et $P^s(y,x)>0$, d'où l'encadrement</p>
+                <div class="formula">$$P^{n+r+s}(x,x)\ge P^r(x,y)P^n(y,y)P^s(y,x)$$</div>
+                <p>qui montre que $\sum_n P^n(x,x)$ et $\sum_n P^n(y,y)$ sont de même nature (toutes deux convergentes, ou toutes deux divergentes). Comme $\mathbb E_x(U(x))=\sum_n P^n(x,x)$, les états $x$ et $y$ sont donc récurrents ou transients <b>simultanément</b>. Le cœur technique de la preuve (que l'on admet ici) montre ensuite que $\mathbb P_y(U(x)=+\infty)=1$ si $x$ est récurrent, en utilisant l'absence de mémoire aux temps de retour successifs $T_y^{(k)}$ en $y$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s4">
+            <div class="tophead"><span class="num">4</span><h2>Récurrence positive et probabilité invariante</h2></div>
+            <p>Savoir qu'une chaîne revient toujours en $x$ (récurrence) ne dit pas <b>à quelle fréquence</b> elle y revient. Si le temps de retour moyen est fini, la chaîne passe une fraction positive du temps en $x$ ; s'il est infini, elle y repasse infiniment souvent mais de plus en plus rarement. C'est exactement ce que mesure la loi invariante $\pi$.</p>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 5 · Fréquence de visite et récurrence positive</p>
+              <p>Pour une chaîne irréductible :</p>
+              <div class="formula">$$\lim_{n\to\infty}\frac1n\sum_{k=1}^n\mathbf 1_{\{X_k=x\}}=\frac1{\mathbb E_x(T_x)}\quad\text{p.s.}$$</div>
+              <p>On dit que la chaîne est <b>récurrente positive</b> si $\mathbb E_x(T_x)<\infty$ pour tout $x$ (temps de retour moyen fini), et <b>récurrente nulle</b> si $\mathbb E_x(T_x)=+\infty$ pour tout $x$ (récurrente, mais avec un temps de retour moyen infini).</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Définition 5 · Probabilité invariante</p>
+              <p>Une probabilité $\pi$ sur $E$ est <b>invariante</b> si $\pi P=\pi$. Si $X_0\sim\pi$, alors $X_n\sim\pi$ pour tout $n$ : la loi ne bouge plus, la chaîne est <b>stationnaire</b>.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Corollaire 1 · Existence et unicité</p>
+              <p>Une chaîne irréductible transiente ou récurrente nulle n'a <b>pas</b> de probabilité invariante. Une chaîne irréductible récurrente positive a une <b>unique</b> probabilité invariante, donnée par $\pi(x)=1/\mathbb E_x(T_x)$.</p>
+              <p class="sense"><b>Mnémo :</b> « récurrente positive $\iff$ $\pi$ existe ». Sur un espace $E$ fini, une chaîne irréductible est toujours récurrente positive (elle est forcée de « s'accumuler » quelque part) : l'existence de $\pi$ est donc automatique dès que $E$ est fini.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s5">
+            <div class="tophead"><span class="num">5</span><h2>Chaînes de naissance et de mort</h2></div>
+            <p>C'est le modèle discret le plus simple pour une population, une file d'attente ou un stock qui varie d'une unité à la fois : d'un état $n$, on ne peut aller qu'à $n+1$ (« naissance ») ou $n-1$ (« mort »), jamais sauter plus loin. On retrouvera cette même structure en temps continu au chapitre 4 (générateurs) et au chapitre 5 (files d'attente) : c'est le modèle le plus réutilisé du cours.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition · Chaîne de naissance et de mort</p>
+              <p>$E=\mathbb N$, $P(n,n+1)=p_n$, $P(n,n-1)=q_n\mathbf 1_{n>0}$, $P(n,n)=r_n=1-p_n-q_n$, avec $p_n,q_{n+1}>0$ (ce qui assure l'irréductibilité).</p>
+            </div>
+            <div class="diagram">
+              <svg viewBox="0 0 620 160" role="img" aria-label="Diagramme d'une chaîne de naissance et de mort">
+                <defs>
+                  <marker id="arrD2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+                <g font-family="JetBrains Mono, monospace" font-size="16" fill="currentColor">
+                  <circle cx="60" cy="80" r="27" fill="none" stroke="currentColor" stroke-width="2"/><text x="60" y="86" text-anchor="middle">0</text>
+                  <circle cx="200" cy="80" r="27" fill="none" stroke="currentColor" stroke-width="2"/><text x="200" y="86" text-anchor="middle">1</text>
+                  <circle cx="340" cy="80" r="27" fill="none" stroke="currentColor" stroke-width="2"/><text x="340" y="86" text-anchor="middle">2</text>
+                  <circle cx="480" cy="80" r="27" fill="none" stroke="currentColor" stroke-width="2"/><text x="480" y="86" text-anchor="middle">3</text>
+                  <text x="555" y="86" text-anchor="middle" font-size="20">⋯</text>
+                </g>
+                <g font-size="12.5" fill="currentColor">
+                  <path d="M90,68 L170,68" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/><text x="130" y="58" text-anchor="middle">p0</text>
+                  <path d="M170,96 L90,96" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/><text x="130" y="116" text-anchor="middle">q1</text>
+                  <path d="M230,68 L310,68" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/><text x="270" y="58" text-anchor="middle">p1</text>
+                  <path d="M310,96 L230,96" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/><text x="270" y="116" text-anchor="middle">q2</text>
+                  <path d="M370,68 L450,68" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/><text x="410" y="58" text-anchor="middle">p2</text>
+                  <path d="M450,96 L370,96" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/><text x="410" y="116" text-anchor="middle">q3</text>
+                  <path d="M508,68 L545,68" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/>
+                  <path d="M545,96 L508,96" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD2)"/>
+                </g>
+              </svg>
+              <p class="diagram-cap">On ne peut avancer ou reculer que d'un pas : pas de flèche qui saute un état. Les boucles $r_n=P(n,n)$ (rester sur place) ne sont pas dessinées pour alléger la figure.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 6 · Critère de récurrence</p>
+              <p>Posons $\gamma_n=\dfrac{q_1\cdots q_n}{p_1\cdots p_n}$. La chaîne est <b>récurrente</b> si et seulement si $\sum_{n\ge1}\gamma_n=+\infty$. Elle est <b>récurrente positive</b> si et seulement si $s=\sum_{n\ge1}\dfrac{p_0\cdots p_{n-1}}{q_1\cdots q_n}<+\infty$ ; dans ce cas, l'unique probabilité invariante est :</p>
+              <div class="formula">$$\pi(n)=\frac1{s+1}\left(\mathbf 1_{n=0}+\frac{p_0\cdots p_{n-1}}{q_1\cdots q_n}\mathbf 1_{n\ge1}\right)$$</div>
+              <p>Cas particulier $p_n=p,\,q_n=q$ constants : récurrente ssi $p\le q$, récurrente positive ssi $p<q$ (il faut que la tendance à reculer l'emporte, sinon la chaîne part à l'infini).</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la preuve (critère de récurrence positive, puis récurrence)</summary>
+              <div class="box box-thm">
+                <p class="method-label">Récurrence positive</p>
+                <p>On résout directement $\pi P=\pi$. Le système donne $\pi(1)=\frac{p_0}{q_1}\pi(0)$ puis, par récurrence, $\pi(n)=\pi(0)\frac{p_0\cdots p_{n-1}}{q_1\cdots q_n}$. Une probabilité invariante existe ssi cette série est sommable, i.e. $s<+\infty$, et alors $\pi(0)=1/(s+1)$ par normalisation.</p>
+                <p class="method-label">Récurrence</p>
+                <p>On étudie $u_b(n)=\mathbb P_n(\tau_0<\tau_b)$ pour $0\le n\le b$ (probabilité d'atteindre $0$ avant $b$), avec $u_b(0)=1$, $u_b(b)=0$. La propriété de Markov donne $u_b(n)=p_nu_b(n+1)+r_nu_b(n)+q_nu_b(n-1)$. En posant $v_b(n)=u_b(n)-u_b(n-1)$, on obtient $v_b(n+1)=\frac{q_n}{p_n}v_b(n)=\gamma_{n-1}v_b(1)$, d'où $u_b(n)\to1$ quand $b\to\infty$ ssi $\sum\gamma_n=+\infty$, ce qui équivaut à la récurrence en 0 (donc partout, par irréductibilité).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s6">
+            <div class="tophead"><span class="num">6</span><h2>Chaînes de Markov absorbantes</h2></div>
+            <p>Parfois une chaîne n'est pas irréductible <i>exprès</i> : certains états sont des « pièges » dont on ne ressort jamais (extinction d'une maladie, fixation d'un allèle...). La question naturelle devient alors : combien de temps avant d'être piégé, et dans lequel des pièges ?</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 6 · État et chaîne absorbants</p>
+              <p>Un état $x$ est <b>absorbant</b> si $P(x,x)=1$. La chaîne est <b>absorbante</b> si, de tout état, un état absorbant est atteignable. En rangeant les $m$ états absorbants en premier, $P=\begin{pmatrix}I&0\\A&T\end{pmatrix}$, et $P^n=\begin{pmatrix}I_m&0\\(I+T+\cdots+T^{n-1})A&T^n\end{pmatrix}$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 7 · Nombre moyen de pas avant absorption</p>
+              <p>La matrice $I-T$ est inversible, d'inverse $F=I+T+T^2+\cdots=(I-T)^{-1}$, et pour $i,j$ non absorbants :</p>
+              <div class="formula">$$F(i,j)=\mathbb E_i\Big(\sum_{n\ge0}\mathbf 1_{\{X_n=j\}}\Big)$$</div>
+              <p>c'est le nombre moyen de visites en $j$ avant absorption, partant de $i$. En sommant sur tous les $j$ non absorbants, $\sum_j F(i,j)$ est le <b>nombre moyen de pas avant absorption</b> partant de $i$.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir l'idée de la preuve (inversibilité de $I-T$)</summary>
+              <div class="box box-thm">
+                <p>On montre $T^n\to0$ en introduisant $\tau=\inf\{n\ge0:1\le X_n\le m\}$, le temps d'atteinte des états absorbants. Pour chaque état transitoire $i$, il existe un délai $t_i$ et une probabilité $p_i<1$ d'avoir atteint l'absorption en $t_i$ pas. Une récurrence sur des blocs de longueur $t_i$ donne $\mathbb P_i(\tau>\ell t_i)\le p^\ell$ ($p=\max p_j<1$), donc $T^n(i,j)=\mathbb P_i(X_n=j)\le\mathbb P_i(\tau>n)\to0$. D'où $I+T+\cdots+T^n\to F$ et $(I-T)F=I$.</p>
+              </div>
+            </details>
+            <div class="box box-ex">
+              <p class="box-label">Exemple fil rouge · Wright-Fisher (absorption de la diversité génétique)</p>
+              <p>Dans le modèle de Wright-Fisher (fiche 2), $\{0,N\}$ sont absorbants (l'un des deux allèles a totalement disparu ou totalement envahi la population) et $\tau=\inf\{k\ge0:X_k\in\{0,N\}\}$ est fini p.s. On montre que partant de $X_0=i$ :</p>
+              <div class="formula">$$\mathbb P_i(X_\tau=N)=\frac iN$$</div>
+              <p>La probabilité de fixation de l'allèle $A$ est exactement sa fréquence initiale : aucun allèle n'est favorisé par la dérive génétique seule.</p>
+              <details class="solution">
+                <summary>Voir la preuve (argument de martingale)</summary>
+                <div class="box box-thm">
+                  <p>La loi conditionnelle de $X_n$ sachant $X_{n-1}=x$ est $\mathrm{Binomiale}(N,x/N)$, de moyenne $x$. Donc $\mathbb E_i(X_n)=\mathbb E_i(X_{n-1})=\dots=\mathbb E_i(X_0)=i$ : $(X_n)$ est une <b>martingale</b>. Comme $\tau<\infty$ p.s. et $X_n\to X_\tau$ p.s. (la chaîne reste collée une fois absorbée), le théorème de convergence dominée (les $X_n$ sont bornés par $N$) donne $\mathbb E_i(X_\tau)=\lim_n\mathbb E_i(X_n)=i$. Or $\mathbb E_i(X_\tau)=N\,\mathbb P_i(X_\tau=N)$, d'où le résultat.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <div class="qcm" id="qcm-1">
+            <div class="qcm-head"><h3>QCM de révision · Chapitre 1 (chaînes de Markov, fondations)</h3><span class="qcm-meta">⏱ 8 min · 5 questions</span></div>
+            <p class="qcm-intro">Cochez la bonne réponse, puis validez pour voir le corrigé détaillé. « Recommencer » propose une autre série.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Que signifie la propriété de Markov ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c1-1"><span class="otext">$X_{n+1}$ est indépendant de $X_n$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse, $X_{n+1}$ dépend de $X_n$ (c'est l'information passée au-delà de $X_n$ qui devient inutile).</div>
+              <label class="qcm-opt"><input type="radio" name="c1-1"><span class="otext">La chaîne est toujours irréductible.</span></label>
+              <div class="qcm-explain">Faux : irréductibilité est une propriété supplémentaire, pas automatique (ex. Galton-Watson).</div>
+              <label class="qcm-opt"><input type="radio" name="c1-1"><span class="otext">Conditionnellement à $X_n$, le futur est indépendant du passé $X_0,\dots,X_{n-1}$.</span></label>
+              <div class="qcm-explain">Correct : c'est exactement la définition 1.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-1"><span class="otext">La transition $P$ dépend du temps $n$.</span></label>
+              <div class="qcm-explain">Faux : c'est le cas non homogène, qu'on exclut dans ce cours.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Dans le modèle de Wright-Fisher, quelle est la loi de $X_{n+1}$ sachant $X_n=i$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c1-2"><span class="otext">Poisson de paramètre $i$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-2"><span class="otext">Binomiale$(N,i/N)$.</span></label>
+              <div class="qcm-explain">Correct : chaque individu de la génération suivante hérite indépendamment d'un parent tiré au hasard.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-2"><span class="otext">Uniforme sur $\{0,\dots,N\}$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-2"><span class="otext">Binomiale$(i,1/N)$.</span></label>
+              <div class="qcm-explain">Faux : les paramètres sont inversés.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>$E$ est fini et la chaîne est irréductible. Que peut-on affirmer ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c1-3"><span class="otext">Elle est automatiquement récurrente positive.</span></label>
+              <div class="qcm-explain">Correct : sur un espace fini, une chaîne irréductible ne peut pas « fuir à l'infini », elle est forcément récurrente, et avec $E$ fini la récurrence est toujours positive.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-3"><span class="otext">Elle peut être transiente.</span></label>
+              <div class="qcm-explain">Faux : impossible si $E$ est fini.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-3"><span class="otext">Elle n'a pas de probabilité invariante.</span></label>
+              <div class="qcm-explain">Faux : au contraire, elle en a toujours une et elle est unique.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-3"><span class="otext">Elle est forcément récurrente nulle.</span></label>
+              <div class="qcm-explain">Faux : récurrente nulle n'arrive que sur un espace infini.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Pour une chaîne de naissance et de mort avec $p_n=p$, $q_n=q$ constants ($p+q\le1$), quand est-elle récurrente positive ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c1-4"><span class="otext">Toujours.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-4"><span class="otext">Si $p=q$.</span></label>
+              <div class="qcm-explain">Faux : ce cas est récurrent nul (comme la marche aléatoire symétrique).</div>
+              <label class="qcm-opt"><input type="radio" name="c1-4"><span class="otext">Si $p>q$.</span></label>
+              <div class="qcm-explain">Faux : c'est le cas transient, la chaîne « part vers l'infini ».</div>
+              <label class="qcm-opt"><input type="radio" name="c1-4"><span class="otext">Si $p<q$.</span></label>
+              <div class="qcm-explain">Correct : il faut que la tendance à reculer (vers 0) l'emporte.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Dans le modèle de Wright-Fisher, partant de $X_0=i$, que vaut $\mathbb P_i(X_\tau=N)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c1-5"><span class="otext">$1/2$ toujours, par symétrie.</span></label>
+              <div class="qcm-explain">Faux, sauf si $i=N/2$.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-5"><span class="otext">$i/N$.</span></label>
+              <div class="qcm-explain">Correct : conséquence de l'argument de martingale ($\mathbb E_i(X_n)=i$ pour tout $n$).</div>
+              <label class="qcm-opt"><input type="radio" name="c1-5"><span class="otext">$(i/N)^2$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c1-5"><span class="otext">On ne peut pas la calculer sans simuler.</span></label>
+              <div class="qcm-explain">Faux : elle se calcule exactement par l'argument de martingale.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-2">
+        <button class="lecture-head">
+          <span class="num">2</span>
+          <span class="title">Chaînes de Markov : statistique et applications</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s7">
+            <div class="tophead"><span class="num">7</span><h2>Théorème ergodique et convergence vers la loi stationnaire</h2></div>
+            <p>Pour une suite i.i.d., la loi des grands nombres dit que la moyenne empirique converge vers l'espérance. Le <b>théorème ergodique</b> est l'exact analogue pour une chaîne de Markov récurrente positive : la moyenne temporelle le long d'une trajectoire converge vers la moyenne spatiale sous $\pi$. C'est le théorème qui rend toute la statistique du chapitre possible.</p>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 1 · Théorème ergodique</p>
+              <p>Soit $\mathbf X$ irréductible, récurrente positive, de probabilité invariante $\pi$. Si $f:E\to\mathbb R$ vérifie $\int|f|\,d\pi=\sum_x|f(x)|\pi(x)<\infty$, alors :</p>
+              <div class="formula">$$\lim_{n\to\infty}\frac1n\sum_{k=1}^nf(X_k)=\int f\,d\pi\quad\text{p.s.}$$</div>
+              <p class="sense"><b>Sens :</b> en prenant $f=\mathbf 1_{\{x\}}$, on retrouve la Proposition 5 (fréquence de visite $\to\pi(x)$). Le théorème ergodique généralise ça à n'importe quelle fonctionnelle de la chaîne, ce qui est la clé pour construire des estimateurs (moyennes empiriques $\to$ quantités théoriques).</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exercice 5 et Corollaire 2 · La chaîne des paires</p>
+              <p>Pour $m\ge1$, $Z_k=(X_k,\dots,X_{k+m})$ est encore une chaîne de Markov, irréductible sur l'ensemble des $(m+1)$-uplets « compatibles avec $P$ », de probabilité invariante unique $\nu(x_1,\dots,x_{m+1})=\pi(x_1)P(x_1,x_2)\cdots P(x_m,x_{m+1})$. Le théorème ergodique s'applique donc aussi à des fonctions de $m+1$ observations successives, pas seulement à une seule : c'est l'outil qui va servir à estimer $P$ elle-même (fiche 9).</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Convergence de la loi marginale : il faut l'apériodicité</p>
+              <p>Le théorème ergodique porte sur une moyenne de Cesàro ; il ne dit pas que $\mathbb P(X_n=x)\to\pi(x)$ au sens usuel. Cette convergence plus forte échoue s'il existe une partition cyclique $C_1,\dots,C_d$ de $E$ telle que $\mathbb P(X_1\in C_k\mid X_0\in C_{k-1})=1$ (la chaîne tourne en rond entre les $C_k$) : on dit alors que la chaîne est <b>périodique</b>. Si la chaîne irréductible récurrente positive est <b>apériodique</b> (par exemple s'il existe un état $x$ avec $P(x,x)>0$), alors $\mathbb P(X_n=x)\to\pi(x)$ pour tout $x$, et même à vitesse exponentielle si $E$ est fini.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s8">
+            <div class="tophead"><span class="num">8</span><h2>Théorème limite central pour les chaînes de Markov</h2></div>
+            <p>Après la loi des grands nombres (théorème ergodique), la question naturelle est : à quelle vitesse, et avec quelles fluctuations ? Pour des variables i.i.d. centrées, on sait que $\frac1{\sqrt n}\sum f(X_k)$ converge vers une gaussienne de variance $\mathrm{Var}(f(X_1))$. Pour une chaîne de Markov, les $f(X_k)$ sont corrélés, et il faut une astuce : fabriquer, à partir de $f$, une <b>martingale</b> dont les accroissements sont décorrélés.</p>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 2 · TLC via l'équation de Poisson</p>
+              <p>Soit $\mathbf X$ irréductible, récurrente positive, $\pi$ sa probabilité invariante, et $f:E\to\mathbb R$ de carré $\pi$-intégrable ($\int f^2d\pi<\infty$) et telle que $\int f\,d\pi=0$. Il existe alors, à une constante additive près, une unique fonction $g$ avec $\int|g|d\pi<\infty$ et :</p>
+              <div class="formula">$$g-Pg=f\qquad\text{(équation de Poisson)}$$</div>
+              <p>et pour toute loi initiale $\mu$ :</p>
+              <div class="formula">$$\frac1{\sqrt n}\sum_{k=1}^nf(X_k)\ \xrightarrow{\ \text{loi}\ }\ \mathcal N(0,\sigma^2),\qquad \sigma^2=\int g^2\,d\pi-\int(Pg)^2\,d\pi$$</div>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Pourquoi ça marche : la martingale cachée</p>
+              <p>On pose $M_n=\sum_{k=1}^n[g(X_k)-Pg(X_{k-1})]$. Comme $\mathbb E[g(X_k)\mid\mathcal F_{k-1}]=Pg(X_{k-1})$, $(M_n)$ est une martingale à accroissements décorrélés. En réarrangeant la somme télescopique, $\sum_{k=1}^nf(X_k)=M_n+Pg(X_0)-Pg(X_n)$ : le terme $M_n$ porte toute la croissance en $\sqrt n$, les deux autres termes sont bornés et négligeables. Un TLC pour martingales (hors programme) donne alors le résultat. Cas particulier simple : si $Pf=0$ alors $g=f$ convient directement.</p>
+              <p class="sense"><b>Contrairement au cas i.i.d.</b>, la variance asymptotique $\sigma^2$ n'est presque jamais explicite : il faut d'abord résoudre $g-Pg=f$, ce qui est en général aussi dur que le problème de départ. Heureusement, pour l'application statistique de la fiche suivante, $\sigma^2$ devient explicite.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Corollaires 3 et 4 · TLC pour les paires (et version multivariée)</p>
+              <p>Pour $h:E\times E\to\mathbb R$ telle que $\int P(h^2)\,d\pi<\infty$ (où $Ph(x)=\sum_yP(x,y)h(x,y)$) :</p>
+              <div class="formula">$$\frac1{\sqrt n}\sum_{k=1}^n\big[h(X_{k-1},X_k)-Ph(X_{k-1})\big]\ \xrightarrow{\ \text{loi}\ }\ \mathcal N(0,\sigma^2),\qquad\sigma^2=\int P(h^2)\,d\pi-\int(Ph)^2\,d\pi$$</div>
+              <p>Version vectorielle ($h=(h_1,\dots,h_d)'$) : convergence vers $\mathcal N_d(0,\Sigma)$ avec $\Sigma_{i,j}=\int P(h_ih_j)\,d\pi-\int Ph_i\cdot Ph_j\,d\pi$. C'est exactement l'outil qui va donner la loi asymptotique de l'estimateur de $P$ (fiche suivante) : on prend $h_{x,y}(u,v)=\mathbf 1_{u=x,v=y}$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s9">
+            <div class="tophead"><span class="num">9</span><h2>Estimer la matrice de transition par maximum de vraisemblance</h2></div>
+            <p>On observe une trajectoire $(X_1,\dots,X_n)$ d'une chaîne irréductible sur $E$ fini, de transition $P$ inconnue. L'idée la plus naturelle pour estimer $P(x,y)$ : compter combien de fois on est passé de $x$ à $y$, divisé par combien de fois on est passé par $x$ tout court. On va voir que c'est exactement l'estimateur du maximum de vraisemblance.</p>
+            <div class="box box-def">
+              <p class="box-label">Notations</p>
+              <p>$N_n(x,y)=\sum_{i=1}^{n-1}\mathbf 1_{\{X_i=x,X_{i+1}=y\}}$ (nombre de transitions $x\to y$), $N_n(x+)=\sum_{i=1}^{n-1}\mathbf 1_{\{X_i=x\}}$ (nombre de passages par $x$, avant le dernier instant). Le théorème ergodique assure $N_n(x,y)/N_n(x)\to P(x,y)$ p.s.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 8 · L'estimateur empirique est le MV, et il est asymptotiquement gaussien</p>
+              <p>La vraisemblance conditionnelle à $X_1$ s'écrit $L(X_1,\dots,X_n;P)=\prod_{(x,y)}P(x,y)^{N_n(x,y)}$. En maximisant à $x$ fixé (inégalité de Gibbs, <b>Lemme 2</b> : $\sum_yq_y\ln p_y\le\sum_yq_y\ln q_y$ avec égalité ssi $p=q$), on trouve :</p>
+              <div class="formula">$$\hat P(x,y)=\frac{N_n(x,y)}{N_n(x+)}$$</div>
+              <p>$\hat P$ est <b>fortement consistant</b>, et $\big(\sqrt n[\hat P(x,y)-P(x,y)]\big)_{(x,y)}$ converge en loi vers un vecteur gaussien centré de covariance :</p>
+              <div class="formula">$$\mathrm{Cov}(Z_{x,y},Z_{x',y'})=\frac1{\pi(x)}P(x,y)\big[\mathbf 1_{y=y'}-P(x',y')\big]\mathbf 1_{x=x'}$$</div>
+              <p class="sense"><b>Sens :</b> les estimateurs $\hat P(x,y)$ et $\hat P(x',y')$ sont <b>asymptotiquement indépendants</b> dès que $x\ne x'$ (facteur $\mathbf 1_{x=x'}$) : logique, ce sont des fréquences conditionnelles calculées sur des sous-échantillons disjoints de transitions. On obtient ce résultat en appliquant le Corollaire 4 (fiche 8) à $h_{x,y}(u,v)=\mathbf 1_{u=x,v=y}$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s10">
+            <div class="tophead"><span class="num">10</span><h2>Construire un test d'adéquation</h2></div>
+            <p>On veut tester si une chaîne observée suit vraiment une transition $P$ donnée (par exemple une transition postulée par un modèle biologique). L'idée : comparer les comptages observés $N_n(x,y)$ à ce qu'on attendrait sous $P$, et sommer les écarts au carré normalisés : exactement la logique d'un test du $\chi^2$.</p>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 3 · Test d'adéquation à une transition $P$ donnée</p>
+              <p>Pour une chaîne irréductible sur $E$ fini, sous l'hypothèse que la vraie transition est $P$, la statistique</p>
+              <div class="formula">$$T_n=\sum_{(x,y):P(x,y)>0}\frac{\big(N_n(x,y)-P(x,y)N_n(x+)\big)^2}{P(x,y)N_n(x+)}$$</div>
+              <p>converge en loi vers un $\chi^2$ à $k-|E|$ degrés de liberté, où $k$ est le nombre de couples $(x,y)$ tels que $P(x,y)>0$. On rejette l'adéquation à $P$ si $T_n\ge\chi^2_{k-|E|}(1-\alpha)$ : test convergent, de niveau asymptotique $\alpha$.</p>
+              <p class="sense"><b>D'où viennent les degrés de liberté ?</b> $S_n(x,y)=\frac1{\sqrt n}[N_n(x,y)-P(x,y)N_n(x+)]$ converge vers un vecteur gaussien (Proposition 8), mais contraint : pour $x$ fixé, $\sum_yS_n(x,y)\approx0$ (les transitions depuis $x$ somment à $1$). Chaque état $x$ « coûte » donc un degré de liberté : $k$ coordonnées contraintes par $|E|$ relations, d'où $k-|E|$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s11">
+            <div class="tophead"><span class="num">11</span><h2>Mots exceptionnels dans les séquences ADN</h2></div>
+            <p>Un brin d'ADN est une suite de lettres dans $E=\{A,C,G,T\}$. Les biologistes veulent savoir si un <b>mot</b> $w$ (par exemple le motif « Chi » $\mathtt{GCTGGTGG}$ chez <i>E. coli</i>) apparaît anormalement souvent ou rarement : un excès ou un déficit signale souvent une fonction biologique (site de reconnaissance d'une enzyme...). On utilise la chaîne de Markov ajustée sur la séquence comme <b>modèle de référence</b> ("sous quelle fréquence attendrait-on ce mot si la séquence n'avait aucune structure particulière, à la dépendance d'ordre 1 près ?"), et on compare.</p>
+            <div class="box box-def">
+              <p class="box-label">Formaliser : la p-valeur d'un mot</p>
+              <p>Pour un mot $w=w_1\cdots w_k$, $N_n(w)=\sum_{i=1}^{n-k+1}\mathbf 1_{\{X_i=w_1,\dots,X_{i+k-1}=w_k\}}$ compte ses occurrences. On calcule $p_n(w)=\mathbb P\big(N_n(w)>N_n(w)^{obs}\big)$ sous le modèle de chaîne de Markov ajusté. $p_n(w)$ <b>élevé</b> $\Rightarrow$ il est très probable d'observer plus d'occurrences que ce qu'on a vu $\Rightarrow$ le mot est <b>exceptionnellement rare</b>. $p_n(w)$ <b>faible</b> $\Rightarrow$ le mot est <b>exceptionnellement fréquent</b>.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Trois façons de calculer (ou approcher) cette p-valeur</p>
+              <p><b>1. Loi exacte (formules 2.6-2.9 du poly) :</b> en notant $T_1,T_2,\dots$ les positions successives de $w$ dans la chaîne stationnaire et $p(t,j)=\mathbb P(T_j=t)$, une récursion (utilisant le recouvrement éventuel de $w$ avec lui-même) donne $\mathbb P(N_n(w)=j)$ exactement. Exact mais coûteux pour une longue séquence, et sensible à l'erreur d'estimation de $\pi$ et $P$.</p>
+              <p><b>2. Approximation gaussienne (Théorème 4) :</b> $S_n=\sqrt n\big(\frac{N_n(w)}{n-k+1}-\tilde\pi(w)\big)\to\mathcal N(0,\sigma^2)$, avec $\sigma^2$ une expression compliquée qui tient compte des <b>auto-chevauchements</b> de $w$ (ex. $w=\mathtt{ATA}$ se chevauche avec lui-même). Bonne approximation pour les mots <b>fréquents</b>.</p>
+              <p><b>3. Loi des petits nombres (approximation de Poisson) :</b> pour un mot <b>rare</b>, la loi gaussienne est mauvaise (trop de masse en territoire négatif). On regroupe les occurrences qui se chevauchent en <b>trains</b> : un train est une occurrence de $w$ non recouverte à gauche par une autre occurrence, et sa longueur $K_i(w)$ suit une loi géométrique de paramètre $a(w)$ (probabilité que $w$ soit auto-recouvrable). Le nombre de trains $\tilde N_n(w)$ s'approche par une loi de Poisson, et $N_n(w)=\sum_iK_i(w)$ suit alors approximativement une <b>loi de Poisson composée</b> (somme d'un nombre Poisson de variables géométriques i.i.d.).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s12">
+            <div class="tophead"><span class="num">12</span><h2>Modèles de Markov cachés et algorithme EM</h2></div>
+            <p>Imaginez une centrale photovoltaïque : la production d'énergie $Y_t$ dépend fortement de la nébulosité $X_t$ (ciel dégagé, nuageux, très nuageux), mais on <b>n'observe jamais $X_t$ directement</b>, seulement $Y_t$. C'est l'idée d'un <b>modèle de Markov caché (HMM)</b> : une chaîne de Markov $(X_t)$ invisible qui pilote la loi d'observations visibles $(Y_t)$.</p>
+            <div class="diagram">
+              <svg viewBox="0 0 560 200" role="img" aria-label="Schéma d'un modèle de Markov caché">
+                <defs>
+                  <marker id="arrD3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+                <g font-family="JetBrains Mono, monospace" font-size="15" fill="currentColor">
+                  <circle cx="70" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="70" y="56" text-anchor="middle">X1</text>
+                  <circle cx="210" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="210" y="56" text-anchor="middle">X2</text>
+                  <circle cx="350" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="350" y="56" text-anchor="middle">X3</text>
+                  <text x="440" y="56" text-anchor="middle" font-size="20">⋯</text>
+                  <circle cx="500" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="500" y="56" text-anchor="middle">Xn</text>
+                </g>
+                <g stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD3)" fill="none">
+                  <path d="M96,50 L184,50"/>
+                  <path d="M236,50 L324,50"/>
+                  <path d="M376,50 L412,50"/>
+                  <path d="M468,50 L474,50"/>
+                </g>
+                <text x="140" y="38" text-anchor="middle" font-size="12" fill="currentColor">P</text>
+                <text x="280" y="38" text-anchor="middle" font-size="12" fill="currentColor">P</text>
+                <g font-family="JetBrains Mono, monospace" font-size="15" fill="currentColor">
+                  <rect x="46" y="150" width="48" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="70" y="173" text-anchor="middle">Y1</text>
+                  <rect x="186" y="150" width="48" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="210" y="173" text-anchor="middle">Y2</text>
+                  <rect x="326" y="150" width="48" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="350" y="173" text-anchor="middle">Y3</text>
+                  <rect x="476" y="150" width="48" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="500" y="173" text-anchor="middle">Yn</text>
+                </g>
+                <g stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD3)" fill="none">
+                  <path d="M70,77 L70,146"/>
+                  <path d="M210,77 L210,146"/>
+                  <path d="M350,77 L350,146"/>
+                  <path d="M500,77 L500,146"/>
+                </g>
+                <text x="100" y="118" text-anchor="middle" font-size="12" fill="currentColor">g(·|β,x)</text>
+              </svg>
+              <p class="diagram-cap">Ligne du haut : la chaîne cachée $(X_t)$, invisible, de transition $P$. Ligne du bas : les observations $(Y_t)$, indépendantes sachant la chaîne cachée, chacune émise selon une densité $g(\cdot\mid\beta,X_t)$ qui dépend de l'état caché courant.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Le modèle paramétrique</p>
+              <p>$(X_t)$ chaîne de Markov de transition $P$ sur $E$ fini. Sachant $X_1,\dots,X_n$, les $Y_1,\dots,Y_n$ sont indépendantes, $Y_t$ de densité $g(\cdot\mid\beta,X_t)$. Exemple gaussien : $g(y\mid\beta,x)=\frac1{\sqrt{2\pi\beta_{2,x}}}\exp\!\big(-\frac{(y-\beta_{1,x})^2}{2\beta_{2,x}}\big)$ : sachant l'état caché, $Y_t$ est gaussienne de moyenne et variance propres à cet état. En notant $\theta=(P,\beta)$ :</p>
+              <div class="formula">$$L_n(\theta)=\sum_{x_1,\dots,x_n\in E}\mu(x_1)\prod_{i=1}^{n-1}P(x_i,x_{i+1})\prod_{j=1}^ng(Y_j\mid\beta,x_j)$$</div>
+              <p class="sense"><b>Le problème :</b> cette somme a $|E|^n$ termes. Maximiser $L_n$ directement est impossible dès que $n$ dépasse quelques dizaines : il faut des méthodes dédiées (EM, puis backward-forward pour les calculs internes).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">L'algorithme EM · idée et garantie</p>
+              <p>On note $g(\theta,x,Y)=\mu(x_1)\prod P(x_i,x_{i+1})\prod g(Y_j\mid\beta,x_j)$ la vraisemblance « complète » (chaîne cachée connue). Pour deux paramètres $\theta,\theta'$ :</p>
+              <div class="formula">$$\ln\!\left(\frac{L_n(\theta)}{L_n(\theta')}\right)\ \ge\ \mathbb E_{\theta'}\!\left[\ln\frac{g(\theta,X,Y)}{g(\theta',X,Y)}\ \middle|\ Y_1,\dots,Y_n\right]\qquad\text{(inégalité de Jensen)}$$</div>
+              <p>On définit $Q_n(\theta\mid\theta')=\mathbb E_{\theta'}[\ln g(\theta,X,Y)\mid Y]$. Si on choisit $\theta_{j+1}=\arg\max_\theta Q_n(\theta\mid\theta_j)$, alors $L_n(\theta_{j+1})\ge L_n(\theta_j)$ : la vraisemblance <b>ne peut que croître</b> à chaque itération.</p>
+              <p><b>Étape E</b> (espérance) : calculer $\theta\mapsto Q_n(\theta\mid\theta_j)$, qui se décompose en trois termes (loi initiale, transitions, émissions), chacun ne demandant que les lois conditionnelles de $X_j\mid Y$ et $(X_{i},X_{i+1})\mid Y$ sous $\theta_j$, exactement ce que donnent les équations backward-forward (fiche suivante).<br><b>Étape M</b> (maximisation) : maximiser cette fonction en $\theta$.</p>
+              <p class="sense"><b>Attention :</b> EM ne garantit qu'un maximum <b>local</b> de la vraisemblance ; en pratique on relance l'algorithme depuis plusieurs initialisations.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s13">
+            <div class="tophead"><span class="num">13</span><h2>Équations backward-forward et algorithme de Viterbi</h2></div>
+            <p>Pour faire tourner EM, il faut calculer les lois conditionnelles de la chaîne cachée sachant les observations. Les calculer naïvement coûte $|E|^n$ opérations. L'astuce classique (forward-backward) les calcule en balayant la séquence <b>une fois de gauche à droite, puis une fois de droite à gauche</b>, pour un coût linéaire en $n$.</p>
+            <div class="box box-def">
+              <p class="box-label">La récursion forward</p>
+              <p>$p_k(x)$ représente la densité jointe de $(X_k,Y_1,\dots,Y_k)$ évaluée en $(x,Y_1,\dots,Y_k)$ (on « avance » dans la séquence en accumulant l'information passée).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 9 · Récursion forward</p>
+              <div class="formula">$$p_1(x)=\mu(x)g(Y_1\mid x),\qquad p_k(x)=\sum_{x'\in E}p_{k-1}(x')P(x',x)g(Y_k\mid x),\quad 2\le k\le n$$</div>
+              <p>Le coût de calcul croît <b>linéairement</b> en $n$ (au lieu d'exponentiellement). La vraisemblance totale s'obtient directement : $L_n=\sum_xp_n(x)$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 10 · Récursion backward</p>
+              <p>On définit $v_k(x)=\sum_{x_{k+1},\dots,x_n}P(x,x_{k+1})\cdots P(x_{n-1},x_n)\prod_{j=k+1}^ng(Y_j\mid x_j)$ (convention $v_n(x)=1$) et $q_k(x)=p_k(x)v_k(x)$. Alors $v_{k-1}(x)=\sum_{x'}P(x,x')g(Y_k\mid x')v_k(x')$ (on « recule » depuis la fin).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 11 · Les probabilités de lissage, enfin</p>
+              <div class="formula">$$\mathbb P(X_{k-1}=x,X_k=x'\mid Y_1,\dots,Y_n)=\frac1{L_n}p_{k-1}(x)P(x,x')g(Y_k\mid x')v_k(x'),\qquad \mathbb P(X_k=x'\mid Y_1,\dots,Y_n)=\frac{q_k(x')}{L_n}$$</div>
+              <p class="sense"><b>Sens :</b> en combinant un balayage avant ($p_k$) et un balayage arrière ($v_k$), on obtient exactement les deux lois conditionnelles dont EM a besoin à l'étape E, pour un coût linéaire en $n$ au lieu d'exponentiel.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Algorithme de Viterbi : la séquence cachée la plus probable</p>
+              <p>Autre question, différente du lissage : quelle est la séquence d'états cachés <b>la plus probable dans son ensemble</b>, $(x_1^*,\dots,x_n^*)=\arg\max_{x_1,\dots,x_n}\mathbb P(X_1=x_1,\dots,X_n=x_n\mid Y_1,\dots,Y_n)$ ? Ici encore, l'espace des solutions a $|E|^n$ éléments, mais la structure markovienne permet une programmation dynamique.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 12 · Récursion de Viterbi</p>
+              <div class="formula">$$V_1(x)=\mu(x)g(Y_1\mid x),\qquad V_k(x)=\max_{x'\in E}\big[V_{k-1}(x')P(x',x)\big]g(Y_k\mid x),\quad 2\le k\le n$$</div>
+              <p>On retrouve la trajectoire optimale en partant de $x_n^*=\arg\max_xV_n(x)$ puis en remontant : $x_{k-1}^*=\arg\max_{x'}\big[V_{k-1}(x')P(x',x_k^*)\big]$.</p>
+              <p class="sense"><b>Viterbi vs. lissage :</b> maximiser l'état le plus probable <b>à chaque instant pris séparément</b> (fiche 11, probabilités de lissage) et maximiser la séquence la plus probable <b>dans son ensemble</b> (Viterbi) ne donnent pas forcément la même réponse : rien d'étonnant, ce sont deux critères d'optimalité différents (le TP2 le vérifie sur des données réelles).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s14">
+            <div class="tophead"><span class="num">14</span><h2>Chaînes de Markov avec covariables</h2></div>
+            <p>Une chaîne de Markov classique est « pauvre » : la transition ne peut pas dépendre d'une information extérieure (température, covariable médicale...) qui influence pourtant souvent le passage d'un état à l'autre. L'idée : remplacer la transition fixe $P$ par une famille de transitions $\{P_x:x\in\mathbb R^d\}$ indexée par la covariable courante, et l'ajuster avec les outils des modèles linéaires généralisés (GLM).</p>
+            <div class="box box-def">
+              <p class="box-label">Le modèle général</p>
+              <div class="formula">$$\mathbb P(Y_t=y_t\mid X_t=x,Y_{t-1}=y_{t-1},X_{t-1}=x_{t-1},\dots)=P_x(y_{t-1},y_t)$$</div>
+              <p>Exemple le plus simple, <b>régression logistique autorégressive</b> : $E=\{0,1\}$, $P_x(y_0,y_1)=1/\big(1+\exp(-\theta_0-\theta_1y_0-\theta_2'x)\big)$. On peut ajouter des retards : $\mathbb P(Y_t=1\mid\dots)=1/\big(1+\exp(-\theta_0-\sum_{j=1}^p\theta_jy_{t-j}-\theta_{p+1}'x)\big)$.</p>
+              <p><b>Version multinomiale</b> ($E=\{0,\dots,N-1\}$, $0$ = référence) : $\mathbb P(Y_t=i\mid\dots)=\exp(\lambda_{i,t})/\big(1+\sum_{j=1}^{N-1}\exp(\lambda_{j,t})\big)$, avec $\lambda_t=d+A\overline Y_{t-1}+BX_t$ ($\overline Y_{t-1}$ encode $Y_{t-1}$ en indicatrices).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Estimation par vraisemblance conditionnelle</p>
+              <div class="formula">$$\mathcal L_n(\theta)=\sum_{t=2}^n\sum_{y,y'\in E}\mathbf 1_{\{Y_{t-1}=y,Y_t=y'\}}\ln\big(P_{X_t}(\theta;y,y')\big)$$</div>
+              <p class="sense"><b>Sens :</b> cette vraisemblance a exactement la forme d'une log-vraisemblance de régression logistique, en traitant $Y_{t-1}$ comme une variable explicative catégorielle de plus : on peut donc l'ajuster avec n'importe quel logiciel GLM standard. Sous des conditions de stationnarité du processus de covariables et de positivité des transitions, l'estimateur est consistant et asymptotiquement normal, avec une variance de la même forme que pour la régression GLM usuelle.</p>
+            </div>
+          </article>
+
+          <div class="qcm" id="qcm-2">
+            <div class="qcm-head"><h3>QCM de révision · Chapitre 2 (statistique des chaînes de Markov)</h3><span class="qcm-meta">⏱ 10 min · 5 questions</span></div>
+            <p class="qcm-intro">Cochez la bonne réponse, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Quel est l'estimateur du maximum de vraisemblance de $P(x,y)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c2-1"><span class="otext">$N_n(x,y)/n$.</span></label>
+              <div class="qcm-explain">Faux : il faut diviser par le nombre de passages par $x$, pas par $n$.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-1"><span class="otext">$\pi(y)$.</span></label>
+              <div class="qcm-explain">Faux : ça confond la loi invariante et la transition.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-1"><span class="otext">$N_n(x,y)/N_n(x+)$.</span></label>
+              <div class="qcm-explain">Correct : c'est la fréquence empirique des transitions $x\to y$ parmi les passages par $x$.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-1"><span class="otext">$N_n(x,y)/N_n(y+)$.</span></label>
+              <div class="qcm-explain">Faux : on normalise par le nombre de départs de $x$, pas d'arrivées en $y$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q2</span>Dans le test d'adéquation (Théorème 3), les degrés de liberté du $\chi^2$ valent $k-|E|$. Pourquoi retrancher $|E|$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c2-2"><span class="otext">Chaque ligne de $P$ doit sommer à 1 : une contrainte par état, donc $|E|$ contraintes.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-2"><span class="otext">Parce qu'on estime $\pi$.</span></label>
+              <div class="qcm-explain">Faux : $\pi$ n'intervient pas dans ce test, $P$ est fixée sous $H_0$.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-2"><span class="otext">C'est une convention arbitraire.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-2"><span class="otext">Parce que $E$ est toujours fini.</span></label>
+              <div class="qcm-explain">Faux, ce n'est pas la raison.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q3</span>Pour un mot $w$ très rare dans une séquence ADN, quelle approximation de $N_n(w)$ est recommandée ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c2-3"><span class="otext">Gaussienne, toujours.</span></label>
+              <div class="qcm-explain">Faux : mauvaise pour les mots rares (met de la masse en territoire négatif).</div>
+              <label class="qcm-opt"><input type="radio" name="c2-3"><span class="otext">Poisson (ou Poisson composée s'il y a des auto-chevauchements).</span></label>
+              <div class="qcm-explain">Correct : c'est la « loi des petits nombres ».</div>
+              <label class="qcm-opt"><input type="radio" name="c2-3"><span class="otext">Uniforme.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-3"><span class="otext">Exponentielle.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Dans l'algorithme EM pour un HMM, que garantit l'étape M ($\theta_{j+1}=\arg\max_\theta Q_n(\theta\mid\theta_j)$) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c2-4"><span class="otext">On atteint le maximum global de $L_n$ en une itération.</span></label>
+              <div class="qcm-explain">Faux : EM ne garantit qu'un maximum local, et en général pas en une seule itération.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-4"><span class="otext">$\theta_{j+1}=\theta_j$ toujours.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-4"><span class="otext">La chaîne cachée devient observée.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-4"><span class="otext">$L_n(\theta_{j+1})\ge L_n(\theta_j)$ : la vraisemblance ne peut que croître.</span></label>
+              <div class="qcm-explain">Correct : c'est la conséquence directe de l'inégalité de Jensen utilisée pour définir $Q_n$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q5</span>Que calcule exactement l'algorithme de Viterbi ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c2-5"><span class="otext">La probabilité $\mathbb P(X_k=x\mid Y_1,\dots,Y_n)$ pour chaque $k$ séparément.</span></label>
+              <div class="qcm-explain">Faux : ce sont les probabilités de lissage (Proposition 11), pas Viterbi.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-5"><span class="otext">La vraisemblance $L_n(\theta)$.</span></label>
+              <div class="qcm-explain">Faux : c'est ce que donne la récursion forward.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-5"><span class="otext">La séquence complète d'états cachés $(x_1,\dots,x_n)$ la plus probable dans son ensemble.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c2-5"><span class="otext">La transition $P$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-3">
+        <button class="lecture-head">
+          <span class="num">3</span>
+          <span class="title">Processus de Poisson</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s15">
+            <div class="tophead"><span class="num">15</span><h2>Le processus de Poisson simple</h2></div>
+            <p>On quitte le temps discret. Imaginez un compteur Geiger : les désintégrations radioactives arrivent à des instants aléatoires, et $N_t$ compte combien sont arrivées avant $t$. C'est le prototype d'un <b>processus de comptage</b> : une fonction en escalier, qui ne fait que monter, par sauts de $1$.</p>
+            <div class="box box-def">
+              <p class="box-label">Définitions 7 et 8 · Processus de comptage, processus de Poisson</p>
+              <p>$(X_t)_{t\ge0}$ est un <b>processus de comptage</b> si $X_0=0$ p.s. et $t\mapsto X_t(\omega)$ est croissante, continue à droite, par sauts de $1$. Un processus de comptage $(N_t)$ est un <b>processus de Poisson</b> d'intensité $\lambda>0$ si $N_0=0$, à <b>accroissements indépendants</b> ($N_{t+s}-N_s$ indépendant de $\sigma(N_u:u\le s)$), et $N_{t+s}-N_s\sim\mathrm{Poisson}(\lambda t)$ pour tous $s,t\ge0$ (accroissements stationnaires).</p>
+            </div>
+            <div class="diagram">
+              <svg viewBox="0 0 520 230" role="img" aria-label="Trajectoire d'un processus de Poisson">
+                <defs>
+                  <marker id="arrD4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+                <path d="M40,190 L480,190" stroke="currentColor" stroke-width="1.4" marker-end="url(#arrD4)" fill="none"/>
+                <text x="492" y="195" font-size="13" fill="currentColor">t</text>
+                <path d="M40,190 L40,20" stroke="currentColor" stroke-width="1.4" marker-end="url(#arrD4)" fill="none"/>
+                <text x="26" y="18" font-size="13" fill="currentColor">N_t</text>
+                <path d="M40,190 L130,190" stroke="currentColor" stroke-width="2.2" fill="none"/>
+                <path d="M130,190 L130,150" stroke="currentColor" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+                <path d="M130,150 L230,150" stroke="currentColor" stroke-width="2.2" fill="none"/>
+                <path d="M230,150 L230,110" stroke="currentColor" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+                <path d="M230,110 L340,110" stroke="currentColor" stroke-width="2.2" fill="none"/>
+                <path d="M340,110 L340,70" stroke="currentColor" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+                <path d="M340,70 L440,70" stroke="currentColor" stroke-width="2.2" fill="none"/>
+                <circle cx="130" cy="190" r="3.4" fill="var(--surface-2)" stroke="currentColor" stroke-width="1.3"/>
+                <circle cx="130" cy="150" r="3.4" fill="currentColor"/>
+                <circle cx="230" cy="150" r="3.4" fill="var(--surface-2)" stroke="currentColor" stroke-width="1.3"/>
+                <circle cx="230" cy="110" r="3.4" fill="currentColor"/>
+                <circle cx="340" cy="110" r="3.4" fill="var(--surface-2)" stroke="currentColor" stroke-width="1.3"/>
+                <circle cx="340" cy="70" r="3.4" fill="currentColor"/>
+                <g font-size="12.5" fill="currentColor">
+                  <text x="130" y="210" text-anchor="middle">T1</text>
+                  <text x="230" y="210" text-anchor="middle">T2</text>
+                  <text x="340" y="210" text-anchor="middle">T3</text>
+                  <path d="M130,196 L130,202" stroke="currentColor" stroke-width="1"/>
+                  <path d="M230,196 L230,202" stroke="currentColor" stroke-width="1"/>
+                  <path d="M340,196 L340,202" stroke="currentColor" stroke-width="1"/>
+                  <text x="18" y="193" text-anchor="end">0</text>
+                  <text x="18" y="153" text-anchor="end">1</text>
+                  <text x="18" y="113" text-anchor="end">2</text>
+                  <text x="18" y="73" text-anchor="end">3</text>
+                </g>
+              </svg>
+              <p class="diagram-cap">$N_t$ est une fonction en escalier : constante entre deux arrivées, puis saute de $+1$ exactement à chaque temps de saut $T_1,T_2,T_3,\dots$</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 13 · Un processus d'événements rares</p>
+              <div class="formula">$$\mathbb P(N_{t+h}-N_t=1)=\lambda h+o(h),\qquad \mathbb P(N_{t+h}-N_t>1)=o(h)$$</div>
+              <p class="sense"><b>Sens :</b> sur un tout petit intervalle $h$, soit rien ne se passe, soit (avec probabilité $\approx\lambda h$) un seul événement arrive ; deux arrivées simultanées sont négligeables. C'est cette propriété qui justifie de modéliser des arrivées « isolées les unes des autres » par un processus de Poisson.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s16">
+            <div class="tophead"><span class="num">16</span><h2>Temps de sauts et statistiques d'ordre</h2></div>
+            <p>Deux façons équivalentes de décrire un processus de Poisson : soit par son compteur $N_t$, soit par la suite de ses temps de sauts $T_1<T_2<\dots$ Le lien entre les deux est un des résultats les plus utiles du chapitre : <b>les délais entre arrivées sont indépendants et exponentiels</b>.</p>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 14 · Inter-arrivées exponentielles</p>
+              <p>Avec $0=T_0<T_1<T_2<\dots$ les temps de sauts, $N_t=\sum_{n\ge1}\mathbf 1_{\{T_n\le t\}}$. Les durées $(T_n-T_{n-1})_{n\ge1}$ sont <b>indépendantes, toutes de loi $\mathrm{Exp}(\lambda)$</b> ; la densité du vecteur $(T_1,\dots,T_n)$ est :</p>
+              <div class="formula">$$f_{(T_1,\dots,T_n)}(t_1,\dots,t_n)=\lambda^n\exp(-\lambda t_n)\,\mathbf 1_{0<t_1<\dots<t_n}$$</div>
+              <p class="sense"><b>Conséquence pratique :</b> on peut <b>simuler</b> un processus de Poisson en tirant des $\mathrm{Exp}(\lambda)$ i.i.d. $\xi_1,\xi_2,\dots$ et en posant $T_n=\xi_1+\dots+\xi_n$ : c'est exactement ce que fait le code R du TP (fonction `rexp`).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 15 · Les temps de sauts, conditionnellement à $N_t=n$</p>
+              <p>Conditionnellement à $\{N_t=n\}$, le vecteur $(T_1,\dots,T_n)$ a <b>même loi</b> que les <b>statistiques d'ordre</b> de $n$ variables i.i.d. de loi $\mathcal U[0,t]$.</p>
+              <p class="sense"><b>Sens :</b> sachant qu'il y a eu exactement $n$ arrivées avant $t$, ces $n$ arrivées sont « tombées au hasard, uniformément », sans aucune structure temporelle particulière : toute l'information sur $\lambda$ est contenue dans $N_t$ seul, pas dans la disposition fine des $T_i$. C'est pour cela que $N_t$ est une <b>statistique exhaustive</b> pour $\lambda$ (fiche 17).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s17">
+            <div class="tophead"><span class="num">17</span><h2>Comportement asymptotique et estimation de λ</h2></div>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 5 · LGN et TLC pour $N_t/t$</p>
+              <div class="formula">$$\frac{N_t}t\xrightarrow[t\to\infty]{\text{p.s.}}\lambda,\qquad \sqrt{\frac t\lambda}\left(\frac{N_t}t-\lambda\right)\xrightarrow[t\to\infty]{\text{loi}}\mathcal N(0,1)$$</div>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Estimer λ par maximum de vraisemblance : trois façons d'observer</p>
+              <p><b>1. Trajectoire observée sur $[0,t]$ :</b> $\hat\lambda=N_t/t$. TLC : $\sqrt{t^2/N_t}\,(N_t/t-\lambda)\to\mathcal N(0,1)$. On peut aussi construire un <b>intervalle de confiance exact</b> (sans approximation asymptotique), en exploitant la relation entre fonction de répartition de Poisson et intégrale $\chi^2$/gamma : $F_\lambda(n)=1-\int_0^{\lambda t}\frac1{n!}x^n e^{-x}dx$, d'où des bornes exactes $\lambda_-(N_t),\lambda_+(N_t)$.</p>
+              <p><b>2. Seulement les temps de sauts $T_1,\dots,T_n$ :</b> $\hat\lambda=n/T_n$ ; $\sqrt n(\lambda T_n/n-1)\to\mathcal N(0,1)$ par TLC usuel (les $T_i-T_{i-1}$ sont i.i.d. $\mathrm{Exp}(\lambda)$).</p>
+              <p><b>3. Observations aux temps $t_1<\dots<t_n$ :</b> les accroissements $N_{t_1},N_{t_2}-N_{t_1},\dots$ sont indépendants, de lois Poisson connues ; on trouve $\hat\lambda=N_{t_n}/t_n$ : <b>le même estimateur</b> que si on avait observé toute la trajectoire sur $[0,t_n]$. Logique : $N_t$ est une statistique exhaustive (fiche 16), elle contient toute l'information disponible sur $\lambda$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s18">
+            <div class="tophead"><span class="num">18</span><h2>Processus de Poisson non homogène</h2></div>
+            <p>Un processus de Poisson simple a un taux d'arrivée <b>constant</b>. Mais en fiabilité, une machine qui vieillit tombe en panne de plus en plus souvent ; à la caisse d'un supermarché, le flux de clients varie dans la journée. Il faut laisser le taux $\lambda(\cdot)$ varier dans le temps : c'est le <b>processus de Poisson non homogène (NHPP)</b>.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 9 · Intensité, fonction cumulée</p>
+              <p>$\lambda:\mathbb R_+\to\mathbb R_+$ localement intégrable, $\Lambda(t)=\int_0^t\lambda(s)\,ds$. $(N_t)$ est un processus de Poisson d'intensité $\lambda$ si $N_0=0$, à accroissements indépendants, et $N_t-N_s\sim\mathrm{Poisson}(\Lambda(t)-\Lambda(s))$.</p>
+              <p><b>Construction :</b> si $N$ est un Poisson standard (intensité 1), alors $\widetilde N_t=N_{\Lambda(t)}$ est un NHPP d'intensité $\lambda$ : on « déforme » l'axe du temps selon $\Lambda$.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple phare · Processus de Weibull (fiabilité)</p>
+              <p>$\lambda(s)=\dfrac\beta\alpha\big(\dfrac s\alpha\big)^{\beta-1}$ : le premier temps de saut $S_1$ suit alors une loi de Weibull$(\alpha,\beta)$, de densité $f(t)=\frac\beta\alpha(t/\alpha)^{\beta-1}\exp(-(t/\alpha)^\beta)$. Le <b>taux de défaillance</b> $\lim_{h\to0^+}\frac1h\mathbb P(t<T\le t+h\mid T>t)$ vaut exactement $\lambda(t)$. Donc $\beta=1$ : taux constant, on retombe sur l'exponentielle (Poisson simple). $\beta>1$ : usure, le taux de panne augmente avec le temps. $\beta<1$ : mortalité infantile, les éléments défectueux tombent vite en panne puis le taux diminue.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Propositions 16-17 · Généralisation</p>
+              <p>Si $\lambda$ est continue au voisinage de $t$, $\mathbb P(N_{t+h}-N_t=1)=\lambda(t)h+o(h)$ et $\mathbb P(N_{t+h}-N_t\ge2)=o(h)$ (Proposition 16, généralise la Proposition 13). La densité de $(T_1,\dots,T_n)$ devient $\exp\big(-\int_0^{t_n}\lambda(u)du\big)\prod_i\lambda(t_i)\,\mathbf 1_{0<t_1<\dots<t_n}$, et conditionnellement à $N_t=n$, $(T_1,\dots,T_n)$ a la loi du réarrangement croissant d'un échantillon i.i.d. de densité $\lambda(x)/\Lambda(t)$ sur $[0,t]$ (Proposition 17) : c'est la généralisation naturelle de la Proposition 15 (uniforme = cas $\lambda$ constant).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s19">
+            <div class="tophead"><span class="num">19</span><h2>Estimation par maximum de vraisemblance du processus de Weibull</h2></div>
+            <p>On observe une trajectoire sur $[0,t]$, avec $N_t=n$ sauts aux dates $(t_1,\dots,t_n)$, et on veut estimer $(\alpha,\beta)$.</p>
+            <div class="box box-thm">
+              <p class="box-label">Log-vraisemblance et point critique</p>
+              <div class="formula">$$\ell(t_1,\dots,t_n,n;\theta)=(\ln\beta-\beta\ln\alpha)\,n+(\beta-1)\sum_{i=1}^n\ln(t_i)-\left(\frac t\alpha\right)^\beta$$</div>
+              <p>L'unique point critique (qui est bien le maximum) est donné par :</p>
+              <div class="formula">$$\frac1{\hat\beta}=\ln(t)-\frac1{N_t}\sum_{i=1}^{N_t}\ln(T_i),\qquad \ln(\hat\alpha)=\ln(t)-\frac1{\hat\beta}\ln(N_t)$$</div>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 18 · Intervalles de confiance exacts pour β</p>
+              <p>Conditionnellement à $N_t=n$ ($n\ne0$), $\dfrac{2n\beta}{\hat\beta}$ suit exactement une loi du $\chi^2$ à $2n$ degrés de liberté. On en déduit des IC exacts de niveau $\gamma$ : unilatéral $[0,\frac{\hat\beta}{2n}\chi^2_\gamma(2n)]$ ou $[\frac{\hat\beta}{2n}\chi^2_{1-\gamma}(2n),+\infty[$, bilatéral $[\frac{\hat\beta}{2n}\chi^2_{\frac{1-\gamma}2}(2n),\frac{\hat\beta}{2n}\chi^2_{\frac{1+\gamma}2}(2n)]$.</p>
+              <p class="sense"><b>Application :</b> tester $H_0:\beta=\beta_0$ (en particulier $\beta_0=1$, « le processus est-il simplement un Poisson homogène ? »), ou des tests unilatéraux $H_0:\beta\le\beta_0$ contre $\beta>\beta_0$, via un argument de rapport de vraisemblance monotone en $\sum\ln(T_i)$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s20">
+            <div class="tophead"><span class="num">20</span><h2>Processus de Poisson composé et modèle de Cramér-Lundberg</h2></div>
+            <p>Un assureur encaisse des primes en continu, et doit payer des sinistres à des instants aléatoires, chacun d'un montant aléatoire. Le montant <b>cumulé</b> des sinistres est un processus de Poisson <b>composé</b> : on « empile » des montants aléatoires à des instants Poisson. La question centrale : l'assureur peut-il faire faillite ?</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 10 · Processus de Poisson composé</p>
+              <div class="formula">$$X_t=\sum_{i=1}^{N_t}W_i$$</div>
+              <p>$N$ Poisson$(\lambda)$, $(W_i)$ i.i.d. indépendante de $N$. Moments : $\mathbb E(X_t)=\lambda t\,\mathbb E(W_1)$, $\mathrm{Var}(X_t)=\lambda t\,\mathbb E(W_1^2)$.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Le modèle de Cramér-Lundberg</p>
+              <p>Réserve de l'assureur : $R_t=u+ct-S_t$, où $u>0$ est la réserve initiale, $c$ le taux de prime (encaissé en continu), $S_t=\sum_{i=1}^{N_t}W_i$ le cumul des sinistres ($N$ Poisson$(\lambda)$, $W_i\ge0$ i.i.d.). La <b>probabilité de ruine</b> est $\psi(u)=\mathbb P(R_t<0\text{ pour un }t\in\mathbb R_+)$.</p>
+            </div>
+            <div class="diagram">
+              <svg viewBox="0 0 480 200" role="img" aria-label="Trajectoire de la réserve dans le modèle de Cramér-Lundberg">
+                <path d="M30,170 L450,170" stroke="currentColor" stroke-width="1" stroke-dasharray="4,4" fill="none"/>
+                <text x="12" y="174" font-size="12" fill="currentColor">u=0</text>
+                <path d="M30,110 L120,70 L120,120 L220,55 L220,100 L300,65 L300,150 L420,95" stroke="currentColor" stroke-width="2" fill="none"/>
+                <circle cx="30" cy="110" r="3" fill="currentColor"/>
+                <text x="20" y="100" font-size="12" fill="currentColor">u</text>
+                <g font-size="11" fill="currentColor">
+                  <text x="120" y="135" text-anchor="middle">sinistre</text>
+                  <text x="220" y="118" text-anchor="middle">sinistre</text>
+                  <text x="300" y="168" text-anchor="middle">sinistre</text>
+                </g>
+                <text x="455" y="90" font-size="12" fill="currentColor">R_t</text>
+                <text x="440" y="185" font-size="12" fill="currentColor">t</text>
+              </svg>
+              <p class="diagram-cap">La réserve monte régulièrement (pente $c$, primes encaissées en continu) et chute brutalement à chaque sinistre. La ruine a lieu si la trajectoire passe sous $0$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 6 · Ruine certaine ssi chargement de sécurité négatif</p>
+              <p>Avec le <b>chargement de sécurité</b> $\rho=\dfrac c{\mathbb E(W_1)\lambda}-1$ (à quel point les primes dépassent le coût moyen des sinistres) :</p>
+              <div class="formula">$$\psi(u)=1\iff\rho\le0$$</div>
+              <p class="sense"><b>Sens :</b> si $\rho\le0$ (primes trop faibles, ou tout juste à l'équilibre), la ruine est certaine, quelle que soit la réserve initiale $u$. Si $\rho>0$ (les primes couvrent large le coût moyen des sinistres), la ruine n'est plus certaine. Preuve : $\rho<0$ donne $\mathbb E(W_1-cX_1)>0$ ($X_1$ = délai entre sinistres), donc la marche aléatoire $M_n=\sum_{i\le n}(W_i-cX_i)$ part p.s. vers $+\infty$ (LGN), d'où ruine certaine. Si $\rho=0$, $M_n$ est centrée, et comme pour la marche aléatoire symétrique, $\limsup M_n=+\infty$ p.s.</p>
+            </div>
+          </article>
+
+          <div class="qcm" id="qcm-3">
+            <div class="qcm-head"><h3>QCM de révision · Chapitre 3 (processus de Poisson)</h3><span class="qcm-meta">⏱ 9 min · 5 questions</span></div>
+            <p class="qcm-intro">Cochez la bonne réponse, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>Quelle est la loi des durées entre arrivées $T_n-T_{n-1}$ d'un processus de Poisson$(\lambda)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c3-1"><span class="otext">Poisson$(\lambda)$.</span></label>
+              <div class="qcm-explain">Faux : c'est la loi de $N_t$, pas des délais.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-1"><span class="otext">Exponentielle$(\lambda)$, i.i.d.</span></label>
+              <div class="qcm-explain">Correct (Proposition 14).</div>
+              <label class="qcm-opt"><input type="radio" name="c3-1"><span class="otext">Uniforme sur $[0,t]$.</span></label>
+              <div class="qcm-explain">Faux : l'uniforme intervient pour la position des $T_i$ conditionnellement à $N_t=n$, pas pour les délais.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-1"><span class="otext">Gaussienne.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Conditionnellement à $N_t=n$, quelle est la loi de $(T_1,\dots,T_n)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c3-2"><span class="otext">Exponentielle$(\lambda)$ i.i.d.</span></label>
+              <div class="qcm-explain">Faux : c'est vrai sans conditionner, pas conditionnellement à $N_t=n$.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-2"><span class="otext">Gaussienne multivariée.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-2"><span class="otext">Celle des statistiques d'ordre de $n$ v.a. i.i.d. $\mathcal U[0,t]$.</span></label>
+              <div class="qcm-explain">Correct (Proposition 15).</div>
+              <label class="qcm-opt"><input type="radio" name="c3-2"><span class="otext">Celle d'une marche aléatoire.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>Pour le processus de Weibull $\lambda(s)=\frac\beta\alpha(s/\alpha)^{\beta-1}$, que signifie $\beta<1$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c3-3"><span class="otext">Le taux de panne est constant.</span></label>
+              <div class="qcm-explain">Faux : c'est $\beta=1$ (on retrouve l'exponentielle).</div>
+              <label class="qcm-opt"><input type="radio" name="c3-3"><span class="otext">Le taux de panne augmente avec le temps (usure).</span></label>
+              <div class="qcm-explain">Faux : c'est $\beta>1$.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-3"><span class="otext">Le processus devient homogène.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-3"><span class="otext">Le taux de panne diminue avec le temps (mortalité infantile).</span></label>
+              <div class="qcm-explain">Correct : les éléments défectueux tombent vite en panne, puis le taux décroît.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q4</span>Dans le modèle de Cramér-Lundberg, que vaut $\psi(u)$ si le chargement de sécurité $\rho\le0$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c3-4"><span class="otext">$\psi(u)=1$ : la ruine est certaine.</span></label>
+              <div class="qcm-explain">Correct (Théorème 6).</div>
+              <label class="qcm-opt"><input type="radio" name="c3-4"><span class="otext">$\psi(u)=0$.</span></label>
+              <div class="qcm-explain">Faux, c'est l'inverse.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-4"><span class="otext">$\psi(u)$ dépend uniquement de $u$, pas de $\rho$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-4"><span class="otext">On ne peut rien dire sans connaître la loi de $W_1$.</span></label>
+              <div class="qcm-explain">Faux : le résultat $\rho\le0\Rightarrow\psi(u)=1$ ne dépend pas de la loi précise de $W_1$.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>On observe uniquement les temps de sauts $T_1,\dots,T_n$ d'un Poisson$(\lambda)$. Quel est l'EMV de $\lambda$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c3-5"><span class="otext">$N_t/t$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'estimateur quand on observe toute la trajectoire sur $[0,t]$, pas seulement les $T_i$.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-5"><span class="otext">$n/T_n$.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c3-5"><span class="otext">$T_n/n$.</span></label>
+              <div class="qcm-explain">Faux : c'est l'inverse de l'EMV (c'est un estimateur de $1/\lambda$).</div>
+              <label class="qcm-opt"><input type="radio" name="c3-5"><span class="otext">$\overline{T}$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-4">
+        <button class="lecture-head">
+          <span class="num">4</span>
+          <span class="title">Processus markoviens de sauts</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s21">
+            <div class="tophead"><span class="num">21</span><h2>Fonctions aléatoires de sauts et propriété de Markov</h2></div>
+            <p>Les chaînes de Markov du chapitre 2 imposent des sauts à des instants <b>régulièrement espacés</b> ($1,2,3,\dots$). Beaucoup de phénomènes réels n'ont pas cette contrainte : une machine tombe en panne, puis fonctionne, à des instants <b>aléatoires</b>, pas nécessairement entiers. Le chapitre 4 généralise la propriété de Markov au temps continu.</p>
+            <div class="box box-def">
+              <p class="box-label">Définition 11 · Fonction aléatoire de sauts, processus de Markov de sauts</p>
+              <div class="formula">$$X_t(\omega)=\sum_{n=0}^{+\infty}Z_n(\omega)\,\mathbf 1_{\{T_n(\omega)\le t<T_{n+1}(\omega)\}}\mathbf 1_{\{T_n(\omega)<+\infty\}}$$</div>
+              <p>avec $T_n(\omega)<T_{n+1}(\omega)$ et $\lim_nT_n=+\infty$ p.s. (<b>condition de non-explosion</b> : pas d'accumulation de sauts en temps fini). $(X_t)$ est un <b>processus de Markov de sauts</b> si $\mathbb P(X_t=y\mid X_{s_1}=x_1,\dots,X_{s_n}=x_n,X_s=x)=\mathbb P(X_t=y\mid X_s=x)$ pour $s_1<\dots<s_n<s<t$. <b>Homogène</b> s'il existe des matrices stochastiques $(P_h)_{h\ge0}$ avec $\mathbb P(X_t=y\mid X_s=x)=P_{t-s}(x,y)$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Propositions 19-20 · Chapman-Kolmogorov</p>
+              <p>Les lois fini-dimensionnelles se factorisent via les $P_{t_i-t_{i-1}}$ (Proposition 19, analogue continu de la Proposition 2). Et pour tous $s,t\ge0$ :</p>
+              <div class="formula">$$P_{t+s}=P_t\cdot P_s=P_s\cdot P_t$$</div>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Deux exemples simples</p>
+              <p><b>Poisson décalé :</b> $X_t=x_0+N_t$, $N$ Poisson$(\lambda)$. C'est un processus de Markov de sauts, de transition $P_h(x,y)=e^{-\lambda h}\lambda^{y-x}h^{y-x}/(y-x)!$ pour $y\ge x$.</p>
+              <p><b>Processus du télégraphe :</b> $X_t=x_0\cdot(-1)^{N_t}$ à valeurs dans $\{-1,1\}$ ($N$ Poisson$(\lambda)$) : à chaque saut de $N$, on change de signe. $P_h(-1,-1)=P_h(1,1)=\sum_{k\ge0}e^{-\lambda(t-s)}\frac{[\lambda(t-s)]^{2k}}{(2k)!}$ (nombre pair de sauts), $P_h(-1,1)=P_h(1,-1)=\sum_{k\ge0}e^{-\lambda(t-s)}\frac{[\lambda(t-s)]^{2k+1}}{(2k+1)!}$ (nombre impair).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 21 · Construction générale « chaîne + horloge Poisson »</p>
+              <p>Si $(Z_k)$ est une chaîne de Markov de transition $Q$ et $(N_t)$ un Poisson$(\lambda)$ indépendant, alors $X_t=Z_{N_t}$ est un processus de Markov de sauts, de transition $P_t=\exp(\lambda t(Q-I))$.</p>
+              <p class="sense"><b>Sens :</b> on prend une « horloge » Poisson qui tique au rythme $\lambda$, et à chaque tic, on fait évoluer un état selon $Q$ : une des trois méthodes de construction qu'on retrouvera à la fiche 24.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s22">
+            <div class="tophead"><span class="num">22</span><h2>Le générateur infinitésimal</h2></div>
+            <p>En temps discret, toute l'information est dans $P$. En temps continu, $P_h$ dépend de $h$ : il faut un objet qui résume « à quelle vitesse » les transitions se produisent. C'est le <b>générateur</b> $A$ : la dérivée de $P_h$ en $h=0$. $A(x,y)$ pour $x\ne y$ s'interprète comme un <b>taux de transition</b> instantané de $x$ vers $y$.</p>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 7 · Existence du générateur</p>
+              <p>Il existe une matrice $A:E\times E\to\mathbb R$ avec $A(x,y)\ge0$ pour $x\ne y$, $A(x,x)=-\sum_{z\ne x}A(x,z)$ (on dit que $A$ est un <b>générateur markovien</b>), telle que pour $x\ne y$ :</p>
+              <div class="formula">$$P_h(x,y)=hA(x,y)+o(h),\qquad P_h(x,x)=1+A(x,x)h+o(h)$$</div>
+              <p class="sense"><b>Sens :</b> sur un petit intervalle $h$, la probabilité de sauter de $x$ à $y$ est $\approx hA(x,y)$ : $A(x,y)$ est bien un <b>taux</b> (une probabilité par unité de temps). On note $a(x)=-A(x,x)=\sum_{z\ne x}A(x,z)$ le taux total de sortie de $x$.</p>
+            </div>
+            <div class="diagram">
+              <svg viewBox="0 0 420 200" role="img" aria-label="Diagramme du générateur d'une chaîne de Markov à deux états en temps continu">
+                <defs>
+                  <marker id="arrD5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+                <circle cx="120" cy="100" r="34" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="120" y="107" text-anchor="middle" font-size="16" fill="currentColor" font-family="JetBrains Mono, monospace">0 (panne)</text>
+                <circle cx="300" cy="100" r="34" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="300" y="107" text-anchor="middle" font-size="16" fill="currentColor" font-family="JetBrains Mono, monospace">1 (marche)</text>
+                <path d="M152,85 Q210,45 268,85" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD5)"/>
+                <text x="210" y="40" text-anchor="middle" font-size="13" fill="currentColor">A(0,1) = λ</text>
+                <path d="M268,115 Q210,155 152,115" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD5)"/>
+                <text x="210" y="178" text-anchor="middle" font-size="13" fill="currentColor">A(1,0) = μ</text>
+              </svg>
+              <p class="diagram-cap">Générateur $A=\begin{pmatrix}-\lambda&\lambda\\\mu&-\mu\end{pmatrix}$ : pas de boucle dessinée, le taux de rester sur place est implicite ($A(x,x)=-a(x)$). On retrouve ce diagramme pour l'exemple « processeur/réparation » de la fiche 27.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 22 · $T_1$ et $Z_1$ : délai et direction du premier saut</p>
+              <p>Conditionnellement à $X_0=x$ avec $a(x)>0$ (état non absorbant), le premier temps de saut $T_1$ et le premier état visité $Z_1=X_{T_1}$ sont <b>indépendants</b>. $T_1\sim\mathrm{Exp}(a(x))$, et $\mathbb P_x(Z_1=y)=A(x,y)/a(x)$.</p>
+              <p class="sense"><b>Sens :</b> on attend un temps exponentiel (de taux total de sortie $a(x)$) avant de sauter, puis on choisit la destination $y$ proportionnellement à son taux $A(x,y)$ : l'image de la « course d'exponentielles » de la fiche 24.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 23 · Équations forward et backward</p>
+              <div class="formula">$$P_t'=AP_t=P_tA$$</div>
+              <p>(équation rétrograde = backward, progressive = forward). Quand $E$ est fini (ou plus généralement $\sup_xa(x)<\infty$), l'unique solution avec $P_0=I$ est $P_t=\exp(tA)$ : <b>le générateur est la dérivée de $P_t$ en $0$, et $P_t$ s'obtient en l'exponentiant.</b></p>
+            </div>
+          </article>
+
+          <article class="topic" id="s23">
+            <div class="tophead"><span class="num">23</span><h2>Forward, backward, et chaîne immergée</h2></div>
+            <p>Pour comprendre la dynamique d'un processus de sauts, il est souvent plus simple d'oublier le temps continu et de ne regarder que <b>la suite des états visités</b> : c'est la chaîne immergée, une chaîne de Markov discrète ordinaire.</p>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 24 · La chaîne immergée</p>
+              <p>La suite $(Z_n=X_{T_n})_{n\in\mathbb N}$ est une chaîne de Markov (discrète) de transition $Q$, dite <b>chaîne immergée</b> ou induite :</p>
+              <div class="formula">$$Q(x,y)=\begin{cases}A(x,y)/a(x)&\text{si }a(x)>0,\ y\ne x\\\mathbf 1_{x=y}&\text{sinon}\end{cases}$$</div>
+              <p>Conditionnellement à $Z_0,Z_1,\dots$, les délais $T_1,T_2-T_1,\dots$ sont <b>indépendants</b>, de lois $\mathrm{Exp}(a(Z_0)),\mathrm{Exp}(a(Z_1)),\dots$</p>
+              <p class="sense"><b>Sens :</b> « processus de sauts » = « chaîne immergée $Q$ » + « des délais exponentiels indépendants dont le taux dépend de l'état courant ». C'est la recette de construction la plus utilisée en pratique (et celle du code R du TP2).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s24">
+            <div class="tophead"><span class="num">24</span><h2>Construction et conditions de non-explosion</h2></div>
+            <p>On part maintenant d'un générateur $A$ donné (choisi pour modéliser un phénomène) et on veut construire effectivement un processus associé. Trois méthodes, toutes équivalentes en loi :</p>
+            <div class="box box-def">
+              <p class="box-label">Trois méthodes de construction</p>
+              <p><b>1. Chaîne immergée + Poisson(1) :</b> on simule $(Z_n)$ de transition $Q=A(x,y)/a(x)$, un Poisson$(1)$ indépendant $\widetilde T_n$, et on pose $S_n=(\widetilde T_n-\widetilde T_{n-1})/a(Z_{n-1})$ (ou $+\infty$ si $a(Z_{n-1})=0$), $T_n=S_1+\dots+S_n$.</p>
+              <p><b>2. Simulation dynamique (« course d'exponentielles ») :</b> partant de $x$, on tire $U_y\sim\mathrm{Exp}(A(x,y))$ indépendantes pour chaque $y\ne x$ ; le prochain état est $\arg\min_yU_y$, et le délai est $\min_yU_y$. Méthode la plus simple à coder (c'est celle du TP2, exercice 2).</p>
+              <p><b>3. Chaîne discrète + Poisson($\lambda$) :</b> si $\sup_xa(x)\le\lambda<\infty$, on pose $Q=A/\lambda+I$ (c'est une transition valide) et $X_t=Y_{N_t}$ avec $(Y_n)$ de transition $Q$, $N$ Poisson$(\lambda)$ indépendant (généralise la Proposition 21).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Propositions 25-26 et Corollaire 5 · Non-explosion</p>
+              <p>La condition de non-explosion $\lim_nT_n=+\infty$ p.s. équivaut à $\sum_{n\ge0}\frac1{a(Z_n)}=+\infty$ p.s. (Proposition 25). Deux critères <b>suffisants</b> faciles à vérifier (Corollaire 5) :</p>
+              <p>1. $\sup_{x\in E}a(x)<\infty$ (taux de sortie uniformément bornés) ;<br>
+              2. la chaîne immergée $(Z_n)$ est récurrente irréductible.</p>
+              <p>Critère nécessaire et suffisant sur $A$ directement (Proposition 26, admis) : non-explosion ssi $k\equiv0$ est l'unique solution bornée positive de $Ak=k$.</p>
+              <p class="sense"><b>Conséquence immédiate :</b> si $E$ est fini, il n'y a jamais d'explosion (le critère 1 est automatique).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s25">
+            <div class="tophead"><span class="num">25</span><h2>Estimer le générateur par maximum de vraisemblance</h2></div>
+            <p>Même logique qu'en temps discret (fiche 9), mais maintenant on a aussi le <b>temps passé</b> dans chaque état, qui remplace le simple comptage de passages.</p>
+            <div class="box box-def">
+              <p class="box-label">Notations</p>
+              <p>On observe une trajectoire sur $[0,t]$. $R_t(x)=\int_0^t\mathbf 1_{\{X_s=x\}}ds$ : temps total passé en $x$. $N_t(x,y)$ : nombre de transitions $x\to y$ observées avant $t$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Log-vraisemblance et estimateur</p>
+              <div class="formula">$$\ln L_A=\sum_{x\ne y}\big\{N_t(x,y)\ln A(x,y)-A(x,y)R_t(x)\big\}$$</div>
+              <p>Le maximum de vraisemblance est, pour $x\ne y$ (nul par convention si $R_t(x)=0$) :</p>
+              <div class="formula">$$\hat A(x,y)=\frac{N_t(x,y)}{R_t(x)}$$</div>
+              <p class="sense"><b>Sens :</b> même idée qu'en temps discret, mais on remplace le « nombre de passages par $x$ » discret par le <b>temps passé</b> en $x$ (une notion naturellement continue). Le taux de transition estimé est « nombre de sauts observés $x\to y$ » divisé par « durée totale d'exposition au risque de sauter depuis $x$ ».</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s26">
+            <div class="tophead"><span class="num">26</span><h2>Classification des états et théorème ergodique</h2></div>
+            <p>Tous les concepts du chapitre 2 (irréductibilité, récurrence, loi invariante, théorème ergodique) se transposent au temps continu, avec une bonne nouvelle : on n'a <b>plus besoin de condition d'apériodicité</b> pour la convergence de la loi marginale, le temps continu élimine automatiquement les problèmes de périodicité.</p>
+            <div class="box box-def">
+              <p class="box-label">Définitions 12-14 · Irréductibilité, invariance, récurrence positive continue</p>
+              <p>$(X_t)$ est irréductible / récurrent / transient si la chaîne immergée $(Z_n)$ l'est (Définition 12). $\pi$ est <b>invariante</b> si $\pi P_t=\pi$ pour tout $t\ge0$ (Définition 13) ; de façon équivalente (en dérivant en $t=0$) : $\pi A=0$. Pour $x\in E$, $R_x=\inf\{t\ge T_1:X_t=x\}$ (premier retour en $x$ après le premier saut) ; $x$ est <b>récurrent positif</b> si $\mathbb E_x(R_x)<\infty$, <b>récurrent nul</b> sinon (Définition 14).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 27 · Caractérisation de l'irréductibilité</p>
+              <p>$(X_t)$ est irréductible ssi $P_t(x,y)>0$ pour tout $(t,x,y)\in\mathbb R_+^*\times E\times E$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Théorèmes 8-10 · Classification et convergence</p>
+              <p>Pour un processus irréductible : s'il est transient, pas de probabilité invariante. S'il est récurrent, tous les états sont récurrents nuls ou tous récurrents positifs ensemble ; s'il est récurrent positif, il existe une unique probabilité invariante $\pi(x)=1/(a(x)\,\mathbb E_x(R_x))$ (Théorème 8). <b>Si $E$ est fini, le processus irréductible est toujours récurrent positif.</b> Le théorème ergodique continu (Théorème 9) donne :</p>
+              <div class="formula">$$\lim_{t\to\infty}\frac1t\int_0^tf(X_s)\,ds=\int f\,d\pi\quad\text{p.s.}$$</div>
+              <p>Et, <b>sans hypothèse d'apériodicité</b> (contrairement au cas discret, fiche 7) : $\lim_{t\to\infty}\mu P_t(x)=\pi(x)$ pour tout $x$ et toute loi initiale $\mu$ (Théorème 10).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s27">
+            <div class="tophead"><span class="num">27</span><h2>Exemples travaillés : 2 états, naissance-mort, épidémie</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Processus à 2 états (réparation/panne)</p>
+              <p>$E=\{0,1\}$, $A=\begin{pmatrix}-\lambda&\lambda\\\mu&-\mu\end{pmatrix}$ (diagramme fiche 22). En diagonalisant $A$ :</p>
+              <div class="formula">$$P_t=\begin{pmatrix}\dfrac{\mu+\lambda e^{-(\lambda+\mu)t}}{\lambda+\mu}&\dfrac{\lambda-\lambda e^{-(\lambda+\mu)t}}{\lambda+\mu}\\[6pt]\dfrac{\mu-\mu e^{-(\lambda+\mu)t}}{\lambda+\mu}&\dfrac{\lambda+\mu e^{-(\lambda+\mu)t}}{\lambda+\mu}\end{pmatrix},\qquad\pi=\left(\frac\mu{\lambda+\mu},\frac\lambda{\lambda+\mu}\right)$$</div>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Naissance et mort continue</p>
+              <p>$E=\mathbb N$, $A(n,n+1)=\alpha_n>0$, $A(n,n-1)=\beta_n>0$ ($n\ge1$). Chaîne immergée : $Q(n,n+1)=p_n=\alpha_n/(\alpha_n+\beta_n)$, $Q(n,n-1)=q_n=\beta_n/(\alpha_n+\beta_n)$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Critère de récurrence et loi invariante (continu)</p>
+              <p>Récurrente ssi $\displaystyle\sum_{n\ge1}\frac{\beta_1\cdots\beta_n}{\alpha_1\cdots\alpha_n}=+\infty$ (4.3). Récurrente positive (donc $\pi$ existe) ssi $S=1+\sum_{n\ge1}\dfrac{\alpha_0\cdots\alpha_{n-1}}{\beta_1\cdots\beta_n}<+\infty$, et alors $\pi(0)=1/S$, $\pi(n)=\dfrac1S\dfrac{\alpha_0\cdots\alpha_{n-1}}{\beta_1\cdots\beta_n}$. Exemple $\alpha_n=\alpha n,\beta_n=\beta n$ : récurrente ssi $\alpha\le\beta$, récurrente positive ssi $\alpha<\beta$ (même type de critère qu'en discret, fiche 5). Non-explosion ssi $\sum_nr_n=+\infty$ avec $r_n=\sum_{k=0}^n\dfrac{\beta_{k+1}\cdots\beta_n}{\alpha_k\cdots\alpha_n}$ (Proposition 29).</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Dynamique d'une épidémie non curable</p>
+              <p>Population de $m$ individus, un infecté au départ, chacun contamine les autres au taux $\alpha$ indépendamment. $X_t$ = nombre d'infectés. $T=T_{m-1}$ = temps avant contamination totale. Le générateur est birth-death avec $A(x,x+1)\approx\alpha x(m-x)$. On trouve :</p>
+              <div class="formula">$$\mathbb E_1(T)=\sum_{x=1}^{m-1}\frac1{\alpha x(m-x)}\ \sim\ \frac{2\ln(m)}{\alpha m}\qquad(m\to\infty)$$</div>
+              <p class="sense"><b>Sens :</b> le temps moyen de contamination totale croît seulement en $\ln(m)/m$, beaucoup plus lentement que $m$ : une épidémie non curable se propage très vite dans une grande population.</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Dynamique d'une épidémie curable</p>
+              <p>Maintenant les infectés guérissent (taux $\beta_n$) et $0$ est absorbant ($A(0,1)=0$). Le temps moyen avant extinction $\tau$, partant de $i_0$ infectés, vérifie le système linéaire :</p>
+              <div class="formula">$$[A(i,j)]_{1\le i,j\le m}\begin{pmatrix}\mathbb E_1(\tau)\\\vdots\\\mathbb E_m(\tau)\end{pmatrix}=-\mathbf 1$$</div>
+              <p>(c'est exactement ce système que résout le TP2, exercice 3, voir fiche 39).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s28">
+            <div class="tophead"><span class="num">28</span><h2>Galton-Watson à temps continu</h2></div>
+            <p>Version continue de l'exemple du chapitre 2 : un ancêtre vit un temps $\mathrm{Exp}(a)$, puis donne naissance à $k$ enfants avec probabilité $p_k$ et meurt ; chaque enfant évolue ensuite de façon indépendante et identique. $X_t$ = nombre d'individus vivants au temps $t$.</p>
+            <div class="box box-def">
+              <p class="box-label">Générateur</p>
+              <div class="formula">$$A(x,y)=ax\,p_{y-x+1}\,\mathbf 1_{\{y\ge x-1,\,y\ne x\}}+ax(p_1-1)\mathbf 1_{\{y=x\}}$$</div>
+              <p>Non-explosion assurée si $m=\sum_kkp_k<\infty$ (nombre moyen d'enfants fini).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Probabilité d'extinction</p>
+              <p>Soit $f(s)=\sum_kp_ks^k$ la fonction génératrice du nombre d'enfants, et $\eta$ la plus petite racine de $f(s)=s$ dans $(0,1]$. La probabilité d'extinction partant de $i$ ancêtres est :</p>
+              <div class="formula">$$q_i=\eta^i,\qquad\text{avec }\eta=1\text{ si }m\le1,\quad\eta\lt1\text{ unique si }m>1$$</div>
+              <p class="sense"><b>Sens :</b> si en moyenne chaque individu a au plus un descendant ($m\le1$), l'extinction est certaine. Si $m>1$ (croissance en moyenne), il existe une probabilité strictement positive $1-\eta$ de survie indéfinie, exactement comme pour le Galton-Watson discret du chapitre 2. La preuve utilise l'équation backward $\partial_tP_t(1,0)=a(f(P_t(1,0))-P_t(1,0))$ et la convexité de $f$.</p>
+            </div>
+          </article>
+
+          <div class="qcm" id="qcm-4">
+            <div class="qcm-head"><h3>QCM de révision · Chapitre 4 (processus markoviens de sauts)</h3><span class="qcm-meta">⏱ 9 min · 5 questions</span></div>
+            <p class="qcm-intro">Cochez la bonne réponse, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q1</span>Que vaut $a(x)$, le taux de sortie de $x$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c4-1"><span class="otext">$A(x,x)$.</span></label>
+              <div class="qcm-explain">Faux, c'est $-A(x,x)$.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-1"><span class="otext">$\sum_yA(x,y)$ (somme sur tout $y$, y compris $x$).</span></label>
+              <div class="qcm-explain">Faux, cette somme vaut $0$ par définition du générateur.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-1"><span class="otext">$-A(x,x)=\sum_{y\ne x}A(x,y)$.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-1"><span class="otext">$1/A(x,x)$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q2</span>Conditionnellement à $X_0=x$ ($a(x)>0$), que peut-on dire de $T_1$ et $Z_1$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c4-2"><span class="otext">Ils sont égaux presque sûrement.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-2"><span class="otext">Ils sont indépendants, $T_1\sim\mathrm{Exp}(a(x))$ et $Z_1$ de loi $A(x,\cdot)/a(x)$.</span></label>
+              <div class="qcm-explain">Correct (Proposition 22).</div>
+              <label class="qcm-opt"><input type="radio" name="c4-2"><span class="otext">$T_1$ est déterministe.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-2"><span class="otext">Ils dépendent tous les deux du passé avant $0$.</span></label>
+              <div class="qcm-explain">Faux, propriété de Markov.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q3</span>Laquelle de ces conditions garantit la non-explosion ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c4-3"><span class="otext">$\sup_{x\in E}a(x)<\infty$.</span></label>
+              <div class="qcm-explain">Correct (Corollaire 5), en particulier toujours vrai si $E$ est fini.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-3"><span class="otext">$E$ est infini.</span></label>
+              <div class="qcm-explain">Faux, ça ne garantit rien du tout.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-3"><span class="otext">$A$ est symétrique.</span></label>
+              <div class="qcm-explain">Faux, aucun rapport.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-3"><span class="otext">$\pi$ existe.</span></label>
+              <div class="qcm-explain">Faux, l'existence de $\pi$ suppose déjà la non-explosion (processus bien défini).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q4</span>Par rapport au cas discret, que change le Théorème 10 (convergence $\mu P_t\to\pi$) en temps continu ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c4-4"><span class="otext">Il faut toujours une hypothèse d'apériodicité.</span></label>
+              <div class="qcm-explain">Faux, c'est l'inverse.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-4"><span class="otext">La convergence n'a jamais lieu en temps continu.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-4"><span class="otext">Il faut remplacer $\pi$ par la chaîne immergée.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-4"><span class="otext">Aucune hypothèse d'apériodicité n'est nécessaire : la convergence a toujours lieu pour un processus irréductible récurrent positif.</span></label>
+              <div class="qcm-explain">Correct : le temps continu élimine le problème de périodicité du cas discret.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Pour le Galton-Watson continu, si le nombre moyen d'enfants $m\le1$, que vaut la probabilité d'extinction partant d'un seul ancêtre ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c4-5"><span class="otext">$0$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-5"><span class="otext">$1$ : l'extinction est certaine.</span></label>
+              <div class="qcm-explain">Correct : $\eta=1$ quand $m\le1$.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-5"><span class="otext">$1/2$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c4-5"><span class="otext">Cela dépend uniquement de $a$.</span></label>
+              <div class="qcm-explain">Faux, $a$ (le taux) n'intervient pas dans la probabilité d'extinction, seule la loi de reproduction $(p_k)$ compte.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-5">
+        <button class="lecture-head">
+          <span class="num">5</span>
+          <span class="title">Files d'attente</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s29">
+            <div class="tophead"><span class="num">29</span><h2>La file M/M/1</h2></div>
+            <p>Des clients arrivent à un guichet selon un processus de Poisson, et sont servis un par un (FIFO). C'est le modèle le plus simple de file d'attente, et c'est <b>exactement un processus de naissance et de mort en temps continu</b> : le nombre de clients dans le système monte de 1 à chaque arrivée, descend de 1 à chaque départ.</p>
+            <div class="box box-def">
+              <p class="box-label">Le modèle M/M/1</p>
+              <p>Arrivées : Poisson$(\lambda)$. Temps de service : i.i.d. $\mathrm{Exp}(\mu)$, indépendants des arrivées. Un seul guichet, file de capacité infinie. $X_t$ = nombre de clients dans le système (en file + en service) à l'instant $t$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 11 · M/M/1 = naissance-mort de générateur explicite</p>
+              <div class="formula">$$A(n,n+1)=\lambda,\qquad A(n,n-1)=\mu\ (n>0)$$</div>
+              <p class="sense"><b>Pourquoi c'est si simple :</b> grâce à l'<b>absence de mémoire</b> de la loi exponentielle, le temps résiduel avant la prochaine arrivée (resp. avant la fin du service en cours) suit encore une loi $\mathrm{Exp}(\lambda)$ (resp. $\mathrm{Exp}(\mu)$), quel que soit le temps déjà écoulé. C'est cette propriété qui rend $(X_t)$ markovien alors que le processus des clients <b>en attente seulement</b> (sans compter celui en service) ne l'est pas.</p>
+            </div>
+            <div class="diagram">
+              <svg viewBox="0 0 560 280" role="img" aria-label="Diagramme de la file M/M/1 : arrivées, serveur, et chaîne de naissance et de mort associée">
+                <defs>
+                  <marker id="arrD6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+                <g font-family="JetBrains Mono, monospace" font-size="13" fill="currentColor">
+                  <path d="M20,45 L95,45" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD6)" fill="none"/>
+                  <text x="55" y="33" text-anchor="middle">λ</text>
+                  <circle cx="110" cy="45" r="4" fill="currentColor"/>
+                  <circle cx="125" cy="45" r="4" fill="currentColor"/>
+                  <circle cx="140" cy="45" r="4" fill="currentColor"/>
+                  <text x="125" y="68" text-anchor="middle" font-size="11">file</text>
+                  <rect x="165" y="22" width="60" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <text x="195" y="50" text-anchor="middle">μ</text>
+                  <path d="M225,45 L290,45" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrD6)" fill="none"/>
+                  <text x="258" y="33" text-anchor="middle" font-size="11">départs</text>
+                </g>
+                <text x="300" y="110" font-size="13" fill="currentColor">⟺ une CTMC de naissance-mort sur le nombre de clients :</text>
+                <g font-family="JetBrains Mono, monospace" font-size="15" fill="currentColor">
+                  <circle cx="60" cy="200" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="60" y="206" text-anchor="middle">0</text>
+                  <circle cx="190" cy="200" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="190" y="206" text-anchor="middle">1</text>
+                  <circle cx="320" cy="200" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="320" y="206" text-anchor="middle">2</text>
+                  <circle cx="450" cy="200" r="26" fill="none" stroke="currentColor" stroke-width="2"/><text x="450" y="206" text-anchor="middle">3</text>
+                  <text x="520" y="206" text-anchor="middle" font-size="20">⋯</text>
+                </g>
+                <g font-size="12.5" fill="currentColor">
+                  <path d="M90,188 L160,188" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD6)"/><text x="125" y="178" text-anchor="middle">λ</text>
+                  <path d="M160,216 L90,216" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD6)"/><text x="125" y="236" text-anchor="middle">μ</text>
+                  <path d="M220,188 L290,188" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD6)"/><text x="255" y="178" text-anchor="middle">λ</text>
+                  <path d="M290,216 L220,216" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD6)"/><text x="255" y="236" text-anchor="middle">μ</text>
+                  <path d="M350,188 L420,188" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD6)"/><text x="385" y="178" text-anchor="middle">λ</text>
+                  <path d="M420,216 L350,216" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrD6)"/><text x="385" y="236" text-anchor="middle">μ</text>
+                </g>
+              </svg>
+              <p class="diagram-cap">Une file d'attente markovienne EST une chaîne de naissance et de mort continue : la taille de la file joue le rôle de l'état, chaque arrivée fait avancer d'un cran (taux $\lambda$, constant), chaque départ recule d'un cran (taux $\mu$).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 30 · Les trois régimes</p>
+              <p><b>$\lambda>\mu$ :</b> transiente, $X_t\to+\infty$ p.s. (les arrivées dépassent la capacité de service, la file explose). <b>$\lambda=\mu$ :</b> récurrente nulle. <b>$\lambda<\mu$ :</b> récurrente positive, d'unique probabilité invariante :</p>
+              <div class="formula">$$\pi(n)=(1-\rho)\rho^n,\qquad\rho=\frac\lambda\mu\quad\text{(loi géométrique)}$$</div>
+              <p class="sense"><b>Mnémo :</b> la file M/M/1 est stable (« tient en régime permanent ») ssi $\rho=\lambda/\mu<1$ : le taux d'utilisation du serveur doit être strictement inférieur à $1$.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s30">
+            <div class="tophead"><span class="num">30</span><h2>Régime stationnaire et formule de Little</h2></div>
+            <p>Une fois la file stable ($\rho<1$) et en régime stationnaire ($X_0\sim\pi$), on peut calculer toutes les quantités qui intéressent un gestionnaire : taille moyenne de la file, temps d'attente moyen d'un client...</p>
+            <div class="box box-thm">
+              <p class="box-label">Quantités en régime stationnaire</p>
+              <p>Taille moyenne : $\mathbb E(X_t)=\sum_{n\ge0}n\pi(n)=\dfrac\rho{1-\rho}=\dfrac\lambda{\mu-\lambda}$ (explose quand $\lambda\nearrow\mu$). Temps moyen de retour en $0$ : $\mathbb E(R_0)=\dfrac1{\pi(0)a(0)}=\dfrac\mu{\lambda(\mu-\lambda)}$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Théorème 12 · Formule de Little</p>
+              <p>Soit $U$ le temps qu'un client introduit artificiellement à l'instant $t$ doit attendre avant de quitter le système. En régime stationnaire :</p>
+              <div class="formula">$$\lambda\,\mathbb E(U)=\mathbb E(X_t)$$</div>
+              <p>Pour M/M/1 : $\mathbb E(U)=\dfrac1{\mu-\lambda}$. <span class="sense"><b>Sens :</b> relation universelle (vraie pour n'importe quelle file en régime stationnaire, pas seulement M/M/1) entre le nombre moyen de clients dans le système et le temps moyen qu'ils y passent, via le débit d'arrivée $\lambda$. C'est l'analogue de « stock moyen = débit $\times$ délai moyen ».</span></p>
+            </div>
+          </article>
+
+          <article class="topic" id="s31">
+            <div class="tophead"><span class="num">31</span><h2>M/M/1/K et M/M/s</h2></div>
+            <p>Deux généralisations naturelles : une capacité finie (centraux téléphoniques, mémoire limitée), ou plusieurs guichets en parallèle.</p>
+            <div class="box box-def">
+              <p class="box-label">File M/M/1/K · capacité finie</p>
+              <p>Au plus $K$ clients simultanément ; tout client en trop est rejeté. $E=\{0,\dots,K\}$, $A(n,n+1)=\lambda$ ($0\le n\le K-1$), $A(n,n-1)=\mu$ ($1\le n\le K$).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 31 · Loi invariante (toujours récurrente positive car $E$ fini)</p>
+              <div class="formula">$$\pi(n)=\rho^n\,\frac{1-\rho}{1-\rho^{K+1}}\ (\rho\ne1),\qquad \pi(n)=\frac1{K+1}\ (\rho=1,\text{ loi uniforme})$$</div>
+              <p class="sense"><b>Sens :</b> $\pi(K)$ est à la fois la fraction de temps où la file est pleine (théorème ergodique) et la probabilité en régime permanent qu'un client arrivant soit rejeté.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">File M/M/s · s guichets en parallèle</p>
+              <p>$A(n,n+1)=\lambda$ (toujours), $A(n,n-1)=n\mu$ pour $1\le n\le s$ (chaque client en service peut terminer), $A(n,n-1)=s\mu$ pour $n>s$ (tous les $s$ guichets sont occupés). Récurrente positive ssi $\lambda<\mu s$ (Proposition 32).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 33 · Loi invariante M/M/s</p>
+              <div class="formula">$$\pi(n)=\begin{cases}\dfrac{\rho^n\pi(0)}{n!}&0\le n\le s\\[6pt]\dfrac{\rho^n\pi(0)}{s!\,s^{n-s}}&n>s\end{cases},\qquad\rho=\frac\lambda\mu$$</div>
+              <p>Quand $s$ est grand, $\pi$ s'approche d'une loi de Poisson$(\rho)$. La probabilité invariante est en fait <b>réversible</b> ($\pi(n)A(n,n+1)=\pi(n+1)A(n+1,n)$), ce qui entraîne une conséquence remarquable : <b>le processus des sorties de la file est lui aussi un processus de Poisson$(\lambda)$</b>, comme le processus des entrées.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s32">
+            <div class="tophead"><span class="num">32</span><h2>Formule d'Erlang et comparaisons de systèmes</h2></div>
+            <div class="box box-thm">
+              <p class="box-label">Propositions 34-35 · Calculs en régime stationnaire pour M/M/s</p>
+              <p>Probabilité que tous les guichets soient occupés (2ᵉ formule d'Erlang, 1917, utilisée pour dimensionner des centraux téléphoniques) :</p>
+              <div class="formula">$$\mathbb P(X_t\ge s)=\pi(0)\frac{\rho^s}{(1-\rho/s)\,s!}$$</div>
+              <p>Nombre moyen de guichets occupés : $\rho=\lambda/\mu$. Taille moyenne du système : $\mathbb E(X_t)=\rho+\pi(0)\dfrac{\rho^{s+1}}{(s-1)!(s-\rho)^2}$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Preuve (esquisse) du Théorème 12 pour M/M/s</p>
+              <p>On décompose le temps d'attente total $U=W+\mathrm{Exp}(\mu)$ (attente avant d'être pris en charge, puis temps de service). Le caractère sans mémoire de l'exponentielle donne $\mathbb P(W>\alpha\mid X_t=s+n)=\int_\alpha^{+\infty}\frac{z^n}{n!}e^{-\mu sz}(\mu s)^{n+1}dz$ (somme de $n+1$ exponentielles de taux $\mu s$, le temps qu'il faut pour que $n+1$ guichets se libèrent successivement). On en déduit $\mathbb E(W)=\pi(0)\dfrac{\rho^s}{(s-1)!(s-\rho)^2\mu}$ et $\mathbb E(U)=\mathbb E(W)+1/\mu$ (on vérifie que $\lambda\mathbb E(U)=\mathbb E(X_t)$, conforme à Little).</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Un serveur rapide ou deux serveurs normaux ?</p>
+              <p>On compare M/M/1 de paramètres $(\lambda,2\mu)$ (un seul guichet, deux fois plus rapide) à M/M/2 de paramètres $(\lambda,\mu)$ (deux guichets normaux), avec $\lambda<2\mu$ dans les deux cas :</p>
+              <table class="cmp">
+                <tr><th>Système</th><th>$\mathbb E(U)$ (temps de séjour moyen)</th></tr>
+                <tr><td>M/M/1 $(\lambda,2\mu)$</td><td>$\dfrac1{2(\mu-\lambda/2)}$</td></tr>
+                <tr><td>M/M/2 $(\lambda,\mu)$</td><td>$\dfrac1{(\mu-\lambda/2)(1+\lambda/2\mu)}$, strictement plus grand</td></tr>
+              </table>
+              <p class="sense"><b>Conclusion :</b> à capacité totale de service égale, mieux vaut <b>un seul guichet deux fois plus rapide</b> que deux guichets séparés : avec deux files parallèles, un client peut attendre derrière un guichet occupé pendant que l'autre est libre, ce qui n'arrive jamais avec un seul guichet.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s33">
+            <div class="tophead"><span class="num">33</span><h2>Découragement et M/M/S/S</h2></div>
+            <div class="box box-def">
+              <p class="box-label">File avec découragement (balking)</p>
+              <p>Modification de M/M/1 : un client qui arrive et voit $n$ clients devant lui repart (renonce) avec probabilité $n/(n+1)$ : plus la file est longue, plus on hésite à y entrer. Générateur : $A(n,n+1)=\dfrac\lambda{n+1}$, $A(n,n-1)=\mu$.</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 36 · Toujours récurrente positive, loi de Poisson exacte</p>
+              <div class="formula">$$\pi(n)=e^{-\rho}\frac{\rho^n}{n!},\qquad\rho=\frac\lambda\mu\qquad(\text{loi de Poisson}(\rho)\text{ exacte, pas une approximation})$$</div>
+              <p class="sense"><b>Sens :</b> le découragement empêche la file d'exploser, quels que soient $\lambda,\mu>0$ : le système est <b>toujours</b> stable (contrairement à M/M/1 simple qui exige $\rho<1$).</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">File M/M/S/S · perte totale (centraux téléphoniques)</p>
+              <p>Modification de M/M/s : tout client arrivant alors que les $s$ guichets sont occupés est définitivement rejeté (pas de file d'attente du tout). $E=\{0,\dots,s\}$, $A(n,n+1)=\lambda$ ($0\le n\le s-1$), $A(n,n-1)=n\mu$ ($1\le n\le s$).</p>
+            </div>
+            <div class="box box-thm">
+              <p class="box-label">Proposition 37 · Loi de Poisson tronquée (formule d'Erlang B)</p>
+              <div class="formula">$$\pi(n)=\frac{\rho^n/n!}{\sum_{m=0}^s\rho^m/m!},\qquad n\in\{0,\dots,s\}$$</div>
+              <p class="sense"><b>Sens :</b> une loi de Poisson$(\rho)$ « coupée » et renormalisée sur $\{0,\dots,s\}$ : c'est le modèle historique utilisé pour dimensionner le nombre de lignes d'un central téléphonique (probabilité de rejet d'appel = $\pi(s)$).</p>
+            </div>
+          </article>
+
+          <div class="qcm" id="qcm-5">
+            <div class="qcm-head"><h3>QCM de révision · Chapitre 5 (files d'attente)</h3><span class="qcm-meta">⏱ 8 min · 5 questions</span></div>
+            <p class="qcm-intro">Cochez la bonne réponse, puis validez pour voir le corrigé détaillé.</p>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q1</span>La file M/M/1 est stable (récurrente positive) ssi...<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c5-1"><span class="otext">$\lambda>\mu$.</span></label>
+              <div class="qcm-explain">Faux, c'est le cas transient.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-1"><span class="otext">$\rho=\lambda/\mu<1$.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-1"><span class="otext">$\lambda=\mu$.</span></label>
+              <div class="qcm-explain">Faux, c'est le cas récurrent nul (pas récurrent positif).</div>
+              <label class="qcm-opt"><input type="radio" name="c5-1"><span class="otext">Toujours, quel que soit $\lambda,\mu$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="2">
+              <p class="qtext"><span class="qnum">Q2</span>Que dit la formule de Little $\lambda\mathbb E(U)=\mathbb E(X_t)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c5-2"><span class="otext">Elle n'est valable que pour M/M/1.</span></label>
+              <div class="qcm-explain">Faux : c'est une relation universelle, valable pour toute file en régime stationnaire.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-2"><span class="otext">Elle relie $\mu$ et $\rho$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-2"><span class="otext">Le nombre moyen de clients dans le système égale le débit d'arrivée fois le temps de séjour moyen.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-2"><span class="otext">Elle ne s'applique qu'en régime transitoire.</span></label>
+              <div class="qcm-explain">Faux, régime stationnaire.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="3">
+              <p class="qtext"><span class="qnum">Q3</span>Pourquoi préférer un seul guichet deux fois plus rapide (M/M/1, $2\mu$) à deux guichets normaux (M/M/2, $\mu$) ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c5-3"><span class="otext">C'est faux, M/M/2 est toujours meilleur.</span></label>
+              <div class="qcm-explain">Faux, c'est l'inverse d'après le calcul du cours.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-3"><span class="otext">Les deux sont strictement équivalents.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-3"><span class="otext">Cela dépend uniquement de $\lambda$.</span></label>
+              <div class="qcm-explain">Faux, le résultat est général (pour tout $\lambda<2\mu$).</div>
+              <label class="qcm-opt"><input type="radio" name="c5-3"><span class="otext">Avec deux guichets séparés, un client peut attendre derrière un guichet occupé alors que l'autre est libre.</span></label>
+              <div class="qcm-explain">Correct : c'est le temps de séjour moyen $\mathbb E(U)$ qui tranche, strictement plus petit pour un seul serveur rapide.</div>
+            </div>
+
+            <div class="qcm-q" data-correct="0">
+              <p class="qtext"><span class="qnum">Q4</span>Dans une file avec découragement (balking), pourquoi la file est-elle toujours récurrente positive, quels que soient $\lambda,\mu>0$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c5-4"><span class="otext">Le taux d'arrivée effectif $\lambda/(n+1)$ diminue quand la file s'allonge, ce qui empêche l'explosion.</span></label>
+              <div class="qcm-explain">Correct.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-4"><span class="otext">Parce que $\mu$ est toujours plus grand que $\lambda$.</span></label>
+              <div class="qcm-explain">Faux, ce n'est pas supposé.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-4"><span class="otext">Parce que $E$ est fini.</span></label>
+              <div class="qcm-explain">Faux, $E=\mathbb N$ est infini ici.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-4"><span class="otext">Ce n'est pas vrai, il faut $\rho<1$ comme pour M/M/1.</span></label>
+              <div class="qcm-explain">Faux, c'est précisément la différence avec M/M/1 simple (Proposition 36).</div>
+            </div>
+
+            <div class="qcm-q" data-correct="1">
+              <p class="qtext"><span class="qnum">Q5</span>Dans une file M/M/S/S, que représente $\pi(s)$ ?<span class="q-badge">résultat</span></p>
+              <label class="qcm-opt"><input type="radio" name="c5-5"><span class="otext">Le taux de service.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-5"><span class="otext">La probabilité, en régime stationnaire, qu'un appel/client soit rejeté.</span></label>
+              <div class="qcm-explain">Correct : tous les guichets sont occupés, formule d'Erlang B.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-5"><span class="otext">Le nombre moyen de clients dans le système.</span></label>
+              <div class="qcm-explain">Faux.</div>
+              <label class="qcm-opt"><input type="radio" name="c5-5"><span class="otext">Toujours égal à $1/s$.</span></label>
+              <div class="qcm-explain">Faux.</div>
+            </div>
+
+            <div class="qcm-actions">
+              <button class="qcm-btn qcm-submit" type="button">Soumettre</button>
+              <button class="qcm-btn ghost qcm-reset" type="button">Recommencer</button>
+              <span class="qcm-result"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="lecture" id="lecture-6">
+        <button class="lecture-head">
+          <span class="num">6</span>
+          <span class="title">TP et annales corrigées</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s34">
+            <div class="tophead"><span class="num">34</span><h2>TP1 · Chaîne à deux états : estimation, normalité, IC</h2></div>
+            <p>Chaîne $(X_t)$ sur $\{0,1\}$, $P=\begin{pmatrix}1-p&p\\q&1-q\end{pmatrix}$. On estime $(p,q)$ à partir d'une trajectoire, on vérifie la normalité asymptotique par simulation, et on construit un intervalle de confiance.</p>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (TP1, Exercice 1)</p>
+              <p>1. Donner l'EMV $(\hat p,\hat q)$. 2. Définir $\hat\sigma$ telle que $S_n=\sqrt n(\hat p-p)/\hat\sigma\to\mathcal N(0,1)$. 3. Pour $n=100$, $p=0.7$, $q=0.5$ : simuler $N=500$ réalisations de $S_n$, vérifier l'ajustement gaussien par un graphe quantile-quantile. 4. Construire un IC de niveau asymptotique 95% pour $p$ à partir d'une nouvelle trajectoire.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Estimateur</p>
+                <p>C'est un cas particulier de la fiche 9 : $\hat p=\hat P(0,1)=N_n(0,1)/N_n(0+)$, $\hat q=\hat P(1,0)=N_n(1,0)/N_n(1+)$.</p>
+                <p class="method-label">2. Variance asymptotique</p>
+                <p>D'après la Proposition 8, $\sqrt n(\hat p-p)\to\mathcal N(0,\sigma^2)$ avec $\sigma^2=p(1-p)/\pi(0)$ (cas particulier de la formule de covariance, $x=x'=0,y=y'=1$). On estime $\pi(0)$ par la fréquence empirique $\hat\pi(0)$ des $X_i=0$, d'où $\hat\sigma^2=\hat p(1-\hat p)/\hat\pi(0)$.</p>
+                <p class="method-label">3. Simulation (R)</p>
+                <code class="rcode">P=matrix(c(0.3,0.7,0.5,0.5),byrow=TRUE,nr=2)
+N=500; n=500; S=rep(0,N); X=rep(0,n)
+for (i in 1:N){
+  X[1]=0
+  for (j in 2:n){
+    U=runif(1)
+    X[j]=(X[j-1]==0)*(U>0.3)+(X[j-1]==1)*(U>0.5)
+  }
+  pchap=mean((X[1:(n-1)]==0)*(X[2:n]==1))/mean(X[1:(n-1)]==0)
+  pichap=mean(X[1:n]==0)
+  sigma2chap=pchap*(1-pchap)/pichap
+  S[i]=sqrt(n)*(pchap-0.7)/sqrt(sigma2chap)
+}
+qqnorm(S); abline(0,1)</code>
+                <p>Le nuage de points du QQ-plot s'aligne sur la droite $y=x$ : l'approximation gaussienne est déjà très correcte pour $n=100$ à $500$.</p>
+                <p class="method-label">4. Intervalle de confiance</p>
+                <div class="formula">$$I_n=\left[\hat p-1.96\sqrt{\hat\sigma^2/n},\ \hat p+1.96\sqrt{\hat\sigma^2/n}\right]$$</div>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s35">
+            <div class="tophead"><span class="num">35</span><h2>TP1 · Épidémie discrète : temps moyen avant extinction</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (TP1, Exercice 2)</p>
+              <p>Population $N=9$, $X_t$ = nombre d'infectés, $X_0=5$. $P(i,i+1)=p=1-P(i,i-1)$ pour $1\le i\le8$, $P(0,0)=1$, $P(9,8)=1$ (chaîne absorbante en $0$ ou $9$, naissance-mort tronquée). 1. Interprétation. 2. Quel résultat du cours donne le temps moyen avant extinction $T(p)$ ? 3. Tracer $p\mapsto T(p)$ pour $p=0.4+j/100$, $j=1,\dots,20$. Commenter.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Interprétation</p>
+                <p>$p$ = probabilité qu'un contact contamine un nouvel individu plutôt qu'il y ait une guérison ; $9$ est aussi absorbant car, population totalement infectée, il ne reste qu'à guérir par la suite (modèle simplifié sans dynamique au-delà des bords).</p>
+                <p class="method-label">2. Résultat du cours à mobiliser</p>
+                <p>C'est une chaîne de Markov <b>absorbante</b> (fiche 6) : le nombre moyen de pas avant absorption depuis $5$ vaut $\sum_{j=1}^{8}F(5,j)$ où $F=(I-T)^{-1}$, $T$ la sous-matrice des états transitoires $\{1,\dots,8\}$ (Proposition 7).</p>
+                <p class="method-label">3. Code R et commentaire</p>
+                <code class="rcode">library(pracma)
+t=rep(0,20)
+for (j in 1:20){
+  p=0.4+j/100
+  P=matrix(0,9,9)  # états transitoires 1..8 (+ ligne fictive)
+  P[1,]=c(1-p,p,rep(0,7))
+  for (i in 2:8) P=rbind(P,c(rep(0,i-2),1-p,0,p,rep(0,8-i)))
+  T=P[2:9,1:8]  # sous-matrice transitoire (ajuster indices)
+  F=inv(diag(8)-T)
+  t[j]=sum(F[5,1:8])
+}
+plot(t)</code>
+                <p>$T(p)$ augmente fortement avec $p$ : plus la contamination l'emporte sur la guérison, plus l'épidémie met de temps à atteindre un état absorbant (soit extinction en 0, soit saturation en 9) : cohérent avec le critère de récurrence des chaînes naissance-mort (fiche 5), où $p$ proche de $q$ ralentit la convergence.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s36">
+            <div class="tophead"><span class="num">36</span><h2>TP1 · Séquence ADN intron : test et sélection d'ordre</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (TP1, Exercice 3)</p>
+              <p>Séquence <code>intron</code> (1572 nucléotides, package <code>SMPracticals</code>). 1. Ajuster une chaîne de Markov (estimer $P$ et $\pi$). 2. Tester $H_0$ : indépendance des coordonnées (lignes de $P$ identiques), via la statistique de rapport de vraisemblance $W_n=2\sum_{(x,y)}N_n(x,y)\log\frac{\hat P_n(x,y)}{\hat P_{n,0}(x,y)}$, $\hat P_{n,0}(x,y)=\frac1{n-1}\sum_i\mathbf 1_{X_{i+1}=y}$. 3. Ajuster une chaîne d'ordre 2, et sélectionner l'ordre par BIC.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1-2. Estimation et test (code R du TP)</p>
+                <code class="rcode">library("SMPracticals"); data(intron)
+n <- length(intron)
+Nxy <- matrix(0,4,4); rownames(Nxy)<-colnames(Nxy)<-levels(intron)
+for(i in 2:n) Nxy[intron[i-1],intron[i]] <- Nxy[intron[i-1],intron[i]]+1
+Nxplus <- sapply(levels(intron), function(x) sum(intron[-n]==x))
+Phat <- Nxy/matrix(Nxplus,4,4)
+Wn <- 2*sum(Nxy*log(Phat %*% diag((n-1)/sapply(levels(intron),function(x) sum(intron[-1]==x)))))
+pval <- mean(rchisq(1e6,df=9) > Wn)</code>
+                <p><b>Pourquoi c'est un test du rapport de vraisemblance :</b> $\hat P_n$ est l'EMV sans contrainte (fiche 9), $\hat P_{n,0}$ est l'EMV sous $H_0$ (lignes identiques = indépendance, tirage i.i.d.). $W_n=2[\ell(\hat P_n)-\ell(\hat P_{n,0})]$ est la statistique classique de Wilks, de loi asymptotique $\chi^2((|E|-1)^2)=\chi^2(9)$ sous $H_0$ (le nombre de paramètres libres passe de $|E|(|E|-1)=12$ sous le modèle général à $|E|-1=3$ sous $H_0$, d'où $12-3=9$ dedl).</p>
+                <p class="method-label">3. Ordre 2 et critère BIC</p>
+                <p>On ajuste $\hat P^{(2)}_n(x,y;z)=N_n(x,y;z)/N_n^+(x,y)$ (fiche analogue à la fiche 9, sur les triplets). On compare les deux modèles par $BIC(m)=-\log\hat L_{m,n}+\frac{|E|^m(|E|-1)}2\log(n)$ : le modèle d'ordre $\hat m=\arg\min_mBIC(m)$ est un estimateur consistant de l'ordre. Sur <code>intron</code>, le gain de vraisemblance de l'ordre 2 ne compense généralement pas la pénalité (le nombre de paramètres passe de 12 à 48) : le BIC retient le plus souvent l'ordre 1, cohérent avec un test d'indépendance déjà rejeté mais une structure d'ordre 2 peu marquée.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s37">
+            <div class="tophead"><span class="num">37</span><h2>TP2 · HMM gaussien sur des temps de réaction</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (TP2, Exercice 1)</p>
+              <p>Jeu de données <code>speed</code> (package <code>depmixS4</code>), $n=168$ premiers temps de réaction d'un individu (expérience de décision lexicale). On ajuste un HMM gaussien à 2 états pour distinguer réponses courtes/longues. 1. Formules de mise à jour EM. 2. Pourquoi lissage et Viterbi conviennent-ils tous deux ? 3. Ajuster avec <code>depmix</code>. 4. Viterbi et argmax des probabilités de lissage donnent-ils le même résultat ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Mises à jour EM (émission gaussienne)</p>
+                <p>À l'étape M, les paramètres $(\beta_{1,x},\beta_{2,x})$ (moyenne, variance de l'état $x$) et $P$ s'obtiennent en maximisant $Q_n(\theta\mid\theta_j)$ (fiche 12) : ce sont des moyennes <b>pondérées</b> par les probabilités de lissage $\mathbb P(X_t=x\mid Y)$ (fiche 13, Proposition 11), exactement comme pour un mélange gaussien classique mais pondéré par la structure temporelle de la chaîne cachée plutôt que par des poids fixes.</p>
+                <p class="method-label">2. Pourquoi lissage / Viterbi conviennent</p>
+                <p>Classer un temps de réponse comme « court » ou « long » revient à estimer l'état caché $X_t$ à chaque $t$ : soit en maximisant $\mathbb P(X_t=x\mid Y_1,\dots,Y_n)$ instant par instant (lissage, Proposition 11), soit en cherchant la séquence globale la plus probable (Viterbi, Proposition 12). Les deux sont des réponses légitimes à « quel est l'état cachée le plus plausible ? », juste avec des critères d'optimalité différents.</p>
+                <p class="method-label">3. Code R</p>
+                <code class="rcode">require(depmixS4); data("speed")
+Y=speed[1:168,1]
+mod <- depmix(Y~1, nstates=2, family=gaussian(), ntimes=168)
+G <- fit(mod)
+States <- posterior(G,type="smoothing")[,1]
+Statesv <- posterior(G,type="viterbi")[,1]</code>
+                <p class="method-label">4. Comparaison</p>
+                <p>En général <b>non</b>, les deux classifications diffèrent sur quelques instants (typiquement près des transitions). Ce n'est pas étonnant : le lissage optimise chaque $X_t$ séparément (il peut produire une séquence « incohérente », par exemple une transition improbable), alors que Viterbi optimise la cohérence globale de toute la trajectoire : ce sont deux problèmes d'optimisation distincts, rien ne garantit qu'ils aient la même solution.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s38">
+            <div class="tophead"><span class="num">38</span><h2>TP2 · Simulation dynamique d'une CTMC à 3 états</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (TP2, Exercice 2)</p>
+              <div class="formula">$$A=\begin{pmatrix}-1.5&1&0.5\\1&-2&1\\1&1&-2\end{pmatrix}$$</div>
+              <p>1. Simuler une trajectoire à horizon $T=500$ par simulation dynamique. 2. Déterminer la probabilité invariante $\pi$.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Simulation dynamique (fiche 24, méthode 2)</p>
+                <p>Depuis l'état courant $x$, on tire pour chaque $y\ne x$ une variable $U_y\sim\mathrm{Exp}(A(x,y))$ indépendante, et on avance au minimum : nouvel état $=\arg\min_yU_y$, délai $=\min_yU_y$. On répète jusqu'à dépasser $T=500$.</p>
+                <code class="rcode">A=matrix(c(-1.5,1,0.5,1,-2,1,1,1,-2),3,3,byrow=TRUE)
+States=1; Delais=0
+while (sum(Delais)<500){
+  cS=States[length(States)]
+  autres=setdiff(1:3,cS)
+  G=rexp(2,A[cS,autres])
+  Delais=c(Delais,min(G))
+  States=c(States,autres[which.min(G)])
+}</code>
+                <p class="method-label">2. Probabilité invariante</p>
+                <p>On résout $\pi A=0$ sous contrainte $\sum\pi(x)=1$ (fiche 26, Définition 13). Numériquement (par exemple avec <code>solve</code> sur le système linéaire augmenté d'une ligne de normalisation), on trouve une probabilité invariante strictement positive sur les 3 états : l'existence et l'unicité sont garanties car le générateur est irréductible sur un espace fini (donc récurrent positif, Théorème 8 et sa remarque).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s39">
+            <div class="tophead"><span class="num">39</span><h2>TP2 · Épidémie à temps continu : temps moyen avant extinction</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (TP2, Exercice 3)</p>
+              <p>Population $m=10$, générateur birth-death $A(n,n-1)=\beta_n$ ($1\le n\le m$), $A(n,n+1)=\alpha_n$ ($1\le n\le m-1$), $A(0,1)=0$ ($0$ absorbant). 1. Calculer les $\mathbb E_i(\tau)$ pour $(\alpha_n,\beta_n)=(0.4,0.6)$ puis $(0.6,0.4)$. 2. Vérifier par simulation dans le premier cas.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Système linéaire (fiche 27)</p>
+                <div class="formula">$$[A(i,j)]_{1\le i,j\le m}\begin{pmatrix}\mathbb E_1(\tau)\\\vdots\\\mathbb E_m(\tau)\end{pmatrix}=-\mathbf 1$$</div>
+                <code class="rcode">alpha=0.4; beta=0.6; m=10
+A=c(-alpha-beta,alpha,rep(0,8))
+v=c(beta,-alpha-beta,alpha)
+for (i in 3:9) A=rbind(A,c(rep(0,i-2),v,rep(0,9-i)))
+A=rbind(A,c(rep(0,8),beta,-beta))
+solve(A,rep(-1,10))</code>
+                <p>Avec $(\alpha,\beta)=(0.4,0.6)$ (guérison plus rapide que contagion), les temps moyens sont nettement plus courts qu'avec $(\alpha,\beta)=(0.6,0.4)$ (contagion dominante) : cohérent avec la fiche 27, où un $\beta_n$ plus grand que $\alpha_n$ pousse la chaîne immergée vers $0$ plus vite.</p>
+                <p class="method-label">2. Vérification par simulation</p>
+                <p>On simule la chaîne immergée (chaque pas $\pm1$ avec probabilité $\alpha/(\alpha+\beta)$, $\beta/(\alpha+\beta)$) jusqu'à absorption en $0$, puis on somme des délais $\mathrm{Exp}(\alpha+\beta)$ indépendants (un par pas, fiche 24) ; la moyenne empirique de $\tau$ sur un grand nombre de répétitions (par exemple $N=10\,000$) converge bien vers la valeur donnée par le système linéaire : illustration directe de la loi des grands nombres.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s40">
+            <div class="tophead"><span class="num">40</span><h2>Jeux de données réels : Poisson homogène et NHPP</h2></div>
+            <p>Un diaporama complémentaire du cours (L. Truquet, <i>Processus de Poisson homogène et non homogène</i>) illustre les chapitres 3 sur quatre jeux de données réels : désintégrations radioactives, pannes de climatisation, épidémie d'Ebola, COVID-19 en France. Il montre concrètement comment choisir entre Poisson homogène et NHPP, et comment valider l'ajustement graphiquement.</p>
+            <div class="box box-ex">
+              <p class="box-label"><code>ruge</code> · désintégrations radioactives (package <code>VGAM</code>)</p>
+              <p>Chaque observation compte le nombre de désintégrations du polonium sur des intervalles de même durée. On ajuste une loi de Poisson (donc un processus de Poisson <b>homogène</b>, intensité $\lambda$ constante, fiche 15) et on compare l'histogramme empirique à la masse $\mathcal P(\hat\lambda)$ : l'ajustement est excellent, cohérent avec la théorie physique des désintégrations (événements rares, indépendants, taux constant).</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label"><code>aircondit</code> · pannes de climatisation (package <code>boot</code>)</p>
+              <p>On reconstruit les temps de défaillance cumulés $T_i$ et le processus de comptage $N(t)=\#\{i:T_i\le t\}$, puis on ajuste un NHPP de <b>Weibull</b> (fiche 18-19). On compare $N(t)$ observé à $\widehat\Lambda(t)$ estimée. Avec seulement 11 dates, l'IC bootstrap à 95% pour $\beta$ est $[0.25,0.89]$ pour $\hat\beta=0.41$ : $\beta<1$ exclu de $1$, taux de panne <b>décroissant</b> (mortalité infantile du matériel).</p>
+            </div>
+            <div class="box box-ex">
+              <p class="box-label"><code>Ebola</code> et <code>COVID France</code> · épidémiologie</p>
+              <p>On modélise les cas cumulés $N(t)=\sum_{u\le t}Y_u$ ($Y_u$ = cas journaliers) par un NHPP d'intensité cumulée <b>logistique</b> : $\Lambda(t)=\dfrac K{1+\exp(-r(t-t_0))}$ ($K$ = taille finale de l'épidémie, $r$ = vitesse de propagation, $t_0$ = temps d'inflexion, pic de l'épidémie). L'ajustement de $N(t)$ est très bon (forme en S caractéristique), mais la dérivée $\widehat\Lambda'(t)$ est <b>symétrique</b> autour de $t_0$ alors que les cas journaliers observés $Y_t$ sont souvent <b>asymétriques</b> (montée rapide, décroissance plus lente) : le modèle logistique simple a ses limites, visibles sur le graphe des cas journaliers vs intensité estimée.</p>
+            </div>
+            <div class="box box-def">
+              <p class="box-label">Conclusion méthodologique</p>
+              <p>Poisson homogène : phénomènes à taux approximativement constant (désintégrations). NHPP de Weibull : fiabilité, taux de panne qui évolue monotonement. NHPP logistique : épidémies à phase de croissance puis de saturation. Dans tous les cas, comparer $N(t)$ observé à $\widehat\Lambda(t)$ estimée est le diagnostic graphique le plus simple ; des diagnostics plus poussés existent (transformation du temps, tests de surdispersion sur les résidus).</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s41">
+            <div class="tophead"><span class="num">41</span><h2>Annale 2024 · Exercice 1 : tester l'égalité de deux transitions</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (Examen du 17/01/2024, Exercice 1)</p>
+              <p>Deux chaînes indépendantes $(X_{1,t})$ et $(X_{2,t})$ sur le même $E$ fini, transitions $P_1,P_2$ à entrées strictement positives. On teste $H_0:p_1=p_2$ où $p_i=P_i(x_0,y_0)$, à partir d'échantillons $(X_{i,1},\dots,X_{i,n})$. 1. EMV $\hat p_i$. 2. Pourquoi consistant ? 3. Loi asymptotique de $\hat p_i$. 4. Test de $H_0:p_1=p_2$ au niveau $\alpha=5\%$ à partir de $S_n=\sqrt n(\hat p_1-\hat p_2)$.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. EMV</p>
+                <p>$\hat p_i=\hat P_i(x_0,y_0)=N_{i,n}(x_0,y_0)/N_{i,n}(x_0+)$ (fiche 9).</p>
+                <p class="method-label">2. Consistance</p>
+                <p>Les entrées de $P_i$ sont strictement positives, donc $P_i$ est irréductible sur $E$ fini : récurrente positive (fiche 3-4), le théorème ergodique donne $N_{i,n}(x_0,y_0)/N_{i,n}(x_0+)\to P_i(x_0,y_0)$ p.s. (fiche 9, Proposition 8).</p>
+                <p class="method-label">3. Loi asymptotique</p>
+                <p>D'après la Proposition 8 : $\sqrt n(\hat p_i-p_i)\to\mathcal N(0,\sigma_i^2)$ avec $\sigma_i^2=\dfrac1{\pi_i(x_0)}p_i(1-p_i)$ ($\pi_i$ = loi invariante de la chaîne $i$). On estime $\sigma_i^2$ par $\hat\sigma_i^2=\hat p_i(1-\hat p_i)/\hat\pi_i(x_0)$, $\hat\pi_i(x_0)$ = fréquence empirique de $x_0$ dans l'échantillon $i$.</p>
+                <p class="method-label">4. Test</p>
+                <p>Les deux chaînes sont indépendantes, donc $\hat p_1$ et $\hat p_2$ asymptotiquement indépendants : sous $H_0$, $S_n=\sqrt n(\hat p_1-\hat p_2)\to\mathcal N(0,\sigma_1^2+\sigma_2^2)$. On rejette $H_0$ au niveau $5\%$ si $\dfrac{|S_n|}{\sqrt{\hat\sigma_1^2+\hat\sigma_2^2}}\ge1.96$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s42">
+            <div class="tophead"><span class="num">42</span><h2>Annale 2024 · Exercice 2 : CTMC à N+1 états et MV du générateur</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (Examen du 17/01/2024, Exercice 2)</p>
+              <p>$(X_t)$ CTMC sur $E=\{0,\dots,N\}$, $A(0,1)=p$, $A(n,n+1)=p$ et $A(n,n-1)=q$ pour $1\le n\le N-1$, $A(N,N-1)=q$ ($p,q>0$). 1. Compléter $A(n,n)$. 2. Transition $Q$ de la chaîne immergée. 3. Pourquoi existence/unicité d'une probabilité invariante ? 4. EMV du couple $(\alpha,\beta)$... (en fait $(p,q)$, voir note) à partir d'une trajectoire sur $[0,T]$. 5. Algorithme de simulation à $n$ sauts.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Diagonale du générateur</p>
+                <p>$A(0,0)=-p$ ; $A(n,n)=-(p+q)$ pour $1\le n\le N-1$ ; $A(N,N)=-q$ (fiche 22 : $A(x,x)=-a(x)=-\sum_{y\ne x}A(x,y)$).</p>
+                <p class="method-label">2. Chaîne immergée (fiche 23)</p>
+                <p>$Q(0,1)=1$ ; $Q(n,n+1)=\dfrac p{p+q}$, $Q(n,n-1)=\dfrac q{p+q}$ pour $1\le n\le N-1$ ; $Q(N,N-1)=1$.</p>
+                <p class="method-label">3. Existence et unicité de π</p>
+                <p>$E$ est fini et le générateur est irréductible (on peut relier $0$ à $N$ et retour par des taux tous $>0$) : d'après le Théorème 8 et sa remarque (fiche 26), tout processus de Markov de sauts irréductible sur un espace fini est automatiquement récurrent positif, donc admet une unique probabilité invariante.</p>
+                <p class="method-label">4. EMV du générateur</p>
+                <p>D'après la log-vraisemblance rappelée dans l'énoncé (fiche 25), $\hat A(x,y)=N_T(x,y)/R_T(x)$ pour $x\ne y$. Avec la contrainte du modèle ($A(n,n+1)=p$ pour tout $n<N$, $A(n,n-1)=q$ pour tout $n>0$), on maximise sous contrainte : $\hat p$ et $\hat q$ s'obtiennent en regroupant tous les comptages de sauts « vers la droite » resp. « vers la gauche » :</p>
+                <div class="formula">$$\hat p=\frac{\sum_{n=0}^{N-1}N_T(n,n+1)}{\sum_{n=0}^{N-1}R_T(n)},\qquad \hat q=\frac{\sum_{n=1}^{N}N_T(n,n-1)}{\sum_{n=1}^{N}R_T(n)}$$</div>
+                <p>(on dérive la log-vraisemblance contrainte $\sum_nN_T(n,n+1)\ln p+\sum_nN_T(n,n-1)\ln q-p\sum_{n<N}R_T(n)-q\sum_{n>0}R_T(n)$ séparément en $p$ et $q$).</p>
+                <p class="method-label">5. Algorithme de simulation ($n$ sauts)</p>
+                <p>1. Initialiser $X=x_0$, compteur $k=0$.<br>2. Tant que $k<n$ : tirer $U\sim\mathcal U(0,1)$ ; si $X=0$, aller en $1$ ; si $X=N$, aller en $N-1$ ; sinon aller en $X+1$ si $U<p/(p+q)$, sinon $X-1$. Tirer un délai $S\sim\mathrm{Exp}(a(X))$ (avec $a(0)=p$, $a(N)=q$, $a(n)=p+q$ sinon) et l'ajouter au temps courant. Incrémenter $k$.<br>3. Renvoyer la trajectoire des états et des temps de saut.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s43">
+            <div class="tophead"><span class="num">43</span><h2>Annale 2024 · Exercice 3 : processus de Poisson observé par intervalles</h2></div>
+            <div class="box box-ex">
+              <p class="box-label">Énoncé (Examen du 17/01/2024, Exercice 3)</p>
+              <p>On ne dispose que des comptages de contaminations entre dates $t_i$ et $t_{i+1}$, $0=t_0<t_1<\dots<t_n$, modélisées par un Poisson simple $(N_t)$ d'intensité $\lambda$. $X_i$ = nombre de contaminations entre $t_{i-1}$ et $t_i$. 1. Exprimer $X_i$ via $N$. 2. Loi de $X_i$. 3. Indépendance ? Même loi sous quelle condition ? 4. EMV de $\lambda$.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir le corrigé</summary>
+              <div class="box box-thm">
+                <p class="method-label">1-2. Expression et loi</p>
+                <p>$X_i=N_{t_i}-N_{t_{i-1}}$. Comme $(N_t)$ est Poisson$(\lambda)$, $X_i\sim\mathrm{Poisson}(\lambda(t_i-t_{i-1}))$ (Définition 8, accroissement sur $[t_{i-1},t_i]$).</p>
+                <p class="method-label">3. Indépendance et identique distribution</p>
+                <p>Les $X_i$ sont <b>indépendants</b> : ce sont des accroissements de $(N_t)$ sur des intervalles disjoints, et la Définition 8 impose justement l'indépendance des accroissements. Ils sont <b>identiquement distribués</b> ssi tous les intervalles ont la même longueur, $t_i-t_{i-1}=\delta$ pour tout $i$ (sinon chaque $X_i\sim\mathrm{Poisson}(\lambda\delta_i)$ avec un paramètre propre à son intervalle).</p>
+                <p class="method-label">4. EMV de λ</p>
+                <p>C'est exactement le troisième cas d'échantillonnage de la fiche 17 : $L(x_1,\dots,x_n;\lambda)=\prod_i e^{-\lambda(t_i-t_{i-1})}\dfrac{[\lambda(t_i-t_{i-1})]^{x_i}}{x_i!}$, log-vraisemblance $\propto-\lambda t_n+\big(\sum_ix_i\big)\ln\lambda$, d'où :</p>
+                <div class="formula">$$\hat\lambda=\frac{\sum_{i=1}^nX_i}{t_n}=\frac{N_{t_n}}{t_n}$$</div>
+                <p>le même estimateur que si on avait observé toute la trajectoire sur $[0,t_n]$ (cohérent avec la fiche 17 : $N_t$ est une statistique exhaustive).</p>
+              </div>
+            </details>
+          </article>
+
+        </div>
+      </section>
+
+      <div class="mnemonics">
+        <h2>Chaînes à retenir</h2>
+        <div class="chain"><b>Markov</b> : conditionnellement au présent, le futur est indépendant du passé</div>
+        <div class="chain"><b>Récurrente positive</b> $\iff$ $\mathbb E_x(T_x)<\infty$ $\iff$ une probabilité invariante $\pi$ existe, et $\pi(x)=1/\mathbb E_x(T_x)$</div>
+        <div class="chain"><b>$E$ fini + irréductible</b> $\Rightarrow$ récurrente positive automatiquement (discret comme continu)</div>
+        <div class="chain"><b>Estimer $P$</b> : $\hat P(x,y)=N_n(x,y)/N_n(x+)$, gaussien asymptotique, indépendance entre lignes $x\ne x'$</div>
+        <div class="chain"><b>TLC Markov</b> : équation de Poisson $g-Pg=f$ $\to$ martingale cachée $M_n=\sum[g(X_k)-Pg(X_{k-1})]$</div>
+        <div class="chain"><b>Mot rare</b> $\to$ Poisson composée (trains) ; <b>mot fréquent</b> $\to$ gaussienne ; p-valeur élevée $\iff$ mot rare</div>
+        <div class="chain"><b>HMM</b> : EM augmente $L_n$ à chaque étape ; forward-backward = lissage (coût linéaire) ; Viterbi = meilleure séquence globale</div>
+        <div class="chain"><b>Poisson</b> : inter-arrivées $\mathrm{Exp}(\lambda)$ i.i.d. ; sachant $N_t=n$, les sauts sont des statistiques d'ordre uniformes</div>
+        <div class="chain"><b>Weibull</b> : $\beta=1$ taux constant, $\beta>1$ usure, $\beta<1$ mortalité infantile ; $2n\beta/\hat\beta\sim\chi^2(2n)$</div>
+        <div class="chain"><b>Cramér-Lundberg</b> : ruine certaine $\iff$ chargement de sécurité $\rho\le0$</div>
+        <div class="chain"><b>Générateur</b> = dérivée de $P_t$ en $0$ ; $P_t=\exp(tA)$ ; $a(x)=-A(x,x)$ = taux total de sortie de $x$</div>
+        <div class="chain"><b>CTMC</b> : chaîne immergée $Q=A/a$ + délais $\mathrm{Exp}(a(Z_k))$ indépendants ; convergence vers $\pi$ sans condition d'apériodicité</div>
+        <div class="chain"><b>Estimer $A$</b> : $\hat A(x,y)=N_T(x,y)/R_T(x)$ (comptage de sauts / temps d'exposition)</div>
+        <div class="chain"><b>Une file d'attente markovienne EST une CTMC de naissance et de mort</b></div>
+        <div class="chain"><b>M/M/1 stable</b> $\iff$ $\rho=\lambda/\mu<1$, et $\pi(n)=(1-\rho)\rho^n$ ; <b>Little</b> : $\lambda\,\mathbb E(U)=\mathbb E(X_t)$</div>
+        <div class="chain"><b>Découragement</b> : toujours stable, $\pi$ = Poisson$(\rho)$ exacte ; <b>M/M/S/S</b> : Poisson$(\rho)$ tronquée (Erlang B)</div>
+        <p class="source-note">Mémo basé sur les notes du cours <i>Statistique des processus</i> de L. Truquet (ENSAI 3A, 2024), le diaporama <i>Processus de Poisson homogène et non homogène</i>, les TP 1 et 2, et l'examen terminal du 17/01/2024 (filière GS/SSV). Toutes les formules ont été revérifiées directement sur le polycopié source ; les corrigés de TP et d'annale sont des reconstructions pédagogiques s'appuyant sur les résultats du cours, pas des corrigés officiels.</p>
+      </div>
+
+    </main>
+  </div>
+
+
+  <button id="toTop" aria-label="Retour en haut">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+<script>
+(function(){
+  "use strict";
+
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  function getStored(){ try{ return localStorage.getItem('sp-memo-theme'); }catch(e){ return null; } }
+  function setStored(v){ try{ localStorage.setItem('sp-memo-theme', v); }catch(e){} }
+  var stored = getStored();
+  if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next;
+    if(!current){ next = prefersDark ? 'light' : 'dark'; }
+    else if(current === 'dark'){ next = 'light'; }
+    else { next = 'dark'; }
+    root.setAttribute('data-theme', next);
+    setStored(next);
+  });
+
+  var bar = document.getElementById('progress');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    bar.style.width = height > 0 ? (scrollTop / height * 100) + '%' : '0%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  var toTop = document.getElementById('toTop');
+  document.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 500);
+  }, { passive: true });
+  toTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+  function markFormulaScroll(){
+    document.querySelectorAll('.formula').forEach(function(f){
+      f.classList.toggle('is-scrollable', f.scrollWidth > f.clientWidth + 2);
+    });
+  }
+  (function hookMathJaxReady(tries){
+    tries = tries || 0;
+    if(window.MathJax && window.MathJax.startup && window.MathJax.startup.promise){
+      window.MathJax.startup.promise.then(markFormulaScroll);
+    } else if(tries < 100){
+      setTimeout(function(){ hookMathJaxReady(tries + 1); }, 100);
+    } else {
+      markFormulaScroll();
+    }
+  })();
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(markFormulaScroll, 150);
+  });
+
+  document.querySelectorAll('.lecture-head').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.closest('.lecture').classList.toggle('collapsed');
+      setTimeout(markFormulaScroll, 50);
+    });
+  });
+
+  var toc = document.getElementById('toc');
+  var navToggle = document.getElementById('navToggle');
+  var overlay = document.getElementById('mobileOverlay');
+  function closeNav(){ toc.classList.remove('open'); overlay.hidden = true; }
+  navToggle.addEventListener('click', function(){
+    toc.classList.add('open'); overlay.hidden = false;
+  });
+  overlay.addEventListener('click', closeNav);
+  toc.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc-lecture a'));
+  var topics = Array.prototype.slice.call(document.querySelectorAll('article.topic'));
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id;
+        links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  topics.forEach(function(t){ io.observe(t); });
+
+  var search = document.getElementById('search');
+  var count = document.getElementById('searchCount');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box'));
+  function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  var boxData = boxes.map(function(b){ return { el: b, text: normalize(b.textContent) }; });
+
+  search.addEventListener('input', function(){
+    var q = normalize(search.value.trim());
+    if(!q){
+      boxData.forEach(function(b){ b.el.classList.remove('dim'); });
+      count.textContent = '';
+      document.querySelectorAll('.lecture').forEach(function(l){ l.classList.remove('collapsed'); });
+      return;
+    }
+    var matches = 0;
+    boxData.forEach(function(b){
+      var hit = b.text.indexOf(q) !== -1;
+      b.el.classList.toggle('dim', !hit);
+      if(hit){
+        matches++;
+        var lec = b.el.closest('.lecture');
+        if(lec) lec.classList.remove('collapsed');
+        var det = b.el.closest('details.solution');
+        if(det) det.open = true;
+      }
+    });
+    count.textContent = matches + ' résultat' + (matches === 1 ? '' : 's');
+    setTimeout(markFormulaScroll, 50);
+  });
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.documentElement.style.scrollBehavior = 'auto';
+  }
+
+  document.querySelectorAll('.qcm').forEach(function(qcm){
+    var submitBtn = qcm.querySelector('.qcm-submit');
+    var resetBtn = qcm.querySelector('.qcm-reset');
+    var resultEl = qcm.querySelector('.qcm-result');
+    var pool = Array.prototype.slice.call(qcm.querySelectorAll('.qcm-q'));
+    var VISIBLE = Math.min(5, pool.length);
+    var windowStart = 0;
+    var visible = [];
+
+    function resetQuestion(q){
+      q.classList.remove('graded', 'q-correct', 'q-incorrect');
+      q.querySelectorAll('.qcm-opt').forEach(function(opt){
+        opt.classList.remove('opt-right', 'opt-wrong-checked');
+        var input = opt.querySelector('input');
+        input.checked = false;
+        input.disabled = false;
+      });
+    }
+
+    function showWindow(start){
+      windowStart = ((start % pool.length) + pool.length) % pool.length;
+      visible = [];
+      pool.forEach(function(q){ q.style.display = 'none'; resetQuestion(q); });
+      for(var i = 0; i < VISIBLE; i++){
+        var q = pool[(windowStart + i) % pool.length];
+        q.style.display = '';
+        var qnum = q.querySelector('.qnum');
+        if(qnum) qnum.textContent = 'Q' + (i + 1);
+        visible.push(q);
+      }
+      resultEl.textContent = '';
+      submitBtn.disabled = false;
+    }
+
+    submitBtn.addEventListener('click', function(){
+      var score = 0;
+      visible.forEach(function(q){
+        var correct = q.getAttribute('data-correct').split(',').map(Number).sort();
+        var opts = Array.prototype.slice.call(q.querySelectorAll('.qcm-opt'));
+        var checked = [];
+        opts.forEach(function(opt, idx){
+          if(opt.querySelector('input').checked) checked.push(idx);
+        });
+        checked.sort();
+        var isCorrect = checked.length === correct.length && checked.every(function(v, i){ return v === correct[i]; });
+        if(isCorrect) score++;
+        q.classList.add('graded');
+        q.classList.toggle('q-correct', isCorrect);
+        q.classList.toggle('q-incorrect', !isCorrect);
+        opts.forEach(function(opt, idx){
+          var input = opt.querySelector('input');
+          var isRight = correct.indexOf(idx) !== -1;
+          var wasChecked = input.checked;
+          opt.classList.toggle('opt-right', isRight);
+          opt.classList.toggle('opt-wrong-checked', wasChecked && !isRight);
+          input.disabled = true;
+        });
+      });
+      resultEl.textContent = 'Score : ' + score + ' / ' + visible.length;
+      submitBtn.disabled = true;
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      showWindow(windowStart + 2);
+      setTimeout(markFormulaScroll, 50);
+    });
+
+    showWindow(0);
+  });
+})();
+</script>
+
+</body>
+</html>

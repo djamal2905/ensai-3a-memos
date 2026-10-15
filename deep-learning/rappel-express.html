@@ -202,6 +202,32 @@
         <span>MLP</span><span class="sep">→</span><span>CNN</span><span class="sep">→</span><span>RNN</span><span class="sep">→</span><span>VAE · GAN · Diffusion</span><span class="sep">→</span><span>Transformers</span>
       </div>
 
+      <figure style="margin:14px 0 10px;">
+        <svg viewBox="0 0 320 110" role="img" aria-label="Passe avant qui calcule la prediction et la perte, puis passe arriere qui renvoie le gradient couche par couche" style="width:100%;max-width:300px;height:auto;display:block;margin:0 auto;">
+          <defs>
+            <marker id="mbpF" markerWidth="7" markerHeight="7" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--accent)"/></marker>
+            <marker id="mbpB" markerWidth="7" markerHeight="7" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--warn-border)"/></marker>
+          </defs>
+          <text x="160" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">forward</text>
+          <path d="M44,55 Q85,35 112,55" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#mbpF)"/>
+          <path d="M138,55 Q180,35 207,55" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#mbpF)"/>
+          <path d="M233,55 Q258,35 272,55" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#mbpF)"/>
+          <circle cx="30" cy="62" r="14" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+          <text x="30" y="66" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">x</text>
+          <circle cx="125" cy="62" r="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="125" y="66" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent-strong)">h</text>
+          <circle cx="220" cy="62" r="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="220" y="66" text-anchor="middle" font-size="9" font-weight="700" fill="var(--accent-strong)">ŷ</text>
+          <rect x="272" y="48" width="34" height="28" rx="5" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.5"/>
+          <text x="289" y="66" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ex-label)">L</text>
+          <path d="M272,82 Q258,98 233,82" fill="none" stroke="var(--warn-border)" stroke-width="1.6" stroke-dasharray="3 2" marker-end="url(#mbpB)"/>
+          <path d="M207,82 Q180,98 138,82" fill="none" stroke="var(--warn-border)" stroke-width="1.6" stroke-dasharray="3 2" marker-end="url(#mbpB)"/>
+          <path d="M112,82 Q85,98 44,82" fill="none" stroke="var(--warn-border)" stroke-width="1.6" stroke-dasharray="3 2" marker-end="url(#mbpB)"/>
+          <text x="160" y="104" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warn-color)" font-family="JetBrains Mono, monospace">backward : le gradient</text>
+        </svg>
+        <figcaption style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">Le seul schéma à retenir de la Partie I : forward calcule x → h → ŷ → L, backward renvoie le gradient de L dans l'autre sens, couche par couche.</figcaption>
+      </figure>
+
       <p>Le cours raconte une seule histoire en cinq actes, et si vous ne retenez qu'un fil, retenez celui-ci : <b>à chaque partie, on part d'un problème que le modèle précédent ne sait pas résoudre, et on ajoute exactement la contrainte (le « biais inductif ») qui manque : jamais plus.</b></p>
 
       <p>Tout commence par la régression linéaire, trop rigide, puis par l'idée naïve de composer des couches affines : qui échoue platement, car une composition d'affines reste une affine. Il faut casser cette linéarité : c'est le Multi-Layer Perceptron, entraîné par descente de gradient et rétropropagation. La Partie I pose ainsi le <b>socle générique</b> : composer des couches, apprendre par gradient, régulariser, valider. Un MLP peut en théorie tout approximer (théorème d'approximation universelle) : mais « en théorie » ne veut pas dire « en pratique », et c'est déjà la première tension du cours : <i>ce qui est expressif n'est pas forcément entraînable ni utilisable tel quel.</i></p>
@@ -358,6 +384,28 @@
         <tr><td>Variantes clés</td><td>LSTM, GRU, bidirectionnel, empilé</td><td>encodeur-décodeur, GPT (décodeur seul), BERT (encodeur seul)</td></tr>
       </table>
 
+      <figure style="margin:14px 0 10px;">
+        <svg viewBox="0 0 300 130" role="img" aria-label="Cellule LSTM compacte : la memoire traverse une ligne horizontale, filtree par une porte d'oubli puis augmentee par une porte d'entree, une porte de sortie en extrait l'etat cache" style="width:100%;max-width:300px;height:auto;display:block;margin:0 auto;">
+          <defs><marker id="mlstmA" markerWidth="7" markerHeight="7" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--accent-strong)"/></marker></defs>
+          <line x1="14" y1="22" x2="276" y2="22" stroke="var(--accent-strong)" stroke-width="2.4" marker-end="url(#mlstmA)"/>
+          <text x="14" y="12" font-size="9" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">cₜ₋₁</text>
+          <text x="276" y="12" text-anchor="end" font-size="9" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">cₜ</text>
+          <circle cx="80" cy="22" r="11" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.6"/>
+          <text x="80" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="var(--warn-color)">×</text>
+          <text x="80" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="var(--warn-color)">oubli</text>
+          <circle cx="160" cy="22" r="11" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.6"/>
+          <text x="160" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="var(--def-label)">+</text>
+          <text x="160" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="var(--def-label)">entrée</text>
+          <circle cx="225" cy="22" r="3" fill="var(--accent-strong)"/>
+          <line x1="225" y1="22" x2="225" y2="60" stroke="var(--ink-soft)" stroke-width="1.3"/>
+          <circle cx="225" cy="78" r="11" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.6"/>
+          <text x="225" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ex-label)">×</text>
+          <text x="246" y="82" font-size="9" font-weight="700" fill="var(--ex-label)">sortie → hₜ</text>
+          <text x="150" y="112" text-anchor="middle" font-size="9.5" fill="var(--muted)">chaque porte dépend de hₜ₋₁ et xₜ</text>
+        </svg>
+        <figcaption style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">La mémoire cₜ traverse presque sans transformation : la porte d'oubli multiplie, la porte d'entrée ajoute, la porte de sortie en extrait hₜ. Le GRU fusionne oubli + entrée en une seule porte update.</figcaption>
+      </figure>
+
       <p class="cmp-caption">(b) VAE vs GAN vs Diffusion</p>
       <table class="cmp">
         <tr><th></th><th>VAE</th><th>GAN</th><th>Diffusion</th></tr>
@@ -367,6 +415,58 @@
         <tr><td>Ce qui est réellement appris</td><td>un encodeur + décodeur probabilistes</td><td>uniquement le générateur (discriminateur jeté)</td><td>un réseau de débruitage ε<sub>θ</sub>, appliqué itérativement</td></tr>
         <tr><td>Coût de calcul</td><td>faible</td><td>faible à modéré</td><td>élevé (centaines de passages), réduit par la diffusion latente</td></tr>
       </table>
+
+      <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin:14px 0 10px;">
+        <figure style="flex:1 1 300px;max-width:340px;margin:0;">
+          <svg viewBox="0 0 340 100" role="img" aria-label="Le generateur agrandit un vecteur latent z en image via des convolutions transposees, puis le discriminateur retrecit cette image jusqu'a un score vrai faux" style="width:100%;height:auto;display:block;margin:0 auto;">
+            <defs><marker id="mganA" markerWidth="6" markerHeight="6" refX="3.5" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 Z" fill="var(--muted)"/></marker></defs>
+            <rect x="8" y="38" width="12" height="24" rx="2" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.2"/>
+            <text x="14" y="76" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="JetBrains Mono, monospace">z</text>
+            <line x1="20" y1="50" x2="38" y2="50" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#mganA)"/>
+            <rect x="40" y="28" width="26" height="44" rx="2" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.3" fill-opacity="0.75"/>
+            <text x="53" y="18" text-anchor="middle" font-size="9" font-weight="700" fill="var(--def-label)">G</text>
+            <line x1="66" y1="50" x2="83" y2="50" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#mganA)"/>
+            <rect x="84" y="14" width="46" height="72" rx="3" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.7"/>
+            <text x="107" y="10" text-anchor="middle" font-size="9" font-weight="700" fill="var(--def-label)">image</text>
+            <line x1="130" y1="50" x2="148" y2="50" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#mganA)"/>
+            <rect x="150" y="28" width="28" height="44" rx="2" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.3" fill-opacity="0.85"/>
+            <line x1="178" y1="50" x2="199" y2="50" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#mganA)"/>
+            <circle cx="216" cy="50" r="15" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.7"/>
+            <text x="216" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong)">D</text>
+            <line x1="231" y1="50" x2="252" y2="50" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#mganA)"/>
+            <rect x="254" y="36" width="72" height="28" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.3"/>
+            <text x="290" y="54" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent-strong)">vrai / faux</text>
+          </svg>
+          <figcaption style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">G agrandit z en image (convolutions transposées) ; D rétrécit l'image jusqu'à un score (convolutions ordinaires).</figcaption>
+        </figure>
+        <figure style="flex:1 1 280px;max-width:320px;margin:0;">
+          <svg viewBox="0 0 300 100" role="img" aria-label="Le processus forward ajoute du bruit a une image etape par etape jusqu'a obtenir du bruit pur ; le processus reverse part de ce bruit et le debruite pas a pas pour retrouver une image" style="width:100%;height:auto;display:block;margin:0 auto;">
+            <defs>
+              <marker id="mdiffF" markerWidth="6" markerHeight="6" refX="3.5" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 Z" fill="var(--warn-border)"/></marker>
+              <marker id="mdiffR" markerWidth="6" markerHeight="6" refX="2.5" refY="2" orient="auto"><path d="M4,0 L0,2 L4,4 Z" fill="var(--accent)"/></marker>
+            </defs>
+            <path d="M8,8 H292" fill="none" stroke="var(--warn-border)" stroke-width="1.3" marker-end="url(#mdiffF)"/>
+            <text x="150" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--warn-color)">forward : on ajoute du bruit</text>
+            <rect x="8" y="16" width="44" height="44" rx="3" fill="var(--surface-2)" stroke="var(--border)"/>
+            <circle cx="30" cy="38" r="12" fill="var(--def-border)"/>
+            <rect x="92" y="16" width="44" height="44" rx="3" fill="var(--surface-2)" stroke="var(--border)"/>
+            <circle cx="114" cy="38" r="12" fill="var(--def-border)" fill-opacity="0.6"/>
+            <circle cx="100" cy="24" r="1.3" fill="var(--ink-soft)"/><circle cx="124" cy="20" r="1.3" fill="var(--ink-soft)"/><circle cx="128" cy="48" r="1.3" fill="var(--ink-soft)"/>
+            <text x="186" y="42" text-anchor="middle" font-size="13" fill="var(--muted)">⋯</text>
+            <rect x="248" y="16" width="44" height="44" rx="3" fill="var(--surface-2)" stroke="var(--border)"/>
+            <circle cx="258" cy="24" r="1.3" fill="var(--ink-soft)"/><circle cx="278" cy="22" r="1.3" fill="var(--ink-soft)"/><circle cx="285" cy="36" r="1.3" fill="var(--ink-soft)"/><circle cx="256" cy="42" r="1.3" fill="var(--ink-soft)"/><circle cx="270" cy="52" r="1.3" fill="var(--ink-soft)"/><circle cx="284" cy="50" r="1.3" fill="var(--ink-soft)"/><circle cx="262" cy="34" r="1.3" fill="var(--ink-soft)"/><circle cx="276" cy="44" r="1.3" fill="var(--ink-soft)"/>
+            <line x1="52" y1="38" x2="88" y2="38" stroke="var(--muted)" stroke-width="1.1"/>
+            <line x1="136" y1="38" x2="165" y2="38" stroke="var(--muted)" stroke-width="1.1"/>
+            <line x1="208" y1="38" x2="244" y2="38" stroke="var(--muted)" stroke-width="1.1"/>
+            <text x="30" y="72" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="JetBrains Mono, monospace">x₀</text>
+            <text x="114" y="72" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="JetBrains Mono, monospace">x₁</text>
+            <text x="270" y="72" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="JetBrains Mono, monospace">x_T</text>
+            <path d="M292,90 H8" fill="none" stroke="var(--accent)" stroke-width="1.3" marker-end="url(#mdiffR)"/>
+            <text x="150" y="99" text-anchor="middle" font-size="9" font-weight="700" fill="var(--accent-strong)">reverse : εθ retire le bruit</text>
+          </svg>
+          <figcaption style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">Forward (fixe, non appris) bruite pas à pas ; reverse (appris) débruite pas à pas pour générer.</figcaption>
+        </figure>
+      </div>
 
       <p class="cmp-caption">(c) Solutions à la croissance lente du champ réceptif</p>
       <table class="cmp">

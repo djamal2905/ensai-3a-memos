@@ -224,6 +224,47 @@ window.MathJax = {
   .scatterviz-violate{ fill:none; stroke:var(--thm-border); stroke-width:2; stroke-dasharray:3 2; }
   .scatterviz-xilabel{ font:700 10px "JetBrains Mono",monospace; fill:var(--thm-label); }
 
+  .diagram-figure{ margin:14px 0 6px; }
+  .diagram-caption{ font-size:.78rem; color:var(--muted); margin-top:8px; }
+
+  .curveviz-axis{ stroke:var(--ink-soft); stroke-width:1.4; }
+  .curveviz-label{ font:600 10.5px "JetBrains Mono",monospace; fill:var(--muted); }
+  .curveviz-ticklabel{ font:600 10px "JetBrains Mono",monospace; fill:var(--muted); text-anchor:middle; }
+  .curveviz-train{ fill:none; stroke:var(--muted); stroke-width:2; stroke-dasharray:5 4; }
+  .curveviz-test{ fill:none; stroke:var(--accent); stroke-width:2.6; }
+  .curveviz-optimal{ stroke:var(--warn-border); stroke-width:1.3; stroke-dasharray:3 3; }
+  .curveviz-zone{ font:600 10px "JetBrains Mono",monospace; fill:var(--muted); }
+
+  .projviz-plane{ fill:var(--def-bg); stroke:var(--def-border); stroke-width:1.6; opacity:.9; }
+  .projviz-vecY{ stroke:var(--warn-border); stroke-width:2.4; fill:none; }
+  .projviz-vecYhat{ stroke:var(--def-border); stroke-width:2.4; fill:none; }
+  .projviz-vecZ{ stroke:var(--ink-soft); stroke-width:1.6; fill:none; }
+  .projviz-resid{ stroke:var(--thm-border); stroke-width:1.8; stroke-dasharray:4 3; fill:none; }
+  .projviz-label{ font:700 11px "JetBrains Mono",monospace; fill:var(--ink); }
+  .projviz-right{ fill:none; stroke:var(--ink-soft); stroke-width:1.2; }
+
+  .regionviz-axis{ stroke:var(--ink-soft); stroke-width:1.2; }
+  .regionviz-contour{ fill:none; stroke:var(--muted); stroke-width:1.1; opacity:.6; }
+  .regionviz-boundary{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:2; opacity:.92; }
+  .regionviz-point{ fill:var(--warn-border); stroke:var(--surface); stroke-width:1.5; }
+  .regionviz-ols{ fill:var(--ink-soft); stroke:var(--surface); stroke-width:1.5; }
+  .regionviz-label{ font:600 9.5px "JetBrains Mono",monospace; fill:var(--muted); }
+  .regionviz-title{ font:700 .68rem "JetBrains Mono",monospace; fill:var(--ink-soft); text-anchor:middle; text-transform:uppercase; letter-spacing:.03em; }
+
+  .gdviz-contour{ fill:none; stroke:var(--border); stroke-width:1.2; }
+  .gdviz-path{ fill:none; stroke:var(--warn-border); stroke-width:2; }
+  .gdviz-pt{ fill:var(--warn-border); stroke:var(--surface); stroke-width:1.5; }
+  .gdviz-min{ fill:var(--def-border); stroke:var(--surface); stroke-width:1.5; }
+  .gdviz-label{ font:600 10px "JetBrains Mono",monospace; fill:var(--muted); }
+
+  .lrviz-curve{ fill:none; stroke:var(--ink-soft); stroke-width:1.6; }
+  .lrviz-step{ fill:none; stroke:var(--accent); stroke-width:1.8; }
+  .lrviz-step.is-diverge{ stroke:var(--warn-border); }
+  .lrviz-pt{ fill:var(--accent); stroke:var(--surface); stroke-width:1.3; }
+  .lrviz-pt.is-diverge{ fill:var(--warn-border); }
+  .lrviz-min{ fill:var(--def-border); }
+  .lrviz-title{ font:700 .64rem "JetBrains Mono",monospace; fill:var(--ink-soft); text-anchor:middle; text-transform:uppercase; letter-spacing:.02em; }
+
   .box pre{ background:var(--code-bg); color:var(--code-ink); border:1px solid var(--code-border); border-radius:8px; padding:10px 14px; margin:8px 0; overflow-x:auto; font-size:.82rem; line-height:1.5; }
   .box code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
 
@@ -472,9 +513,38 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Remarque · Biais-variance</p>
-              <p><b>Modèle complexe</b> : biais ↓, variance ↑ → surapprentissage (<i>overfitting</i>).<br>
-              <b>Modèle simple</b> : biais ↑, variance ↓ → sous-apprentissage (<i>underfitting</i>).</p>
-              <p class="sense">L'empirique décroît toujours avec la complexité (le modèle colle aux données) alors que le risque théorique, lui, forme un creux : c'est ce creux qu'on cherche.</p>
+              <p>Pensez à deux modèles extrêmes. Un modèle <b>trop simple</b> (une droite sur des données très courbes) ne peut pas bien coller aux données, même à celles d'entraînement : il est <b>biaisé</b>, mais stable d'un échantillon à l'autre, donc de <b>faible variance</b>. C'est le <b>sous-apprentissage</b> (<i>underfitting</i>). Un modèle <b>trop complexe</b> (un polynôme de degré 20 ajusté sur 20 points) peut au contraire coller presque parfaitement aux données d'entraînement : son biais chute, mais il devient très sensible au bruit précis de l'échantillon reçu, donc de <b>forte variance</b>. C'est le <b>surapprentissage</b> (<i>overfitting</i>).</p>
+              <p><b>Modèle complexe</b> : biais ↓, variance ↑ → surapprentissage.<br>
+              <b>Modèle simple</b> : biais ↑, variance ↓ → sous-apprentissage.</p>
+              <figure class="diagram-figure">
+                <div class="scatterviz-scroll">
+                  <svg class="scatterviz" viewBox="0 0 340 230" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="bvArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/></marker>
+                    </defs>
+                    <rect x="44" y="15" width="126" height="180" fill="var(--ex-bg)" opacity="0.4"/>
+                    <rect x="170" y="15" width="155" height="180" fill="var(--warn-bg)" opacity="0.3"/>
+                    <text class="curveviz-zone" x="60" y="30">sous-apprentissage</text>
+                    <text class="curveviz-zone" x="78" y="43">(biais ↑)</text>
+                    <text class="curveviz-zone" x="246" y="30">sur-apprentissage</text>
+                    <text class="curveviz-zone" x="266" y="43">(variance ↑)</text>
+                    <line class="curveviz-optimal" x1="170" y1="170" x2="170" y2="195"/>
+                    <path class="curveviz-test" d="M50,50 C90,90 130,140 170,170 C210,145 260,95 320,60"/>
+                    <path class="curveviz-train" d="M50,75 C110,145 160,178 210,187 C250,190 290,192 320,193"/>
+                    <circle cx="170" cy="170" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="1.3"/>
+                    <line class="curveviz-axis" x1="44" y1="195" x2="325" y2="195" marker-end="url(#bvArrow)"/>
+                    <line class="curveviz-axis" x1="44" y1="195" x2="44" y2="12" marker-end="url(#bvArrow)"/>
+                    <text class="curveviz-label" x="178" y="216">complexité du modèle</text>
+                    <text class="curveviz-label" x="8" y="22">erreur</text>
+                    <text class="curveviz-ticklabel" x="170" y="208">optimum</text>
+                  </svg>
+                </div>
+                <div class="scatterviz-legend">
+                  <span><i style="background:var(--muted)"></i> risque empirique (train) : décroît toujours avec la complexité</span>
+                  <span><i style="background:var(--accent)"></i> risque théorique (test) : forme un creux, c'est lui qu'on veut minimiser</span>
+                </div>
+              </figure>
+              <p class="sense">Le risque empirique (train) décroît toujours avec la complexité : le modèle colle de plus en plus aux données qu'il a vues. Le risque théorique (test), lui, forme un creux : c'est ce creux qu'on cherche, pas le minimum du risque empirique.</p>
             </div>
           </article>
 
@@ -522,6 +592,38 @@ window.MathJax = {
               <p class="box-label">Définition · Estimateur OLS</p>
               <div class="formula">$$\hat\theta_n\in\arg\min_{\theta\in\mathbb R^{d+1}}\ \|Y-Z\theta\|_2^2$$</div>
               <p class="sense"><b>Sens :</b> $\hat Y=Z\hat\theta_n$ est la projection orthogonale de $Y$ sur l'espace engendré par les colonnes de $Z$.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Illustration · Pourquoi l'OLS est une projection</p>
+              <p>Oubliez les formules un instant et pensez en image. Le vecteur $Y\in\mathbb R^n$ (les $n$ observations empilées) n'a, en général, aucune raison de vivre exactement dans le sous-espace engendré par les colonnes de $Z$ : ce sous-espace, noté $\mathrm{Vect}(Z)$, contient toutes les combinaisons linéaires possibles des variables explicatives, c'est-à-dire toutes les prédictions atteignables par un modèle linéaire. L'OLS cherche, dans ce sous-espace, le point $\hat Y$ le <b>plus proche possible</b> de $Y$. Trouver ce point le plus proche, c'est exactement projeter $Y$ orthogonalement sur $\mathrm{Vect}(Z)$.</p>
+              <figure class="diagram-figure">
+                <div class="scatterviz-scroll">
+                  <svg class="scatterviz" viewBox="0 0 340 230" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="projArrowZ" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/></marker>
+                      <marker id="projArrowY" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--warn-border)"/></marker>
+                      <marker id="projArrowYhat" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--def-border)"/></marker>
+                    </defs>
+                    <polygon class="projviz-plane" points="20,165 300,175 250,95 70,88"/>
+                    <text class="projviz-label" x="26" y="160" style="font-weight:600;font-size:10.5px;fill:var(--def-label)">Vect(Z)</text>
+                    <line class="projviz-vecZ" x1="140" y1="140" x2="230" y2="150" marker-end="url(#projArrowZ)"/>
+                    <line class="projviz-vecZ" x1="140" y1="140" x2="95" y2="105" marker-end="url(#projArrowZ)"/>
+                    <text class="projviz-label" x="235" y="150">z₁</text>
+                    <text class="projviz-label" x="72" y="100">z₂</text>
+                    <circle cx="140" cy="140" r="2.6" fill="var(--ink-soft)"/>
+                    <text class="projviz-label" x="126" y="158">0</text>
+                    <line class="projviz-vecY" x1="140" y1="140" x2="175" y2="35" marker-end="url(#projArrowY)"/>
+                    <text class="projviz-label" x="180" y="32" style="fill:var(--warn-border)">Y</text>
+                    <line class="projviz-vecYhat" x1="140" y1="140" x2="188" y2="120" marker-end="url(#projArrowYhat)"/>
+                    <text class="projviz-label" x="193" y="134" style="fill:var(--def-border)">Ŷ = Zθ̂</text>
+                    <line class="projviz-resid" x1="175" y1="35" x2="188" y2="120"/>
+                    <path class="projviz-right" d="M181,109 L191,112 L188,122"/>
+                    <text class="projviz-label" x="198" y="75" style="fill:var(--thm-label);font-size:10px">ε̂ = Y − Ŷ</text>
+                  </svg>
+                </div>
+              </figure>
+              <p class="sense">L'OLS est donc, avant d'être une formule, un problème de distance minimale : parmi tous les points du plan $\mathrm{Vect}(Z)$, lequel est le plus proche de $Y$ ? La réponse $\hat Y$ est toujours reliée à $Y$ par un segment perpendiculaire au plan, le résidu $\hat\varepsilon=Y-\hat Y$, exactement comme on laisse tomber une perpendiculaire d'un point vers un mur pour trouver le point du mur le plus proche.</p>
             </div>
 
             <div class="box box-thm">
@@ -580,7 +682,7 @@ window.MathJax = {
 
             <div class="box box-ex">
               <p class="box-label">Remarque · Lecture géométrique</p>
-              <p>La formulation lagrangienne $\min\|y-X\theta\|_2^2$ sous $\|\theta\|_2^2\le T$ montre que la solution est l'intersection entre les ellipses de niveau de la perte et la <b>boule $L^2$</b> (ronde) : elle réduit les coefficients sans jamais les annuler exactement.</p>
+              <p>La formulation lagrangienne $\min\|y-X\theta\|_2^2$ sous $\|\theta\|_2^2\le T$ montre que la solution est l'intersection entre les ellipses de niveau de la perte et la <b>boule $L^2$</b> (ronde) : elle réduit les coefficients sans jamais les annuler exactement, car un cercle n'a pas de pointe sur les axes. Le schéma comparatif avec le Lasso (fiche 7) rend cette différence visuelle immédiate.</p>
             </div>
           </article>
 
@@ -614,8 +716,48 @@ window.MathJax = {
             </div>
 
             <div class="box box-ex">
-              <p class="box-label">Remarque · Géométrie &amp; biais</p>
-              <p>La boule $L^1$ (un <b>losange</b>, avec des pointes sur les axes) intersecte souvent les niveaux de la perte exactement sur un axe : d'où les coefficients nuls. Le Lasso est cependant <b>biaisé</b> : on corrige avec le <b>LS-Lasso</b>, un OLS classique réajusté uniquement sur les variables sélectionnées par le Lasso.</p>
+              <p class="box-label">Illustration · Pourquoi le Lasso annule des coefficients et le Ridge non</p>
+              <p>La formulation lagrangienne de la fiche 5 est la clé pour comprendre la différence. Minimiser $\|y-X\theta\|_2^2$ sous une contrainte $\|\theta\|\le T$ revient à chercher, dans la <b>région contrainte</b> (la boule $L^1$ ou $L^2$), le point le plus proche du minimum non contraint $\hat\theta^{\mathrm{OLS}}$ au sens des ellipses de niveau de la perte. Tout se joue sur la <b>forme</b> de cette région.</p>
+              <figure class="diagram-figure">
+                <div class="scatterviz-scroll">
+                  <svg class="scatterviz" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="axArrow" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--ink-soft)"/></marker>
+                    </defs>
+                    <text class="regionviz-title" x="80" y="16">Ridge (boule L²)</text>
+                    <line class="regionviz-axis" x1="10" y1="105" x2="150" y2="105" marker-end="url(#axArrow)"/>
+                    <line class="regionviz-axis" x1="80" y1="195" x2="80" y2="30" marker-end="url(#axArrow)"/>
+                    <text class="regionviz-label" x="153" y="109">θ₁</text>
+                    <text class="regionviz-label" x="84" y="34">θ₂</text>
+                    <circle class="regionviz-boundary" cx="80" cy="105" r="48"/>
+                    <ellipse class="regionviz-contour" cx="128" cy="68" rx="20" ry="11" transform="rotate(-28 128 68)"/>
+                    <ellipse class="regionviz-contour" cx="128" cy="68" rx="38" ry="22" transform="rotate(-28 128 68)"/>
+                    <ellipse class="regionviz-contour" cx="128" cy="68" rx="56" ry="33" transform="rotate(-28 128 68)"/>
+                    <circle class="regionviz-ols" cx="128" cy="68" r="4"/>
+                    <text class="regionviz-label" x="132" y="60">θ̂ᴼᴸˢ</text>
+                    <circle class="regionviz-point" cx="107" cy="91" r="4.5"/>
+                    <text class="regionviz-label" x="100" y="104">θ̂ Ridge</text>
+                    <text class="regionviz-title" x="258" y="16">Lasso (boule L¹)</text>
+                    <line class="regionviz-axis" x1="188" y1="105" x2="328" y2="105" marker-end="url(#axArrow)"/>
+                    <line class="regionviz-axis" x1="258" y1="195" x2="258" y2="30" marker-end="url(#axArrow)"/>
+                    <text class="regionviz-label" x="331" y="109">θ₁</text>
+                    <text class="regionviz-label" x="262" y="34">θ₂</text>
+                    <polygon class="regionviz-boundary" points="258,57 306,105 258,153 210,105"/>
+                    <ellipse class="regionviz-contour" cx="306" cy="68" rx="20" ry="11" transform="rotate(-28 306 68)"/>
+                    <ellipse class="regionviz-contour" cx="306" cy="68" rx="38" ry="22" transform="rotate(-28 306 68)"/>
+                    <ellipse class="regionviz-contour" cx="306" cy="68" rx="56" ry="33" transform="rotate(-28 306 68)"/>
+                    <circle class="regionviz-ols" cx="306" cy="68" r="4"/>
+                    <text class="regionviz-label" x="310" y="60">θ̂ᴼᴸˢ</text>
+                    <circle class="regionviz-point" cx="258" cy="57" r="4.5"/>
+                    <text class="regionviz-label" x="222" y="52">θ̂ Lasso : θ₂ = 0</text>
+                  </svg>
+                </div>
+                <div class="scatterviz-legend">
+                  <span><i style="background:var(--ink-soft)"></i> ellipses : niveaux de la perte $\|y-X\theta\|_2^2$ (la plus petite = la plus proche de l'OLS)</span>
+                  <span><i style="background:var(--warn-border)"></i> solution régularisée θ̂ : premier point de contact avec la région</span>
+                </div>
+              </figure>
+              <p class="sense">À gauche, la boule $L^2$ est <b>ronde</b> : la plus petite ellipse qui la touche le fait presque toujours en un point quelconque de son contour, avec les deux coordonnées non nulles. À droite, la boule $L^1$ a des <b>pointes</b> sur les axes : ces pointes sont les points de la frontière les plus « faciles à atteindre » pour une ellipse qui grandit, donc la solution tombe très souvent exactement sur une pointe, c'est-à-dire avec une coordonnée mise à zéro. Le Lasso reste cependant <b>biaisé</b> : on corrige avec le <b>LS-Lasso</b>, un OLS classique réajusté uniquement sur les variables que le Lasso a sélectionnées.</p>
             </div>
           </article>
 
@@ -874,6 +1016,40 @@ def lasso_cd(X, y, lam, n_iter=100):
               <p class="sense"><b>Sens :</b> le gradient pointe vers les valeurs croissantes ; on avance dans la direction opposée. $\gamma_t$ = taille du pas.</p>
             </div>
 
+            <div class="box box-ex">
+              <p class="box-label">Illustration · À quoi ressemble une descente de gradient</p>
+              <p>Imaginez $F$ comme un paysage vu d'en haut, avec des lignes de niveau comme sur une carte topographique : chaque courbe relie les points de même altitude (même valeur de $F$), et le minimum $\theta^\star$ est au fond de la vallée. En partant d'un point $\theta_0$, chaque pas de GD avance dans la direction qui fait baisser l'altitude le plus vite, c'est-à-dire perpendiculairement à la ligne de niveau locale.</p>
+              <figure class="diagram-figure">
+                <div class="scatterviz-scroll">
+                  <svg class="scatterviz" viewBox="0 0 340 230" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="gdArrow" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--warn-border)"/></marker>
+                    </defs>
+                    <ellipse class="gdviz-contour" cx="170" cy="120" rx="30" ry="80"/>
+                    <ellipse class="gdviz-contour" cx="170" cy="120" rx="60" ry="100"/>
+                    <ellipse class="gdviz-contour" cx="170" cy="120" rx="90" ry="118"/>
+                    <ellipse class="gdviz-contour" cx="170" cy="120" rx="120" ry="135"/>
+                    <path class="gdviz-path" d="M275,45 L95,70" marker-end="url(#gdArrow)"/>
+                    <path class="gdviz-path" d="M95,70 L245,105" marker-end="url(#gdArrow)"/>
+                    <path class="gdviz-path" d="M245,105 L115,135" marker-end="url(#gdArrow)"/>
+                    <path class="gdviz-path" d="M115,135 L205,150" marker-end="url(#gdArrow)"/>
+                    <path class="gdviz-path" d="M205,150 L160,135" marker-end="url(#gdArrow)"/>
+                    <circle class="gdviz-pt" cx="275" cy="45" r="5"/>
+                    <text class="gdviz-label" x="282" y="42">θ₀</text>
+                    <circle class="gdviz-pt" cx="95" cy="70" r="4"/>
+                    <text class="gdviz-label" x="58" y="68">θ₁</text>
+                    <circle class="gdviz-pt" cx="245" cy="105" r="4"/>
+                    <text class="gdviz-label" x="252" y="102">θ₂</text>
+                    <circle class="gdviz-pt" cx="115" cy="135" r="4"/>
+                    <text class="gdviz-label" x="78" y="140">θ₃</text>
+                    <circle class="gdviz-min" cx="170" cy="120" r="5"/>
+                    <text class="gdviz-label" x="176" y="115" style="fill:var(--def-label);font-weight:700">θ*</text>
+                  </svg>
+                </div>
+              </figure>
+              <p class="sense">Des lignes de niveau très <b>allongées</b>, comme ici, signalent un problème mal conditionné (grand $\kappa=L/\mu$, cf. l'exemple ci-dessus) : la direction du gradient pointe presque perpendiculairement à la direction qui mène réellement au minimum, ce qui force GD à <b>zigzaguer</b> au lieu d'avancer tout droit. Avec des lignes de niveau circulaires ($\kappa=1$), un seul pas suffirait à atteindre $\theta^\star$.</p>
+            </div>
+
             <div class="box box-def">
               <p class="box-label">Définition · Convexité, forte convexité, $L$-smoothness</p>
               <div class="formula">$$F(\eta)\ge F(\theta)+\nabla F(\theta)^T(\eta-\theta) \qquad \text{(convexe)}$$</div>
@@ -903,6 +1079,60 @@ def lasso_cd(X, y, lam, n_iter=100):
             <div class="box box-thm">
               <p class="box-label">Proposition · Petits pas ne peuvent pas nuire</p>
               <div class="formula">$$F \text{ } L\text{-smooth}, \ \ \gamma\le\frac2L \quad\Longrightarrow\quad F(\theta_t)\le F(\theta_{t-1}) \ \ \forall t$$</div>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Illustration · Bon pas, pas trop petit, pas trop grand</p>
+              <p>Avant les formules de convergence ci-dessous, regardons simplement ce qui se passe sur une perte à une seule variable, en forme de bol. Un pas $\gamma$ <b>trop petit</b> avance très prudemment : GD converge bien, mais au prix d'un très grand nombre d'itérations. Un <b>bon</b> pas descend efficacement, avec peut-être une légère oscillation d'un bord à l'autre du bol qui s'amortit vite. Un pas <b>trop grand</b> (au-delà de la borne $\gamma\le2/L$ de la proposition ci-dessus) fait l'inverse d'un pas qui aide : chaque itération rebondit plus loin que la précédente, et $F$ finit par <b>augmenter</b> au lieu de diminuer.</p>
+              <figure class="diagram-figure">
+                <div class="scatterviz-scroll">
+                  <svg class="scatterviz" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="lrArrow" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--accent)"/></marker>
+                      <marker id="lrArrowWarn" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--warn-border)"/></marker>
+                    </defs>
+                    <text class="lrviz-title" x="55" y="14">pas trop petit</text>
+                    <path class="lrviz-curve" d="M10,150 L55,40 L100,150"/>
+                    <circle class="lrviz-min" cx="55" cy="40" r="3.5"/>
+                    <path class="lrviz-step" d="M20,126 L30,101" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M30,101 L38,82" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M38,82 L44,67" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M44,67 L48,57" marker-end="url(#lrArrow)"/>
+                    <circle class="lrviz-pt" cx="20" cy="126" r="3.5"/>
+                    <circle class="lrviz-pt" cx="30" cy="101" r="3.5"/>
+                    <circle class="lrviz-pt" cx="38" cy="82" r="3.5"/>
+                    <circle class="lrviz-pt" cx="44" cy="67" r="3.5"/>
+                    <circle class="lrviz-pt" cx="48" cy="57" r="3.5"/>
+                    <text class="lrviz-title" x="170" y="14">bon pas</text>
+                    <path class="lrviz-curve" d="M125,150 L170,40 L215,150"/>
+                    <circle class="lrviz-min" cx="170" cy="40" r="3.5"/>
+                    <path class="lrviz-step" d="M135,126 L200,113" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M200,113 L150,89" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M150,89 L180,64" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M180,64 L163,57" marker-end="url(#lrArrow)"/>
+                    <path class="lrviz-step" d="M163,57 L174,50" marker-end="url(#lrArrow)"/>
+                    <circle class="lrviz-pt" cx="135" cy="126" r="3.5"/>
+                    <circle class="lrviz-pt" cx="200" cy="113" r="3.5"/>
+                    <circle class="lrviz-pt" cx="150" cy="89" r="3.5"/>
+                    <circle class="lrviz-pt" cx="180" cy="64" r="3.5"/>
+                    <circle class="lrviz-pt" cx="163" cy="57" r="3.5"/>
+                    <circle class="lrviz-pt" cx="174" cy="50" r="3.5"/>
+                    <text class="lrviz-title" x="285" y="14">pas trop grand</text>
+                    <path class="lrviz-curve" d="M240,150 L285,40 L330,150"/>
+                    <circle class="lrviz-min" cx="285" cy="40" r="3.5"/>
+                    <path class="lrviz-step is-diverge" d="M283,45 L322,130" marker-end="url(#lrArrowWarn)"/>
+                    <path class="lrviz-step is-diverge" d="M322,130 L248,130" marker-end="url(#lrArrowWarn)"/>
+                    <path class="lrviz-step is-diverge" d="M248,130 L329,148" marker-end="url(#lrArrowWarn)"/>
+                    <path class="lrviz-step is-diverge" d="M329,148 L335,20" marker-end="url(#lrArrowWarn)" stroke-dasharray="3 3"/>
+                    <circle class="lrviz-pt is-diverge" cx="283" cy="45" r="3.5"/>
+                    <circle class="lrviz-pt is-diverge" cx="322" cy="130" r="3.5"/>
+                    <circle class="lrviz-pt is-diverge" cx="248" cy="130" r="3.5"/>
+                    <circle class="lrviz-pt is-diverge" cx="329" cy="148" r="3.5"/>
+                    <text x="245" y="30" style="fill:var(--warn-border);font:700 9px 'JetBrains Mono',monospace">↑ diverge</text>
+                  </svg>
+                </div>
+              </figure>
+              <p class="sense">C'est exactement ce que dit la Proposition « petits pas ne peuvent pas nuire » ci-dessus : $\gamma\le2/L$ est la frontière entre les deux comportements de gauche et du milieu (convergence, même oscillante) et le comportement de droite (divergence). Et un $L$ grand, comme sur les lignes de niveau très allongées de la fiche 9, abaisse d'autant cette borne $2/L$ : c'est pour cela qu'un problème mal conditionné impose des pas prudents.</p>
             </div>
 
             <div class="box box-thm">

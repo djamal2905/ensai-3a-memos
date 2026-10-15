@@ -846,6 +846,32 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <p>Pour <b>prédire</b>, un calcul <i>avant</i> (forward) suffit. Pour le <b>gradient</b>, un calcul <i>arrière</i> (backward, rétropropagation) est nécessaire, fondé sur la règle de la chaîne $(g\circ f)'=(g'\circ f)\cdot f'$. <code>torch.autograd</code> l'implémente automatiquement.</p>
               <p class="sense"><b>Sens :</b> dans un réseau profond, calculer les gradients de la sortie vers l'entrée (de droite à gauche) ne nécessite que des produits <b>matrice/vecteur</b> : jamais matrice/matrice, ce qui est bien moins coûteux.</p>
             </div>
+
+            <figure style="margin:16px 0 10px;">
+              <svg viewBox="0 0 480 210" role="img" aria-label="Schema de la passe avant et de la passe arriere a travers un petit reseau x vers h vers y chapeau vers la perte L" style="width:100%;max-width:480px;height:auto;display:block;margin:0 auto;">
+                <defs>
+                  <marker id="bpArrowFwd" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+                  <marker id="bpArrowBwd" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--warn-border)"/></marker>
+                </defs>
+                <text x="240" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">forward : calcule ŷ puis L</text>
+                <path d="M72,95 Q130,58 168,95" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#bpArrowFwd)"/>
+                <path d="M212,95 Q270,58 308,95" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#bpArrowFwd)"/>
+                <path d="M352,95 Q385,58 403,95" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#bpArrowFwd)"/>
+                <circle cx="50" cy="110" r="22" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="2"/>
+                <text x="50" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">x</text>
+                <circle cx="190" cy="110" r="22" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="190" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-strong)">h</text>
+                <circle cx="330" cy="110" r="22" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="330" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-strong)">ŷ</text>
+                <rect x="405" y="88" width="55" height="44" rx="6" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="2"/>
+                <text x="432" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ex-label)">L</text>
+                <path d="M403,128 Q385,165 352,128" fill="none" stroke="var(--warn-border)" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#bpArrowBwd)"/>
+                <path d="M308,128 Q270,165 212,128" fill="none" stroke="var(--warn-border)" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#bpArrowBwd)"/>
+                <path d="M168,128 Q130,165 72,128" fill="none" stroke="var(--warn-border)" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#bpArrowBwd)"/>
+                <text x="240" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="var(--warn-color)" font-family="JetBrains Mono, monospace">backward : renvoie le gradient de L</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">La passe avant (bleu) calcule la prédiction puis la perte, de gauche à droite. La passe arrière (orange) renvoie ensuite le gradient de la perte, couche par couche, de droite à gauche : c'est cette seconde passe que fait <code>torch.autograd</code>.</figcaption>
+            </figure>
           </article>
 
           <article class="topic" id="s7">
@@ -1883,6 +1909,38 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <div class="tophead"><span class="num">17</span><h2>Détection &amp; segmentation : R-CNN → YOLO → U-Net</h2></div>
             <p>La classification donne <b>un</b> label par image. Détecter <i>où</i> se trouvent les objets, ou classer <i>chaque pixel</i>, demande des architectures dédiées. Prenons une seule photo tout au long de cette fiche, pour comparer <b>concrètement</b> ce que chaque famille de méthode en fait : une photo de rue $1000\times700$, avec une voiture à gauche et un piéton à droite.</p>
 
+            <p class="sense" style="margin-bottom:10px;"><b>Avant le détail :</b> les trois familles ci-dessous répondent à la même question (où sont les objets ?) par trois pipelines très différents. Voici leur forme générale, à comparer d'un coup d'œil avant d'entrer dans chacune.</p>
+            <div class="diffflow">
+              <div class="diffflow-row" style="border-left:3px solid var(--ex-border);">
+                <span class="diffflow-tag" style="color:var(--ex-label);">R-CNN / Fast R-CNN : d'abord proposer, puis classer</span>
+                <div class="flow">
+                  <div class="fb accent">Image</div><div class="arrow">→</div>
+                  <div class="fb">≈ 2000 régions candidates</div><div class="arrow">→</div>
+                  <div class="fb">CNN sur chaque région</div><div class="arrow">→</div>
+                  <div class="fb accent">classe + boîte, région par région</div>
+                </div>
+              </div>
+              <div class="diffflow-row" style="border-left:3px solid var(--thm-border);">
+                <span class="diffflow-tag" style="color:var(--thm-label);">YOLO : tout en une seule passe</span>
+                <div class="flow">
+                  <div class="fb accent">Image</div><div class="arrow">→</div>
+                  <div class="fb">grille $S\times S$ posée dessus</div><div class="arrow">→</div>
+                  <div class="fb">CNN, une seule fois</div><div class="arrow">→</div>
+                  <div class="fb accent">toutes les boîtes + classes d'un coup</div>
+                </div>
+              </div>
+              <div class="diffflow-row" style="border-left:3px solid var(--accent);">
+                <span class="diffflow-tag" style="color:var(--accent-strong);">U-Net : encodeur-décodeur avec raccourcis</span>
+                <div class="flow">
+                  <div class="fb accent">Image</div><div class="arrow">→</div>
+                  <div class="fb">chemin contractant (conv + pool)</div><div class="arrow">→</div>
+                  <div class="fb">chemin expansif (up-conv)</div><div class="arrow">→</div>
+                  <div class="fb accent">1 classe par pixel, même résolution qu'en entrée</div>
+                </div>
+                <p style="font-size:.76rem;color:var(--muted);margin:6px 0 0;max-width:none;">Des raccourcis relient les deux chemins au même niveau de résolution : ils <b>concatènent</b> (fiche ci-dessous), ils n'additionnent pas comme ResNet.</p>
+              </div>
+            </div>
+
             <div class="box box-ex">
               <p class="box-label">Exemple · R-CNN puis Fast R-CNN (détection par régions)</p>
               <p><b>R-CNN</b> : (1) image d'entrée ; (2) extraction d'environ <b>2000 régions candidates</b> (un algorithme classique de recherche par similarité de couleur/texture propose 2000 rectangles susceptibles de contenir un objet, dont un autour de la voiture et un autour du piéton, mais aussi 1998 rectangles inutiles) ; (3) chaque région est <b>redimensionnée</b> à une taille fixe (ex. $224\times224$) et passée dans un CNN complet ; (4) classification. Les boîtes à forte probabilité de classe sont ensuite fusionnées. → très coûteux : <b>2000 passes CNN complètes</b> pour cette seule photo. Si un unique passage dans le CNN prend, disons, $5\,\text{ms}$, cela fait déjà $2000\times5\,\text{ms}=10$ secondes, rien que pour la partie CNN.</p>
@@ -2456,17 +2514,65 @@ for layer in layers:
 
           <article class="topic" id="s23">
             <div class="tophead"><span class="num">23</span><h2>LSTM (Long Short-Term Memory)</h2></div>
-            <p>Hochreiter &amp; Schmidhuber (1997), proposé précisément pour traiter le problème du gradient évanescent. Idée : ajouter un <b>vecteur mémoire</b> $\mathbf c_t$ à côté de l'état caché $\mathbf h_t$, et contrôler ce qui y entre/sort par des <b>portes</b>.</p>
+            <p>Hochreiter &amp; Schmidhuber (1997), proposé précisément pour traiter le problème du gradient évanescent de la fiche 22. L'idée tient en une image avant de tenir en une formule : imaginez un <b>tapis roulant</b> qui transporte la mémoire $\mathbf c_t$ tout le long de la séquence, d'un bout à l'autre. À chaque pas de temps, trois petites <b>vannes</b> (les portes) agissent sur ce tapis roulant : une vanne décide quoi <b>jeter</b> de ce qu'il transportait déjà, une autre décide quoi <b>ajouter</b> de neuf, une troisième décide quoi <b>laisser sortir</b> pour fabriquer l'état caché $\mathbf h_t$ utilisé à cette étape. Le point clé : le tapis roulant lui-même n'est jamais multiplié par une matrice à chaque pas, seulement modifié terme à terme par les vannes. C'est cette différence avec le RNN vanille qui évite au gradient de s'évanouir.</p>
 
-            <div class="gatesmini">
-              <div class="gatesmini-row">
-                <span class="gate-pill">oubli $f_t$</span>
-                <span class="gate-pill">entrée $i_t$</span>
-                <span class="gate-pill">sortie $o_t$</span>
-              </div>
-              <div class="gatesmini-arrows"><span>↓</span><span>↓</span><span>↓</span></div>
-              <div class="gatesmini-cell">Cellule $c_t$ (état interne)</div>
-            </div>
+            <figure style="margin:16px 0 10px;">
+              <svg viewBox="0 0 520 250" role="img" aria-label="Cellule LSTM : une ligne d'etat cellulaire horizontale traverse le temps, modifiee par une porte d'oubli qui multiplie, puis une porte d'entree qui ajoute un candidat, et une porte de sortie qui filtre tanh de la cellule pour produire l'etat cache" style="width:100%;max-width:520px;height:auto;display:block;margin:0 auto;">
+                <defs>
+                  <marker id="lstmArrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-strong)"/></marker>
+                  <marker id="lstmArrowOut" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ex-border)"/></marker>
+                </defs>
+                <!-- cell state line : the conveyor belt -->
+                <line x1="20" y1="40" x2="478" y2="40" stroke="var(--accent-strong)" stroke-width="3" marker-end="url(#lstmArrow)"/>
+                <text x="20" y="24" font-size="11" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">cₜ₋₁ (mémoire qui arrive)</text>
+                <text x="478" y="24" text-anchor="end" font-size="11" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">cₜ (mémoire qui repart)</text>
+                <!-- forget gate: multiply -->
+                <circle cx="130" cy="40" r="14" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="2"/>
+                <text x="130" y="45" text-anchor="middle" font-size="15" font-weight="700" fill="var(--warn-color)">×</text>
+                <line x1="130" y1="200" x2="130" y2="54" stroke="var(--warn-border)" stroke-width="1.5"/>
+                <!-- input gate x candidate: multiply, then add -->
+                <circle cx="235" cy="118" r="13" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="2"/>
+                <text x="235" y="123" text-anchor="middle" font-size="14" font-weight="700" fill="var(--def-label)">×</text>
+                <line x1="200" y1="200" x2="225" y2="128" stroke="var(--def-border)" stroke-width="1.5"/>
+                <line x1="270" y1="200" x2="245" y2="128" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <line x1="245" y1="108" x2="250" y2="54" stroke="var(--def-border)" stroke-width="1.5"/>
+                <circle cx="250" cy="40" r="14" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="2"/>
+                <text x="250" y="45" text-anchor="middle" font-size="16" font-weight="700" fill="var(--def-label)">+</text>
+                <!-- tap off the line, squish by tanh, then output gate filters it into h_t -->
+                <circle cx="380" cy="40" r="3" fill="var(--accent-strong)"/>
+                <line x1="380" y1="40" x2="380" y2="70" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <rect x="352" y="70" width="56" height="30" rx="6" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="380" y="90" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink-soft)" font-family="JetBrains Mono, monospace">tanh</text>
+                <line x1="380" y1="100" x2="380" y2="120" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <circle cx="380" cy="134" r="14" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="2"/>
+                <text x="380" y="139" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ex-label)">×</text>
+                <line x1="200" y1="200" x2="380" y2="200" stroke="none"/>
+                <line x1="380" y1="200" x2="380" y2="148" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <path d="M394,134 H444" fill="none" stroke="var(--ex-border)" stroke-width="2" marker-end="url(#lstmArrowOut)"/>
+                <text x="450" y="139" font-size="12" font-weight="700" fill="var(--ex-label)" font-family="JetBrains Mono, monospace">hₜ</text>
+                <!-- the three gates + the candidate, as small boxes fed by [h_{t-1}, x_t] -->
+                <rect x="100" y="168" width="60" height="34" rx="6" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.5"/>
+                <text x="130" y="182" text-anchor="middle" font-size="10" fill="var(--warn-color)" font-family="JetBrains Mono, monospace">σ</text>
+                <text x="130" y="196" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warn-color)">oubli fₜ</text>
+                <rect x="170" y="168" width="60" height="34" rx="6" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.5"/>
+                <text x="200" y="182" text-anchor="middle" font-size="10" fill="var(--def-label)" font-family="JetBrains Mono, monospace">σ</text>
+                <text x="200" y="196" text-anchor="middle" font-size="10" font-weight="700" fill="var(--def-label)">entrée iₜ</text>
+                <rect x="240" y="168" width="60" height="34" rx="6" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="270" y="182" text-anchor="middle" font-size="10" fill="var(--ink-soft)" font-family="JetBrains Mono, monospace">tanh</text>
+                <text x="270" y="196" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink-soft)">candidat</text>
+                <rect x="350" y="168" width="60" height="34" rx="6" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <text x="380" y="182" text-anchor="middle" font-size="10" fill="var(--ex-label)" font-family="JetBrains Mono, monospace">σ</text>
+                <text x="380" y="196" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ex-label)">sortie oₜ</text>
+                <!-- shared input bus : h_{t-1} and x_t, concatenated, feed every gate -->
+                <line x1="90" y1="222" x2="420" y2="222" stroke="var(--muted)" stroke-width="1.5"/>
+                <line x1="130" y1="222" x2="130" y2="202" stroke="var(--muted)" stroke-width="1.5"/>
+                <line x1="200" y1="222" x2="200" y2="202" stroke="var(--muted)" stroke-width="1.5"/>
+                <line x1="270" y1="222" x2="270" y2="202" stroke="var(--muted)" stroke-width="1.5"/>
+                <line x1="380" y1="222" x2="380" y2="202" stroke="var(--muted)" stroke-width="1.5"/>
+                <text x="255" y="240" text-anchor="middle" font-size="11" fill="var(--muted)">entrées de chaque porte : $h_{t-1}$ et $x_t$ (concaténés)</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">La ligne horizontale est la mémoire $c_t$, qui traverse le temps presque sans transformation. La porte d'oubli (rouge) multiplie ce qu'elle contient déjà ; la porte d'entrée (verte) y ajoute un candidat ; la porte de sortie (bleue) filtre $\tanh(c_t)$ pour produire $h_t$.</figcaption>
+            </figure>
 
             <div class="box box-def">
               <p class="box-label">Définition · Les trois portes + le candidat</p>
@@ -2501,16 +2607,49 @@ for layer in layers:
 
           <article class="topic" id="s24">
             <div class="tophead"><span class="num">24</span><h2>GRU (Gated Recurrent Unit)</h2></div>
-            <p>Variante <b>simplifiée</b> du LSTM : une seule ligne d'état $\mathbf h_t$, deux portes au lieu de trois.</p>
+            <p>Variante <b>simplifiée</b> du LSTM : il n'y a plus de tapis roulant séparé pour la mémoire, une seule ligne d'état $\mathbf h_t$ fait les deux métiers à la fois, et deux portes suffisent au lieu de trois. L'idée se résume en une phrase : à chaque pas, le réseau choisit un <b>curseur</b> entre « garder l'ancien état tel quel » et « adopter entièrement le nouveau candidat », plutôt que d'empiler des opérations séparées comme le LSTM.</p>
 
-            <div class="gatesmini" style="max-width:260px;">
-              <div class="gatesmini-row">
-                <span class="gate-pill">reset $r_t$</span>
-                <span class="gate-pill">update $z_t$</span>
-              </div>
-              <div class="gatesmini-arrows"><span>↓</span><span>↓</span></div>
-              <div class="gatesmini-cell">État caché $h_t$</div>
-            </div>
+            <figure style="margin:16px 0 10px;">
+              <svg viewBox="0 0 460 230" role="img" aria-label="Cellule GRU : l'etat cache precedent et un candidat sont combines par une moyenne ponderee pilotee par la porte de mise a jour, le candidat etant lui-meme calcule a partir d'un etat precedent filtre par la porte de reinitialisation" style="width:100%;max-width:460px;height:auto;display:block;margin:0 auto;">
+                <defs>
+                  <marker id="gruArrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-strong)"/></marker>
+                </defs>
+                <!-- h line in -->
+                <line x1="20" y1="40" x2="202" y2="40" stroke="var(--accent-strong)" stroke-width="3"/>
+                <text x="20" y="24" font-size="11" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">hₜ₋₁</text>
+                <!-- blend node : convex combination -->
+                <circle cx="220" cy="40" r="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="220" y="46" text-anchor="middle" font-size="16" font-weight="700" fill="var(--accent-strong)">+</text>
+                <text x="196" y="26" text-anchor="middle" font-size="9" fill="var(--muted)">1−zₜ</text>
+                <text x="258" y="64" text-anchor="middle" font-size="9" fill="var(--muted)">zₜ</text>
+                <!-- h line out -->
+                <path d="M238,40 H416" fill="none" stroke="var(--accent-strong)" stroke-width="3" marker-end="url(#gruArrow)"/>
+                <text x="420" y="24" text-anchor="end" font-size="11" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">hₜ</text>
+                <!-- update gate feeds the blend weight -->
+                <line x1="220" y1="56" x2="220" y2="176" stroke="var(--def-border)" stroke-width="1.5"/>
+                <rect x="192" y="176" width="56" height="32" rx="6" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.5"/>
+                <text x="220" y="190" text-anchor="middle" font-size="10" fill="var(--def-label)" font-family="JetBrains Mono, monospace">σ</text>
+                <text x="220" y="203" text-anchor="middle" font-size="10" font-weight="700" fill="var(--def-label)">update zₜ</text>
+                <!-- h_{t-1} tapped, filtered by reset gate, feeds the candidate -->
+                <circle cx="160" cy="40" r="3" fill="var(--accent-strong)"/>
+                <line x1="160" y1="40" x2="160" y2="138" stroke="var(--warn-border)" stroke-width="1.5"/>
+                <circle cx="160" cy="150" r="12" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="2"/>
+                <text x="160" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="var(--warn-color)">×</text>
+                <line x1="160" y1="176" x2="160" y2="162" stroke="var(--warn-border)" stroke-width="1.5"/>
+                <rect x="132" y="176" width="56" height="32" rx="6" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.5"/>
+                <text x="160" y="190" text-anchor="middle" font-size="10" fill="var(--warn-color)" font-family="JetBrains Mono, monospace">σ</text>
+                <text x="160" y="203" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warn-color)">reset rₜ</text>
+                <line x1="172" y1="150" x2="262" y2="138" stroke="var(--warn-border)" stroke-width="1.5"/>
+                <!-- candidate box, also fed by x_t -->
+                <rect x="258" y="104" width="64" height="34" rx="6" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="290" y="119" text-anchor="middle" font-size="10" fill="var(--ink-soft)" font-family="JetBrains Mono, monospace">tanh</text>
+                <text x="290" y="132" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink-soft)">candidat h̃ₜ</text>
+                <line x1="290" y1="138" x2="290" y2="176" stroke="var(--muted)" stroke-width="1.5"/>
+                <text x="290" y="190" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">xₜ</text>
+                <line x1="280" y1="104" x2="230" y2="52" stroke="var(--def-border)" stroke-width="1.5"/>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">$h_t$ est une moyenne pondérée entre l'ancien état $h_{t-1}$ et un candidat $\tilde h_t$ ; la porte <i>update</i> (verte) règle ce curseur, la porte <i>reset</i> (rouge) décide combien de l'ancien état entre dans le calcul du candidat.</figcaption>
+            </figure>
 
             <div class="box box-def">
               <p class="box-label">Définition · Portes et mise à jour du GRU</p>
@@ -2814,6 +2953,25 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <p class="sense"><b>Sens :</b> $\mathbf z$ est de dimension <b>réduite</b> : la reconstruction n'est pas triviale, car $\mathbf z$ ne peut pas contenir toute l'information de $\mathbf x$. Le goulot d'étranglement force le réseau à retenir ce qui compte. Usages : apprentissage de représentation sans étiquettes, pré-entraînement, débruitage, visualisation en faible dimension, génération.</p>
             </div>
 
+            <figure style="margin:16px 0 10px;">
+              <svg viewBox="0 0 360 170" role="img" aria-label="Autoencodeur en forme de goulot d'etranglement : un encodeur retrecit x en un code z de petite dimension, un decodeur agrandit ce code pour reconstruire x prime" style="width:100%;max-width:360px;height:auto;display:block;margin:0 auto;">
+                <defs><marker id="aeArrow" markerWidth="7" markerHeight="7" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--muted)"/></marker></defs>
+                <rect x="16" y="20" width="46" height="120" rx="3" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="39" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">x</text>
+                <polygon points="62,20 62,140 159,98 159,62" fill="var(--accent-soft)" fill-opacity="0.55" stroke="var(--accent)" stroke-width="1.2"/>
+                <rect x="159" y="62" width="42" height="36" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="180" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-strong)">z</text>
+                <polygon points="201,62 201,98 298,140 298,20" fill="var(--accent-soft)" fill-opacity="0.35" stroke="var(--accent)" stroke-width="1.2"/>
+                <rect x="298" y="20" width="46" height="120" rx="3" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="321" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">x'</text>
+                <text x="110" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">Encodeur f</text>
+                <text x="250" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">Décodeur g</text>
+                <text x="180" y="38" text-anchor="middle" font-size="10" fill="var(--muted)">goulot d'étranglement</text>
+                <line x1="180" y1="42" x2="180" y2="58" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#aeArrow)"/>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">La forme en sablier est le point de tout autoencodeur : passer par un code $z$ plus étroit que $x$ oblige le réseau à compresser, donc à choisir ce qui compte vraiment.</figcaption>
+            </figure>
+
             <div class="box box-thm">
               <p class="box-label">Théorème · L'AE linéaire coïncide avec l'ACP</p>
               <p>Avec $f(\mathbf x)=\mathbf W_e\mathbf x+\mathbf b_e$, $g(\mathbf z)=\mathbf W_d\mathbf z+\mathbf b_d$ et une perte quadratique</p>
@@ -2837,8 +2995,36 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <p class="box-label">Définition · Décoder une image : convolution transposée</p>
               <p><b>Encodeur</b> : image ↦ code, donc <b>réduction</b> des dimensions (<i>downscaling</i>) : par convolution et pooling. <b>Décodeur</b> : code ↦ image, donc <b>augmentation</b> des dimensions (<i>upscaling</i>) : typiquement par <b>convolution transposée</b> (aussi appelée <i>déconvolution</i> ou convolution à pas fractionnaire).</p>
               <div class="formula">$$\text{convolution}:\ \mathbf x\mapsto \mathbf M\mathbf x \qquad\Longrightarrow\qquad \text{convolution transposée}:\ \mathbf x\mapsto \mathbf M^\top\mathbf x$$</div>
-              <p class="sense"><b>Sens :</b> d'où le nom. $\mathbf M$ étant creuse et rectangulaire (grande entrée → petite sortie), $\mathbf M^\top$ va bien d'une petite entrée vers une grande sortie. Ce n'est <b>pas</b> l'inverse de la convolution, seulement sa transposée.</p>
+              <p class="sense"><b>Sens :</b> d'où le nom. $\mathbf M$ étant creuse et rectangulaire (grande entrée → petite sortie), $\mathbf M^\top$ va bien d'une petite entrée vers une grande sortie. Ce n'est <b>pas</b> l'inverse de la convolution, seulement sa transposée : le nom <i>déconvolution</i>, qu'on croise parfois, est donc trompeur, puisqu'il laisse penser à une opération qui « annule » la convolution (comme une division annulerait une multiplication), ce qui n'est pas le cas ici.</p>
             </div>
+
+            <p><b>Comment ça marche, concrètement :</b> plutôt que de faire glisser un petit noyau sur une grande entrée (la convolution ordinaire), on fait l'inverse : chaque valeur de la <b>petite</b> entrée est <b>étalée</b> sur une zone de la grande sortie, à travers le même noyau appris, et on <b>additionne</b> les zones qui se chevauchent. C'est cette étape d'étalement-puis-addition qui permet de reconstruire une sortie plus grande que l'entrée tout en restant une opération apprise, contrairement à un simple agrandissement par interpolation (plus proche voisin ou bilinéaire) qui, lui, ne fait qu'étirer les pixels existants sans apprendre de nouvelle structure spatiale. C'est pour cela qu'on utilise la convolution transposée partout où il faut passer d'un code compact à une image complète : dans le décodeur d'un autoencodeur ou d'un VAE (fiches 28/30), et, on le reverra à la fiche 32, dans le générateur d'un GAN tout entier, qui n'est rien d'autre qu'un empilement de telles couches.</p>
+
+            <figure style="margin:14px 0 10px;">
+              <svg viewBox="0 0 360 210" role="img" aria-label="Convolution transposee en une dimension : chaque entree a et b etale sa valeur sur deux cases de sortie via le noyau, et la case du milieu recoit la somme des deux contributions qui se chevauchent" style="width:100%;max-width:360px;height:auto;display:block;margin:0 auto;">
+                <rect x="40" y="20" width="56" height="40" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="68" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-strong)">a</text>
+                <rect x="220" y="20" width="56" height="40" rx="6" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="2"/>
+                <text x="248" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ex-label)">b</text>
+                <text x="68" y="8" text-anchor="middle" font-size="10" fill="var(--muted)">entrée (petite)</text>
+                <line x1="68" y1="60" x2="55" y2="140" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="48" y="98" font-size="10" fill="var(--accent-strong)">k₀</text>
+                <line x1="68" y1="60" x2="160" y2="140" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="128" y="98" font-size="10" fill="var(--accent-strong)">k₁</text>
+                <line x1="248" y1="60" x2="160" y2="140" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <text x="206" y="98" font-size="10" fill="var(--ex-label)">k₀</text>
+                <line x1="248" y1="60" x2="265" y2="140" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <text x="276" y="98" font-size="10" fill="var(--ex-label)">k₁</text>
+                <rect x="10" y="150" width="90" height="40" rx="6" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="55" y="174" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink-soft)">a·k₀</text>
+                <rect x="115" y="150" width="90" height="40" rx="6" fill="var(--violet-bg)" stroke="var(--violet-border)" stroke-width="2"/>
+                <text x="160" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--violet-color)">a·k₁ + b·k₀</text>
+                <rect x="220" y="150" width="90" height="40" rx="6" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="265" y="174" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink-soft)">b·k₁</text>
+                <text x="160" y="202" text-anchor="middle" font-size="10" fill="var(--muted)">sortie (grande) : les zones qui se chevauchent s'additionnent</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">Chaque entrée étale sa valeur sur plusieurs cases de sortie via le noyau appris $k$ ; la case centrale reçoit les deux contributions qui se chevauchent, et elles s'additionnent. Vu en 2D, avec un noyau $k\times k$, c'est exactement ce qui fait grandir une carte de caractéristiques.</figcaption>
+            </figure>
 
             <div class="box box-warn">
               <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Deux façons naïves de générer : et pourquoi elles échouent</p>
@@ -2870,6 +3056,28 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <div class="arrow">→</div>
               <div class="fb accent">$x'$</div>
             </div>
+
+            <p><b>La différence avec la fiche 28, en une image :</b> dans un autoencodeur ordinaire, le goulot d'étranglement est un <b>point</b> : $z=f(x)$ est une valeur unique et fixe. Dans un VAE, le goulot d'étranglement devient une <b>distribution</b> : l'encodeur ne sort pas un $z$ mais les paramètres $(\mu,\sigma)$ d'une gaussienne, et $z$ est ensuite <b>tiré au hasard</b> dans cette gaussienne.</p>
+            <figure style="margin:14px 0 10px;">
+              <svg viewBox="0 0 360 170" role="img" aria-label="VAE : le goulot d'etranglement n'est plus un point mais une distribution gaussienne de moyenne mu et variance sigma carre, dont on tire un z par echantillonnage" style="width:100%;max-width:360px;height:auto;display:block;margin:0 auto;">
+                <rect x="16" y="20" width="46" height="120" rx="3" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="39" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">x</text>
+                <polygon points="62,20 62,140 150,98 150,62" fill="var(--accent-soft)" fill-opacity="0.55" stroke="var(--accent)" stroke-width="1.2"/>
+                <rect x="150" y="55" width="55" height="55" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <path d="M158,98 C163,65 192,65 197,98" fill="none" stroke="var(--accent-strong)" stroke-width="2"/>
+                <line x1="177" y1="98" x2="177" y2="70" stroke="var(--accent-strong)" stroke-width="1" stroke-dasharray="3 2"/>
+                <text x="177" y="50" text-anchor="middle" font-size="9" fill="var(--muted)">μ, σ</text>
+                <circle cx="188" cy="88" r="3.5" fill="var(--ex-border)"/>
+                <text x="214" y="30" font-size="9" fill="var(--ex-label)">z (tiré au hasard)</text>
+                <line x1="188" y1="88" x2="188" y2="30" stroke="var(--ex-border)" stroke-width="1.2" stroke-dasharray="3 2"/>
+                <polygon points="205,62 205,98 298,140 298,20" fill="var(--accent-soft)" fill-opacity="0.35" stroke="var(--accent)" stroke-width="1.2"/>
+                <rect x="298" y="20" width="46" height="120" rx="3" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <text x="321" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">x'</text>
+                <text x="105" y="158" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">Encodeur qᵠ</text>
+                <text x="255" y="158" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">Décodeur pᶿ</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">La bosse bleue est la loi $\mathcal N(\mu,\sigma^2)$ apprise par l'encodeur pour cette entrée $x$ ; le point rouge est le $z$ effectivement tiré dans cette loi, avant d'être envoyé au décodeur. C'est cet aléa, absent de la fiche 28, qui force l'espace latent à rester lisse et continu.</figcaption>
+            </figure>
 
             <div class="box box-def">
               <p class="box-label">Définition · Autoencodeur variationnel (VAE)</p>
@@ -2953,11 +3161,90 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <p class="sense"><b>Sens :</b> à la fin de l'entraînement on obtient un bon générateur (et, accessoirement, un bon discriminateur).</p>
             </div>
 
+            <p><b>Et concrètement, que contiennent $G$ et $D$ ?</b> Dans un DCGAN (la variante la plus courante), ce sont simplement les deux briques déjà vues aux fiches 12 et 29, utilisées chacune dans son sens naturel. $D$ reçoit une image et doit juste dire « vrai ou faux » : c'est exactement la tâche de classification des fiches 12 à 16, donc $D$ est une pile de <b>convolutions ordinaires</b>, qui réduit l'image étape par étape jusqu'à un seul score. $G$, lui, part d'un petit vecteur de bruit et doit produire une image complète : c'est l'opération inverse, donc $G$ est une pile de <b>convolutions transposées</b> (fiche 29), qui agrandit une petite carte étape par étape jusqu'à l'image finale. Regardons chacun séparément.</p>
+
+            <figure style="margin:14px 0 10px;">
+              <svg viewBox="0 0 460 150" role="img" aria-label="Le discriminateur retrecit l'image en entree etape par etape, de 64 par 64 a 32 par 32 puis 16 par 16 puis 8 par 8, jusqu'a un seul score vrai ou faux" style="width:100%;max-width:460px;height:auto;display:block;margin:0 auto;">
+                <defs><marker id="discArrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/></marker></defs>
+                <rect x="10" y="30" width="70" height="70" rx="3" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <rect x="110" y="40" width="50" height="50" rx="3" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <rect x="195" y="48" width="34" height="34" rx="3" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <rect x="262" y="54" width="22" height="22" rx="3" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <line x1="82" y1="65" x2="107" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#discArrow)"/>
+                <line x1="162" y1="65" x2="192" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#discArrow)"/>
+                <line x1="231" y1="65" x2="259" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#discArrow)"/>
+                <line x1="286" y1="65" x2="322" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#discArrow)"/>
+                <circle cx="340" cy="65" r="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="340" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-strong)">D</text>
+                <line x1="357" y1="65" x2="383" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#discArrow)"/>
+                <rect x="385" y="50" width="65" height="30" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="417" y="69" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--accent-strong)">vrai / faux</text>
+                <text x="45" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">64×64×3</text>
+                <text x="135" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">32×32</text>
+                <text x="212" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">16×16</text>
+                <text x="273" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">8×8</text>
+                <text x="230" y="136" text-anchor="middle" font-size="10.5" fill="var(--muted)">chaque flèche : convolution ordinaire, stride 2 (fiche 12)</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">Le discriminateur ne fait rien d'exotique : il rétrécit l'image, comme n'importe quel classifieur convolutif, jusqu'à un seul nombre $D(x)\in[0,1]$.</figcaption>
+            </figure>
+
+            <figure style="margin:14px 0 10px;">
+              <svg viewBox="0 0 460 150" role="img" aria-label="Le generateur part d'un petit vecteur latent et agrandit une carte de caracteristiques etape par etape, de 4 par 4 a 8 par 8 puis 16 par 16, jusqu'a l'image complete generee" style="width:100%;max-width:460px;height:auto;display:block;margin:0 auto;">
+                <defs><marker id="genArrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/></marker></defs>
+                <rect x="10" y="45" width="18" height="40" rx="3" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="1.5"/>
+                <rect x="78" y="54" width="22" height="22" rx="3" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.5" fill-opacity="0.6"/>
+                <rect x="150" y="48" width="34" height="34" rx="3" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.5" fill-opacity="0.75"/>
+                <rect x="225" y="40" width="50" height="50" rx="3" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.5" fill-opacity="0.88"/>
+                <rect x="330" y="30" width="70" height="70" rx="3" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="2"/>
+                <line x1="30" y1="65" x2="75" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#genArrow)"/>
+                <line x1="102" y1="65" x2="147" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#genArrow)"/>
+                <line x1="186" y1="65" x2="222" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#genArrow)"/>
+                <line x1="277" y1="65" x2="327" y2="65" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#genArrow)"/>
+                <text x="19" y="100" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">z</text>
+                <text x="89" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">4×4</text>
+                <text x="167" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">8×8</text>
+                <text x="250" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">16×16</text>
+                <text x="365" y="116" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">64×64×3</text>
+                <text x="230" y="136" text-anchor="middle" font-size="10.5" fill="var(--muted)">chaque flèche : convolution transposée, stride 2 (fiche 29)</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:2px;max-width:none;">Le générateur est le miroir exact du discriminateur : au lieu de rétrécir, chaque couche agrandit, en étalant et en additionnant comme sur le schéma de la fiche 29, jusqu'à retrouver la taille d'une vraie image.</figcaption>
+            </figure>
+
             <div class="box box-thm">
               <p class="box-label">Théorème · Perte adversariale (problème minimax)</p>
               <p>$D$ <b>maximise</b> la probabilité d'attribuer $+1$ au vrai et $-1$ au faux ; $G$ <b>minimise</b> cette même quantité :</p>
               <div class="formula">$$\min_G\ \max_D\ \ \mathbb E_{p(\mathbf x)}\big[\log D(\mathbf x)\big] + \mathbb E_{p(\mathbf z)}\big[\log\big(1-D(G(\mathbf z))\big)\big]$$</div>
-              <p class="sense"><b>Sens :</b> seul le second terme dépend de $G$. L'entraînement est <b>alterné</b> par SGD : $D\to G\to D\to\cdots$, chacun cherchant à battre l'autre. C'est un jeu à deux joueurs : d'où sa réputation d'instabilité (effondrement de modes, non-convergence).</p>
+              <p class="sense"><b>Sens :</b> seul le second terme dépend de $G$. C'est un jeu à deux joueurs : d'où sa réputation d'instabilité (effondrement de modes, non-convergence). Détaillons séparément ce que chaque réseau minimise vraiment, car en pratique on n'entraîne jamais cette formule globale d'un coup : on alterne.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Pas à pas, que fait $D$ ?</p>
+              <p>Pour $D$, la tâche est une simple classification binaire : « vrai » pour les images réelles $\mathbf x$, « faux » pour les images générées $G(\mathbf z)$. C'est exactement l'entropie croisée binaire (BCE) de la fiche 5, appliquée aux deux groupes à la fois :</p>
+              <div class="formula">$$\mathcal L_D = -\,\mathbb E_{p(\mathbf x)}\big[\log D(\mathbf x)\big]\ -\ \mathbb E_{p(\mathbf z)}\big[\log\big(1-D(G(\mathbf z))\big)\big]$$</div>
+              <p class="sense"><b>Sens :</b> $D$ ajuste ses poids pour <b>minimiser</b> $\mathcal L_D$, donc pour rendre $D(\mathbf x)$ proche de $1$ sur le réel et $D(G(\mathbf z))$ proche de $0$ sur le faux. C'est littéralement le même entraînement qu'un classifieur chat/chien ordinaire : seules les données « chien » (ici : fausses) changent à chaque itération, puisque $G$ évolue.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Pas à pas, que fait $G$ ? Et l'astuce du gradient non saturant</p>
+              <p>La formule du théorème dit que $G$ minimise $\mathbb E_{p(\mathbf z)}\big[\log(1-D(G(\mathbf z)))\big]$. En toute rigueur c'est correct, mais en pratique, ce choix pose un problème précis.</p>
+              <p><b>Le problème :</b> au tout début de l'entraînement, $G$ est encore mauvais, et $D$ le démasque facilement : $D(G(\mathbf z))\approx 0$. Or juste à cet endroit, la fonction $\log(1-u)$ est presque plate (elle <b>sature</b>) : son gradient par rapport aux poids de $G$ est donc minuscule, exactement quand $G$ aurait le plus besoin d'un signal fort pour apprendre.</p>
+              <p><b>L'astuce (Goodfellow et al., 2014) :</b> on garde le même objectif pour $G$ (tromper $D$), mais on change la formule utilisée pour le gradient : $G$ <b>maximise</b> $\log D(G(\mathbf z))$ au lieu de minimiser $\log(1-D(G(\mathbf z)))$, soit :</p>
+              <div class="formula">$$\mathcal L_G = -\,\mathbb E_{p(\mathbf z)}\big[\log D(G(\mathbf z))\big] \qquad \text{(}G\text{ minimise }\mathcal L_G\text{)}$$</div>
+              <p class="sense"><b>Sens :</b> $\log D(u)$, lui, a un gradient fort précisément quand $D(u)\approx0$ : $G$ reçoit donc un signal d'apprentissage net dès le début, tout en visant exactement le même but (faire monter $D(G(\mathbf z))$). C'est ce qu'on appelle l'astuce du <b>gradient non saturant</b> ; c'est la version utilisée en pratique dans presque toutes les implémentations de GAN.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · L'alternance, concrètement</p>
+              <p>On ne minimise jamais les deux pertes « en même temps » : à chaque itération, on répète deux étapes séparées, chacune avec sa propre descente de gradient (fiche 6) :</p>
+              <p>① <b>Étape $D$</b> : on fige $G$, on tire un batch de vrais $\mathbf x$ et de faux $G(\mathbf z)$, et on fait un pas de descente de gradient sur $\mathcal L_D$ (on n'entraîne que $D$).<br>
+              ② <b>Étape $G$</b> : on fige $D$, on tire un nouveau batch de $\mathbf z$, et on fait un pas de descente de gradient sur $\mathcal L_G$ (on n'entraîne que $G$, en faisant <b>passer le gradient à travers $D$</b> sans modifier ses poids).</p>
+              <p class="sense"><b>Sens :</b> c'est cette alternance $D\to G\to D\to G\to\cdots$ qui donne au GAN son allure de duel : $D$ s'améliore un peu, ce qui force $G$ à s'améliorer un peu pour continuer à le tromper, et ainsi de suite.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pourquoi les GAN sont réputés difficiles à entraîner</p>
+              <p><b>Gradient qui s'annule si $D$ devient trop fort :</b> même avec l'astuce ci-dessus, si $D$ devient quasi parfait, il distingue le vrai du faux avec une confiance proche de $100\%$ partout : $G$ ne reçoit alors presque plus aucun signal pour s'améliorer, d'où l'intérêt de ne pas laisser $D$ prendre trop d'avance sur $G$ pendant l'entraînement.</p>
+              <p><b>Effondrement de modes (<i>mode collapse</i>) :</b> $G$ peut découvrir qu'un petit nombre d'images suffit à tromper $D$ de façon fiable, et s'y enfermer, produisant toujours des variations d'un même visage ou d'un même chiffre au lieu d'explorer toute la diversité des données réelles. $D$ n'a alors plus rien à y redire, puisque ces quelques images le trompent déjà.</p>
             </div>
           </article>
 
@@ -2983,6 +3270,45 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
           <article class="topic" id="s34">
             <div class="tophead"><span class="num">34</span><h2>Modèles de diffusion (DDPM)</h2></div>
             <p>État de l'art de la génération d'images : entraînement <b>stable</b> et très haute qualité : mais coûteux en calcul.</p>
+
+            <p><b>L'idée en une image, avant les formules :</b> on part d'une vraie image $x_0$, et on lui ajoute un petit peu de bruit à chaque étape, encore et encore, jusqu'à ce qu'il ne reste plus que du bruit pur $x_T$ : c'est le processus <b>forward</b>, et il est fixé une fois pour toutes, personne ne l'apprend. Le réseau, lui, apprend uniquement le chemin <b>inverse</b> : repartir d'un bruit pur et retirer un peu de bruit à chaque étape, jusqu'à retrouver une image. Pour générer une image neuve, on n'a donc besoin que de ce second chemin : partir d'un bruit aléatoire et le débruiter pas à pas.</p>
+            <figure style="margin:14px 0 10px;">
+              <svg viewBox="0 0 440 125" role="img" aria-label="Le processus forward ajoute du bruit a une image etape par etape jusqu'a obtenir du bruit pur ; le processus reverse part de ce bruit pur et le debruite etape par etape pour retrouver une image" style="width:100%;max-width:440px;height:auto;display:block;margin:0 auto;">
+                <defs>
+                  <marker id="diffArrowR" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--warn-border)"/></marker>
+                  <marker id="diffArrowL" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="var(--accent)"/></marker>
+                  <marker id="diffArrowMuted" markerWidth="7" markerHeight="7" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--muted)"/></marker>
+                </defs>
+                <path d="M10,10 H420" fill="none" stroke="var(--warn-border)" stroke-width="1.6" marker-end="url(#diffArrowR)"/>
+                <text x="215" y="6" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--warn-color)">forward : on ajoute du bruit, pas à pas</text>
+                <!-- x0 : clean -->
+                <rect x="10" y="20" width="60" height="60" rx="4" fill="var(--surface-2)" stroke="var(--border)"/>
+                <circle cx="40" cy="50" r="16" fill="var(--def-border)"/>
+                <!-- x1 : a little noise -->
+                <rect x="110" y="20" width="60" height="60" rx="4" fill="var(--surface-2)" stroke="var(--border)"/>
+                <circle cx="140" cy="50" r="16" fill="var(--def-border)" fill-opacity="0.7"/>
+                <circle cx="120" cy="32" r="1.6" fill="var(--ink-soft)"/><circle cx="144" cy="28" r="1.6" fill="var(--ink-soft)"/><circle cx="158" cy="40" r="1.6" fill="var(--ink-soft)"/><circle cx="116" cy="50" r="1.6" fill="var(--ink-soft)"/><circle cx="132" cy="62" r="1.6" fill="var(--ink-soft)"/>
+                <!-- x2 : more noise -->
+                <rect x="210" y="20" width="60" height="60" rx="4" fill="var(--surface-2)" stroke="var(--border)"/>
+                <circle cx="240" cy="50" r="16" fill="var(--def-border)" fill-opacity="0.35"/>
+                <circle cx="220" cy="32" r="1.6" fill="var(--ink-soft)"/><circle cx="244" cy="28" r="1.6" fill="var(--ink-soft)"/><circle cx="258" cy="40" r="1.6" fill="var(--ink-soft)"/><circle cx="216" cy="50" r="1.6" fill="var(--ink-soft)"/><circle cx="232" cy="62" r="1.6" fill="var(--ink-soft)"/><circle cx="254" cy="66" r="1.6" fill="var(--ink-soft)"/><circle cx="224" cy="70" r="1.6" fill="var(--ink-soft)"/><circle cx="262" cy="30" r="1.6" fill="var(--ink-soft)"/><circle cx="238" cy="46" r="1.6" fill="var(--ink-soft)"/><circle cx="250" cy="54" r="1.6" fill="var(--ink-soft)"/><circle cx="218" cy="66" r="1.6" fill="var(--ink-soft)"/><circle cx="260" cy="60" r="1.6" fill="var(--ink-soft)"/>
+                <text x="315" y="54" text-anchor="middle" font-size="16" fill="var(--muted)">⋯</text>
+                <!-- xT : pure noise -->
+                <rect x="360" y="20" width="60" height="60" rx="4" fill="var(--surface-2)" stroke="var(--border)"/>
+                <circle cx="370" cy="32" r="1.6" fill="var(--ink-soft)"/><circle cx="394" cy="28" r="1.6" fill="var(--ink-soft)"/><circle cx="408" cy="40" r="1.6" fill="var(--ink-soft)"/><circle cx="366" cy="50" r="1.6" fill="var(--ink-soft)"/><circle cx="382" cy="62" r="1.6" fill="var(--ink-soft)"/><circle cx="404" cy="66" r="1.6" fill="var(--ink-soft)"/><circle cx="374" cy="70" r="1.6" fill="var(--ink-soft)"/><circle cx="412" cy="30" r="1.6" fill="var(--ink-soft)"/><circle cx="388" cy="46" r="1.6" fill="var(--ink-soft)"/><circle cx="400" cy="54" r="1.6" fill="var(--ink-soft)"/><circle cx="368" cy="66" r="1.6" fill="var(--ink-soft)"/><circle cx="410" cy="60" r="1.6" fill="var(--ink-soft)"/><circle cx="378" cy="38" r="1.6" fill="var(--ink-soft)"/><circle cx="396" cy="72" r="1.6" fill="var(--ink-soft)"/><circle cx="406" cy="50" r="1.6" fill="var(--ink-soft)"/><circle cx="372" cy="56" r="1.6" fill="var(--ink-soft)"/><circle cx="390" cy="30" r="1.6" fill="var(--ink-soft)"/><circle cx="414" cy="70" r="1.6" fill="var(--ink-soft)"/><circle cx="380" cy="26" r="1.6" fill="var(--ink-soft)"/><circle cx="402" cy="36" r="1.6" fill="var(--ink-soft)"/><circle cx="366" cy="40" r="1.6" fill="var(--ink-soft)"/><circle cx="392" cy="54" r="1.6" fill="var(--ink-soft)"/><circle cx="376" cy="64" r="1.6" fill="var(--ink-soft)"/><circle cx="408" cy="74" r="1.6" fill="var(--ink-soft)"/><circle cx="384" cy="38" r="1.6" fill="var(--ink-soft)"/><circle cx="398" cy="62" r="1.6" fill="var(--ink-soft)"/><circle cx="370" cy="72" r="1.6" fill="var(--ink-soft)"/><circle cx="412" cy="46" r="1.6" fill="var(--ink-soft)"/>
+                <line x1="72" y1="50" x2="107" y2="50" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#diffArrowMuted)"/>
+                <line x1="172" y1="50" x2="207" y2="50" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#diffArrowMuted)"/>
+                <line x1="272" y1="50" x2="300" y2="50" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#diffArrowMuted)"/>
+                <line x1="330" y1="50" x2="357" y2="50" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#diffArrowMuted)"/>
+                <text x="40" y="100" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">x₀</text>
+                <text x="140" y="100" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">x₁</text>
+                <text x="240" y="100" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">x₂</text>
+                <text x="390" y="100" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="JetBrains Mono, monospace">x_T</text>
+                <path d="M420,115 H10" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#diffArrowL)"/>
+                <text x="215" y="124" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--accent-strong)">reverse : εθ retire le bruit, pas à pas</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:4px;max-width:none;">La même rangée d'images se lit dans les deux sens : de gauche à droite, le bruit s'accumule (forward, fixé) ; de droite à gauche, le réseau $\epsilon_\theta$ apprend à le retirer (reverse, entraîné).</figcaption>
+            </figure>
 
             <div class="diffflow">
               <div class="diffflow-row diffflow-fwd">

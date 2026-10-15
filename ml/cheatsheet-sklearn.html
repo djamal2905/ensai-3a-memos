@@ -294,6 +294,18 @@ X_val, X_test, y_val, y_test = train_test_split(
 print(f"train={len(X_train)}  val={len(X_val)}  test={len(X_test)}")</code></pre>
         </div>
 
+        <figure style="margin:14px 0 10px;">
+          <svg viewBox="0 0 400 70" role="img" aria-label="Barre divisee en trois segments : 60 pourcent train, 20 pourcent validation, 20 pourcent test, le segment test etant marque comme gele jusqu'a l'evaluation finale" style="width:100%;max-width:400px;height:auto;display:block;margin:0 auto;">
+            <rect x="0" y="14" width="240" height="32" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+            <text x="120" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-strong)">train 60%</text>
+            <rect x="242" y="14" width="78" height="32" rx="4" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.4"/>
+            <text x="281" y="34" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink-soft)">val 20%</text>
+            <rect x="322" y="14" width="78" height="32" rx="4" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.6"/>
+            <text x="361" y="34" text-anchor="middle" font-size="11" font-weight="700" fill="var(--warn-color)">test 20%</text>
+            <text x="361" y="60" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warn-color)">🔒 gelé jusqu'à l'évaluation finale</text>
+          </svg>
+        </figure>
+
         <div class="box box-warn">
           <p class="box-label">⚠ Piège</p>
           <p>Ne jamais toucher <code>X_test</code> / <code>y_test</code> avant l'évaluation finale : ni pour choisir un hyperparamètre, ni pour ajuster un <code>StandardScaler</code>. C'est <code>X_train</code> seul qui pilote toute décision de modélisation.</p>
@@ -431,6 +443,33 @@ pipe.fit(X_train, y_train)  # le scaler est ajusté seulement sur X_train
 
 print("R2 test :", r2_score(y_test, pipe.predict(X_test)))</code></pre>
         </div>
+
+        <figure style="margin:14px 0 10px;">
+          <svg viewBox="0 0 400 110" role="img" aria-label="Le pipeline ajuste le scaler et le modele uniquement sur les donnees d'entrainement ; sur test et validation, il applique seulement la transformation puis la prediction, sans jamais refaire d'ajustement" style="width:100%;max-width:400px;height:auto;display:block;margin:0 auto;">
+            <defs><marker id="pipeArr" markerWidth="6" markerHeight="6" refX="3.5" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 Z" fill="var(--muted)"/></marker></defs>
+            <text x="8" y="14" font-size="10" font-weight="700" fill="var(--accent-strong)" font-family="JetBrains Mono, monospace">X_train</text>
+            <rect x="70" y="2" width="90" height="26" rx="5" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.4"/>
+            <text x="115" y="19" text-anchor="middle" font-size="10" font-weight="700" fill="var(--def-label)">fit scaler</text>
+            <rect x="180" y="2" width="100" height="26" rx="5" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.4"/>
+            <text x="230" y="19" text-anchor="middle" font-size="10" font-weight="700" fill="var(--def-label)">fit estimateur</text>
+            <line x1="40" y1="15" x2="67" y2="15" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#pipeArr)"/>
+            <line x1="160" y1="15" x2="177" y2="15" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#pipeArr)"/>
+            <line x1="280" y1="15" x2="298" y2="15" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#pipeArr)"/>
+            <text x="302" y="19" font-size="10" font-weight="700" fill="var(--ink)">modèle entraîné</text>
+
+            <text x="8" y="80" font-size="10" font-weight="700" fill="var(--warn-color)" font-family="JetBrains Mono, monospace">X_test</text>
+            <rect x="70" y="68" width="90" height="26" rx="5" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.4"/>
+            <text x="115" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warn-color)">transform</text>
+            <rect x="180" y="68" width="100" height="26" rx="5" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.4"/>
+            <text x="230" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warn-color)">predict</text>
+            <line x1="40" y1="81" x2="67" y2="81" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#pipeArr)"/>
+            <line x1="160" y1="81" x2="177" y2="81" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#pipeArr)"/>
+            <line x1="280" y1="81" x2="298" y2="81" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#pipeArr)"/>
+            <text x="302" y="85" font-size="10" font-weight="700" fill="var(--ink)">prédiction</text>
+
+            <text x="200" y="108" text-anchor="middle" font-size="9.5" fill="var(--muted)">seul train déclenche un fit ; test ne fait jamais que transform / predict</text>
+          </svg>
+        </figure>
 
         <div class="box box-warn">
           <p class="box-label">⚠ Piège de fuite (leakage)</p>
