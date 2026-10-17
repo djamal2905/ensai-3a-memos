@@ -28,6 +28,7 @@ window.MathJax = {
     --warn-bg:#fdeceb; --warn-border:#c1483c; --warn-color:#9a2f24;
     --code-ink:#e7e9ee; --code-bg:#1a2028; --code-border:#2b3340;
     --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
+    --shadow-lift: 0 2px 4px rgba(28,34,48,.06), 0 18px 36px -18px rgba(28,34,48,.28);
     --radius: 10px;
     color-scheme: light;
   }
@@ -42,6 +43,7 @@ window.MathJax = {
       --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
       --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+      --shadow-lift: 0 2px 6px rgba(0,0,0,.45), 0 22px 44px -18px rgba(0,0,0,.7);
       color-scheme: dark;
     }
   }
@@ -55,6 +57,7 @@ window.MathJax = {
     --warn-bg:#2a1614; --warn-border:#c1483c; --warn-color:#e2776d;
     --code-ink:#e7e9ee; --code-bg:#0d1015; --code-border:#262c37;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+    --shadow-lift: 0 2px 6px rgba(0,0,0,.45), 0 22px 44px -18px rgba(0,0,0,.7);
     color-scheme: dark;
   }
 
@@ -89,57 +92,62 @@ window.MathJax = {
   .icon-btn{
     display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
     border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
-    cursor:pointer; font-size:1rem;
+    cursor:pointer; font-size:1rem; transition:background-color .15s ease, border-color .15s ease, transform .15s ease;
   }
-  .icon-btn:hover{ background:var(--surface-2); }
+  .icon-btn:hover{ background:var(--surface-2); border-color:var(--accent); transform:translateY(-1px); }
   .icon-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   .search-wrap{ position:relative; flex:0 1 260px; }
   .search-wrap input{
-    width:100%; padding:8px 12px 8px 32px; border-radius:8px; border:1px solid var(--border);
+    width:100%; padding:9px 13px 9px 33px; border-radius:8px; border:1px solid var(--border);
     background:var(--surface); color:var(--ink); font:500 .88rem "Source Sans 3", sans-serif;
+    transition:border-color .15s ease;
   }
-  .search-wrap svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none; }
+  .search-wrap input:focus{ border-color:var(--accent); }
+  .search-wrap svg{ position:absolute; left:10px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none; }
   #searchCount{ font:500 .72rem "JetBrains Mono",monospace; color:var(--muted); white-space:nowrap; }
-  .xlink{ font:600 .8rem "Source Sans 3",sans-serif; color:var(--accent-strong); text-decoration:none; border:1px solid var(--border); padding:7px 12px; border-radius:8px; white-space:nowrap; }
-  .xlink:hover{ background:var(--accent-soft); }
+  .xlink{ font:600 .8rem "Source Sans 3",sans-serif; color:var(--accent-strong); text-decoration:none; border:1px solid var(--border); padding:7px 12px; border-radius:8px; white-space:nowrap; transition:background-color .15s ease, border-color .15s ease; }
+  .xlink:hover{ background:var(--accent-soft); border-color:var(--accent); }
   #navToggle{ display:none; }
 
   /* ---------- layout ---------- */
-  .layout{ max-width:1280px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:250px minmax(0,1fr); gap:36px; align-items:start; }
+  .layout{ max-width:1280px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:260px minmax(0,1fr); gap:40px; align-items:start; }
   aside.toc{
     position:sticky; top:64px; max-height:calc(100vh - 84px); overflow-y:auto;
-    padding:18px 4px 40px 0; font-size:.85rem;
+    padding:20px 6px 40px 0; font-size:.85rem;
   }
-  aside.toc h2{ font:600 .7rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:10px; }
-  .toc-lecture{ margin-bottom:18px; }
-  .toc-lecture > p{ font:700 .78rem "Source Sans 3",sans-serif; color:var(--ink); margin:0 0 6px; }
+  aside.toc h2{ font:600 .7rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:12px; }
+  .toc-lecture{ margin-bottom:20px; }
+  .toc-lecture > p{ font:700 .78rem "Source Sans 3",sans-serif; color:var(--ink); margin:0 0 7px; }
   .toc-lecture ol{ list-style:none; margin:0; padding:0; border-left:2px solid var(--border); }
   .toc-lecture li a{
-    display:block; padding:5px 0 5px 12px; color:var(--muted); text-decoration:none;
-    border-left:2px solid transparent; margin-left:-2px; font-weight:500;
+    display:block; padding:6px 10px 6px 12px; color:var(--muted); text-decoration:none;
+    border-left:2px solid transparent; margin-left:-2px; font-weight:500; border-radius:0 6px 6px 0;
+    transition:background-color .15s ease, color .15s ease;
   }
-  .toc-lecture li a:hover{ color:var(--ink); }
-  .toc-lecture li a.active{ color:var(--accent-strong); border-left-color:var(--accent); background:var(--accent-soft); border-radius:0 6px 6px 0; }
+  .toc-lecture li a:hover{ color:var(--ink); background:var(--surface-2); }
+  .toc-lecture li a.active{ color:var(--accent-strong); border-left-color:var(--accent); background:var(--accent-soft); font-weight:600; }
   .toc-num{ display:inline-block; width:1.4em; color:var(--muted); font:600 .78em "JetBrains Mono",monospace; }
 
   main{ min-width:0; padding-bottom:70px; }
 
   /* ---------- hero ---------- */
-  .hero{ padding:34px 0 22px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+  .hero{ padding:42px 0 28px; border-bottom:1px solid var(--border); margin-bottom:36px; }
   .hero .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
-  .hero h1{ font-size:clamp(1.7rem, 1.2rem + 2vw, 2.5rem); margin:.3em 0 .2em; }
-  .hero p{ max-width:62ch; color:var(--muted); font-size:.98rem; }
-  .hero .meta{ display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; font:500 .78rem "JetBrains Mono",monospace; color:var(--muted); }
-  .hero .meta span{ display:flex; align-items:center; gap:6px; }
+  .hero h1{ font-size:clamp(1.9rem, 1.3rem + 2.4vw, 2.75rem); margin:.32em 0 .22em; letter-spacing:-.01em; }
+  .hero p{ max-width:62ch; color:var(--muted); font-size:1rem; }
+  .hero .meta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:18px; font:500 .78rem "JetBrains Mono",monospace; color:var(--muted); }
+  .hero .meta span{ display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:9px 14px; box-shadow:var(--shadow); }
   .hero .meta b{ color:var(--ink-soft); font-weight:600; }
 
   /* ---------- lecture / chapter ---------- */
-  section.lecture{ margin-bottom:10px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
-  section.lecture + section.lecture{ margin-top:24px; }
+  section.lecture{ margin-bottom:10px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; transition:box-shadow .2s ease, border-color .2s ease; }
+  section.lecture:hover{ box-shadow:var(--shadow-lift); border-color:var(--accent); }
+  section.lecture + section.lecture{ margin-top:28px; }
   .lecture-head{
     display:flex; align-items:center; gap:14px; width:100%; text-align:left; border:0; background:var(--surface-2);
-    padding:16px 22px; cursor:pointer; font-family:"Fraunces", serif;
+    padding:18px 24px; cursor:pointer; font-family:"Fraunces", serif; transition:background-color .15s ease;
   }
+  .lecture-head:hover{ background:var(--accent-soft); }
   .lecture-head .num{ font:700 1rem "JetBrains Mono",monospace; color:var(--accent); }
   .lecture-head .title{ flex:1; font-size:1.15rem; font-weight:600; color:var(--ink); }
   .lecture-head .chev{ transition:transform .2s ease; color:var(--muted); }
@@ -147,15 +155,15 @@ window.MathJax = {
   .lecture-body{ padding:8px 22px 6px; }
   .lecture.collapsed .lecture-body{ display:none; }
 
-  article.topic{ padding:26px 0; border-top:1px dashed var(--border); scroll-margin-top:76px; }
+  article.topic{ padding:30px 0; border-top:1px dashed var(--border); scroll-margin-top:76px; }
   article.topic:first-child{ border-top:0; }
-  article.topic .tophead{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  article.topic .tophead{ display:flex; align-items:baseline; gap:10px; margin-bottom:8px; }
   article.topic .tophead .num{ font:700 .95rem "JetBrains Mono",monospace; color:var(--accent); }
-  article.topic h2{ font-size:1.32rem; }
+  article.topic h2{ font-size:1.36rem; }
   article.topic > p:first-of-type{ margin-top:10px; }
 
   /* ---------- boxes ---------- */
-  .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:14px 0; }
+  .box{ border-left:4px solid; border-radius:0 10px 10px 0; padding:14px 16px; margin:16px 0; box-shadow:var(--shadow); }
   .box-label{ display:flex; align-items:center; gap:8px; font:700 .76rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; margin:0 0 6px; }
   .box p{ margin:.35em 0; font-size:.94rem; }
   .box-def{ background:var(--def-bg); border-color:var(--def-border); } .box-def .box-label{ color:var(--def-label); }
@@ -269,7 +277,8 @@ window.MathJax = {
   .box code{ font-family:"JetBrains Mono", ui-monospace, monospace; }
 
   details.solution{ margin:14px 0; }
-  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; }
+  details.solution summary{ cursor:pointer; font:700 .78rem "JetBrains Mono",monospace; color:var(--accent-strong); background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; padding:9px 13px; list-style:none; user-select:none; display:flex; align-items:center; gap:6px; transition:border-color .15s ease; }
+  details.solution summary:hover{ border-color:var(--accent-strong); }
   details.solution summary::-webkit-details-marker{ display:none; }
   details.solution summary::before{ content:"▶"; font-size:.7em; transition:transform .15s ease; }
   details.solution[open] summary::before{ transform:rotate(90deg); }
@@ -307,8 +316,8 @@ window.MathJax = {
   .qcm-q.q-correct .q-badge{ background:var(--def-bg); color:var(--def-label); border:1px solid var(--def-border); }
   .qcm-q.q-incorrect .q-badge{ background:var(--warn-bg); color:var(--warn-color); border:1px solid var(--warn-border); }
   .qcm-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
-  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
-  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+  .qcm-btn{ font:600 .85rem "Source Sans 3",sans-serif; padding:9px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; transition:background-color .15s ease, border-color .15s ease, transform .15s ease; }
+  .qcm-btn:hover{ background:var(--accent-strong); border-color:var(--accent-strong); transform:translateY(-1px); }
   .qcm-btn.ghost{ background:transparent; color:var(--accent-strong); }
   .qcm-btn.ghost:hover{ background:var(--accent-soft); }
   .qcm-btn:disabled{ opacity:.5; cursor:not-allowed; }
