@@ -360,16 +360,24 @@ window.MathJax = {
           <li><a href="#s38"><span class="toc-num">38</span>Exercice 2 : composite centré complet</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>9 : Annale 2024/2025 (corrigée)</p>
+        <ol>
+          <li><a href="#s39"><span class="toc-num">39</span>Questions de cours : plans, D-efficacité, FrF2</a></li>
+          <li><a href="#s40"><span class="toc-num">40</span>Exercice 1 : fractions régulières et rendement du blé</a></li>
+          <li><a href="#s41"><span class="toc-num">41</span>Exercice 2 : l'interaction qu'on a oublié de regarder</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
         <h1>Obtenir un maximum d'information en un minimum d'expériences</h1>
-        <p>Synthèse complète du cours : vocabulaire et codage, outils du modèle linéaire, plans factoriels complets, fractions régulières, critères d'optimalité, modèles à interactions et surfaces de réponse. Chaque chapitre se termine par un QCM corrigé, et tous les exercices du polycopié sont corrigés pas à pas avec les valeurs numériques. L'examen 2025/2026 est corrigé en détail (fiches 36 à 38).</p>
+        <p>Synthèse complète du cours : vocabulaire et codage, outils du modèle linéaire, plans factoriels complets, fractions régulières, critères d'optimalité, modèles à interactions et surfaces de réponse, avec des exemples de code R prêts à l'emploi. Chaque chapitre se termine par un QCM corrigé, et tous les exercices du polycopié sont corrigés pas à pas avec les valeurs numériques. Les examens 2025/2026 et 2024/2025 sont corrigés en détail (fiches 36 à 41).</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : W. Tinsson, Plans d'expérience, ENSAI 3A, 2026-2027</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>38 fiches</b> · 8 QCM</span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>41 fiches</b> · 8 QCM · 2 annales</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -404,7 +412,7 @@ window.MathJax = {
               <p class="box-label">Définitions · Le vocabulaire de base</p>
               <p><b>Réponse</b> : la grandeur numérique mesurée à chaque expérience (une seule réponse à la fois dans ce cours).</p>
               <p><b>Facteur</b> : une variable <b>contrôlable</b> susceptible d'influer sur la réponse. La différence avec une simple variable explicative : un facteur doit pouvoir être modifié sans difficulté par l'expérimentateur.</p>
-              <p><b>Facteur quantitatif</b> (pression, température, durée) ou <b>qualitatif</b> (couleur, matériau). Un facteur qualitatif peut être codé numériquement (par exemple 0 et 1).</p>
+              <p><b>Facteur quantitatif</b> : une grandeur mesurable qui varie de façon continue sur une plage donnée (pression, température, durée, concentration). <b>Ce cours ne traite que des facteurs quantitatifs</b> : c'est ce qui permet de les coder sur $[-1,+1]$ (fiche 4) et de les traiter comme de vraies variables numériques dans le modèle linéaire.</p>
               <p><b>Niveaux</b> : les valeurs (ou modalités) prises par un facteur au cours des expériences.</p>
             </div>
             <div class="box box-def">
@@ -519,7 +527,7 @@ window.MathJax = {
             <div class="qcm-q" data-correct="1">
               <p class="qtext"><span class="qnum">Q1</span>Qu'est-ce qui distingue un facteur d'une simple variable explicative ?<span class="q-badge">résultat</span></p>
               <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur est toujours quantitatif.</span></label>
-              <div class="qcm-explain">Faux : un facteur peut être qualitatif (couleur, matériau), il suffit de le coder (fiche 2).</div>
+              <div class="qcm-explain">Faux : être quantitatif n'est pas ce qui définit un facteur, c'est la contrôlabilité (voir l'option correcte). Ce cours se limite ensuite, par convention, aux facteurs quantitatifs (fiche 2).</div>
               <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur doit pouvoir être modifié sans difficulté par l'expérimentateur.</span></label>
               <div class="qcm-explain">Correct : c'est la définition du cours. On ne subit pas un facteur, on le règle.</div>
               <label class="qcm-opt"><input type="radio" name="p1-1"><span class="otext">Un facteur a forcément un effet sur la réponse.</span></label>
@@ -548,8 +556,8 @@ window.MathJax = {
               <div class="qcm-explain">Faux : elle en demande beaucoup moins (9 contre 27 dans l'exemple). Son problème est la pauvreté de l'information, pas le coût.</div>
               <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle est parfaitement équilibrée mais trop chère.</span></label>
               <div class="qcm-explain">Faux : elle est au contraire déséquilibrée, le niveau de référence (« Moyen ») est sur-représenté.</div>
-              <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle ne fonctionne qu'avec des facteurs qualitatifs.</span></label>
-              <div class="qcm-explain">Faux : elle s'applique à tout type de facteur, ce n'est pas la question.</div>
+              <label class="qcm-opt"><input type="radio" name="p1-3"><span class="otext">Elle ne fonctionne que si tous les facteurs ont le même nombre de niveaux.</span></label>
+              <div class="qcm-explain">Faux : rien n'empêche des facteurs à des nombres de niveaux différents, ce n'est pas ce qui pose problème ici.</div>
             </div>
 
             <div class="qcm-q" data-correct="3">
@@ -954,6 +962,25 @@ window.MathJax = {
               2. Colonne 1 : on change de signe à <b>chaque</b> ligne. Colonne 2 : toutes les <b>2</b> lignes. Colonne $k$ : toutes les $2^{k-1}$ lignes.</p>
               <p class="sense"><b>Sens :</b> l'ordre n'a aucune importance mathématique, mais tout le monde repère les essais de la même façon. En pratique on randomise ensuite l'ordre de passage.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Appliquer en R · Construire le plan, puis ajuster le modèle</p>
+              <p>Le package <code>FrF2</code> construit directement un plan factoriel complet (ou fractionnaire, fiches 19-20), sans écrire $D$ à la main :</p>
+              <pre><code>install.packages("FrF2")   # une seule fois
+library(FrF2)
+
+# m = 2 facteurs, plan complet (2^2 = 4 essais), niveaux codes -1/+1
+PlanC &lt;- FrF2(nruns = 4, nfactors = 2, randomize = FALSE,
+              factor.names = list(Tem = c(-1, 1), Con = c(-1, 1)))</code></pre>
+              <p>Une fois les réponses observées (vecteur <code>Y</code>, dans le <b>même ordre</b> que les lignes du plan) :</p>
+              <pre><code>Y &lt;- c(48, 68, 77, 76)
+PlanCY &lt;- add.response(PlanC, Y)
+
+ModeleOrdre1 &lt;- lm(Y ~ Tem + Con, data = PlanCY)
+summary(ModeleOrdre1)   # estimations, erreurs-types, tests individuels
+anova(ModeleOrdre1)     # decomposition SST = SSR + SSE (fiche 9)</code></pre>
+              <p class="sense"><b>Sens :</b> <code>lm</code> ajuste <b>n'importe quel</b> modèle linéaire (y compris d'ordre deux, fiche 31) par moindres carrés ; <code>anova()</code> en sort directement le tableau de décomposition de la variance (fiche 9). C'est exactement le calcul $\hat\beta=\frac1{2^m}X^\top Y$ de la fiche 14, fait pour vous, sans jamais inverser $X^\top X$ à la main.</p>
+            </div>
           </article>
 
           <article class="topic" id="s14">
@@ -1261,6 +1288,17 @@ window.MathJax = {
               <p class="box-label">Exemple · 10 facteurs en 16 essais</p>
               <div class="formula">$$\mathbb I=\mathbf{125}=\mathbf{136}=\mathbf{147}=\mathbf{238}=\mathbf{249}=\mathbf{34}\,\overline{\mathbf{10}}$$</div>
               <p>$p=11$ paramètres, le complet ferait $2^{10}=1\,024$ essais. Avec $q=6$ générateurs, on obtient une fraction $2^{10-6}_{\text{III}}$ de $2^4=16$ essais seulement, orthogonale. ($\overline{\mathbf{10}}$ désigne la colonne du facteur 10.)</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Appliquer en R · Construire une fraction régulière</p>
+              <p><code>FrF2</code> construit directement une fraction, sans écrire les générateurs à la main : on donne le nombre d'essais souhaité (ou la résolution visée) et le nombre de facteurs, le package choisit un jeu de générateurs convenable.</p>
+              <pre><code>library(FrF2)
+
+# m = 3 facteurs, fraction a 4 essais (demi-fraction, q=1), resolution III
+PlanC &lt;- FrF2(nruns = 4, nfactors = 3, randomize = FALSE, resolution = 3,
+              factor.names = list(Tem = c(-1, 1), Vit = c(-1, 1), Lev = c(-1, 1)))</code></pre>
+              <p class="sense"><b>Sens :</b> <code>resolution = 3</code> est ici indicatif : dès que <code>nruns</code> fixe déjà la taille de la fraction ($2^{m-q}$), la résolution obtenue est automatiquement la meilleure possible pour cette taille (ici III, puisque $q=1$ et qu'il n'existe pas de meilleure résolution à seulement 4 essais pour 3 facteurs, fiche 19). Comme à la fiche 13, on enchaîne avec <code>add.response()</code> puis <code>lm(Y ~ Tem + Vit + Lev, data = ...)</code> pour ajuster le modèle d'ordre un.</p>
             </div>
           </article>
 
@@ -2023,6 +2061,25 @@ window.MathJax = {
               <p class="box-label">Exemple · $m=2$, factoriel complet</p>
               <p>Isovariant : $\alpha=4^{1/4}=\sqrt2$. Équiradial : $\alpha=\sqrt2$. Pour deux facteurs, les deux choix coïncident : les 8 points non centraux sont sur le cercle de rayon $\sqrt2$.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Appliquer en R · Construire le composite, ajuster un modèle d'ordre deux</p>
+              <p>Le package <code>rsm</code> construit directement un plan composite centré avec la propriété demandée (ici isovariant, <code>alpha="rotatable"</code>, qui correspond exactement au $\alpha=\big(2^{m-q}\big)^{1/4}$ de la table ci-dessus) :</p>
+              <pre><code>install.packages("rsm")
+library(rsm)
+
+# m = 2 facteurs, 3 points centraux, isovariant par rotations
+PlanC &lt;- ccd(2, n0 = c(0, 3), randomize = FALSE,
+              alpha = "rotatable", coding = list(x1 ~ Pre, x2 ~ Rat))</code></pre>
+              <p>Une fois les réponses observées, on ajuste le modèle d'ordre deux complet de la fiche 31 avec <code>rsm()</code> (qui, contrairement à <code>lm</code>, sait nommer séparément les termes d'ordre un <code>FO</code>, d'interaction <code>TWI</code> et quadratiques <code>PQ</code>, et en sort directement leurs sommes de carrés) :</p>
+              <pre><code>Y &lt;- c(6.66, 7.58, 7.27, 8.33, 8.04, 6.49, 8.19, 7.16, 7.78, 7.69, 7.90)
+PlanCY &lt;- add.response(PlanC, Y)
+
+RsmModel &lt;- rsm(Y ~ FO(x1, x2) + TWI(x1, x2) + PQ(x1, x2), data = PlanCY)
+summary(RsmModel)                       # coefficients + ANOVA (FO/TWI/PQ/lack of fit)
+contour(RsmModel, ~ x1*x2, image = TRUE)  # lignes de niveau de la surface ajustee</code></pre>
+              <p class="sense"><b>Sens :</b> <code>summary(RsmModel)</code> renvoie un tableau d'analyse de la variance qui sépare la part due aux effets linéaires (<code>FO</code>), à l'interaction (<code>TWI</code>) et à la courbure (<code>PQ</code>) : exactement les trois questions « y a-t-il un effet d'interaction significatif ? », « y a-t-il un effet quadratique significatif ? » qu'on se pose systématiquement sur un plan pour surface de réponse (fiche 31). <code>contour()</code> trace les courbes de niveau de la figure de la fiche précédente, directement à partir du modèle ajusté.</p>
+            </div>
           </article>
 
           <article class="topic" id="s34">
@@ -2405,6 +2462,187 @@ window.MathJax = {
               <span class="qcm-result"></span>
             </div>
           </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 8 : ANNALE 2024/2025 ================= -->
+      <section class="lecture" id="lecture-8">
+        <button class="lecture-head">
+          <span class="num">9</span>
+          <span class="title">Annale 2024/2025 (corrigée)</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <div class="box box-warn">
+            <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pas de corrigé officiel</p>
+            <p>Ce sujet (épreuve « Plans d'expérience », année 2024/2025) ne vient pas avec un corrigé. Les trois fiches suivantes proposent une correction rédigée entièrement pour ce mémo, et vérifiée (calculs refaits deux fois, cohérence des totaux) ; ce n'est pas une correction officielle de l'enseignant.</p>
+          </div>
+
+          <article class="topic" id="s39">
+            <div class="tophead"><span class="num">39</span><h2>Annale 2024/2025 · Questions de cours : plans, D-efficacité, FrF2</h2></div>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Question 1</p>
+              <p>Un plan factoriel complet est-il utilisable afin d'ajuster un modèle pour surface de réponse ? Un plan composite centré est-il utilisable afin d'ajuster un modèle d'ordre un ? (justifier brièvement)</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><b>Factoriel complet → modèle de surface de réponse (ordre deux) : non.</b> Un plan factoriel complet ne place chaque facteur qu'à <b>2 niveaux</b> ($\pm1$). Or un modèle d'ordre deux a besoin d'estimer les effets quadratiques $\beta_{ii}$ (fiche 31) : à 2 niveaux, $x_i^2=1$ pour toute expérience, donc la colonne de $x_i^2$ est identique à la colonne constante pour <b>tous</b> les facteurs. La matrice $X$ a alors $m+1$ colonnes égales, elle n'est jamais de plein rang : impossible de séparer $\beta_0$ des $\beta_{ii}$ (fiche 31, box d'avertissement). Il faut au moins 3 niveaux par facteur pour estimer la courbure.</p>
+                <p><b>Composite centré → modèle d'ordre un : oui.</b> Un composite centré contient déjà, comme sous-ensemble, un plan factoriel complet (ou une fraction de résolution V ou plus), qui à lui seul suffit à estimer un modèle d'ordre un (fiches 12-14). Rien n'empêche d'ajuster un modèle plus <b>simple</b> que celui pour lequel le plan a été pensé : on utilise alors moins d'information que ce que le plan permettrait (les points axiaux et le centre ne servent plus à rien pour ce modèle réduit), mais l'estimation reste parfaitement valide. C'est juste plus coûteux que nécessaire : si on sait d'avance qu'un ordre un suffit, un simple factoriel (fiche 13) est plus économique.</p>
+                <p class="sense"><b>Sens :</b> retenir la règle générale : un plan pensé pour un modèle <b>plus riche</b> (plus de paramètres) reste utilisable pour un modèle <b>plus pauvre</b> (sous-modèle), jamais l'inverse.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Question 2</p>
+              <p>$m=2$ facteurs, domaine $[-1,1]^2$, critère = D-efficacité. Quatre stratégies :</p>
+              <div class="formula">$$D_1=\begin{pmatrix}-1&-1\\1&-1\\-1&1\\1&1\end{pmatrix},\ D_2=\begin{pmatrix}1&0\\-1&0\\0&1\\0&-1\end{pmatrix},\ D_3=\begin{pmatrix}-1&1\\-1&-1\\1&0\\0&0\end{pmatrix},\ D_4=\begin{pmatrix}-1&-1\\1&1\\\alpha&0\\-\alpha&0\end{pmatrix}$$</div>
+              <p>Quelle valeur de $\alpha$ rend $D_4$ le plus efficace possible ? Cette valeur fixée, classer les 4 plans par efficacité (modèle d'ordre un, $p=3$).</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Le bon $\alpha$ pour $D_4$</p>
+                <p>Pour $D_4$, $X^\top X=\begin{pmatrix}4&0&0\\0&2+2\alpha^2&2\\0&2&2\end{pmatrix}$ (en sommant les produits croisés des 4 lignes $(1,-1,-1),(1,1,1),(1,\alpha,0),(1,-\alpha,0)$). D'où $\det(X^\top X)=4\big[(2+2\alpha^2)\times2-2\times2\big]=4\times4\alpha^2=16\alpha^2$ : <b>croissant</b> en $\alpha^2$, donc maximal à la borne du domaine autorisé, $\alpha=1$ (le domaine expérimental est le carré $[-1,1]^2$, donc $\alpha$ ne peut pas dépasser 1). À $\alpha=1$ : $\det(X^\top X)=16$.</p>
+                <p class="method-label">2. Les déterminants des 4 plans (avec $\alpha=1$ pour $D_4$)</p>
+                <p>Même méthode pour chacun ($n=4$ lignes, $p=3$ colonnes $1,x_1,x_2$) :</p>
+                <table class="cmp">
+                  <tr><th>Plan</th><th>$X^\top X$</th><th>$\det(X^\top X)$</th></tr>
+                  <tr><td>$D_1$ (sommets du carré)</td><td>$\mathrm{diag}(4,4,4)$</td><td>$64$</td></tr>
+                  <tr><td>$D_2$ (points axiaux)</td><td>$\mathrm{diag}(4,2,2)$</td><td>$16$</td></tr>
+                  <tr><td>$D_3$</td><td>$\begin{pmatrix}4&-1&0\\-1&3&0\\0&0&2\end{pmatrix}$</td><td>$22$</td></tr>
+                  <tr><td>$D_4$ ($\alpha=1$)</td><td>$\begin{pmatrix}4&0&0\\0&4&2\\0&2&2\end{pmatrix}$</td><td>$16$</td></tr>
+                </table>
+                <p class="method-label">3. Classement</p>
+                <div class="formula">$$D_1\ (64)\ \gt\ D_3\ (22)\ \gt\ D_2=D_4\ (16,\ \text{ex æquo})$$</div>
+                <p class="sense"><b>Sens :</b> $D_1$, le plan factoriel complet (les 4 sommets du carré), est le plus D-efficace des quatre : c'est cohérent avec le cours (fiche 24), le factoriel complet est le plan D-optimal de référence sur l'hypercube pour le modèle d'ordre un. $D_2$ et $D_4$ (à $\alpha=1$) se valent exactement : $D_4$ à sa meilleure valeur de $\alpha$ ne fait pas mieux qu'un plan à points axiaux « classique ».</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Question 3</p>
+              <p>Expliquer en quoi consiste l'objet <code>PlanC</code> créé par :</p>
+              <pre><code>PlanC &lt;- FrF2(nruns=4, nfactors=3, randomize=FALSE, resolution=3,
+              factor.names=list(Tem=c(-1,1), Vit=c(-1,1), Lev=c(-1,1)))</code></pre>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><code>PlanC</code> est une <b>fraction régulière</b> du plan factoriel complet à 3 facteurs (<code>Tem</code>, <code>Vit</code>, <code>Lev</code>, chacun codé $-1/+1$) : <code>nruns=4</code> impose seulement $4$ essais au lieu des $2^3=8$ du complet, soit une <b>demi-fraction</b> ($q=1$ générateur, fiche 17). <code>resolution=3</code> demande la meilleure résolution atteignable à cette taille (fiche 19) : à $4$ essais pour $3$ facteurs, c'est la résolution III (ni plus, c'est la taille minimale pour estimer les 3 effets principaux sans qu'aucun ne soit confondu avec un autre, fiche 19, box d'avertissement). <code>randomize=FALSE</code> garde l'ordre standard des lignes (pas d'ordre de passage aléatoire). Concrètement, R choisit un générateur comme $\mathbf{Lev}=\mathbf{Tem}\cdot\mathbf{Vit}$ (fiche 18) pour produire les 4 lignes.</p>
+                <p class="sense"><b>Sens :</b> c'est exactement la construction R de la fiche 20 appliquée à ce problème précis : on obtient automatiquement, sans écrire le produit d'Hadamard à la main, une fraction $2^{3-1}_{\mathrm{III}}$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s40">
+            <div class="tophead"><span class="num">40</span><h2>Annale 2024/2025 · Exercice 1 : fractions régulières et rendement du blé</h2></div>
+            <p>Modèle d'ordre un à $m=5$ facteurs quantitatifs : $Y(x)=\beta_0+\sum_{i=1}^5\beta_ix_i+\varepsilon(x)$, $p=6$.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Questions 1 à 3 (construire deux fractions)</p>
+              <p>1) Un plan factoriel complet est utilisé. Combien d'expériences ? Que signifie « orthogonal » ?<br>
+              2) Écrire la matrice $D$ de la fraction régulière avec les 2 générateurs $\mathbb I=\mathbf{1234}=\mathbf{2345}$. Vérifier que la taille obtenue est conforme au cours. Quelle est la résolution (justifier) ?<br>
+              3) Écrire la matrice $D$ de la fraction obtenue avec les 3 générateurs $\mathbb I=\mathbf{12}=\mathbf{345}=\mathbf{12345}$. Vérifier que, cette fois, la taille n'est <b>pas</b> conforme aux résultats du cours. Pourquoi ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Le complet</p>
+                <p>$n=2^5=32$ expériences. « Orthogonal » signifie que les colonnes du modèle (constante, $x_1,\dots,x_5$) sont deux à deux orthogonales (produit scalaire nul), donc que $X^\top X$ est <b>diagonale</b> (fiches 12-14) : chaque $\hat\beta_i$ s'estime indépendamment des autres, et retirer ou ajouter un facteur au modèle ne change pas les estimations des autres coefficients.</p>
+                <p class="method-label">2. $\mathbb I=\mathbf{1234}=\mathbf{2345}$ : attention, un piège</p>
+                <p>Le produit des deux générateurs donne un troisième mot de la relation de définition : $(\mathbf{1234})(\mathbf{2345})=\mathbf1\,\mathbf2^2\mathbf3^2\mathbf4^2\,\mathbf5=\mathbf{15}$ (les lettres $2,3,4$ apparaissent deux fois donc s'annulent). La relation complète est $\mathbb I=\mathbf{1234}=\mathbf{2345}=\mathbf{15}$. Avec $q=2$ générateurs <b>indépendants</b>, la taille est $n=2^{5-2}=8$ : <b>conforme</b> au résultat général (fiche 20, proposition 06). En posant $x_4=x_1x_2x_3$ et $x_5=x_2x_3x_4$ et en substituant, on vérifie que $x_5=x_1$ : les colonnes des facteurs 1 et 5 sont <b>identiques</b>. C'est exactement ce que dit le mot $\mathbf{15}$ de longueur 2 dans la relation de définition : la <b>résolution</b> est donc <b>II</b> (longueur du plus court mot non trivial, fiche 20, définition 06), pas III. Un générateur à 4 lettres peut donc, selon les lettres partagées avec l'autre générateur, produire un mot caché bien plus court : c'est un piège classique, il faut toujours calculer le mot caché avant de conclure sur la résolution.</p>
+                <p class="method-label">3. $\mathbb I=\mathbf{12}=\mathbf{345}=\mathbf{12345}$ : le piège inverse</p>
+                <p>Ici, le troisième mot <b>n'est pas</b> un mot caché nouveau : $\mathbf{12345}$ est exactement le produit $(\mathbf{12})\times(\mathbf{345})=\mathbf{12345}$ déjà obtenu en combinant les deux premiers générateurs (fiche 20, exemple « $m=5$ »). Autrement dit, il n'y a en réalité que $q=2$ générateurs <b>indépendants</b> (<code>12</code> et <code>345</code>) : le troisième mot énoncé n'ajoute <b>aucune</b> contrainte supplémentaire, il découle automatiquement des deux premiers. La taille réelle de la fraction reste donc $n=2^{5-2}=8$, et <b>non</b> $2^{5-3}=4$ comme le calcul naïf (« 3 générateurs donc $q=3$ ») le suggérerait : c'est précisément la <b>non-conformité</b> que la question demande de repérer. La raison : la formule $n=2^{m-q}$ (fiche 20) suppose des générateurs <b>indépendants</b> ; ici, l'un des trois « générateurs » annoncés est en fait la conséquence algébrique des deux autres.</p>
+                <p class="sense"><b>Sens :</b> avant d'appliquer $n=2^{m-q}$, toujours vérifier que les $q$ mots donnés sont réellement indépendants (aucun n'est le produit des autres) : sinon $q$ est surestimé et la taille annoncée est fausse (fiche 21, méthode en 5 étapes, étape 1).</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Questions 4 à 7 (rendement du blé, 5 engrais, 8 essais)</p>
+              <div class="formula">$$D=\begin{pmatrix}1&1&1&1&1\\1&1&1&-1&-1\\-1&-1&1&1&1\\-1&-1&1&-1&-1\\-1&1&-1&-1&1\\-1&1&-1&1&-1\\1&-1&-1&-1&1\\1&-1&-1&1&-1\end{pmatrix},\qquad Y=\begin{pmatrix}6.0\\5.0\\4.5\\3.5\\1.9\\1.1\\5.3\\4.2\end{pmatrix}$$</div>
+              <p>4) Justifier qu'on peut ajuster le modèle d'ordre un avec ce plan.<br>
+              5) Estimateurs des moindres carrés.<br>
+              6) Le modèle semble-t-il bien ajusté ? Recommandations sur le choix des engrais ?<br>
+              7) Rendement prédit tous facteurs au niveau bas, dispersion associée, interprétation.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">4. Le modèle est estimable</p>
+                <p>On vérifie que les 6 colonnes du modèle ($\mathbb 1,x_1,\dots,x_5$) sont deux à deux orthogonales : chaque somme $\sum_ix_{ki}x_{kj}$ ($i\ne j$, sur les 8 lignes) vaut $0$, et chaque colonne a elle-même une somme nulle. On obtient $X^\top X=8\,I_6$ : matrice diagonale, inversible, donc $X$ est de plein rang $6$ et les 6 paramètres sont tous estimables (fiche 12-14, même structure que le factoriel complet).</p>
+                <p class="method-label">5. Estimateurs (orthogonal, $\hat\beta_j=\frac18\sum_kx_{kj}y_k$)</p>
+                <div class="formula">$$\hat\beta_0=\frac{31.5}8=3.9375,\quad\hat\beta_1=\frac{9.5}8=1.1875,\quad\hat\beta_2=\frac{-3.5}8=-0.4375$$</div>
+                <div class="formula">$$\hat\beta_3=\frac{6.5}8=0.8125,\quad\hat\beta_4=\frac{0.1}8=0.0125,\quad\hat\beta_5=\frac{3.9}8=0.4875$$</div>
+                <p class="method-label">6. Qualité de l'ajustement</p>
+                <p>$\mathrm{SST}=\sum y_k^2-n\bar y^2=144.05-8\times3.9375^2=20.01875$. Chaque facteur orthogonal contribue $\mathrm{SSR}_j=8\hat\beta_j^2$ à la régression : $\mathrm{SSR}=8(1.1875^2+0.4375^2+0.8125^2+0.0125^2+0.4875^2)=19.99625$. D'où $\mathrm{SSE}=\mathrm{SST}-\mathrm{SSR}=0.0225$, avec $n-p=8-6=2$ degrés de liberté, soit $\widehat{\sigma^2}=\mathrm{MSE}=0.01125$, et $R^2=\mathrm{SSR}/\mathrm{SST}\approx0.9989$. Un $R^2$ de $99{,}89\%$ : le modèle est <b>excellent</b>.</p>
+                <p>Recommandations : $\hat\beta_1,\hat\beta_3,\hat\beta_5$ sont positifs et nettement plus grands que $\mathrm{MSE}$ (engrais 1, 3 et 5 à mettre au niveau <b>haut</b>) ; $\hat\beta_2$ est négatif (engrais 2 au niveau <b>bas</b>) ; $\hat\beta_4\approx0$ (engrais 4 quasiment sans effet, à régler selon d'autres critères, par exemple le coût).</p>
+                <p class="method-label">7. Prédiction tous facteurs au niveau bas</p>
+                <div class="formula">$$\hat Y(-1,-1,-1,-1,-1)=\hat\beta_0-\hat\beta_1-\hat\beta_2-\hat\beta_3-\hat\beta_4-\hat\beta_5=1.875\ \text{t/ha}$$</div>
+                <p>Dispersion : pour un plan orthogonal, $\mathrm{Var}(\hat Y(x_0))=\sigma^2\,x_0^\top(X^\top X)^{-1}x_0=\mathrm{MSE}\times\frac{\|x_0\|^2}8=0.01125\times\frac68=0.0084375$, soit un écart-type $\approx0.092$ t/ha. L'intervalle $1.875\pm0.092$ reste nettement en dessous des rendements obtenus en réglant les engrais au niveau recommandé (6.0 observé en ligne 1) : la faible dispersion confirme que ce réglage « tout bas » donne bien, de façon fiable (pas un artefact du bruit), un rendement médiocre.</p>
+                <p class="sense"><b>Sens :</b> ce plan à 8 essais pour 5 facteurs quantitatifs est en réalité une fraction régulière (une variante de celle de la question 2), orthogonale et de bonne résolution : on retrouve ici, sur des données concrètes, exactement la même structure $X^\top X=nI_p$ qui rend les calculs aussi simples que pour un factoriel complet (fiche 14).</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s41">
+            <div class="tophead"><span class="num">41</span><h2>Annale 2024/2025 · Exercice 2 : l'interaction qu'on a oublié de regarder</h2></div>
+            <p>Rendement d'une réaction chimique, 3 facteurs codés, plan factoriel complet $2^3=8$ essais, objectif : prédire le rendement en $(x_1,x_2,x_3)=(1,\,0.5,\,{-0.5})$.</p>
+            <table class="cmp">
+              <tr><th>Obs</th><th>$x_1$</th><th>$x_2$</th><th>$x_3$</th><th>$y$ (%)</th></tr>
+              <tr><td>1</td><td>-1</td><td>-1</td><td>-1</td><td>53</td></tr>
+              <tr><td>2</td><td>1</td><td>-1</td><td>-1</td><td>30</td></tr>
+              <tr><td>3</td><td>-1</td><td>1</td><td>-1</td><td>18</td></tr>
+              <tr><td>4</td><td>1</td><td>1</td><td>-1</td><td>65</td></tr>
+              <tr><td>5</td><td>-1</td><td>-1</td><td>1</td><td>44</td></tr>
+              <tr><td>6</td><td>1</td><td>-1</td><td>1</td><td>24</td></tr>
+              <tr><td>7</td><td>-1</td><td>1</td><td>1</td><td>18</td></tr>
+              <tr><td>8</td><td>1</td><td>1</td><td>1</td><td>58</td></tr>
+            </table>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Question 1</p>
+              <p>Une personne peu formée a ajusté sous SAS/R le modèle d'ordre un <b>sans interaction</b> ($Y=\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_3+\varepsilon$) et obtient $\hat\beta=(38.75,\,5.5,\,1.0,\,{-2.75})$, $R^2=0.127$, $F=0.19$ ($p=0.8955$), prédiction $46.1\%$ au point demandé. Pourquoi ce résultat n'est-il pas fiable ? Que penser de la stratégie expérimentale ? Peut-on calculer l'écart-type de cette prédiction, et est-il cohérent ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Le diagnostic statistique</p>
+                <p>$R^2=0.127$ : le modèle n'explique que 12,7 % de la variance observée. Le test de Fisher global donne $p=0.8955$ : on ne peut même pas rejeter l'hypothèse que <b>tous</b> les $\beta_i$ sont nuls (le modèle ne fait pas mieux que prédire la moyenne $\bar y$ partout). Une prédiction issue d'un modèle statistiquement non significatif n'a aucune garantie.</p>
+                <p class="method-label">La vraie cause : une interaction oubliée, pas un défaut de la stratégie</p>
+                <p>Le plan est un $2^3$ <b>complet</b> (8 essais, résolution V au sens le plus favorable, fiche 28) : il permet en réalité d'estimer <b>les 7</b> effets (3 principaux, 3 interactions d'ordre 2, 1 d'ordre 3), orthogonalement, sans aucune confusion. La stratégie expérimentale est donc excellente ; c'est l'<b>analyse</b> qui est fautive : seuls les effets principaux ont été introduits dans le modèle. En recalculant tous les effets par la méthode de Yates (fiche 13) :</p>
+                <table class="cmp">
+                  <tr><th>Effet</th><th>$x_1$</th><th>$x_2$</th><th>$x_3$</th><th>$x_1x_2$</th><th>$x_1x_3$</th><th>$x_2x_3$</th><th>$x_1x_2x_3$</th></tr>
+                  <tr><td>Coefficient</td><td>5.5</td><td>1.0</td><td>-2.75</td><td style="color:var(--warn-color);font-weight:700;">16.25</td><td>-0.5</td><td>1.0</td><td>-1.25</td></tr>
+                </table>
+                <p>L'interaction $x_1x_2$ a un coefficient de $16.25$ : <b>presque 3 fois plus grand en valeur absolue que le plus grand effet principal</b> ($-2.75$) ! C'est elle, et non le « bruit », qui domine la variation du rendement. En l'omettant, le modèle attribue à tort cette variation systématique à l'erreur résiduelle : $\mathrm{MSE}=533.75$ est énorme, pas parce que l'expérience est bruitée, mais parce qu'elle « absorbe » un vrai signal non modélisé.</p>
+                <p class="method-label">L'écart-type de la prédiction</p>
+                <p>Oui, on peut le calculer : $\mathrm{Var}(\hat Y(x_0))=\mathrm{MSE}\times\frac{\|x_0\|^2}8$ avec $x_0=(1,1,0.5,{-0.5})$ (plan orthogonal, $X^\top X=8I_4$), soit $533.75\times\frac{1+1+0.25+0.25}8=533.75\times0.1875\approx100.1$, écart-type $\approx10.0$ points de pourcentage. Un écart-type de $10$ points autour d'une prédiction de $46.1\%$ (l'intervalle plausible va grosso modo de $26\%$ à $66\%$) confirme <b>numériquement</b> ce que le $R^2$ et le test $F$ indiquaient déjà qualitativement : cette prédiction est beaucoup trop imprécise pour être exploitée.</p>
+                <p class="sense"><b>Sens :</b> un plan factoriel complet protège contre la <b>confusion</b> des effets (fiche 17-18) ; il ne protège pas contre l'erreur de <b>spécifier</b> un modèle trop pauvre. Toujours vérifier, sur un plan complet, si les interactions valent la peine d'être incluses avant de conclure qu'un modèle est mauvais.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Énoncé · Question 2</p>
+              <p>Proposer une prédiction de meilleure qualité, avec une application numérique.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">La correction la plus simple : ajouter l'interaction dominante</p>
+                <p>Le plan étant un $2^3$ complet, <b>tous</b> les effets (y compris $x_1x_2$) sont déjà estimables <b>sans refaire une seule expérience</b> : il suffit de réajuster le modèle en l'incluant, $Y=\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_3+\beta_{12}x_1x_2+\varepsilon$. Par orthogonalité du plan complet (fiche 14), les coefficients ne changent <b>pas</b> en ajoutant un terme orthogonal supplémentaire : $\hat\beta_0=38.75$, $\hat\beta_1=5.5$, $\hat\beta_2=1.0$, $\hat\beta_3=-2.75$, $\hat\beta_{12}=16.25$ (table ci-dessus).</p>
+                <p class="method-label">Nouvelle prédiction</p>
+                <p>Au point $(x_1,x_2,x_3)=(1,\,0.5,\,{-0.5})$, avec $x_1x_2=1\times0.5=0.5$ :</p>
+                <div class="formula">$$\hat Y=38.75+5.5(1)+1.0(0.5)-2.75({-0.5})+16.25(0.5)=54.25\ \%$$</div>
+                <p>Très différent des $46.1\%$ obtenus sans l'interaction : omettre un effet aussi important ne fait pas que dégrader la précision, cela change <b>substantiellement</b> la valeur prédite elle-même.</p>
+                <p class="method-label">La précision retrouvée</p>
+                <p>$\mathrm{SST}=2445.5$ (donné par le tableau ANOVA d'origine). Chaque effet orthogonal contribue $8\hat\beta^2$ : $\mathrm{SSR}(x_1,x_2,x_3,x_1x_2)=8(5.5^2+1.0^2+2.75^2+16.25^2)=2423$, d'où $\mathrm{SSE}=2445.5-2423=22.5$ sur $8-5=3$ degrés de liberté, $\mathrm{MSE}=7.5$ (contre $533.75$ avant !) et $R^2=2423/2445.5\approx0.991$. L'écart-type de la nouvelle prédiction : $\mathrm{Var}(\hat Y)=7.5\times\frac{1+1+0.25+0.25+0.25}8=7.5\times0.34375\approx2.58$, écart-type $\approx1.6$ points : plus de <b>6 fois plus précis</b> que la prédiction initiale.</p>
+                <p class="sense"><b>Sens :</b> « de manière efficace et la plus simple possible » (l'énoncé) : pas besoin de replanifier une expérience, l'information était déjà là, il suffisait de regarder le bon effet. C'est l'intérêt majeur d'un plan factoriel complet orthogonal : on peut toujours enrichir le modèle a posteriori sans perdre les estimations déjà faites.</p>
+              </div>
+            </details>
+          </article>
 
         </div>
       </section>

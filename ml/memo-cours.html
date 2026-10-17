@@ -464,16 +464,29 @@ window.MathJax = {
           <li><a href="#s32"><span class="toc-num">32</span>Exercice : info. mutuelle &amp; HSIC, cas gaussien</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>Lecture 6 (suite) : sélection de variables, le tableau complet</p>
+        <ol>
+          <li><a href="#s33"><span class="toc-num">33</span>Motivation, taxonomie, mRMR &amp; élimination récursive</a></li>
+        </ol>
+      </div>
+      <div class="toc-lecture">
+        <p>Annales supplémentaires (corrigées officiellement)</p>
+        <ol>
+          <li><a href="#s34"><span class="toc-num">34</span>Examen 2023/2024</a></li>
+          <li><a href="#s35"><span class="toc-num">35</span>Examen 2024/2025</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
       <div class="hero">
         <span class="eyebrow">Mémo de cours</span>
         <h1>De l'ERM au SVM et aux RKHS, en passant par les ensembles et la robustesse</h1>
-        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (classification Bayes/LDA/logistique, SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation, régresser en présence d'outliers, et enfin régresser sans hypothèse paramétrique (k-NN, Nadaraya-Watson, splines, RKHS). L'examen 2025/2026 est corrigé en détail (fiches 30 à 32).</p>
+        <p>Synthèse complète du cours : choisir, régulariser et entraîner un prédicteur linéaire, le résoudre numériquement (GD/SGD), passer à des frontières non linéaires (classification Bayes/LDA/logistique, SVM, noyaux), combiner des modèles (bagging, boosting), sélectionner des variables au-delà de la corrélation (agnostique, mRMR, élimination récursive), régresser en présence d'outliers, et enfin régresser sans hypothèse paramétrique (k-NN, Nadaraya-Watson, splines, RKHS). Trois examens sont corrigés en détail : 2025/2026 (fiches 30-32, non officiel), 2023/2024 et 2024/2025 (fiches 34-35, corrigés officiels).</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : LectureNotesML (S. Da Veiga), QCM, sujets d'examen et TP ENSAI 3A</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>32 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>35 fiches</b> · 3 annales</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -3384,6 +3397,10 @@ print(krr_predict(X, alpha, np.array([1.0]), gamma=0.5))  # -&gt; [1.136]</code>
 
           <article class="topic" id="s30">
             <div class="tophead"><span class="num">30</span><h2>Examen 2025/2026 · QCM de cours (28 questions)</h2></div>
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pas de corrigé officiel</p>
+              <p>Ce sujet (examen 2025/2026) ne vient pas avec une correction officielle de l'enseignant. Les réponses ci-dessous (fiches 30-32) ont été établies et vérifiées pour ce mémo, mais ne sont pas une correction authentifiée : en cas de doute, recoupez avec les fiches de cours citées entre parenthèses.</p>
+            </div>
             <p>28 questions à choix unique (+1/-1/0), toutes de cours. Réponses et justifications brèves, groupées par thème et reliées aux fiches correspondantes.</p>
 
             <div class="box box-thm">
@@ -3487,6 +3504,233 @@ print(krr_predict(X, alpha, np.array([1.0]), gamma=0.5))  # -&gt; [1.136]</code>
               <div class="formula">$$\frac{\mathrm{HSIC}(X,Y)}{\sqrt{\mathrm{HSIC}(X,X)\,\mathrm{HSIC}(Y,Y)}}=\frac{\mathrm{Cov}(X,Y)^2}{\mathrm{Var}(X)\mathrm{Var}(Y)}=\rho^2=\mathrm{Corr}(X,Y)^2$$</div>
               <p class="sense"><b>Sens :</b> $\rho^2$ est une fonction strictement croissante de $I(X;Y)=-\frac12\log(1-\rho^2)$ (cas gaussien) : classer les variables par ce HSIC normalisé donne exactement le <b>même classement</b> que les classer par information mutuelle, tout en restant calculable sans estimation de densité.</p>
             </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 8 : FEATURE SELECTION (suite) ================= -->
+      <section class="lecture" id="lecture-8">
+        <button class="lecture-head">
+          <span class="num">L6+</span>
+          <span class="title">Sélection de variables : le tableau complet</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s33">
+            <div class="tophead"><span class="num">33</span><h2>Motivation, taxonomie, mRMR &amp; élimination récursive</h2></div>
+            <p>Les fiches 22-23 ont donné les <b>outils</b> pour mesurer une dépendance (Pearson, information mutuelle, HSIC). Il manque encore le cadre d'ensemble : pourquoi réduire la dimension, quelles sont les grandes familles de méthodes, et comment transformer une mesure de dépendance en une <b>procédure de sélection</b> concrète.</p>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Pourquoi réduire la dimension ?</p>
+              <p>Un jeu de données contient souvent bien plus de variables explicatives que nécessaire pour la tâche. Trois raisons motivent d'en réduire le nombre :</p>
+              <p>① <b>Simplifier le modèle</b> : à nombre de variables élevé, n'importe quel modèle (réseau de neurones, arbre, régression) devient vite trop complexe et <b>surapprend</b> (fiche 1).<br>
+              ② <b>Améliorer la performance</b> : retirer les variables redondantes ou inutiles met en avant celles qui comptent vraiment, avec un effet direct sur la précision et le temps de calcul.<br>
+              ③ <b>Faciliter la visualisation</b> : ramener les données à 2 ou 3 dimensions permet de les représenter graphiquement.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Deux familles pour réduire la dimension</p>
+              <p><b>Sélection de variables (feature selection)</b> : spécifique à l'apprentissage supervisé. On choisit un <b>sous-ensemble</b> des variables d'origine, celles qui expliquent le mieux la cible ; le modèle final s'entraîne avec certaines des variables <b>originales</b>, inchangées.</p>
+              <p><b>Embedding</b> : pas spécifique au supervisé (né en non supervisé). On <b>construit</b> de nouvelles variables en petit nombre, en transformant/compressant les variables d'origine (ex. PCA-OLS, fiche 6) : les variables finales ne sont <b>plus</b> les variables d'origine.</p>
+              <p class="sense"><b>Sens :</b> dans chacune de ces deux familles, on distingue encore des méthodes <b>linéaires</b> et des méthodes <b>non linéaires</b> (ex. PCA est un embedding linéaire).</p>
+            </div>
+
+            <figure style="margin:16px 0 14px;">
+              <svg viewBox="0 0 620 190" role="img" aria-label="Arbre de taxonomie : reduction de dimension se divise en selection de variables et embedding ; la selection de variables se divise en methodes agnostiques et methodes basees sur un modele" style="width:100%;max-width:620px;height:auto;display:block;margin:0 auto;">
+                <rect x="250" y="8" width="120" height="34" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="310" y="29" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-strong)">Réduction de dimension</text>
+                <line x1="310" y1="42" x2="150" y2="68" stroke="var(--muted)" stroke-width="1.3"/>
+                <line x1="310" y1="42" x2="470" y2="68" stroke="var(--muted)" stroke-width="1.3"/>
+                <rect x="70" y="68" width="160" height="32" rx="6" fill="var(--def-bg)" stroke="var(--def-border)" stroke-width="1.5"/>
+                <text x="150" y="88" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--def-label)">Sélection de variables</text>
+                <rect x="390" y="68" width="160" height="32" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.5"/>
+                <text x="470" y="88" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink-soft)">Embedding (ex. PCA)</text>
+                <line x1="150" y1="100" x2="80" y2="128" stroke="var(--muted)" stroke-width="1.3"/>
+                <line x1="150" y1="100" x2="230" y2="128" stroke="var(--muted)" stroke-width="1.3"/>
+                <rect x="10" y="128" width="140" height="48" rx="6" fill="var(--ex-bg)" stroke="var(--ex-border)" stroke-width="1.5"/>
+                <text x="80" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ex-label)">Agnostique</text>
+                <text x="80" y="163" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)">Pearson, MI, HSIC</text>
+                <text x="80" y="174" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)">(fiches 22-23)</text>
+                <rect x="160" y="128" width="140" height="48" rx="6" fill="var(--thm-bg)" stroke="var(--thm-border)" stroke-width="1.5"/>
+                <text x="230" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="var(--thm-label)">Basée modèle</text>
+                <text x="230" y="163" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)">Lasso (fiche 7), RFE</text>
+                <text x="230" y="174" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)">via MDI/MDA (fiche 19)</text>
+              </svg>
+              <figcaption style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:4px;max-width:none;">La sélection de variables se divise encore en deux approches : mesurer la dépendance <b>sans</b> entraîner de modèle (agnostique), ou coupler sélection et entraînement d'un modèle.</figcaption>
+            </figure>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Agnostique contre basée modèle</p>
+              <p><b>Méthodes agnostiques</b> (ou <i>préliminaires</i>) : on utilise <b>seulement</b> le jeu de données pour estimer la force du lien entre chaque variable et la cible (Pearson, MI, HSIC, fiches 22-23), puis on entraîne le modèle <b>dans un second temps</b>, uniquement avec les variables retenues.</p>
+              <p><b>Méthodes basées modèle</b> : la sélection est couplée à la construction d'un modèle. Le <b>Lasso</b> (fiche 7) en est l'exemple le plus connu pour la régression : certains $\hat\beta_j$ sont mis exactement à zéro. Pour les arbres et forêts, l'<b>élimination récursive de variables</b> (ci-dessous) s'appuie sur l'importance MDI/MDA (fiche 19).</p>
+              <p class="sense"><b>Sens :</b> une méthode basée modèle sélectionne pour <b>ce modèle précis</b>. Une variable à effet purement quadratique n'est jamais retenue par un modèle linéaire (ni par Pearson d'ailleurs), même si elle est en réalité très informative : ce n'est pas un défaut de la variable, c'est une limite du modèle utilisé pour la juger.</p>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Piège classique : variable non sélectionnée ≠ variable sans influence</p>
+              <p>Une variable écartée par une sélection couplée à un modèle peut être <b>réellement influente</b>, pour deux raisons distinctes : (1) son effet n'est pas de la forme que le modèle sait capturer (ex. effet quadratique pour un modèle linéaire) ; (2) une autre variable, déjà sélectionnée, lui est <b>fortement corrélée</b> : la nouvelle variable n'apporte alors plus d'information <b>utile en plus</b> de celle déjà choisie, même si, prise seule, elle serait influente. Ce second cas est fréquent et trompeur : ne jamais lire « non sélectionnée » comme « sans effet sur la cible ».</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Pearson et Spearman aveugles, l'information mutuelle voit tout</p>
+              <p><b>Contexte :</b> 20 variables $X_1,\dots,X_{20}\sim\mathcal N(0,1)$ indépendantes, et une cible construite pour ne dépendre que des 5 premières, de façon volontairement <b>non linéaire</b> :</p>
+              <div class="formula">$$Y = 2X_1 + X_2^2 + X_3^3 + 3X_4X_5$$</div>
+              <p>($X_6,\dots,X_{20}$ n'entrent pas dans $Y$ : ce sont des variables « bruit », à écarter.) Sur des répétitions de cette expérience (échantillons de taille $n=500$), on observe :</p>
+              <table class="cmp">
+                <tr><th>Variable</th><th>Pearson $\rho_P$</th><th>Spearman $\rho_S$</th><th>Information mutuelle $I$</th></tr>
+                <tr><td>$X_1$ (effet linéaire)</td><td>nettement $>0$</td><td>nettement $>0$</td><td>nettement $>0$</td></tr>
+                <tr><td>$X_2$ (effet quadratique pur)</td><td style="color:var(--warn-color);font-weight:700;">$\approx0$</td><td style="color:var(--warn-color);font-weight:700;">$\approx0$</td><td>nettement $>0$</td></tr>
+                <tr><td>$X_3$ (effet cubique)</td><td>légèrement $>0$</td><td>légèrement $>0$</td><td>nettement $>0$</td></tr>
+                <tr><td>$X_4,X_5$ (interaction pure)</td><td style="color:var(--warn-color);font-weight:700;">$\approx0$</td><td style="color:var(--warn-color);font-weight:700;">$\approx0$</td><td>nettement $>0$</td></tr>
+                <tr><td>$X_6,\dots,X_{20}$ (bruit)</td><td>$\approx0$</td><td>$\approx0$</td><td>$\approx0$</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> $X_3$ a une composante linéaire non nulle (le cube d'une gaussienne centrée n'est pas symétrique de la même façon que le carré, fiche 22 exercice 1), donc Pearson et Spearman le détectent <b>partiellement</b> ; mais $X_2$ (purement quadratique) et l'<b>interaction</b> $X_4X_5$ leur échappent presque totalement. L'information mutuelle, elle, détecte les 5 variables informatives <b>et</b> ignore correctement les 15 variables de bruit : c'est exactement l'argument de la fiche 22, ici sur un exemple à 20 variables plutôt qu'une seule paire $(X,Y)$.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Corrélation de Spearman</p>
+              <div class="formula">$$\rho_S(\{x_i\},\{y_i\}) = \rho_P(\{r[x]_i\},\{r[y]_i\})$$</div>
+              <p>où $r[x]_i$ (resp. $r[y]_i$) est le <b>rang</b> de $x_i$ (resp. $y_i$) parmi l'échantillon. C'est la corrélation de Pearson calculée non pas sur les valeurs, mais sur leurs <b>rangs</b>.</p>
+              <p class="sense"><b>Sens :</b> Pearson détecte une dépendance <b>linéaire</b> ; Spearman détecte une dépendance <b>monotone</b> (pas forcément linéaire, ex. $y=x^3$), un peu plus général. Ni l'une ni l'autre ne détecte une dépendance non monotone comme $y=x^2$ : il faut l'information mutuelle ou l'HSIC (fiches 22-23) pour cela, comme le montre l'exemple ci-dessus.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · De l'information mutuelle à une procédure de sélection (mRMR)</p>
+              <p>Avoir une mesure de dépendance $I(X_i;Y)$ ne suffit pas : il faut en tirer un <b>sous-ensemble</b> de variables $S$. Deux idées naïves, puis le compromis utilisé en pratique :</p>
+              <p><b>Par seuil</b> : $S=\{X_i,\ I(X_i,Y)\ge t\}$, pour un seuil $t$ fixé.</p>
+              <p><b>Max-Dependency</b> (pour $|S|=m$ fixé) : $S=\arg\max_{S,|S|=m} I(\{X_i\}_{X_i\in S};Y)$. En théorie optimal, en pratique <b>infaisable</b> : il faudrait estimer une information mutuelle en dimension $m$, qui se dégrade très vite (fiche 22).</p>
+              <p><b>Max-Relevance</b> (greedy, approximation praticable) : on ajoute les variables une par une, chacune maximisant une information mutuelle en dimension <b>2 seulement</b> :</p>
+              <div class="formula">$$S=\arg\max_{S,|S|=m}\ \frac1{|S|}\sum_{X_i\in S} I(X_i;Y)$$</div>
+              <p><b>Min-Redundancy-Max-Relevance (mRMR)</b> : Max-Relevance seule tend à sélectionner plusieurs variables <b>corrélées entre elles</b> (donc redondantes). On ajoute un terme qui pénalise la redondance entre variables déjà choisies :</p>
+              <div class="formula">$$S=\arg\max_{S,|S|=m}\ \underbrace{\frac1{|S|}\sum_{X_i\in S} I(X_i;Y)}_{\text{pertinence}} \ -\ \underbrace{\frac1{|S|^2}\sum_{X_i,X_j\in S} I(X_i;X_j)}_{\text{redondance}}$$</div>
+              <p class="sense"><b>Sens :</b> l'optimisation se fait, comme pour un arbre CART (fiche 19), de façon <b>séquentielle et gloutonne</b> : on choisit une variable à la fois, celle qui améliore le plus le critère, jusqu'à atteindre $m$ variables (choisi par validation croisée, fiche 2). On peut remplacer $I$ par le HSIC partout dans ces formules (fiche 23) : l'idée reste identique.</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Élimination récursive de variables (RFE)</p>
+              <p>Pour les arbres et forêts, on dispose déjà d'une mesure d'importance <b>après</b> entraînement (MDI ou MDA, fiche 19). L'élimination récursive (<i>Recursive Feature Elimination</i>) en fait une procédure de sélection itérative :</p>
+              <p>① Entraîner le modèle avec <b>toutes</b> les variables disponibles.<br>
+              ② Calculer l'importance de chaque variable (MDI ou MDA).<br>
+              ③ Retirer la variable la <b>moins</b> importante.<br>
+              ④ Répéter (2)-(3) sur les variables restantes, jusqu'au nombre de variables souhaité.</p>
+              <p class="sense"><b>Sens :</b> contrairement au Lasso (qui choisit directement un sous-ensemble en résolvant un seul problème d'optimisation), RFE est un algorithme <b>itératif</b> qui ré-entraîne le modèle à chaque étape : plus coûteux en calcul, mais applicable à n'importe quel modèle qui sait produire une importance de variable, pas seulement un modèle linéaire.</p>
+            </div>
+          </article>
+
+          <article class="topic" id="s34">
+            <div class="tophead"><span class="num">34</span><h2>Examen 2023/2024 (corrigé officiellement)</h2></div>
+            <p>Sujet de 1h30, deux feuilles A4 autorisées. QCM noté +1/-1/0, puis deux exercices de démonstration. Corrigé officiel transcrit intégralement.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Corrigé · QCM (12 questions, 1 point chacune)</p>
+              <table class="cmp">
+                <tr><th>Q</th><th>Sujet</th><th>Réponse</th><th>Pourquoi</th></tr>
+                <tr><td>1</td><td>Frontière de décision d'un SVM</td><td>(c)</td><td>Définie uniquement par les vecteurs de support (fiche 15-16).</td></tr>
+                <tr><td>2</td><td>Le « kernel trick »</td><td>(c)</td><td>Permet de calculer un produit scalaire dans un espace de plus grande dimension sans y transformer explicitement les données (fiche 17).</td></tr>
+                <tr><td>3</td><td>Le noyau en RKHS</td><td>(b)</td><td>Une mesure de similarité entre deux points.</td></tr>
+                <tr><td>4</td><td>Théorème de Moore-Aronszajn</td><td>(b)</td><td>Tout noyau défini positif a un RKHS associé (fiche 17).</td></tr>
+                <tr><td>5</td><td>Elastic-Net combine</td><td>(b)</td><td>Lasso et Ridge (fiche 8).</td></tr>
+                <tr><td>6</td><td>« Bagging » signifie</td><td>(b)</td><td>Bootstrap AGGregatING (fiche 19).</td></tr>
+                <tr><td>7</td><td>Le bagging réduit surtout</td><td>(b)</td><td>La variance des modèles à forte variance (fiche 19).</td></tr>
+                <tr><td>8</td><td>Les Random Forests sont</td><td>(b)</td><td>Un exemple de bagging (appliqué à des arbres, avec randomisation des variables).</td></tr>
+                <tr><td>9</td><td>Le « hasard » d'un Random Forest vient de</td><td>(b)</td><td>Les deux à la fois : sous-ensemble aléatoire de variables à chaque split, <b>et</b> bootstrap des données (fiche 19).</td></tr>
+                <tr><td>10</td><td>Interaction entre arbres d'un Random Forest</td><td>(b)</td><td>Inexistante : chaque arbre est construit indépendamment des autres.</td></tr>
+                <tr><td>11</td><td>Le Gradient Boosting</td><td>(b)</td><td>Construit les arbres séquentiellement, chacun corrigeant les erreurs du précédent (fiche 20).</td></tr>
+                <tr><td>12</td><td>Le « stacking »</td><td>(b)</td><td>Combiner les prédictions de plusieurs modèles à l'aide d'un autre modèle (fiche 21).</td></tr>
+              </table>
+            </div>
+
+            <details class="solution">
+              <summary>Exercice 2 · Le noyau gaussien en est bien un (8 points)</summary>
+              <div class="box box-thm">
+                <p>On admet : si $k$ est un noyau, $\lambda k$ ($\lambda>0$), $k_1+k_2$, $k^n$ ($n\in\mathbb N$) et une limite simple de noyaux sont encore des noyaux.</p>
+                <p class="method-label">1. Règle de l'exponentielle : $\exp(k_1)$ est un noyau si $k_1$ l'est</p>
+                <p>$\exp(u)=\lim_{n\to\infty}\sum_{i=1}^n\frac1{i!}u^i$. Par la règle de puissance, $k_1^i$ est un noyau pour tout $i$ ; par la règle d'échelle (avec $\frac1{i!}>0$), $\frac1{i!}k_1^i$ est un noyau ; par la règle de somme, $\sum_{i=1}^n\frac1{i!}k_1^i$ est un noyau pour tout $n$ ; par la règle de limite, $k_2(x,y)=\lim_{n\to\infty}\sum_{i=1}^n\frac1{i!}k_1(x,y)^i=\exp(k_1(x,y))$ est un noyau. $\blacksquare$</p>
+                <p class="method-label">2. Règle des fonctions : $f(x)k_1(x,y)f(y)$ est un noyau</p>
+                <p>$k_1(x,y)=\langle\phi_1(x),\phi_1(y)\rangle$ pour une certaine feature map $\phi_1$ (puisque $k_1$ est un noyau). Par bilinéarité du produit scalaire : $f(x)k_1(x,y)f(y)=\langle f(x)\phi_1(x),\,f(y)\phi_1(y)\rangle=\langle\phi_2(x),\phi_2(y)\rangle$ avec $\phi_2:=f\cdot\phi_1$. Donc $k_2(x,y)=f(x)k_1(x,y)f(y)$ est un noyau, de feature map $\phi_2$. $\blacksquare$</p>
+                <p class="method-label">3. Le noyau gaussien</p>
+                <p>$k(x,y)=e^{-\|x-y\|_2^2}=e^{-\|x\|_2^2+2\langle x,y\rangle-\|y\|_2^2}=e^{-\|x\|_2^2}\cdot e^{2\langle x,y\rangle}\cdot e^{-\|y\|_2^2}$. Or $\langle x,y\rangle$ est un noyau (produit scalaire usuel) ; $2\langle x,y\rangle$ aussi (règle d'échelle) ; $e^{2\langle x,y\rangle}$ aussi (règle de l'exponentielle, question 1). En posant $f(x)=e^{-\|x\|_2^2}$ (une fonction réelle), on a $k(x,y)=f(x)\,e^{2\langle x,y\rangle}\,f(y)$, un noyau par la règle des fonctions (question 2). $\blacksquare$</p>
+                <p class="sense"><b>Sens :</b> cette preuve est un exemple parfait de « construire des noyaux par composition » (fiche 18) : on ne vérifie jamais la définie-positivité à la main, on combine des règles de clôture déjà établies.</p>
+              </div>
+            </details>
+
+            <details class="solution">
+              <summary>Exercice 3 · Inégalité oracle pour l'ERM (6 points)</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Hoeffding pour un classifieur fixé</p>
+                <p>Avec $Z_i=l(y_i,g(x_i))\in[0,1]$ fixé, $\hat R_{\mathcal D_n}(g)=\frac1n\sum_iZ_i=S_n$ joue le rôle de la moyenne de l'inégalité de Hoeffding, avec $a_i=0,b_i=1$. Et $\mathbb E[S_n]=\frac1n\sum_i\mathbb E[l(y_i,g(x_i))]=\mathbb E_{\mathbb P_{XY}}[l(Y,g(X))]=R_{\mathbb P_{XY}}(g)$ (les $(x_i,y_i)$ étant i.i.d. de loi $\mathbb P_{XY}$). L'inégalité de Hoeffding donne directement $\mathbb P(|\hat R_{\mathcal D_n}(g)-R_{\mathbb P_{XY}}(g)|\ge t)\le2\exp(-2nt^2)$ (ici $\sum_i(b_i-a_i)^2=n$).</p>
+                <p class="method-label">2. Union bound sur tout $\mathcal G$</p>
+                <p>$\mathbb P(\exists g\in\mathcal G,\ |\hat R_{\mathcal D_n}(g)-R(g)|\ge t)\le\sum_{g\in\mathcal G}\mathbb P(|\hat R_{\mathcal D_n}(g)-R(g)|\ge t)\le M\times2\exp(-2nt^2)$ (question 1, $M=|\mathcal G|$). Donc $\mathbb P(\forall g,\ |\hat R_{\mathcal D_n}(g)-R(g)|\le t)\ge1-2M\exp(-2nt^2)$. Avec $t=\sqrt{\log(2M/\delta)/(2n)}$ : $2M\exp(-2nt^2)=2M\exp(-\log(2M/\delta))=2M\times\frac\delta{2M}=\delta$, d'où le résultat annoncé avec probabilité $\ge1-\delta$.</p>
+                <p class="method-label">3. Conclure l'inégalité oracle</p>
+                <p>En admettant $R(\hat g_{\mathrm{ERM}})-R(g^\star)\le2\sup_{g\in\mathcal G}|\hat R_{\mathcal D_n}(g)-R(g)|$ : l'événement de la question 2 (probabilité $\ge1-\delta$) donne $\sup_g|\hat R_{\mathcal D_n}(g)-R(g)|\le t=\sqrt{\log(2M/\delta)/(2n)}$, donc $R(\hat g_{\mathrm{ERM}})-R(g^\star)\le2t=\sqrt{2\log(2M/\delta)/n}$, avec probabilité $\ge1-\delta$. $\blacksquare$</p>
+                <p class="sense"><b>Sens :</b> c'est le schéma de preuve standard de la théorie statistique de l'apprentissage pour un dictionnaire fini : concentration (Hoeffding) + union bound sur toutes les hypothèses + un choix de $t$ qui fait apparaître $\delta$. Le prix du passage d'un seul $g$ fixé à tout $\mathcal G$ n'est qu'un facteur $\log M$ sous la racine : c'est pour cela que l'ERM reste fiable même sur un grand dictionnaire, tant que $M$ ne croît pas trop vite avec $n$.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s35">
+            <div class="tophead"><span class="num">35</span><h2>Examen 2024/2025 (corrigé officiellement)</h2></div>
+            <p>Sujet de 1h30. QCM (15 questions), puis un exercice sur Ridge/Lasso à design identité, puis un exercice avancé reliant une variante de l'information mutuelle (SMI) et l'HSIC. Corrigé officiel transcrit intégralement.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Corrigé · QCM (15 questions, 1 point chacune)</p>
+              <table class="cmp">
+                <tr><th>Q</th><th>Sujet</th><th>Réponse</th><th>Pourquoi</th></tr>
+                <tr><td>1</td><td>Pénalité du Ridge</td><td>(b)</td><td>Proportionnelle au carré de chaque coefficient (fiche 5).</td></tr>
+                <tr><td>2</td><td>$\lambda\to\infty$ en Ridge</td><td>(c)</td><td>Biais croissant, variance décroissante : $\hat\theta\to0$, un modèle constant (fiche 5).</td></tr>
+                <tr><td>3</td><td>Différence Lasso / Ridge</td><td>(b)</td><td>Lasso met certains coefficients exactement à zéro (sparsité) ; Ridge pénalise sans jamais annuler (fiche 7).</td></tr>
+                <tr><td>4</td><td>Quand préférer l'Elastic-Net</td><td>(b)</td><td>Quand les variables sont fortement corrélées et qu'on souhaite tout de même une sélection parcimonieuse : l'Elastic-Net combine la stabilité du Ridge face aux corrélations et la sparsité du Lasso (fiche 8).</td></tr>
+                <tr><td>5</td><td>Marge d'un SVM</td><td>(c)</td><td>La largeur de la région séparant les classes, maximisée par le SVM (fiche 15).</td></tr>
+                <tr><td>6</td><td>Bénéfice principal du kernel trick</td><td>(b)</td><td>Frontières non linéaires sans transformer explicitement l'espace des features (fiche 17).</td></tr>
+                <tr><td>7</td><td>Propriété requise d'un noyau RKHS</td><td>(c)</td><td>Symétrique et semi-défini positif (fiche 17).</td></tr>
+                <tr><td>8</td><td>Propriété reproduisante d'un noyau</td><td>(b)</td><td>Évaluer le produit scalaire d'une fonction avec le noyau en un point donne la valeur de la fonction en ce point (fiche 17).</td></tr>
+                <tr><td>9</td><td>Le bagging réduit surtout</td><td>(b)</td><td>La variance des modèles à forte variance (fiche 19).</td></tr>
+                <tr><td>10</td><td>But principal d'AdaBoost</td><td>(b)</td><td>Minimiser l'erreur en se concentrant sur les exemples difficiles à classer (fiche 20).</td></tr>
+                <tr><td>11</td><td>AdaBoost vs Gradient Boosting</td><td>(a)</td><td>AdaBoost minimise implicitement la perte exponentielle ; Gradient Boosting accepte n'importe quelle perte différentiable (fiche 20).</td></tr>
+                <tr><td>12</td><td>Apprenant faible typique en boosting</td><td>(c)</td><td>Un arbre de décision à très peu de nœuds (souche de décision).</td></tr>
+                <tr><td>13</td><td>But du taux d'apprentissage (shrinkage) en boosting</td><td>(a)</td><td>Éviter le surapprentissage en limitant l'amplitude de chaque pas (fiche 20).</td></tr>
+                <tr><td>14</td><td>Quand préférer l'information mutuelle à Pearson</td><td>(b)</td><td>Variables catégorielles ou relation non linéaire (fiches 22-23, 33).</td></tr>
+                <tr><td>15</td><td>Différence information mutuelle / HSIC</td><td>(c)</td><td>HSIC utilise des méthodes à noyaux, adaptées à une détection de dépendance complexe en grande dimension ; l'information mutuelle, elle, souffre de l'estimation de densité (fiche 23).</td></tr>
+              </table>
+            </div>
+
+            <details class="solution">
+              <summary>Exercice 2 · Ridge et Lasso explicites quand $X=I_{n\times n}$ (8 points)</summary>
+              <div class="box box-thm">
+                <p class="method-label">1. Ridge : $\hat\theta^{\mathrm{rdg}}_i=y_i/(1+\lambda)$</p>
+                <p>Avec $X=I_n$, la formule générale $\hat\theta^{\mathrm{rdg}}=(X^\top X+\lambda I)^{-1}X^\top y=(I+\lambda I)^{-1}y=\frac1{1+\lambda}y$ donne directement le résultat composante par composante. Alternativement : le problème se <b>sépare</b> en $n$ sous-problèmes indépendants $\min_\theta(y_i-\theta)^2+\lambda\theta^2$ (un par coordonnée), convexe et dérivable, dont l'annulation de la dérivée donne $-2y_i+2\theta+2\lambda\theta=0\iff\theta=\frac{y_i}{1+\lambda}$.</p>
+                <p class="method-label">2. Lasso : seuillage doux</p>
+                <p>(a) Même argument de séparabilité : $\hat\theta^{\mathrm{Lasso}}_i=\arg\min_\theta(y_i-\theta)^2+\lambda|\theta|$.</p>
+                <p>(b) Le sous-différentiel de $|\theta|$ vaut $\{-1\}$ si $\theta<0$, $\{+1\}$ si $\theta>0$, $[-1,1]$ si $\theta=0$. La condition d'optimalité $0\in\partial F(\theta)$, avec $F(\theta)=(y-\theta)^2+\lambda|\theta|$, s'écrit $(y-\theta)=\frac\lambda2u$ pour $u\in\partial|\theta|$, soit $(y-\theta)=\frac\lambda2$ si $\theta>0$, $(y-\theta)=-\frac\lambda2$ si $\theta<0$, $|y-\theta|\le\frac\lambda2$ si $\theta=0$.</p>
+                <p>(c) On vérifie que $\hat\theta=y-\frac\lambda2$ si $y>\frac\lambda2$ (alors $\hat\theta>0$ et $y-\hat\theta=\frac\lambda2$ ✓), $\hat\theta=y+\frac\lambda2$ si $y<-\frac\lambda2$ (alors $\hat\theta<0$ et $y-\hat\theta=-\frac\lambda2$ ✓), $\hat\theta=0$ si $-\frac\lambda2\le y\le\frac\lambda2$ (alors $y-\hat\theta=y\in[-\frac\lambda2,\frac\lambda2]$ ✓) : les trois conditions d'optimalité sont vérifiées dans chaque cas, donc $\hat\theta$ est bien le minimiseur.</p>
+                <p class="method-label">3. Comparer les deux fonctions de seuillage</p>
+                <p>$\hat\theta^{\mathrm{rdg}}_i$ est une droite de pente $\frac1{1+\lambda}<1$ passant par l'origine : <b>jamais</b> nulle sauf en $y_i=0$. $\hat\theta^{\mathrm{Lasso}}_i$ est strictement nulle sur tout l'intervalle $[-\frac\lambda2,\frac\lambda2]$, puis affine de pente $1$ au-delà (translatée de $\frac\lambda2$) : le <b>seuillage doux</b>.</p>
+                <p class="sense"><b>Sens :</b> c'est, sur l'exemple le plus simple possible ($X=I_n$, aucune corrélation entre variables à démêler), exactement le mécanisme de la fiche 7 : le Ridge rétrécit tout vers 0 sans jamais l'atteindre, le Lasso <b>rase</b> à zéro tout coefficient en dessous du seuil $\lambda/2$, d'où la sélection de variables.</p>
+              </div>
+            </details>
+
+            <details class="solution">
+              <summary>Exercice 3 · SMI, une variante de l'information mutuelle, et son lien avec HSIC (7 points)</summary>
+              <div class="box box-thm">
+                <p class="method-label">1-2. Définir la SMI</p>
+                <p>$I(X;Y)=D_{\mathrm{KL}}(\mathbb P_{XY}\|\mathbb P_X\otimes\mathbb P_Y)$ (fiche 22). La <b>SMI</b> (squared-loss mutual information) remplace $D_{\mathrm{KL}}$ par la divergence de Pearson $D_{\mathrm{PE}}(P\|Q)=\int(\frac pq-1)^2q\,dx$ :</p>
+                <div class="formula">$$\mathrm{SMI}(X,Y)=\iint\left(\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}-1\right)^2p_X(x)p_Y(y)\,dx\,dy$$</div>
+                <p class="method-label">3. Une forme plus simple</p>
+                <p>Avec $r(x,y)=\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}$, en développant le carré $(r-1)^2=r^2-2r+1$ sous l'intégrale pondérée par $p_Xp_Y$ : le terme en $r^2\,p_Xp_Y=r\,p_{XY}$ s'intègre en $\iint r\,p_{XY}$ ; le terme en $-2r\,p_Xp_Y=-2p_{XY}$ s'intègre en $-2$ (densité jointe, intégrale 1) ; le terme constant $p_Xp_Y$ s'intègre en $1$. D'où $\mathrm{SMI}(X,Y)=\iint r(x,y)p_{XY}(x,y)\,dx\,dy-1$.</p>
+                <p class="method-label">4. La fonction de perte $J(\alpha)$</p>
+                <p>En développant $(r-\hat r)^2=r^2-2r\hat r+\hat r^2$ sous l'intégrale pondérée par $p_Xp_Y$, le terme en $r^2$ ne dépend pas de $\alpha$ (constante). Avec $\hat r(x,y)=\sum_i\alpha_ik(x,x_i)l(y,y_i)$ :</p>
+                <div class="formula">$$J(\alpha)=\mathrm{cst}+\alpha^\top M\alpha-2\alpha^\top u,\quad M_{ij}=\iint k(x,x_i)l(y,y_i)k(x,x_j)l(y,y_j)\,p_X(x)p_Y(y)\,dx\,dy,\quad u_i=\iint k(x,x_i)l(y,y_i)\,p_{XY}(x,y)\,dx\,dy$$</div>
+                <p class="method-label">5. La solution pénalisée</p>
+                <p>En ajoutant $\lambda\|\alpha\|_2^2$ : $J(\alpha)+\lambda\|\alpha\|^2=\alpha^\top(M+\lambda I)\alpha-2\alpha^\top u+\mathrm{cst}$, fonction convexe de gradient $2(M+\lambda I)\alpha-2u$. Annuler le gradient donne $\hat\alpha=(M+\lambda I)^{-1}u$.</p>
+                <p class="method-label">6. Le lien avec HSIC</p>
+                <p>Avec $\hat\alpha_i=1/n$ pour tout $i$ et la matrice de noyau centrée $\tilde K=HKH$ à la place de $K$ :</p>
+                <div class="formula">$$\widehat{\mathrm{SMI}}(X,Y)=\frac1{n^2}\sum_{i,j=1}^n\tilde K_{ij}L_{ij}-1=\frac1{n^2}\mathrm{Trace}(\tilde KL)-1=\frac1{n^2}\mathrm{Trace}(HKHL)-1$$</div>
+                <p>Par invariance cyclique de la trace ($\mathrm{Trace}(AB)=\mathrm{Trace}(BA)$) : $\mathrm{Trace}(HKHL)=\mathrm{Trace}(KHLH)$, donc $\widehat{\mathrm{SMI}}(X,Y)=\frac1{n^2}\mathrm{Trace}(KHLH)-1=\widehat{\mathrm{HSIC}}(X,Y)-1$ (fiche 23). $\blacksquare$</p>
+                <p class="sense"><b>Sens :</b> la SMI et l'HSIC empirique ne sont donc pas deux outils indépendants : avec ce choix précis de coefficients et de noyau centré, elles coïncident <b>à une constante additive près</b>. C'est un bel exemple de la remarque de la fiche 23 : plusieurs mesures de dépendance d'apparence différente partagent souvent la même machinerie RKHS sous le capot.</p>
+              </div>
+            </details>
           </article>
 
         </div>

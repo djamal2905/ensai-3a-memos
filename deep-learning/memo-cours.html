@@ -547,6 +547,13 @@ window.MathJax = {
           <li><a href="#s41"><span class="toc-num">41</span>GPT vs BERT</a></li>
         </ol>
       </div>
+      <div class="toc-lecture">
+        <p>6 : Annales corrigées</p>
+        <ol>
+          <li><a href="#s42"><span class="toc-num">42</span>Examen blanc 1 : QCM &amp; questions ouvertes</a></li>
+          <li><a href="#s43"><span class="toc-num">43</span>Examen blanc 2 : QCM &amp; questions ouvertes</a></li>
+        </ol>
+      </div>
     </aside>
 
     <main>
@@ -556,7 +563,7 @@ window.MathJax = {
         <p>Synthèse complète du cours de Deep Learning : MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers.</p>
         <div class="meta">
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><b>Source</b> : J. Faouzi, I. Yamane &amp; A. Bousse : ENSAI 3A, 2025</span>
-          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>41 fiches</b></span>
+          <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><b>43 fiches</b> · 2 examens blancs corrigés</span>
           <span><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>Tapez</b> dans la recherche pour filtrer</span>
         </div>
       </div>
@@ -1708,6 +1715,19 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <div class="formula">$$\mathbf X \in \mathbb R^{\text{examples}\,\times\,\text{channels}\,\times\,\text{height}\,\times\,\text{width}}$$</div>
               <p class="sense"><b>Sens :</b> en entrée, 3 canaux (Rouge-Vert-Bleu). Dans une couche cachée, <b>autant de canaux que de noyaux appris</b> dans cette couche : chaque noyau produit sa propre carte d'activation.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Un filtre couleur regarde les trois canaux à la fois</p>
+              <p>Sur une image RGB, un filtre n'est <b>pas</b> une seule grille $3\times3$ : c'est une grille $3\times3$ <b>par canal</b>, soit un bloc $3\times3\times3$. À chaque position, on calcule le produit terme à terme <b>séparément dans R, dans G et dans B</b>, puis on <b>additionne les trois sommes</b> (plus le biais) pour obtenir <b>un seul</b> nombre de sortie, jamais trois.</p>
+              <table class="cmp">
+                <tr><th>Canal</th><th>Somme (pixels × poids) sur le coin $3\times3$ de ce canal</th></tr>
+                <tr><td>R</td><td>$3$</td></tr>
+                <tr><td>G</td><td>$2$</td></tr>
+                <tr><td>B</td><td>$1$</td></tr>
+              </table>
+              <div class="formula">$$\text{sortie} = \underbrace{3}_{\text{canal R}}+\underbrace{2}_{\text{canal G}}+\underbrace{1}_{\text{canal B}}+\underbrace{1}_{\text{biais}} = 7$$</div>
+              <p class="sense"><b>Sens :</b> c'est pour cela qu'un filtre RGB $3\times3$ compte $3\times3\times3+1=28$ paramètres (fiche 12, exercice 2) et non $3\times3+1=10$ : chaque filtre voit les trois canaux <b>à la fois</b> et les fusionne en une seule réponse. Avec $C_{\text{out}}$ filtres de ce type appris dans la couche, on empile $C_{\text{out}}$ réponses de ce type : ce sont les canaux de la carte de sortie décrits juste au-dessus.</p>
+            </div>
           </article>
 
           <article class="topic" id="s16">
@@ -1866,6 +1886,14 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
             <div class="box box-ex">
               <p class="box-label">Exemple · AlexNet (2012)</p>
               <p><b>Architecture</b> : 5 blocs convolutifs, puis 3 blocs linéaires. <b>Astuces d'entraînement</b> : <i>dropout</i> avant les deux premiers blocs linéaires (contre le surapprentissage) ; <b>augmentation de données</b> (translations, réflexions horizontales, modifications d'intensité des couleurs).</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">Définition · Batch Normalization</p>
+              <p>Une couche, insérée en général <b>entre la convolution et le ReLU</b>, qui <b>normalise chaque canal</b> sur le mini-batch courant. Pour un canal $c$, on calcule sa moyenne $\mu_c$ et sa variance $\sigma_c^2$ sur toutes les positions spatiales et tous les exemples du batch, puis :</p>
+              <div class="formula">$$\hat x = \frac{x-\mu_c}{\sqrt{\sigma_c^2+\varepsilon}} \qquad\qquad y = \gamma_c\,\hat x+\beta_c$$</div>
+              <p>$\gamma_c,\beta_c$ sont deux paramètres <b>appris</b> par canal (pas fixés) : le réseau peut ainsi apprendre à <b>annuler</b> la normalisation s'il le juge utile, en choisissant $\gamma_c=\sqrt{\sigma_c^2+\varepsilon}$ et $\beta_c=\mu_c$.</p>
+              <p class="sense"><b>Sens :</b> en recentrant chaque canal à chaque couche, la BatchNorm stabilise et accélère l'entraînement (tolère des taux d'apprentissage plus grands, rend le réseau moins sensible à l'initialisation) et agit en prime comme un léger régularisateur. <b>Piège classique :</b> à l'entraînement, $\mu_c,\sigma_c^2$ sont calculés sur le batch courant ; à l'inférence, on traite souvent une seule image à la fois (pas de « batch » pour estimer une statistique), donc on réutilise des <b>moyennes glissantes</b> mémorisées pendant l'entraînement. Oublier de passer le modèle en mode évaluation (<code>model.eval()</code> en PyTorch) avant de tester ou de déployer est une erreur fréquente : le modèle continuerait sinon à utiliser les statistiques d'un seul batch de test, instables et non représentatives.</p>
             </div>
 
             <div class="box box-thm">
@@ -2061,6 +2089,14 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
               <p><b>Premiers essais</b> : charger un modèle <b>pré-entraîné</b> (AlexNet, VGG, GoogleNet, ResNet) et remplacer/ré-entraîner les couches denses finales ; ou apprendre une architecture $[\text{Convolution}+\text{ReLU}+\text{Pooling}]\times k$ avec augmentation de données.</p>
               <p><b>À essayer ensuite</b> : dropout, convolution dilatée, batch normalization.</p>
               <p><b>Valeurs standards</b> : convolution $5\times5$, stride $=1$, avec padding · pooling $2\times2$, stride $=2$, sans padding · non-linéarité ReLU · dropout entre 20 % et 50 % de probabilité d'annulation.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Exemple · Transfer learning : extraction de features ou fine-tuning ?</p>
+              <p>Un CNN entraîné sur une très grande base (ex. ImageNet, $\approx1{,}2$ million d'images, 1000 classes) a déjà appris, dans ses premières couches, des détecteurs très généraux (bords, textures, couleurs) : ils restent utiles même pour une tâche totalement différente. Réutiliser ce réseau plutôt que d'en entraîner un nouveau à partir de zéro, c'est le <b>transfer learning</b> ; il existe deux façons de le faire.</p>
+              <p><b>Extraction de features</b> : on <b>gèle</b> tous les blocs convolutifs pré-entraînés (leurs poids ne bougent plus), on jette la tête de classification d'origine (1000 classes), on la remplace par une nouvelle tête adaptée au problème ($K$ classes), et on n'entraîne <b>que</b> cette nouvelle tête. Idéal avec peu de données : il n'y a que quelques milliers de poids à apprendre, pas des millions.</p>
+              <p><b>Fine-tuning</b> : on part du même réseau pré-entraîné, mais on <b>dégèle</b> aussi les derniers blocs convolutifs, qu'on continue d'entraîner avec un <b>petit</b> taux d'apprentissage (pour ne pas détruire d'un coup ce qu'ils savent déjà). Utile si les données de la nouvelle tâche sont plus abondantes, ou visuellement assez différentes d'ImageNet.</p>
+              <p class="sense"><b>Sens :</b> dans les deux cas, on réutilise un travail de calcul déjà fait (des centaines d'heures de GPU) plutôt que de le refaire depuis zéro. Règle pratique : moins on a de données pour la nouvelle tâche, plus on gèle de couches ; plus on en a, plus on peut se permettre de dégeler (et donc de réadapter) le réseau en profondeur.</p>
             </div>
           </article>
 
@@ -3265,6 +3301,24 @@ print(np.allclose(h_torch, h_manual, atol=1e-6))  # doit etre True</code></pre>
               <div class="formula">$$\mathrm{Loss}_{\text{Cycle}}(G,F)=\frac1{n_x}\sum_{i=1}^{n_x}\underbrace{\big\|F(G(\mathbf x_i))-\mathbf x_i\big\|_1}_{\text{cycle avant}}+\frac1{n_y}\sum_{i=1}^{n_y}\underbrace{\big\|G(F(\mathbf y_i))-\mathbf y_i\big\|_1}_{\text{cycle arrière}}$$</div>
               <p class="sense"><b>Sens :</b> on impose $\mathcal X\xrightarrow{G}\mathcal Y\xrightarrow{F}\mathcal X\approx\mathrm{id}$ (norme $L_1$). Sans cette contrainte, rien n'empêche $G$ de produire un Monet parfaitement crédible… mais représentant tout autre chose.</p>
             </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Repère rapide · GAN/DCGAN contre cGAN</p>
+              <table class="cmp">
+                <tr><th></th><th>GAN / DCGAN</th><th>cGAN</th></tr>
+                <tr><td>Entrée de $G$</td><td>bruit $\mathbf z$</td><td>bruit $\mathbf z$ + étiquette $\mathbf y$</td></tr>
+                <tr><td>Entrée de $D$</td><td>image $\mathbf x$</td><td>image $\mathbf x$ + étiquette $\mathbf y$</td></tr>
+                <tr><td>Contrôle de la sortie</td><td>aucun (aléatoire)</td><td>classe choisie</td></tr>
+                <tr><td>Entraînement</td><td>duel adversarial</td><td>identique, juste une condition en plus</td></tr>
+              </table>
+              <p class="sense"><b>Sens :</b> le cGAN n'ajoute <b>aucun</b> nouveau mécanisme d'entraînement par rapport à la fiche 32 : c'est le même duel $\min_G\max_D$, avec $\mathbf y$ simplement concaténée à l'entrée des deux réseaux. Ce petit ajout suffit à transformer un générateur « aléatoire » en générateur « pilotable ».</p>
+            </div>
+
+            <div class="box box-def">
+              <p class="box-label">À quoi servent les GAN, en pratique ?</p>
+              <p><b>Génération &amp; édition d'image</b> : visages/objets/textures photoréalistes, traduction image-à-image (croquis → photo), super-résolution, colorisation, retouche d'image (inpainting), transfert de style.</p>
+              <p><b>Au-delà de l'image</b> : augmentation de données pour des classes rares, données synthétiques (santé, anonymisation), détection d'anomalies (un échantillon que $D$ juge franchement « faux » est un bon candidat anomalie), audio et musique.</p>
+            </div>
           </article>
 
           <article class="topic" id="s34">
@@ -3942,6 +3996,202 @@ print(torch.allclose(w_masked.triu(1), torch.zeros_like(w_masked)))  # doit etre
               <span class="qcm-result"></span>
             </div>
           </div>
+
+        </div>
+      </section>
+
+      <!-- ================= LECTURE 6 : ANNALES ================= -->
+      <section class="lecture" id="lecture-6">
+        <button class="lecture-head">
+          <span class="num">6</span>
+          <span class="title">Annales : deux examens blancs corrigés</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lecture-body">
+
+          <article class="topic" id="s42">
+            <div class="tophead"><span class="num">42</span><h2>Examen blanc 1 · QCM (29 questions) et questions ouvertes</h2></div>
+            <p>Sujet type, avec corrigé officiel pour les 29 questions à choix multiple. Les deux questions ouvertes (page 7 du sujet) n'ont, elles, pas de corrigé officiel : la correction ci-dessous a été rédigée pour ce mémo, pas vérifiée contre une version officielle.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Corrigé · QCM, réponses officielles du sujet</p>
+              <table class="cmp">
+                <tr><th>Q</th><th>Sujet</th><th>Réponse</th><th>Pourquoi</th></tr>
+                <tr><td>1</td><td>Définition d'une <i>epoch</i></td><td>(a)</td><td>Un cycle complet de mises à jour sur <b>tout</b> le jeu d'entraînement.</td></tr>
+                <tr><td>2</td><td>Effet d'un average pooling</td><td>(b)</td><td>Réduit les dimensions spatiales des cartes de caractéristiques (fiche 14).</td></tr>
+                <tr><td>3</td><td>Description FAUSSE d'un RNN</td><td>(c)</td><td>Faux car la transition est <b>partagée</b> entre toutes les positions (fiche 21), pas différente à chaque position.</td></tr>
+                <tr><td>4</td><td>Rôle d'une couche convolutive</td><td>(c)</td><td>Extraire les features de chaque région locale de l'entrée (fiche 12).</td></tr>
+                <tr><td>5</td><td>Rôle du <code>DataLoader</code> PyTorch</td><td>(c)</td><td>Itérer sur un jeu de données (par mini-batchs, avec ou sans mélange).</td></tr>
+                <tr><td>6</td><td>Vrai/Faux : calcul efficace car le réseau n'a que des fonctions linéaires (hors biais)</td><td>Faux</td><td>Il y a aussi les fonctions d'activation (ReLU, etc.), non linéaires (fiche 4) : sans elles, empiler des couches ne servirait à rien.</td></tr>
+                <tr><td>7</td><td>But du dropout</td><td>(c)</td><td>Réduit le surapprentissage en mettant à <b>zéro</b> des entrées d'une couche pendant l'entraînement (pas en retirant des exemples du jeu de données).</td></tr>
+                <tr><td>8</td><td>Rôle du taux d'apprentissage</td><td>(c)</td><td>Contrôle l'amplitude de la mise à jour des paramètres à chaque pas (fiche 6).</td></tr>
+                <tr><td>9</td><td>Algorithme d'optimisation courant</td><td>(c)</td><td>La descente de gradient stochastique (fiche 7).</td></tr>
+                <tr><td>10</td><td>Vrai/Faux : en 2024, le Deep Learning est la seule approche pertinente en IA</td><td>Faux</td><td>De nombreuses autres approches (arbres, méthodes à noyaux, etc.) restent pertinentes selon les problèmes.</td></tr>
+                <tr><td>11</td><td>« Champ récepteur »</td><td>(b)</td><td>La région de l'entrée qui influence une caractéristique donnée en sortie (fiche 19).</td></tr>
+                <tr><td>12</td><td>Avantage d'un CNN sur un réseau dense pour l'image</td><td>(c)</td><td>Exploite la structure spatiale, avec beaucoup moins de paramètres (fiche 11).</td></tr>
+                <tr><td>13</td><td>LSTM et GRU sont des</td><td>(b)</td><td>Variantes de RNN (fiches 23-24).</td></tr>
+                <tr><td>14</td><td>Rôle d'une fonction d'activation</td><td>(a)</td><td>Introduire de la non-linéarité (fiche 4).</td></tr>
+                <tr><td>15</td><td>Effet du padding</td><td>(d)</td><td>La sortie est plus grande qu'elle ne le serait sans padding (fiche 15) : il compense le rétrécissement dû à la convolution.</td></tr>
+                <tr><td>16</td><td>Fonction qui vaut 0 sur les entrées négatives</td><td>(c)</td><td>ReLU, $f(z)=\max(0,z)$.</td></tr>
+                <tr><td>17</td><td><code>tensor.to('cuda')</code></td><td>(d)</td><td>Copie le contenu du tenseur sur le GPU.</td></tr>
+                <tr><td>18</td><td>Fonction de perte courante pour un classifieur</td><td>(a)</td><td>L'entropie croisée (fiche 5).</td></tr>
+                <tr><td>19</td><td>Stride $=2$ sur une image</td><td>(c)</td><td>Le filtre avance de 2 pixels à chaque pas (fiche 15).</td></tr>
+                <tr><td>20</td><td>Définition du surapprentissage</td><td>(d)</td><td>Bonnes performances sur le train, mauvaises sur le test.</td></tr>
+                <tr><td>21</td><td>Rôle d'un noyau/filtre</td><td>(d)</td><td>Il glisse sur l'entrée et calcule des produits scalaires locaux, pour extraire des features comme des bords ou textures.</td></tr>
+                <tr><td>22</td><td>Vrai/Faux : la descente de gradient met à jour dans la direction <b>opposée</b> au gradient</td><td>Vrai</td><td>C'est la définition même de la descente de gradient (fiche 6).</td></tr>
+                <tr><td>23</td><td>Bonne pratique pour le dropout</td><td>(c)</td><td>Ne pas appliquer le dropout lors de l'évaluation sur les données de test (seulement à l'entraînement, fiche 9).</td></tr>
+                <tr><td>24</td><td>Application principale des CNN</td><td>(b)</td><td>Les tâches de vision par ordinateur.</td></tr>
+                <tr><td>25</td><td>Rôle des couches denses finales d'un CNN</td><td>(c)</td><td>Combiner les features extraites par les convolutions pour produire la sortie finale (fiche 16).</td></tr>
+                <tr><td>26</td><td>Description correcte d'un ResNet</td><td>(b)</td><td>Une connexion de raccourci est ajoutée en sortie du bloc convolutif sauté, qui n'a donc à apprendre que le <b>résidu</b> (fiche 16).</td></tr>
+                <tr><td>27</td><td>Optimiseur qui estime le moment d'ordre 2 du gradient</td><td>(f)</td><td>Adam (fiche 8) : il combine moment d'ordre 1 (momentum) et moment d'ordre 2 (mise à l'échelle adaptative).</td></tr>
+                <tr><td>28</td><td>Autodiff pour une activation custom différentiable</td><td>(d)</td><td><code>torch.autograd</code> compose les dérivées élémentaires déjà codées dans PyTorch ; pour une fonction entièrement nouvelle, il faut aussi fournir le code de $\nabla f$ (autograd n'invente pas une formule de dérivée).</td></tr>
+                <tr><td>29</td><td>Vrai/Faux : un MLP imite précisément la structure du cerveau biologique</td><td>Faux</td><td>Le MLP n'est qu'une inspiration lointaine (fiche 1) ; aucune correspondance anatomique précise avec de vrais neurones.</td></tr>
+              </table>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Questions ouvertes : pas de corrigé officiel</p>
+              <p>Les deux questions suivantes ne sont pas corrigées dans le sujet d'origine. La correction ci-dessous est une réponse rédigée pour ce mémo, pas une correction officielle vérifiée.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Question ouverte 1 · Corriger une erreur de type (dtype) PyTorch</p>
+              <p>Le code suivant lève une <code>RuntimeError</code> à l'exécution de <code>torch_tensor1 @ torch_tensor2</code> :</p>
+              <pre><code>np_array = np.array([[1, 2], [3, 4]])
+torch_tensor1 = torch.from_numpy(np_array)        # dtype = torch.int64
+torch_tensor2 = torch.tensor([[0.1, 0.2], [0.3, 0.4]])  # dtype = torch.float32
+print(torch_tensor1 @ torch_tensor2)
+# RuntimeError: expected m1 and m2 to have the same dtype, but got: long int != float</code></pre>
+              <p>Quelle est une correction possible, en une ligne de Python ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Le produit matriciel <code>@</code> exige que les deux tenseurs aient le <b>même type</b> de données. Ici <code>torch_tensor1</code> vient d'un tableau NumPy d'entiers (<code>int64</code>, « long »), tandis que <code>torch_tensor2</code> est en <code>float32</code>. Il suffit de convertir l'un des deux pour que les types coïncident, par exemple :</p>
+                <pre><code>torch_tensor1 = torch_tensor1.to(torch.float32)</code></pre>
+                <p class="sense"><b>Sens :</b> ce type d'erreur est extrêmement fréquent en pratique dès qu'on mélange des données chargées depuis NumPy/pandas (souvent en <code>int64</code> ou <code>float64</code>) avec des tenseurs créés directement en PyTorch (souvent en <code>float32</code> par défaut). Le réflexe : toujours caster explicitement en <code>float32</code> les tenseurs numériques qui entreront dans un calcul de réseau de neurones.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Question ouverte 2 · Passer de 1 à 10 canaux de sortie</p>
+              <p>Un premier jet d'architecture CNN a une première couche convolutive dont la sortie n'a <b>qu'un seul</b> canal. L'entrée est une image $32\times32$ à 1 canal. Quelle modification apporter pour obtenir <b>10</b> canaux dans la première couche cachée ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p>Le nombre de canaux de sortie d'une couche convolutive est fixé par le nombre de <b>filtres appris</b> dans cette couche (fiche 12, fiche 15) : chaque filtre produit sa propre carte d'activation, et ces cartes sont empilées pour former les canaux de sortie. Pour passer de 1 à 10 canaux, il suffit d'augmenter le paramètre <code>out_channels</code> (nombre de filtres) de la couche, sans toucher à rien d'autre :</p>
+                <pre><code># avant : 1 seul filtre -> 1 seul canal de sortie
+nn.Conv2d(in_channels=1, out_channels=1, kernel_size=5)
+
+# apres : 10 filtres -> 10 canaux de sortie
+nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5)</code></pre>
+                <p class="sense"><b>Sens :</b> <code>in_channels</code> est contraint par la donnée d'entrée (ici 1, car l'image est en niveaux de gris) ; <code>out_channels</code>, lui, est un <b>choix de conception</b> libre : c'est le nombre de motifs différents que l'on souhaite que cette couche apprenne à détecter en parallèle. Chaque filtre supplémentaire ajoute $C_{\text{in}}\times K\times K+1$ paramètres (fiche 12, exercice 2) : passer de 1 à 10 filtres multiplie par 10 le nombre de paramètres de <b>cette seule couche</b>, pas de tout le réseau.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="topic" id="s43">
+            <div class="tophead"><span class="num">43</span><h2>Examen blanc 2 · QCM (25 questions) et questions ouvertes</h2></div>
+            <p>Deuxième sujet type, structure similaire : 25 questions à choix multiple corrigées officiellement, puis 3 questions à réponse rédigée sans corrigé officiel.</p>
+
+            <div class="box box-ex">
+              <p class="box-label">Corrigé · QCM, réponses officielles du sujet</p>
+              <table class="cmp">
+                <tr><th>Q</th><th>Sujet</th><th>Réponse</th><th>Pourquoi</th></tr>
+                <tr><td>1</td><td>Rôles respectifs de l'encodeur et du décodeur (Transformer)</td><td>(d)</td><td>L'encodeur lit la séquence d'entrée et produit des features ; le décodeur les utilise pour générer la séquence de sortie (fiche 37).</td></tr>
+                <tr><td>2</td><td>Effet du padding dans une convolution</td><td>(a)</td><td>Réduit (voire annule) le rétrécissement spatial causé par la convolution (fiche 15).</td></tr>
+                <tr><td>3</td><td>Un « minibatch », en descente de gradient par mini-lots</td><td>(a)</td><td>Un sous-ensemble du jeu de données (fiche 7).</td></tr>
+                <tr><td>4</td><td>Ce qu'introduit une fonction d'activation</td><td>(b)</td><td>De la non-linéarité (fiche 4).</td></tr>
+                <tr><td>5</td><td>RNN bidirectionnel</td><td>(b)</td><td>Traite la séquence dans les deux sens, avant et arrière (fiche 25).</td></tr>
+                <tr><td>6</td><td>Ce que fait une couche convolutive</td><td>(d)</td><td>Produit scalaire entre le noyau et chaque région locale de l'entrée (fiche 12).</td></tr>
+                <tr><td>7</td><td>Ce que définit le stride</td><td>(a)</td><td>Le pas (le « saut ») du déplacement du noyau (fiche 15).</td></tr>
+                <tr><td>8</td><td>But principal d'une fonction de perte</td><td>(d)</td><td>Mesurer la performance du modèle (l'écart entre prédiction et vérité), pas calculer le forward pass en lui-même.</td></tr>
+                <tr><td>9</td><td>Principale faiblesse des modèles de diffusion</td><td>(d)</td><td>Ils demandent énormément de ressources de calcul (nombreuses étapes de débruitage, fiche 34), d'où une consommation d'énergie élevée.</td></tr>
+                <tr><td>10</td><td>But de l'early stopping</td><td>(a)</td><td>Éviter de garder un modèle devenu surappris après un entraînement trop long (fiche 9).</td></tr>
+                <tr><td>11</td><td>Conséquence d'un taux d'apprentissage trop grand</td><td>(d)</td><td>Oscillation ou divergence de l'entraînement (fiche 6).</td></tr>
+                <tr><td>12</td><td>Définition du surapprentissage</td><td>(b)</td><td>Bon sur le train, mauvais sur des données jamais vues.</td></tr>
+                <tr><td>13</td><td>Effet d'une couche de pooling</td><td style="color:var(--warn-color);font-weight:700;">(b) *</td><td>* Le corrigé officiel du sujet indique (b) « augmente la résolution », mais c'est en contradiction directe avec la définition du pooling (fiche 14) et avec le cours sur les CNN : le pooling <b>réduit</b> la résolution spatiale (option (a)). Il s'agit très probablement d'une coquille dans le corrigé officiel ; la bonne réponse, au sens du cours, est <b>(a)</b>.</td></tr>
+                <tr><td>14</td><td>Définition d'une epoch</td><td>(b)</td><td>Un passage d'entraînement complet sur <b>tout</b> le jeu de données.</td></tr>
+                <tr><td>15</td><td>Comment le dropout prévient le surapprentissage</td><td>(c)</td><td>En mettant à zéro, de façon aléatoire, des neurones choisis pendant l'entraînement (fiche 9).</td></tr>
+                <tr><td>16</td><td>Ce sur quoi s'appuient les Transformers, à la différence des RNN</td><td>(a)</td><td>Le mécanisme d'attention (fiche 39), pas une transition d'état récurrente.</td></tr>
+                <tr><td>17</td><td>Étapes d'une itération d'entraînement PyTorch</td><td>(c)</td><td>Passe avant → calcul de la perte → passe arrière (rétropropagation) → mise à jour des paramètres (fiche 6).</td></tr>
+                <tr><td>18</td><td>Mise à jour des paramètres par la descente de gradient</td><td>(b)</td><td>Dans la direction <b>opposée</b> au gradient (fiche 6).</td></tr>
+                <tr><td>19</td><td>Différence SGD / GD</td><td>(d)</td><td>GD utilise tout le jeu de données à chaque mise à jour ; SGD utilise un sous-échantillon aléatoire (fiche 7).</td></tr>
+                <tr><td>20</td><td>Ce que recouvre la détection d'objets</td><td>(b)</td><td>Identifier les objets et localiser leur position (fiche 17), pas seulement les classer.</td></tr>
+                <tr><td>21</td><td>Ce que représente une couche linéaire (<code>nn.Linear</code>)</td><td>(c)</td><td>Une fonction <b>affine</b> (avec biais), pas purement linéaire.</td></tr>
+                <tr><td>22</td><td>Limite fondamentale des RNN standards</td><td>(c)</td><td>Le calcul des états cachés d'une longue séquence ne peut pas être entièrement parallélisé : chaque état dépend du précédent (fiche 21, 26).</td></tr>
+                <tr><td>23</td><td>Ce que fait la classification d'image</td><td>(d)</td><td>Attribue une seule étiquette de classe à toute l'image.</td></tr>
+                <tr><td>24</td><td>Approche qui N'EST PAS du Deep Learning</td><td>(c)</td><td>La régression à noyau (Kernel Ridge Regression) : pas de réseau de neurones entraîné par descente de gradient.</td></tr>
+                <tr><td>25</td><td>Caractéristique principale des ResNets</td><td>(d)</td><td>L'usage de connexions de raccourci (skip connections), fiche 16.</td></tr>
+              </table>
+            </div>
+
+            <div class="box box-warn">
+              <p class="box-label"><svg class="icon-14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Questions ouvertes : pas de corrigé officiel</p>
+              <p>Les trois questions suivantes ne sont pas corrigées dans le sujet d'origine. La correction ci-dessous est une réponse rédigée pour ce mémo, pas une correction officielle vérifiée.</p>
+            </div>
+
+            <div class="box box-ex">
+              <p class="box-label">Question ouverte 1 · Rôle de <code>__getitem__</code> dans un <code>Dataset</code> PyTorch</p>
+              <p>Un <code>Dataset</code> personnalisé implémente <code>__init__</code>, <code>__len__</code> et <code>__getitem__(self, idx)</code> (ce dernier charge une image depuis le disque, lui applique <code>transform</code>, et renvoie <code>(image, label)</code>). Quel est le rôle de <code>__getitem__</code> ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p><code>__getitem__(self, idx)</code> définit <b>comment obtenir un exemple</b> du jeu de données à partir de son indice <code>idx</code> : il rend l'objet <code>Dataset</code> « indexable » comme une liste (<code>dataset[idx]</code>), mécanisme Python standard. Concrètement ici : il va chercher le chemin de la <code>idx</code>-ième image dans le tableau des annotations, <b>charge l'image depuis le disque à ce moment précis</b> (pas avant), lui applique les transformations éventuelles, et renvoie le couple (image, étiquette).</p>
+                <p class="sense"><b>Sens :</b> le point clé est le <b>chargement paresseux</b> (lazy loading) : rien n'est chargé en mémoire à la création du <code>Dataset</code>, seuls les chemins/étiquettes le sont (via <code>__init__</code>). C'est <code>DataLoader</code> (fiche QCM 1, Q5 de l'examen 1) qui appelle <code>__getitem__</code> à la demande, pour chaque indice d'un mini-batch, lors de l'entraînement : cela permet de travailler avec des jeux de données bien plus gros que la mémoire disponible, et de paralléliser le chargement (plusieurs <code>workers</code> peuvent appeler <code>__getitem__</code> simultanément sur des indices différents) pendant que le GPU calcule le batch précédent.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Question ouverte 2 · Expliquer la SGD sur un exemple de régression linéaire</p>
+              <p>On veut ajuster $y=wx$ aux données $\{(x_i,y_i)\}_{i=1}^n$ i.i.d., en minimisant $L(w)=\frac1n\sum_{i=1}^n(y_i-wx_i)^2$ par descente de gradient stochastique. Expliquer la SGD sur cet exemple.</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Le gradient exact (sur tout le jeu de données)</p>
+                <p>$\dfrac{\partial L}{\partial w}=\dfrac1n\sum_{i=1}^n -2x_i(y_i-wx_i)$. La descente de gradient (GD) classique met à jour $w\leftarrow w-\eta\,\dfrac{\partial L}{\partial w}$ : chaque pas exige de parcourir <b>tous</b> les $n$ exemples.</p>
+                <p class="method-label">L'idée de la SGD</p>
+                <p>Plutôt que la moyenne exacte sur les $n$ exemples, la SGD tire (au hasard, ou en parcourant les données mélangées) <b>un seul</b> exemple $i$ à chaque pas, et utilise le gradient de la perte sur ce seul exemple comme <b>approximation</b> (bruitée mais non biaisée, fiche 7) du gradient exact :</p>
+                <div class="formula">$$w \leftarrow w - \eta\cdot\big(-2x_i(y_i-wx_i)\big) = w + 2\eta\,x_i(y_i-wx_i)$$</div>
+                <p>On répète pour un nouvel $i$ tiré au hasard à chaque itération (en pratique : on mélange les $n$ exemples et on les parcourt un par un, ce qui constitue une <i>epoch</i>, fiche QCM 1, Q1 de l'examen 1).</p>
+                <p class="sense"><b>Sens :</b> sur cet exemple, chaque pas de SGD ne demande de lire qu'<b>un seul</b> $(x_i,y_i)$ au lieu des $n$ : beaucoup moins cher par pas, mais la direction suivie est bruitée (elle ne pointe pas exactement dans la direction du vrai gradient à chaque pas, seulement <b>en moyenne</b>). En pratique on utilise presque toujours un compromis, le <b>mini-batch</b> (fiche 7) : moyenner le gradient sur quelques dizaines ou centaines d'exemples plutôt qu'un seul, pour réduire le bruit tout en gardant des pas peu coûteux.</p>
+              </div>
+            </details>
+
+            <div class="box box-ex">
+              <p class="box-label">Question ouverte 3 · Déboguer un CNN généré par IA : erreur de taille à la couche dense</p>
+              <p>Le code ci-dessous (généré par un assistant IA) lève <code>RuntimeError: mat1 and mat2 shapes cannot be multiplied (64x576 and 123x64)</code> lors de l'entraînement :</p>
+              <pre><code>class CNN_AI(nn.Module):
+    def __init__(self, num_classes):
+        super(CNN0, self).__init__()   # (!)
+        self.cv1 = nn.Conv2d(in_channels=1, out_channels=4,
+                              kernel_size=5, stride=1, padding=0)
+        self.bn1 = nn.BatchNorm2d(4)
+        self.relu1 = nn.ReLU()
+        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.flatten = nn.Flatten()
+        self.fc2 = nn.Linear(123, 64)   # (!)
+        self.relu2 = nn.ReLU()
+        self.fc3 = nn.Linear(64, num_classes)</code></pre>
+              <p>Comment corriger l'erreur ?</p>
+            </div>
+            <details class="solution">
+              <summary>Voir la correction</summary>
+              <div class="box box-thm">
+                <p class="method-label">Lire l'erreur</p>
+                <p><code>mat1 and mat2 shapes cannot be multiplied (64x576 and 123x64)</code> signifie que la couche <code>fc2</code> reçoit, après <code>flatten</code>, un batch de vecteurs de taille $576$, alors qu'elle a été déclarée pour attendre des vecteurs de taille $123$ (<code>nn.Linear(123, 64)</code>). Le nombre $123$ est <b>incorrect</b> : il faut le remplacer par la vraie taille produite par <code>flatten</code>.</p>
+                <p class="method-label">Recalculer la bonne taille</p>
+                <p>Pour une image d'entrée $28\times28$ à 1 canal (la cause la plus probable ici, et cohérente avec le $576$ observé) : <code>Conv2d(k=5,s=1,p=0)</code> donne $\lfloor(28-5)/1\rfloor+1=24$, soit une carte $24\times24$ (fiche 19, exercice 1) ; <code>MaxPool2d(k=2,s=2)</code> divise par 2 : $12\times12$ ; avec $4$ canaux (<code>out_channels=4</code>), le <code>flatten</code> produit $4\times12\times12=576$ caractéristiques, exactement le nombre que l'erreur annonce.</p>
+                <div class="formula">$$\texttt{self.fc2 = nn.Linear(576, 64)}$$</div>
+                <p class="method-label">Un second bug, silencieux celui-là</p>
+                <p>Ligne marquée <code>(!)</code> au-dessus : <code>super(CNN0, self).__init__()</code> référence une classe <code>CNN0</code> qui n'est pas celle définie ici (<code>CNN_AI</code>). Ce n'est pas la cause de l'erreur affichée (qui vient de <code>fc2</code>, survenue bien après une instanciation qui a donc réussi), mais c'est un bug latent de code généré par IA, à corriger par cohérence : <code>super(CNN_AI, self).__init__()</code> (ou, plus robuste, la forme sans argument <code>super().__init__()</code>).</p>
+                <p class="sense"><b>Sens :</b> c'est l'erreur classique de tout débutant en CNN : la taille d'entrée de la première couche dense <b>dépend</b> de la taille d'entrée de l'image et de tous les paramètres des couches convolutives/pooling qui précèdent (fiche 19, exercice 1 : la formule $\lfloor(W-K+2P)/S\rfloor+1$, appliquée couche après couche). Un code généré par IA « au hasard » se trompe très souvent sur ce nombre, puisqu'il ne peut pas le deviner sans connaître la taille exacte des images d'entrée ; mieux vaut le calculer à la main une fois, ou remplacer temporairement <code>fc2</code> par <code>nn.LazyLinear(64)</code> (PyTorch infère la taille d'entrée au premier passage avant).</p>
+              </div>
+            </details>
+          </article>
 
         </div>
       </section>

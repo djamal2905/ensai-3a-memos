@@ -4,112 +4,289 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mémos ENSAI</title>
+<meta name="description" content="Synthèses de cours ENSAI 3A et 2A : définitions, théorèmes, formules, diagrammes et annales corrigées." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1c2230; --ink-soft:#454c5a; --muted:#5c6b72;
-    --paper:#f1f3ef; --surface:#ffffff; --border:#d7dcd3;
-    --accent:#3f5d8a; --accent-strong:#28436b; --accent-soft:#e6ebf3;
+    --paper:#f1f3ef; --surface:#ffffff; --surface-2:#e8ebe5; --border:#d7dcd3;
+    --accent:#3f5d8a; --accent-strong:#28436b; --accent-soft:#e6ebf3; --accent-ink:#1f3a63;
     --shadow: 0 1px 2px rgba(28,34,48,.05), 0 10px 28px -16px rgba(28,34,48,.20);
+    --shadow-lift: 0 2px 4px rgba(28,34,48,.06), 0 18px 36px -18px rgba(28,34,48,.28);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
-      --paper:#12151b; --surface:#181c24; --border:#2b313d;
-      --accent:#8aabdc; --accent-strong:#b7cdf0; --accent-soft:#1c2534;
+      --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+      --accent:#8aabdc; --accent-strong:#b7cdf0; --accent-soft:#1c2534; --accent-ink:#cfe0f7;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+      --shadow-lift: 0 2px 6px rgba(0,0,0,.45), 0 22px 44px -18px rgba(0,0,0,.7);
       color-scheme: dark;
     }
   }
+  :root[data-theme="dark"]{
+    --ink:#e7e9ee; --ink-soft:#c7cdd8; --muted:#93a0ac;
+    --paper:#12151b; --surface:#181c24; --surface-2:#1f242e; --border:#2b313d;
+    --accent:#8aabdc; --accent-strong:#b7cdf0; --accent-soft:#1c2534; --accent-ink:#cfe0f7;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.6);
+    --shadow-lift: 0 2px 6px rgba(0,0,0,.45), 0 22px 44px -18px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+
   *{box-sizing:border-box;}
-  body{ margin:0; background:var(--paper); color:var(--ink); font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif; line-height:1.55; }
-  main{ max-width:680px; margin:0 auto; padding:56px 20px 60px; }
-  h1{ font-family:"Fraunces",Georgia,serif; font-size:clamp(1.6rem,1.2rem+2vw,2.3rem); margin:0 0 8px; text-wrap:balance; }
-  .eyebrow{ font:600 .72rem "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
-  p.lede{ color:var(--muted); max-width:60ch; margin:10px 0 34px; }
-  h3.year{ font:700 .74rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:28px 0 12px; }
-  h3.year:first-of-type{ margin-top:0; }
-  .course{ margin-bottom:14px; border:1px solid var(--border); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); padding:22px 24px; }
-  .course h2{ font-family:"Fraunces",serif; font-size:1.15rem; margin:0 0 4px; }
-  .course p{ color:var(--muted); font-size:.9rem; margin:0 0 14px; }
-  .links{ display:flex; gap:10px; flex-wrap:wrap; }
-  .links a{ font:600 .84rem "Source Sans 3",sans-serif; color:var(--accent-strong); text-decoration:none; border:1px solid var(--border); padding:8px 14px; border-radius:8px; }
-  .links a:hover{ background:var(--accent-soft); }
-  footer{ margin-top:30px; font-size:.78rem; color:var(--muted); }
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{ font-family:"Fraunces",Georgia,serif; text-wrap:balance; color:var(--ink); margin:0; }
+  a{ color:var(--accent-strong); }
+  p{ color:var(--ink-soft); }
+  .icon-14{ width:14px; height:14px; flex-shrink:0; }
+  .icon-16{ width:16px; height:16px; flex-shrink:0; }
+  .icon-22{ width:22px; height:22px; flex-shrink:0; }
+
+  header.topbar{
+    position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{ max-width:1080px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:14px; }
+  .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; }
+  .brand .eyebrow{ font:600 .68rem/1 "JetBrains Mono", monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .brand .name{ font:600 1.02rem/1.1 "Fraunces", serif; }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .icon-btn:hover{ background:var(--surface-2); }
+  .icon-btn:focus-visible, a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  main{ max-width:1080px; margin:0 auto; padding:0 20px 70px; }
+
+  .hero{ padding:56px 0 30px; border-bottom:1px solid var(--border); margin-bottom:38px; }
+  .hero .eyebrow{ font:600 .74rem "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+  .hero h1{ font-size:clamp(2rem, 1.3rem + 3vw, 3rem); margin:.3em 0 .25em; }
+  .hero p.lede{ max-width:62ch; color:var(--muted); font-size:1.05rem; margin:0 0 20px; }
+  .hero .howto{
+    display:flex; gap:10px; align-items:flex-start; max-width:62ch; background:var(--accent-soft);
+    border:1px solid var(--border); border-radius:10px; padding:12px 16px; margin-top:10px;
+  }
+  .hero .howto svg{ color:var(--accent); margin-top:2px; }
+  .hero .howto p{ margin:0; font-size:.88rem; color:var(--accent-ink); }
+  .hero .howto b{ color:var(--accent-strong); }
+  .hero .stats{ display:flex; gap:28px; flex-wrap:wrap; margin-top:24px; }
+  .hero .stats div{ display:flex; flex-direction:column; gap:2px; }
+  .hero .stats b{ font:700 1.3rem "Fraunces",serif; color:var(--ink); }
+  .hero .stats span{ font:500 .74rem "JetBrains Mono",monospace; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+
+  h2.year{
+    display:flex; align-items:baseline; gap:10px; font:700 .76rem "JetBrains Mono",monospace;
+    text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:36px 0 16px;
+  }
+  h2.year::after{ content:""; flex:1; height:1px; background:var(--border); }
+  h2.year:first-of-type{ margin-top:0; }
+
+  .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }
+
+  .course{
+    position:relative; border:1px solid var(--border); border-radius:14px; background:var(--surface);
+    box-shadow:var(--shadow); padding:22px 22px 20px; display:flex; flex-direction:column; gap:10px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .course:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lift); border-color:var(--accent); }
+  .course .chead{ display:flex; align-items:flex-start; gap:12px; }
+  .course .cicon{
+    display:flex; align-items:center; justify-content:center; width:40px; height:40px; flex-shrink:0;
+    border-radius:10px; background:var(--accent-soft); color:var(--accent-strong);
+  }
+  .course h3{ font-size:1.12rem; margin:3px 0 0; }
+  .course p.desc{ color:var(--muted); font-size:.89rem; margin:0; flex:1; }
+  .tags{ display:flex; gap:6px; flex-wrap:wrap; margin:2px 0 0; }
+  .tag{ font:600 .68rem "JetBrains Mono",monospace; color:var(--accent-ink); background:var(--accent-soft); border:1px solid var(--border); border-radius:6px; padding:2px 7px; }
+  .links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .links a{ font:600 .82rem "Source Sans 3",sans-serif; color:var(--accent-strong); text-decoration:none; border:1px solid var(--border); padding:7px 12px; border-radius:8px; display:inline-flex; align-items:center; gap:5px; }
+  .links a:hover{ background:var(--accent-soft); border-color:var(--accent); }
+  .links a.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .links a.primary:hover{ background:var(--accent-strong); border-color:var(--accent-strong); }
+
+  .placeholder-card{ display:flex; align-items:center; gap:14px; border:1.5px dashed var(--border); border-radius:14px; padding:18px 22px; color:var(--muted); }
+  .placeholder-card svg{ flex-shrink:0; opacity:.7; }
+  .placeholder-card b{ color:var(--ink-soft); font-size:.95rem; }
+  .placeholder-card p{ margin:2px 0 0; font-size:.85rem; color:var(--muted); }
+
+  footer{ margin-top:44px; padding-top:20px; border-top:1px solid var(--border); font-size:.8rem; color:var(--muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+
+  @media (max-width: 760px){
+    .grid{ grid-template-columns:1fr; }
+    .hero{ padding:40px 0 24px; }
+    .hero .stats{ gap:20px; }
+  }
+  @media (max-width: 420px){
+    .topbar-inner{ padding:12px 16px; }
+    main{ padding:0 16px 56px; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <span class="eyebrow">ENSAI</span>
-  <h1>Mémos de cours</h1>
-  <p class="lede">Synthèses de cours au format mémo consultable : définitions, théorèmes, formules et diagrammes.</p>
 
-  <h3 class="year">3A</h3>
-
-  <div class="course">
-    <h2>Deep Learning</h2>
-    <p>MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers, 41 fiches.</p>
-    <div class="links">
-      <a href="deep-learning/memo-cours.html">Mémo de cours →</a>
-      <a href="deep-learning/rappel-express.html">Rappel express →</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="eyebrow">ENSAI</span>
+        <span class="name">Mémos de cours</span>
+      </div>
+      <button id="themeToggle" class="icon-btn" aria-label="Changer de thème"><svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     </div>
-  </div>
+  </header>
 
-  <div class="course">
-    <h2>Machine Learning</h2>
-    <p>Variantes de l'OLS (Ridge, Lasso, Elastic-Net) et optimisation (descente de gradient, Newton, SGD).</p>
-    <div class="links">
-      <a href="ml/memo-cours.html">Mémo de cours →</a>
-      <a href="ml/cheatsheet-sklearn.html">Cheat sheet scikit-learn →</a>
+  <main>
+    <div class="hero">
+      <span class="eyebrow">Notes de cours · ENSAI</span>
+      <h1>Des mémos pour comprendre, pas juste réviser</h1>
+      <p class="lede">Chaque fiche reprend un cours depuis l'intuition : d'abord l'idée en mots simples, puis l'exemple qui la rend concrète, puis la formule. Définitions, théorèmes, diagrammes, QCM et annales corrigées pas à pas, le tout dans une seule page consultable hors ligne.</p>
+      <div class="howto">
+        <svg class="icon-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <p><b>Pour réviser :</b> ouvrez un mémo, utilisez la barre de recherche pour filtrer par mot-clé, et dépliez les sections « Annales corrigées » à la fin de chaque sommaire pour vous entraîner sur des vraies questions d'examen.</p>
+      </div>
+      <div class="stats">
+        <div><b>7</b><span>mémos de cours</span></div>
+        <div><b>3A · 2A</b><span>niveaux couverts</span></div>
+        <div><b>Hors ligne</b><span>MathJax intégré</span></div>
+      </div>
     </div>
-  </div>
 
-  <div class="course">
-    <h2>Théorie des Valeurs Extrêmes</h2>
-    <p>Modèles de valeurs extrêmes (Fisher-Tippett, GEV), estimation en queue lourde (Hill, Weissman), estimateurs du cas général (Pickands, moments, GPD), QCM et exercices corrigés, 44 fiches.</p>
-    <div class="links">
-      <a href="tve/memo-cours.html">Mémo de cours →</a>
+    <h2 class="year">3A</h2>
+    <div class="grid">
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M7 7l3.3 3.3M7 17l3.3-3.3M14.3 10.3L17 7M14.3 13.7L17 17"/></svg></span>
+          <h3>Deep Learning</h3>
+        </div>
+        <p class="desc">MLP, CNN, RNN, modèles génératifs (AE, VAE, GAN, diffusion) et Transformers.</p>
+        <div class="tags"><span class="tag">CNN</span><span class="tag">GAN</span><span class="tag">Annales</span></div>
+        <div class="links">
+          <a class="primary" href="deep-learning/memo-cours.html">Mémo de cours →</a>
+          <a href="deep-learning/rappel-express.html">Rappel express →</a>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3.5-5 3 3L19 6"/><circle cx="7" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="10.5" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="13.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="6" r="1.3" fill="currentColor" stroke="none"/></svg></span>
+          <h3>Machine Learning</h3>
+        </div>
+        <p class="desc">Régularisation (Ridge, Lasso, Elastic-Net), optimisation, sélection de variables.</p>
+        <div class="tags"><span class="tag">Feature selection</span><span class="tag">Annales</span></div>
+        <div class="links">
+          <a class="primary" href="ml/memo-cours.html">Mémo de cours →</a>
+          <a href="ml/cheatsheet-sklearn.html">Cheat sheet scikit-learn →</a>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19c3-.3 5-2 6.5-5C10 11 11 7 13 7c2.5 0 3 8 4 10 .6 1.3 2 1.8 4 2"/><circle cx="20" cy="18.3" r="1.3" fill="currentColor" stroke="none"/></svg></span>
+          <h3>Théorie des Valeurs Extrêmes</h3>
+        </div>
+        <p class="desc">Fisher-Tippett, GEV, queues lourdes (Hill, Weissman), Pickands, GPD.</p>
+        <div class="tags"><span class="tag">44 fiches</span><span class="tag">QCM</span><span class="tag">Annales</span></div>
+        <div class="links">
+          <a class="primary" href="tve/memo-cours.html">Mémo de cours →</a>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="16.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="7.5" cy="16.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="16.5" cy="16.5" r="1.4" fill="currentColor" stroke="none"/></svg></span>
+          <h3>Plans d'expérience</h3>
+        </div>
+        <p class="desc">Plans factoriels, fractions régulières, optimalité (A, D, E), surfaces de réponse.</p>
+        <div class="tags"><span class="tag">35 fiches</span><span class="tag">R</span><span class="tag">Annales</span></div>
+        <div class="links">
+          <a class="primary" href="plans-experience/memo-cours.html">Mémo de cours →</a>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-6 4-9 6-9s3 9 4 9 2-6 4-6 2 6 4 6 2-3 4-3"/></svg></span>
+          <h3>Calcul stochastique</h3>
+        </div>
+        <p class="desc">Martingales, mouvement brownien, Lévy, intégrale et formule d'Itô, EDS, Black-Scholes.</p>
+        <div class="tags"><span class="tag">58 fiches</span><span class="tag">QCM</span><span class="tag">Annales</span></div>
+        <div class="links">
+          <a class="primary" href="calcul-stochastique/memo-cours.html">Mémo de cours →</a>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><circle cx="19" cy="12" r="2"/><path d="M6.6 10.8L10.4 7.2M10.4 16.8L6.6 13.2M13.6 7.2L17.4 10.8M17.4 13.2L13.6 16.8"/></svg></span>
+          <h3>Statistiques de processus</h3>
+        </div>
+        <p class="desc">Chaînes de Markov, Poisson, processus markoviens de sauts, files d'attente, HMM.</p>
+        <div class="tags"><span class="tag">TP</span><span class="tag">Annales</span></div>
+        <div class="links">
+          <a class="primary" href="statistiques-processus/memo-cours.html">Mémo de cours →</a>
+        </div>
+      </div>
+
     </div>
-  </div>
 
-  <div class="course">
-    <h2>Plans d'expérience</h2>
-    <p>Codage, outils du modèle linéaire, plans factoriels complets, fractions régulières, optimalité (A, D, E), interactions et surfaces de réponse, 35 fiches, QCM et exercices corrigés.</p>
-    <div class="links">
-      <a href="plans-experience/memo-cours.html">Mémo de cours →</a>
+    <h2 class="year">2A</h2>
+    <div class="grid">
+
+      <div class="course">
+        <div class="chead">
+          <span class="cicon"><svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20L9 8l5 7 7-11"/><circle cx="9" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="14" cy="15" r="1.3" fill="currentColor" stroke="none"/></svg></span>
+          <h3>Régression linéaire et généralisée</h3>
+        </div>
+        <p class="desc">MCO, validation, sélection de modèles, ANOVA/ANCOVA, GLM (logistique, comptage).</p>
+        <div class="tags"><span class="tag">59 fiches</span></div>
+        <div class="links">
+          <a class="primary" href="regression-lineaire-generalisee/memo-cours.html">Mémo de cours →</a>
+        </div>
+      </div>
+
     </div>
-  </div>
 
-  <div class="course">
-    <h2>Calcul stochastique</h2>
-    <p>Martingales, mouvement brownien, processus de Lévy, intégrale et formule d'Itô, EDS, finance (Girsanov, Black-Scholes), TD et annales corrigés, 58 fiches.</p>
-    <div class="links">
-      <a href="calcul-stochastique/memo-cours.html">Mémo de cours →</a>
+    <h2 class="year">1A</h2>
+    <div class="placeholder-card">
+      <svg class="icon-22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+      <div>
+        <b>À venir</b>
+        <p>Pas encore de mémo pour la 1A dans ce dépôt.</p>
+      </div>
     </div>
-  </div>
 
-  <div class="course">
-    <h2>Statistiques de processus</h2>
-    <p>Chaînes de Markov, processus de Poisson, processus markoviens de sauts, files d'attente, modèles de Markov cachés, TP et annales corrigés.</p>
-    <div class="links">
-      <a href="statistiques-processus/memo-cours.html">Mémo de cours →</a>
-    </div>
-  </div>
+    <footer>
+      <span>Formules rendues avec MathJax (intégré, aucune dépendance réseau).</span>
+      <span>Thème clair / sombre synchronisé avec les mémos.</span>
+    </footer>
+  </main>
 
-  <h3 class="year">2A</h3>
-
-  <div class="course">
-    <h2>Régression linéaire et généralisée</h2>
-    <p>Régression linéaire (MCO, validation, sélection de modèles), ANOVA/ANCOVA, modèles linéaires généralisés (logistique, comptage), 59 fiches.</p>
-    <div class="links">
-      <a href="regression-lineaire-generalisee/memo-cours.html">Mémo de cours →</a>
-    </div>
-  </div>
-
-  <footer>Formules rendues avec MathJax (intégré, aucune dépendance réseau).</footer>
-</main>
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  function getStored(){ try{ return localStorage.getItem('cs-memo-theme'); }catch(e){ return null; } }
+  function setStored(v){ try{ localStorage.setItem('cs-memo-theme', v); }catch(e){} }
+  var stored = getStored();
+  if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next;
+    if(!current){ next = prefersDark ? 'light' : 'dark'; }
+    else if(current === 'dark'){ next = 'light'; }
+    else { next = 'dark'; }
+    root.setAttribute('data-theme', next);
+    setStored(next);
+  });
+})();
+</script>
 </body>
 </html>
