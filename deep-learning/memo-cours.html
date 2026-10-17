@@ -168,8 +168,8 @@ window.MathJax = {
   .splitbar{ display:flex; border-radius:8px; overflow:hidden; height:42px; margin:14px 0 6px; font:600 .78rem "JetBrains Mono",monospace; }
   .splitbar > div{ display:flex; align-items:center; justify-content:center; color:#fff; }
   .splitbar .s-train{ background:var(--accent); }
-  .splitbar .s-val{ background:#b5643f; }
-  .splitbar .s-test{ background:#3f6ea3; }
+  .splitbar .s-val{ background:var(--thm-border); }
+  .splitbar .s-test{ background:var(--ex-border); }
   .splitbar-caption{ display:flex; gap:16px; font-size:.78rem; color:var(--muted); margin-bottom:6px; flex-wrap:wrap; }
   .splitbar-caption span{ display:flex; align-items:center; gap:6px; }
   .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
@@ -958,8 +958,8 @@ sum(p.numel() for p in model.parameters())  # -&gt; 73</code></pre>
               <p class="box-label">Définition · Train / Validation / Test</p>
               <div class="splitbar-caption">
                 <span><i class="dot" style="background:var(--accent)"></i>train : ajuster $\theta$</span>
-                <span><i class="dot" style="background:#b5643f"></i>val : régler hyperparamètres, surveiller</span>
-                <span><i class="dot" style="background:#3f6ea3"></i>test : évaluer une seule fois</span>
+                <span><i class="dot" style="background:var(--thm-border)"></i>val : régler hyperparamètres, surveiller</span>
+                <span><i class="dot" style="background:var(--ex-border)"></i>test : évaluer une seule fois</span>
               </div>
               <div class="splitbar">
                 <div class="s-train" style="flex:6">train</div><div class="s-val" style="flex:2">val</div><div class="s-test" style="flex:2">test</div>
@@ -1755,26 +1755,26 @@ print("attendu (sqrt(2/100)) :", math.sqrt(2 / 100))</code></pre>
                 </defs>
                 <!-- ===== feature maps ===== -->
                 <g class="cnnviz-stage"><rect class="cnnviz-rect" x="8.0" y="86.0" width="84" height="84" rx="3" fill="var(--surface-2)" fill-opacity="1.00"/></g>
-                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="150.0" y="93.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="0.62"/>
-                <rect class="cnnviz-rect" x="156.0" y="88.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="0.75"/>
-                <rect class="cnnviz-rect" x="162.0" y="83.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="0.88"/>
-                <rect class="cnnviz-rect" x="168.0" y="78.0" width="70" height="70" rx="3" fill="#eaf1fb" fill-opacity="1.00"/></g>
-                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="275.0" y="103.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="0.62"/>
-                <rect class="cnnviz-rect" x="281.0" y="98.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="0.75"/>
-                <rect class="cnnviz-rect" x="287.0" y="93.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="0.88"/>
-                <rect class="cnnviz-rect" x="293.0" y="88.0" width="50" height="50" rx="3" fill="#eaf1fb" fill-opacity="1.00"/></g>
-                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="385.0" y="108.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.58"/>
-                <rect class="cnnviz-rect" x="391.0" y="103.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.67"/>
-                <rect class="cnnviz-rect" x="397.0" y="98.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.75"/>
-                <rect class="cnnviz-rect" x="403.0" y="93.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.83"/>
-                <rect class="cnnviz-rect" x="409.0" y="88.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="0.92"/>
-                <rect class="cnnviz-rect" x="415.0" y="83.0" width="40" height="40" rx="3" fill="#edf6ee" fill-opacity="1.00"/></g>
-                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="487.0" y="115.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.58"/>
-                <rect class="cnnviz-rect" x="493.0" y="110.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.67"/>
-                <rect class="cnnviz-rect" x="499.0" y="105.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.75"/>
-                <rect class="cnnviz-rect" x="505.0" y="100.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.83"/>
-                <rect class="cnnviz-rect" x="511.0" y="95.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="0.92"/>
-                <rect class="cnnviz-rect" x="517.0" y="90.0" width="26" height="26" rx="3" fill="#edf6ee" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="150.0" y="93.0" width="70" height="70" rx="3" fill="var(--ex-bg)" fill-opacity="0.62"/>
+                <rect class="cnnviz-rect" x="156.0" y="88.0" width="70" height="70" rx="3" fill="var(--ex-bg)" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="162.0" y="83.0" width="70" height="70" rx="3" fill="var(--ex-bg)" fill-opacity="0.88"/>
+                <rect class="cnnviz-rect" x="168.0" y="78.0" width="70" height="70" rx="3" fill="var(--ex-bg)" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="275.0" y="103.0" width="50" height="50" rx="3" fill="var(--ex-bg)" fill-opacity="0.62"/>
+                <rect class="cnnviz-rect" x="281.0" y="98.0" width="50" height="50" rx="3" fill="var(--ex-bg)" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="287.0" y="93.0" width="50" height="50" rx="3" fill="var(--ex-bg)" fill-opacity="0.88"/>
+                <rect class="cnnviz-rect" x="293.0" y="88.0" width="50" height="50" rx="3" fill="var(--ex-bg)" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="385.0" y="108.0" width="40" height="40" rx="3" fill="var(--def-bg)" fill-opacity="0.58"/>
+                <rect class="cnnviz-rect" x="391.0" y="103.0" width="40" height="40" rx="3" fill="var(--def-bg)" fill-opacity="0.67"/>
+                <rect class="cnnviz-rect" x="397.0" y="98.0" width="40" height="40" rx="3" fill="var(--def-bg)" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="403.0" y="93.0" width="40" height="40" rx="3" fill="var(--def-bg)" fill-opacity="0.83"/>
+                <rect class="cnnviz-rect" x="409.0" y="88.0" width="40" height="40" rx="3" fill="var(--def-bg)" fill-opacity="0.92"/>
+                <rect class="cnnviz-rect" x="415.0" y="83.0" width="40" height="40" rx="3" fill="var(--def-bg)" fill-opacity="1.00"/></g>
+                <g class="cnnviz-stage"><rect class="cnnviz-rect" x="487.0" y="115.0" width="26" height="26" rx="3" fill="var(--def-bg)" fill-opacity="0.58"/>
+                <rect class="cnnviz-rect" x="493.0" y="110.0" width="26" height="26" rx="3" fill="var(--def-bg)" fill-opacity="0.67"/>
+                <rect class="cnnviz-rect" x="499.0" y="105.0" width="26" height="26" rx="3" fill="var(--def-bg)" fill-opacity="0.75"/>
+                <rect class="cnnviz-rect" x="505.0" y="100.0" width="26" height="26" rx="3" fill="var(--def-bg)" fill-opacity="0.83"/>
+                <rect class="cnnviz-rect" x="511.0" y="95.0" width="26" height="26" rx="3" fill="var(--def-bg)" fill-opacity="0.92"/>
+                <rect class="cnnviz-rect" x="517.0" y="90.0" width="26" height="26" rx="3" fill="var(--def-bg)" fill-opacity="1.00"/></g>
                 <!-- ===== fleches entre stages ===== -->
                 <line class="cnnviz-arrow" x1="97.0" y1="128" x2="145.0" y2="128" marker-end="url(#cnnArrow)"/>
                 <line class="cnnviz-arrow" x1="243.0" y1="128" x2="270.0" y2="128" marker-end="url(#cnnArrow)"/>

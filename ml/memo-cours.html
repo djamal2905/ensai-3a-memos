@@ -186,8 +186,8 @@ window.MathJax = {
   .splitbar{ display:flex; border-radius:8px; overflow:hidden; height:42px; margin:14px 0 6px; font:600 .78rem "JetBrains Mono",monospace; }
   .splitbar > div{ display:flex; align-items:center; justify-content:center; color:#fff; }
   .splitbar .s-train{ background:var(--accent); }
-  .splitbar .s-val{ background:#b5643f; }
-  .splitbar .s-test{ background:#3f6ea3; }
+  .splitbar .s-val{ background:var(--thm-border); }
+  .splitbar .s-test{ background:var(--ex-border); }
   .splitbar-caption{ display:flex; gap:16px; font-size:.78rem; color:var(--muted); margin-bottom:6px; flex-wrap:wrap; }
   .splitbar-caption span{ display:flex; align-items:center; gap:6px; }
   .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
@@ -196,7 +196,7 @@ window.MathJax = {
   .kfold-row{ display:flex; gap:4px; align-items:center; }
   .kfold-row .lbl{ width:66px; flex:none; font:600 .72rem "JetBrains Mono",monospace; color:var(--muted); }
   .kfold-cell{ width:32px; height:22px; border-radius:4px; background:var(--accent); flex:none; }
-  .kfold-cell.is-val{ background:#3f6ea3; }
+  .kfold-cell.is-val{ background:var(--ex-border); }
 
   table.cmp{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.83rem; }
   .cmp th, .cmp td{ padding:6px 10px; border:1px solid var(--border); text-align:center; color:var(--ink-soft); }
@@ -569,8 +569,8 @@ window.MathJax = {
               <p class="box-label">Définition · Hold-out validation</p>
               <div class="splitbar-caption">
                 <span><i class="dot" style="background:var(--accent)"></i>train : ajuster $g$</span>
-                <span><i class="dot" style="background:#b5643f"></i>val : choisir les hyperparamètres</span>
-                <span><i class="dot" style="background:#3f6ea3"></i>test : évaluer une seule fois</span>
+                <span><i class="dot" style="background:var(--thm-border)"></i>val : choisir les hyperparamètres</span>
+                <span><i class="dot" style="background:var(--ex-border)"></i>test : évaluer une seule fois</span>
               </div>
               <div class="splitbar">
                 <div class="s-train" style="flex:6">train</div><div class="s-val" style="flex:2">val</div><div class="s-test" style="flex:2">test</div>
